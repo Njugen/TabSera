@@ -8,6 +8,18 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      colors: {
+        tbfColor: {
+          darkpurple: '#6D00C2',
+          lightpurple: 'rgba(109,0,194,0.5)',
+          lightgrey: '#f9f9f9',
+          middlegrey: 'rgba(0,0,0,0.1)',
+          darkgrey: '#aeaeae',
+        }
+      },
+      dropShadow: {
+        contractedFolder: '0 0 2px rgba(0,0,0,0.25)'
+      },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
