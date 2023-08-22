@@ -18,11 +18,13 @@ export default function Home() {
 
         
       </div>
-      <div id="folders-section" className="container w-7/12 mx-auto my-10">
+      <div id="folders-section" className="container md:w-7/12 mx-auto my-10">
         <h1 className="text-4xl text-tbfColor-darkpurple font-light my-10">
           Folders
         </h1>
-        <Folder type="contracted" />
+        <Folder type={"collapsed"} name="Device-Agnostic Design" windows={[]} />
+        <Folder type={"collapsed"} name="Studies" windows={[]} />
+        <Folder type={"collapsed"} name="Free time" windows={[]} />
       </div>
       
     </div>
