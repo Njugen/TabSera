@@ -15,6 +15,7 @@ const config: Config = {
           lightgrey: '#f9f9f9',
           middlegrey: 'rgba(0,0,0,0.1)',
           darkgrey: '#aeaeae',
+          darkergrey: '#5c5c5c',
         }
       },
       dropShadow: {

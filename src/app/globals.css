@@ -25,3 +25,20 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+#root {
+  background: url("./images/global_bg.svg") #fafafa no-repeat bottom;
+  background-size: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.opacity_hover_effect {
+  transition: ease-in 0.10s;
+ 
+}
+
+.opacity_hover_effect:hover {
+  transition: ease-out 0.15s;
+  opacity: 0.7;
+}
