@@ -5,23 +5,24 @@ import SettingsIcon from "../../images/icons/settings_icon";
 import TrashIcon from "../../images/icons/trash_icon";
 import ExpandIcon from "../../images/icons/expand_icon";
 import CollapseIcon from "../../images/icons/collapse_icon";
+import CloseIcon from "@/app/images/icons/close_icon.";
 
-function FolderControlButton(props: FolderIconButton): JSX.Element {
-    const { icon, active, onClick } = props;
+function GenericIconButton(props: GenericIconButton): JSX.Element {
+    const { icon, fill, size, onClick } = props;
     
     function renderIcon(): any {
         if(icon === "trash"){
-            return <TrashIcon size={23} fill={active === false ? "#000" : "#fff"} />;
+            return <TrashIcon size={size} fill={fill} />;
         } else if(icon === "settings"){
-            return <SettingsIcon size={23} fill={active === false ? "#000" : "#fff"} />;
+            return <SettingsIcon size={size} fill={fill} />;
         } else if(icon === "open_browser"){
-            return <OpenBrowserIcon size={23} fill={active === false ? "#000" : "#fff"} />;
-        } else if(icon === "collapse_expand"){
-            if(active === true){
-                return <CollapseIcon size={28} fill={"#fff"} />;
-            } else if(active === false){
-                return <ExpandIcon size={28} fill={"#000"} />;
-            }
+            return <OpenBrowserIcon size={size} fill={fill} />;
+        } else if(icon === "collapse"){
+            return <CollapseIcon size={size} fill={fill} />;   
+        } else if(icon === "expand") {
+            return <ExpandIcon size={size} fill={fill} />;
+        } else if(icon === "close"){
+            return <CloseIcon size={size} fill={fill} />;
         }
     }
 
@@ -32,4 +33,4 @@ function FolderControlButton(props: FolderIconButton): JSX.Element {
     ); 
 }
 
-export default FolderControlButton;
+export default GenericIconButton;

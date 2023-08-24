@@ -1,0 +1,3 @@
+interface Popup {
+    onClose: () => void
+}

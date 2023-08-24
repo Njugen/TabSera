@@ -3,10 +3,15 @@
 import Folder from './components/folder'
 import styles from "./styles/global_utils.module.scss";
 import PurpleButton from './components/utils/purple_button';
+import Popup from './components/popup';
+import { useRef, useState } from "react";
 
 export default function Home() {
-  
-  return (
+  const [showPopup, setShowPopup] = useState<boolean>(false);
+  return (<>
+    
+    {showPopup === true && <Popup title="Create folder" onSave={() => {}} onClose={() => setShowPopup(false)} />}
+
     <div id="root" className="none:container h-screen w-screen pb-20">
       <div id="header" className={`none:container mx-auto flex justify-center items-center w-full h-32 white border-b bg-white border-tbfColor-lgrey`}>
         test
@@ -27,7 +32,7 @@ export default function Home() {
             Folders
           </h1>
           <div className="inline-block">
-            <PurpleButton text="New folder" onClick={() => {}} />
+            <PurpleButton text="Create folder" onClick={() => setShowPopup(true)} />
           </div>
         </div>
         <Folder type={"collapsed"} name="Device-Agnostic Design" windows={[]} />
@@ -36,5 +41,6 @@ export default function Home() {
       </div>
       
     </div>
+    </>
   )
 }

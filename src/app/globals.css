@@ -33,12 +33,3 @@ body {
   overflow-y: scroll;
 }
 
-.opacity_hover_effect {
-  transition: ease-in 0.10s;
- 
-}
-
-.opacity_hover_effect:hover {
-  transition: ease-out 0.15s;
-  opacity: 0.7;
-}
