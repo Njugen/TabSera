@@ -1,3 +1,3 @@
-interface Tab {
+interface iTab {
     title: String
 }

@@ -1,4 +1,4 @@
-interface GenericIconButton {
+interface iGenericIconButton {
     icon: string,
     fill: string,
     size: number,

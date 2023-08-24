@@ -2,7 +2,7 @@ import styles from "./../styles/global_utils.module.scss";
 import { useRef, useState, useEffect } from "react";
 import GenericIconButton from './utils/generic_icon_button';
 
-function Popup(props: Popup){
+function Popup(props: iPopup){
     const { onClose, onSave, title } = props;
     const [slideDown, setSlideDown] = useState<boolean>(false);
 

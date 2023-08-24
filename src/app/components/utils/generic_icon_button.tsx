@@ -7,7 +7,7 @@ import ExpandIcon from "../../images/icons/expand_icon";
 import CollapseIcon from "../../images/icons/collapse_icon";
 import CloseIcon from "@/app/images/icons/close_icon.";
 
-function GenericIconButton(props: GenericIconButton): JSX.Element {
+function GenericIconButton(props: iGenericIconButton): JSX.Element {
     const { icon, fill, size, onClick } = props;
     
     function renderIcon(): any {

@@ -1,3 +1,3 @@
-interface Window {
-    tabs: Array<Tab>
+interface iWindow {
+    tabs: Array<iTab>
 }

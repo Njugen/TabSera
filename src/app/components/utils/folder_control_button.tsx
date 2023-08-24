@@ -6,7 +6,7 @@ import TrashIcon from "../../images/icons/trash_icon";
 import ExpandIcon from "../../images/icons/expand_icon";
 import CollapseIcon from "../../images/icons/collapse_icon";
 
-function FolderControlButton(props: FolderIconButton): JSX.Element {
+function FolderControlButton(props: iFolderIconButton): JSX.Element {
     const { icon, active, onClick } = props;
     
     function renderIcon(): any {

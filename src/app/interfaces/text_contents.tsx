@@ -1,3 +1,3 @@
-interface TextContents {
+interface iTextContents {
     text: String
 }

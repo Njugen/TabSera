@@ -8,7 +8,7 @@ import FolderControlButton from "./utils/folder_control_button";
 import OpenedFolderIcon from "../images/icons/opened_folder_icon";
 import styles from "./../styles/global_utils.module.scss";
 
-function Folder(props: Folder) {
+function Folder(props: iFolder) {
     const contentsRef = useRef<HTMLDivElement>(null);
     const headerRef = useRef<HTMLDivElement>(null)
     const [expanded, setExpanded] = useState<boolean>(false);

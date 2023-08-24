@@ -1,4 +1,4 @@
-function Paragraph(props: TextContents){
+function Paragraph(props: iTextContents){
     const { text } = props;
     
     return (

@@ -1,4 +1,4 @@
-interface SVG {
+interface iSVG {
     size: number,
     fill: string
 }

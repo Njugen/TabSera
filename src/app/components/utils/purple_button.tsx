@@ -1,6 +1,6 @@
 import styles from "./../../styles/global_utils.module.scss";
 
-function PurpleButton(props: TextButton){
+function PurpleButton(props: iTextButton){
     const { text, onClick } = props;
     
     return (
