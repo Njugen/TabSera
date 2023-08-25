@@ -11,9 +11,14 @@ const config: Config = {
       colors: {
         tbfColor: {
           darkpurple: '#6D00C2',
+          lighterpurple: 'rgba(109,0,194,0.3)',
+          lighterpurple2: 'rgba(109,0,194,0.3)',
           lightpurple: 'rgba(109,0,194,0.5)',
           lightgrey: '#f9f9f9',
           middlegrey: 'rgba(0,0,0,0.1)',
+          middlegrey2: 'rgba(0,0,0,0.4)',
+          middlegrey3: 'rgba(0,0,0,0.2)',
+          middlegrey4: 'rgba(0,0,0,0.15)',
           darkgrey: '#aeaeae',
           darkergrey: '#5c5c5c',
         }

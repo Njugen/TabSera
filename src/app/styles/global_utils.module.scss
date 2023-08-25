@@ -13,3 +13,14 @@
     .popup_contents_wrapper {
     }
 }
+
+.input_textfield {
+    &:focus {
+        outline: none; 
+        border: 1px solid rgba(109,0,194,0.5)
+    }
+    &:focus-visible {
+        outline: none;
+        border: 1px solid rgba(109,0,194,0.5)
+    }
+}
