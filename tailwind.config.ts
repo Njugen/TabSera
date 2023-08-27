@@ -19,12 +19,14 @@ const config: Config = {
           middlegrey2: 'rgba(0,0,0,0.4)',
           middlegrey3: 'rgba(0,0,0,0.2)',
           middlegrey4: 'rgba(0,0,0,0.15)',
+          middlegrey5: 'rgba(0,0,0,0.05)',
           darkgrey: '#aeaeae',
           darkergrey: '#5c5c5c',
         }
       },
       dropShadow: {
-        contractedFolder: '0 0 2px rgba(0,0,0,0.25)'
+        contractedFolder: '0 0 2px rgba(0,0,0,0.25)',
+        no_pos: '0 8px 5px rgba(0,0,0,0.1)'
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
