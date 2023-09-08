@@ -4,21 +4,27 @@ import Folder from './components/folder'
 import styles from "./styles/global_utils.module.scss";
 import PurpleButton from './components/utils/purple_button';
 import Popup from './components/utils/popup';
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Navlink from './components/utils/navlink';
 import GenericIconButton from './components/utils/generic_icon_button';
+import * as predef from "./styles/predef";
 
 export default function Home() {
   const [showPopup, setShowPopup] = useState<boolean>(false);
   const [viewMode, setViewMode] = useState<String>("list");
+  const [showSearchField, setShowSearchField] = useState<boolean>(false);
 
   const navLinks: Array<JSX.Element> = [
     <Navlink key="folders-nav-link"  label="Folders" url="#" isActive={true} onClick={() => {}} />,
     <Navlink key="settings-nav-link" label="Settings" url="#" isActive={false} onClick={() => {}} />
   ];
 
-  function handleChangeViewMode(){
-    setViewMode(viewMode === "list" ? "grid" : "list")
+  function handleChangeViewMode(): void {
+    setViewMode(viewMode === "list" ? "grid" : "list");
+  }
+
+  function handleShowSearchField(): void {
+    setShowSearchField(showSearchField === false ? true : false);
   }
 
   return (<>
@@ -39,8 +45,11 @@ export default function Home() {
             </h1>
             <div className="inline-flex items-center">
               <div className="mr-4 inline-flex items-center">
-                <GenericIconButton icon="search" fill="#6D00C2" size={30} />
-                <GenericIconButton icon="grid" fill="#6D00C2" size={30} onClick={handleChangeViewMode} />
+                <div className={`w-[300px]`}>
+                  <input type="text" defaultValue={"..."} className={`${predef.textfield} float-right transition-all ease-in ${showSearchField === true ? "w-[300px] p-2" : "w-[0px] py-2 px-0 border-0"}`} />
+                </div>
+                <GenericIconButton icon="search" fill={showSearchField === false ? "#6D00C2" : "#b2b2b2"} size={30} onClick={handleShowSearchField} />
+                <GenericIconButton icon={viewMode === "list" ? "grid" : "list"} fill="#6D00C2" size={30} onClick={handleChangeViewMode} />
               </div>
               <PurpleButton text="Create folder" onClick={() => setShowPopup(true)} />
             </div>
