@@ -8,6 +8,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      zIndex: {
+        "500": "500"
+      },
       colors: {
         tbfColor: {
           darkpurple: '#6D00C2',

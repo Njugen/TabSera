@@ -1,6 +1,12 @@
+"use client";
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
+import Navlink from './components/utils/navlink';
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
+import CollapseIcon from './images/icons/collapse_icon';
+import styles from "./styles/global_utils.module.scss";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -14,9 +20,52 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  const [showScrollTop, setShowScrollTop] = useState<boolean>(false);
+  const router = useRouter();
+  const path = usePathname();
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  function showScrollUpButton(): void {
+    if (rootRef.current?.scrollTop === undefined) return;
+
+    if(rootRef.current?.scrollTop > 0){
+      if(showScrollTop === false) setShowScrollTop(true);
+    } else {
+      setShowScrollTop(false);
+    }
+  }
+
+  function handleScrollButtonClick(): void {
+    if (rootRef.current === null || rootRef.current?.scrollTop === undefined) return;
+    rootRef.current.scrollTop = 0;
+  }
+
+  useEffect(() => {
+    rootRef.current?.addEventListener("scroll", showScrollUpButton);
+    return () => rootRef.current?.removeEventListener("scroll", showScrollUpButton);
+  }, []);
+
+  const navLinks: Array<JSX.Element> = [
+    <Navlink key="folders-nav-link"  label="Folders" url="#" isActive={path === "/" || path === "/folders" ? true : false} onClick={() => router.push("/")} />,
+    <Navlink key="settings-nav-link" label="Settings" url="#" isActive={path === "/settings" ? true : false} onClick={() => router.push("/settings")} />
+  ];
+
   return (
     <html lang="en" className="bg-tbfColor-lightgrey">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        {showScrollTop === true && <button className={`bg-tbfColor-lightpurple flex ${styles.scroll_button_shadow} justify-center items-center w-14 h-14 rounded-full absolute bottom-10 right-10 z-[500]`} onClick={handleScrollButtonClick}>
+          <CollapseIcon size={40} fill={"#fff"} />
+        </button>}
+        <div ref={rootRef} id="root" className="none:container h-screen w-screen pb-20 scroll-smooth">
+          <div className="navbar flex justify-center py-4 items-center mx-auto">
+            {navLinks.map((link) => link)}
+          </div>
+          <div id="body" className="container w-full mx-auto my-8">
+            
+            {children}
+          </div>
+      </div>
+      </body>
     </html>
   )
 }

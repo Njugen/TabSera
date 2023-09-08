@@ -30,7 +30,7 @@ function Popup(props: iPopup){
     }
 
     return (<>
-        <div className={`${styles.popup_container} overflow-y-scroll flex fixed justify-center items-center w-screen z-50 ${slideDown === false ? "transition-all ease-out h-0 duration-500" : "transition-all h-screen ease-in duration-75"}}`}>
+        <div className={`${styles.popup_container} overflow-y-scroll flex fixed top-0 left-0 justify-center items-center w-screen z-50 ${slideDown === false ? "transition-all ease-out h-0 duration-500" : "transition-all h-screen ease-in duration-75"}}`}>
             <div className="relative bottom-12 h-screen w-[992px]">
                 <div className={`w-full bg-white min-h-[200px] rounded-2xl absolute left-0  ${slideDown === false ? "top-[-200%] ease-out duration-300" : "top-[6rem] ease-in duration-300"}`}>
                     <div id="popup-header" className="pl-8 pr-5 pb-5 pt-6 border-b border-tbfColor-lgrey w-full flex justify-between">
