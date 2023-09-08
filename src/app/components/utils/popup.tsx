@@ -1,14 +1,14 @@
-import styles from "./../styles/global_utils.module.scss";
+import styles from "./../../styles/global_utils.module.scss";
 import { useRef, useState, useEffect } from "react";
-import GenericIconButton from './utils/generic_icon_button';
-import PurpleButton from './utils/purple_button';
-import GreyBorderButton from "./utils/grey_border_button";
-import Paragraph from './utils/paragraph';
-import FolderControlButton from "./utils/folder_control_button";
-import FormField from "./utils/form_field";
-import * as predef from "./../styles/predef";
-import Switcher from './utils/switcher';
-import Dropdown from './utils/dropdown';
+import GenericIconButton from './generic_icon_button';
+import PurpleButton from './purple_button';
+import GreyBorderButton from "./grey_border_button";
+import Paragraph from './paragraph';
+import FolderControlButton from "./folder_control_button";
+import FormField from "./form_field";
+import * as predef from "../../styles/predef";
+import Switcher from './switcher';
+import Dropdown from './dropdown';
 
 
 function Popup(props: iPopup){
@@ -56,7 +56,7 @@ function Popup(props: iPopup){
                             <Dropdown onCallback={(e) => console.log(e.selected)} tag="testdropdown" preset={{ id: 0, label: "This is a preset" }} options={[{ id: 1, label: "Another option" }, { id: 2, label: "Barnabas" }, { id: 3, label: "Vietnam" }]} />
                         </FormField>
                         <FormField label="Dropdown menu" description="Click the dropdown menu">
-                            <Dropdown onCallback={(e) => console.log(e.selected)} tag="testdropdown" preset={{ id: 0, label: "This is a preset" }} options={[{ id: 1, label: "Another option" }, { id: 2, label: "Barnabas" }, { id: 3, label: "Vietnam" }]} />
+                            <Dropdown onCallback={(e) => console.log(e.selected)} tag="testdropdown2" preset={{ id: 0, label: "This is a preset" }} options={[{ id: 1, label: "Another option" }, { id: 2, label: "Barnabas" }, { id: 3, label: "Vietnam" }]} />
                         </FormField>
                         
                         <FormField label="Suspension" description="Automatically suspend inactive tabs">

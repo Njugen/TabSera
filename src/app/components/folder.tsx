@@ -7,6 +7,8 @@ import PurpleButton from "./utils/purple_button";
 import FolderControlButton from "./utils/folder_control_button";
 import OpenedFolderIcon from "../images/icons/opened_folder_icon";
 import styles from "./../styles/global_utils.module.scss";
+import Switcher from "./utils/switcher";
+
 
 
 function Folder(props: iFolder) {
@@ -16,6 +18,7 @@ function Folder(props: iFolder) {
 
     const { 
         type, 
+        viewMode,
         name, 
         windows 
       } = props;
@@ -36,17 +39,18 @@ function Folder(props: iFolder) {
     }
 
     return (
-        <div className="my-6">
+        <div className={`${viewMode === "list" ? "my-6" : "my-2"}`}>
             <div ref={headerRef} className={`relative container tbf-${type} drop-shadow-contractedFolder bg-white px-5 h-14 flex items-center`}>
                 <div className="inline-block mr-3">
                     {expanded === false ? <ClosedFolderIcon size={36} fill={"#000"} /> : <OpenedFolderIcon size={36} fill={"#fff"} />}
                 </div>
-                <div className="bg-blue inline-block">
-                    <h2 className={`text-xl ${expanded === false ? "text-black" : "text-white"}`}>
+                <div className={`inline-block ${viewMode === "list" ? "w-10/12" : "w-5/12"}`}>
+                    <h2 className={`text-xl truncate ${expanded === false ? "text-black" : "text-white"}`}>
                         {name}
                     </h2>
                 </div>
                 <div className="inline-block absolute flex items-center right-6">
+                    {viewMode === "list" && <Switcher label="Auto start" dark={expanded} onCallback={() => {}} />}
                     <FolderControlButton icon="open_browser" active={expanded} onClick={() => {}} />
                     <FolderControlButton icon="settings" active={expanded} onClick={() => {}} />
                     <FolderControlButton icon="trash" active={expanded} onClick={() => {}} />
@@ -55,10 +59,10 @@ function Folder(props: iFolder) {
             </div>
             <div ref={contentsRef} className="max-h-0 overflow-y-hidden bg-white ">
                 <div className="px-5 py-8 flex justify-between items-start">
-                    <div className="inline-block w-fit">
+                    {viewMode === "list" && <div className="inline-block w-fit">
                         <Paragraph text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque rutrum, eros semper gravida ultricies, velit ipsum lacinia tortor, at varius mauris tortor in orci. Sed maximus orci vitae metus accumsan." />
-                    </div>
-                    <div className="inline-block flex justify-end w-[240px]">
+                    </div>}
+                    <div className={`inline-block flex ${viewMode === "list" ? "w-[240px] justify-end" : "w-full justify-center"}`}>
                         <PurpleButton text="New window" onClick={() => {}} />
                     </div>
                 </div>
