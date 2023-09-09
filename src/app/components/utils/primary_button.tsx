@@ -1,6 +1,6 @@
 import styles from "./../../styles/global_utils.module.scss";
 
-function PurpleButton(props: iTextButton){
+function PrimaryButton(props: iTextButton){
     const { text, onClick } = props;
     
     return (
@@ -10,4 +10,4 @@ function PurpleButton(props: iTextButton){
     ); 
 }
 
-export default PurpleButton;
+export default PrimaryButton;

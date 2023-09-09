@@ -1,7 +1,7 @@
 import styles from "./../../styles/global_utils.module.scss";
 import { useRef, useState, useEffect } from "react";
 import GenericIconButton from './generic_icon_button';
-import PurpleButton from './purple_button';
+import PrimaryButton from './primary_button';
 import GreyBorderButton from "./grey_border_button";
 import Paragraph from './paragraph';
 import FolderControlButton from "./folder_control_button";
@@ -41,13 +41,13 @@ function Popup(props: iPopup){
                             <GenericIconButton icon="close" size={34} fill="rgba(0,0,0,0.2)" onClick={() => handleClose()} />
                         </button>
                     </div>
-                    <div id="popup-body">
+                    <div id="popup-body" className="px-8">
 
                         <FormField label="Name" description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eu mauris dapibus orci aliquam consequat id lacinia lorem. In sed vulputate neque">
-                            <input type="text" defaultValue={"..."} className={predef.textfield} />
+                            <input type="text" defaultValue={"..."} className={predef.textfield_full} />
                         </FormField>
                         <FormField label="Description" description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eu mauris dapibus orci aliquam consequat id lacinia lorem. In sed vulputate neque">
-                            <textarea maxLength={400} defaultValue={"..."} className={predef.textarea}></textarea>
+                            <textarea maxLength={400} defaultValue={"..."} className={predef.textarea_full}></textarea>
                         </FormField>
                         <FormField label="Launch at startup" description="E.g. the purpose of this folder...">
                             <Switcher onCallback={(e) => console.log(e.state)} />
@@ -62,7 +62,7 @@ function Popup(props: iPopup){
                         <FormField label="Suspension" description="Automatically suspend inactive tabs">
                             <Switcher onCallback={(e) => console.log(e.state)} />
                         </FormField>
-                        <div className="px-8 py-6 flex flex-row items-center">
+                        <div className="py-6 flex flex-row items-center">
                             <div className="w-2/5">
                                 <h4 className="font-semibold text-lg mb-1">Windows and tabs</h4>
                                 <Paragraph lineheight="leading-6" size="text-xs" text="E.g. the purpose of this folder..." />
@@ -74,7 +74,7 @@ function Popup(props: iPopup){
                     </div>
                     <div id="popup-footer" className="px-8 py-8 flex justify-end">
                         <GreyBorderButton text="Cancel" onClick={handleClose} />
-                        <PurpleButton text="Create" onClick={handleSave} />
+                        <PrimaryButton text="Create" onClick={handleSave} />
                     </div>
                 </div>
             </div>

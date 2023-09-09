@@ -2,7 +2,7 @@
 
 import Folder from './../components/folder'
 import styles from "./../styles/global_utils.module.scss";
-import PurpleButton from './../components/utils/purple_button';
+import PrimaryButton from '../components/utils/primary_button';
 import Popup from './../components/utils/popup';
 import { useRef, useState, useEffect } from "react";
 import Navlink from './../components/utils/navlink';
@@ -16,11 +16,36 @@ function FolderView(props: any) {
 
     function handleChangeViewMode(): void {
         setViewMode(viewMode === "list" ? "grid" : "list");
-      }
-    
-      function handleShowSearchField(): void {
+    }
+
+    function handleShowSearchField(): void {
         setShowSearchField(showSearchField === false ? true : false);
-      }
+    }
+
+    const mockFolders: Array<iFolder> = [{
+        id: 0,
+        type: "collapsed",
+        viewMode: viewMode === "list" ? "list" : "grid",
+        name: "My folder",
+        windows: [{
+            id: 0,
+            key: 0,
+            tabs: [{
+                id: 0,
+                label: "Vasabladet.fi",
+                url: "http://vasabladet.fi"
+            }]
+        }]  
+    }]
+    
+    function renderFolders(){
+        let result = [];
+    
+        result = mockFolders.map((folder, i) => <Folder key={i} type={folder.type} id={folder.id} viewMode={folder.viewMode} name={folder.name} windows={folder.windows} />)
+    
+        return result;
+    }
+    
 
     return (
         <>
@@ -40,16 +65,11 @@ function FolderView(props: any) {
                             <GenericIconButton icon="search" fill={showSearchField === false ? "#6D00C2" : "#b2b2b2"} size={30} onClick={handleShowSearchField} />
                             <GenericIconButton icon={viewMode === "list" ? "grid" : "list"} fill="#6D00C2" size={30} onClick={handleChangeViewMode} />
                         </div>
-                        <PurpleButton text="Create folder" onClick={() => setShowPopup(true)} />
+                        <PrimaryButton text="Create folder" onClick={() => setShowPopup(true)} />
                     </div>
                 </div>
                 <div className={viewMode === "list" ? "mx-auto" : "grid grid-cols-2 gap-x-4 gap-y-0"}>
-                    <Folder type={"collapsed"} viewMode={viewMode === "list" ? "list" : "grid"} name="Device-Agnostic Design" windows={[]} />
-                    <Folder type={"collapsed"} viewMode={viewMode === "list" ? "list" : "grid"} name="Studies" windows={[]} />
-                    <Folder type={"collapsed"} viewMode={viewMode === "list" ? "list" : "grid"} name="Free time" windows={[]} />
-                    <Folder type={"collapsed"} viewMode={viewMode === "list" ? "list" : "grid"} name="Device-Agnostic Design" windows={[]} />
-                    <Folder type={"collapsed"} viewMode={viewMode === "list" ? "list" : "grid"} name="Studies" windows={[]} />
-                    <Folder type={"collapsed"} viewMode={viewMode === "list" ? "list" : "grid"} name="Free time" windows={[]} />
+                    {...renderFolders()}
                 </div>
             </div>
         </>

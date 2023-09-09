@@ -9,6 +9,7 @@ import CloseIcon from "@/app/images/icons/close_icon";
 import SearchIcon from "@/app/images/icons/search_icon";
 import ListIcon from "@/app/images/icons/list_icon";
 import GridIcon from "@/app/images/icons/grid_icon";
+import CheckedIcon from "@/app/images/icons/checked_icon";
 
 function GenericIconButton(props: iGenericIconButton): JSX.Element {
     const { icon, fill, size, onClick } = props;
@@ -32,11 +33,13 @@ function GenericIconButton(props: iGenericIconButton): JSX.Element {
             return <ListIcon size={size} fill={fill} />;
         } else if(icon === "grid"){
             return <GridIcon size={size} fill={fill} />;
+        } else if(icon === "checked"){
+            return <CheckedIcon size={size} fill={fill} />;
         } 
-    }
+    } 
 
     return (
-        <button className={`${icon !== "collapse_expand" && "mx-3"} ${icon === "collapse_expand" && "ml-5"} ${styles.opacity_hover_effect}`} onClick={onClick}>
+        <button className={`${icon !== "collapse_expand" && "mx-2"} ${icon === "collapse_expand" && "ml-5"} ${styles.opacity_hover_effect}`} onClick={onClick}>
             {renderIcon()}
         </button>
     ); 

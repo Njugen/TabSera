@@ -2,7 +2,7 @@
 
 import Folder from './components/folder'
 import styles from "./styles/global_utils.module.scss";
-import PurpleButton from './components/utils/purple_button';
+import PurpleButton from './components/utils/primary_button';
 import Popup from './components/utils/popup';
 import { useRef, useState, useEffect } from "react";
 import Navlink from './components/utils/navlink';

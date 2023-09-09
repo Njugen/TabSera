@@ -10,7 +10,7 @@ import Paragraph from '../../components/utils/paragraph';
 function FormField(props: iFormField): JSX.Element {
     const { label, description, children } = props;
     return (
-        <div className="px-8 py-6 flex flex-row items-center">
+        <div className="py-6 flex flex-row items-center">
             <div className="w-2/5">
                 <h4 className="font-semibold text-lg mb-1">{label}</h4>
                 <Paragraph lineheight="leading-6" size="text-xs" text={description} />

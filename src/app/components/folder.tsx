@@ -3,12 +3,12 @@
 import { useRef, useState } from "react";
 import ClosedFolderIcon from "../images/icons/closed_folder_icon";
 import Paragraph from "../components/utils/paragraph";
-import PurpleButton from "./utils/purple_button";
+import PrimaryButton from "./utils/primary_button";
 import FolderControlButton from "./utils/folder_control_button";
 import OpenedFolderIcon from "../images/icons/opened_folder_icon";
 import styles from "./../styles/global_utils.module.scss";
 import Switcher from "./utils/switcher";
-
+import WindowItem from "./window_item";
 
 
 function Folder(props: iFolder) {
@@ -38,6 +38,14 @@ function Folder(props: iFolder) {
         
     }
 
+    function renderWindows(){
+        let result = [];
+
+        result = windows.map((window, index) => <WindowItem key={index} id={window.id} tabs={window.tabs} />)
+
+        return result;
+    }
+
     return (
         <div className={`${viewMode === "list" ? "my-6" : "my-2"}`}>
             <div ref={headerRef} className={`relative container tbf-${type} drop-shadow-contractedFolder bg-white px-5 h-14 flex items-center`}>
@@ -49,7 +57,7 @@ function Folder(props: iFolder) {
                         {name}
                     </h2>
                 </div>
-                <div className="inline-block absolute flex items-center right-6">
+                <div className="absolute flex items-center right-6">
                     {viewMode === "list" && <Switcher label="Auto start" dark={expanded} onCallback={() => {}} />}
                     <FolderControlButton icon="open_browser" active={expanded} onClick={() => {}} />
                     <FolderControlButton icon="settings" active={expanded} onClick={() => {}} />
@@ -62,11 +70,15 @@ function Folder(props: iFolder) {
                     {viewMode === "list" && <div className="inline-block w-fit">
                         <Paragraph text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque rutrum, eros semper gravida ultricies, velit ipsum lacinia tortor, at varius mauris tortor in orci. Sed maximus orci vitae metus accumsan." />
                     </div>}
-                    <div className={`inline-block flex ${viewMode === "list" ? "w-[240px] justify-end" : "w-full justify-center"}`}>
-                        <PurpleButton text="New window" onClick={() => {}} />
+                    <div className={`flex ${viewMode === "list" ? "w-[240px] justify-end" : "w-full justify-center"}`}>
+                        <PrimaryButton text="New window" onClick={() => {}} />
                     </div>
                 </div>
+                <div className="px-5 mb-8">
+                    {...renderWindows()}
+                </div>
             </div>
+            
         </div>
     );
 }
