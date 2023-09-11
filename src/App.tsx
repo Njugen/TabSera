@@ -1,24 +1,86 @@
-import React from 'react';
-import logo from './logo.svg';
+//import './global.css'
+import Navlink from './components/utils/navlink';
+import { useEffect, useRef, useState } from 'react';
+import { createBrowserRouter, RouterProvider, useLocation } from 'react-router-dom';
+import CollapseIcon from './images/icons/collapse_icon';
+import "./styles/global_utils.module.scss";
 import './App.css';
+import FolderView from './views/folders';
+import SettingsView from './views/settings';
 
 function App() {
+
+  const [showScrollTop, setShowScrollTop] = useState<boolean>(false);
+  const [activeNavLink, setActiveNavLink] = useState<string>(""); 
+
+  // Routing Start
+
+
+  // Routing End
+
+  const rootRef = useRef<HTMLDivElement>(null);
+
+  function showScrollUpButton(): void {
+    if (rootRef.current?.scrollTop === undefined) return;
+
+    if(rootRef.current?.scrollTop > 0){
+      if(showScrollTop === false) setShowScrollTop(true);
+    } else {
+      setShowScrollTop(false);
+    }
+  }
+
+  function handleScrollButtonClick(): void {
+    if (rootRef.current === null || rootRef.current?.scrollTop === undefined) return;
+    rootRef.current.scrollTop = 0;
+  }
+
+  useEffect(() => {
+    rootRef.current?.addEventListener("scroll", showScrollUpButton);
+    return () => rootRef.current?.removeEventListener("scroll", showScrollUpButton);
+  }, []);
+
+  useEffect(() => {
+    const firstChildPath: string = window.location.pathname.split("/")[1];
+    setActiveNavLink(firstChildPath);
+  }, []);
+
+  const navLinks: Array<JSX.Element> = [
+    <Navlink key="folders-nav-link"  label="Folders" url="/" isActive={activeNavLink === "" ? true : false} onClick={() => setActiveNavLink("")} />,
+    <Navlink key="settings-nav-link" label="Settings" url="/settings" isActive={activeNavLink === "settings" ? true : false} onClick={() => setActiveNavLink("settings")} />
+  ];
+
+  function renderViewWrapper(view: JSX.Element): JSX.Element {
+    return (<>
+          <div className="navbar flex justify-center py-4 items-center mx-auto">
+            {navLinks.map((link) => link)}
+          </div>
+          <div id="body" className="container w-full mx-auto my-8">
+            {view}
+          </div>
+    </>);
+  };
+
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: renderViewWrapper(<FolderView />)
+    },
+    {
+      path: "/settings",
+      element: renderViewWrapper(<SettingsView />)
+    }
+  ]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="App bg-tbfColor-lightgrey">
+       {showScrollTop === true && <button className={`bg-tbfColor-lightpurple flex scroll_button_shadow justify-center items-center w-14 h-14 rounded-full absolute bottom-10 right-10 z-[500]`} onClick={handleScrollButtonClick}>
+          <CollapseIcon size={40} fill={"#fff"} />
+        </button>}
+        <div ref={rootRef} id="root" className="none:container h-screen w-screen pb-20 scroll-smooth">
+          
+          <RouterProvider router={router} />
+      </div>
     </div>
   );
 }

@@ -1,0 +1,15 @@
+{
+    "manifest_version": 3,
+    "name": "Tabsera",
+    "version": "0.0.1",
+    "description": "A plain text description",
+    "action": {
+        "default_popup": "index.html"
+    },
+    "options_ui": {
+        "page": "index.html",
+        "open_in_tab": true
+    },
+    "author": "developer@example.com",
+    "content_security_policy": "script-src 'self'; object-src 'self'"
+}

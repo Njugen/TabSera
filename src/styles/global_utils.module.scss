@@ -1,0 +1,35 @@
+.opacity_hover_effect {
+    transition: ease-in 0.15s;
+    
+    &:hover {
+        transition: ease-out 0.15s;
+        opacity: 0.7;
+    }
+}
+
+.popup_container {
+    background: rgba(0,0,0,0.5);
+
+    .popup_contents_wrapper {
+    }
+}
+
+.input_textfield {
+    &:focus {
+        outline: none; 
+        border: 1px solid rgba(109,0,194,0.5)
+    }
+    &:focus-visible {
+        outline: none;
+        border: 1px solid rgba(109,0,194,0.5)
+    }
+}
+
+.shadow_no_pos {
+    box-shadow: 0 0 0 -15px rgba(0, 0, 0, 0.3);
+}
+
+.scroll_button_shadow {
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.6) !important;
+
+}
