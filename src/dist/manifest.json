@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "Tabsera",
+    "name": "TabSera",
     "version": "0.0.1",
-    "description": "A plain text description",
+    "description": "Manage your windows and tabs",
     "action": {
         "default_popup": "index.html"
     },
