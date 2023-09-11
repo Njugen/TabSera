@@ -1,4 +1,4 @@
-import "./../../styles/global_utils.module.scss";
+import styles from "./../../styles/global_utils.module.scss";
 import { iFolderIconButton } from "../../interfaces/folder_icon_button";
 import OpenBrowserIcon from "../../images/icons/open_browser_icon";
 import SettingsIcon from "../../images/icons/settings_icon";
@@ -26,7 +26,7 @@ function FolderControlButton(props: iFolderIconButton): JSX.Element {
     }
     
     return (
-        <button className={`${icon !== "collapse_expand" && "mx-3"} ${icon === "collapse_expand" && "ml-5"} opacity_hover_effect}`} onClick={onClick}>
+        <button className={`${icon !== "collapse_expand" && "mx-3"} ${icon === "collapse_expand" && "ml-5"} ${styles.opacity_hover_effect}`} onClick={onClick}>
             {renderIcon()}
         </button>
     ); 

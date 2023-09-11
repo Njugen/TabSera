@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import "./../../styles/global_utils.module.scss";
+import styles from "./../../styles/global_utils.module.scss";
 import OpenBrowserIcon from "../../images/icons/open_browser_icon";
 import SettingsIcon from "../../images/icons/settings_icon";
 import TrashIcon from "../../images/icons/trash_icon";

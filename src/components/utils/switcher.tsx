@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import "./../../styles/global_utils.module.scss";
+import styles from "./../../styles/global_utils.module.scss";
 import { iSwitcher } from "../../interfaces/switcher";
 
 function Switcher(props: iSwitcher): JSX.Element {

@@ -1,4 +1,4 @@
-import "./../../styles/global_utils.module.scss";
+import styles from "./../../styles/global_utils.module.scss";
 import { iFormField } from "../../interfaces/form_field";
 
 import Paragraph from '../../components/utils/paragraph';

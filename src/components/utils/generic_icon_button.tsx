@@ -1,4 +1,4 @@
-import "./../../styles/global_utils.module.scss";
+import styles from "./../../styles/global_utils.module.scss";
 import { iGenericIconButton } from "../../interfaces/generic_icon_button";
 import OpenBrowserIcon from "../../images/icons/open_browser_icon";
 import SettingsIcon from "../../images/icons/settings_icon";
@@ -39,7 +39,7 @@ function GenericIconButton(props: iGenericIconButton): JSX.Element {
     } 
 
     return (
-        <button className={`${icon !== "collapse_expand" && "mx-2"} ${icon === "collapse_expand" && "ml-5"} opacity_hover_effect}`} onClick={onClick}>
+        <button className={`${icon !== "collapse_expand" && "mx-2"} ${icon === "collapse_expand" && "ml-5"} ${styles.opacity_hover_effect}`} onClick={onClick}>
             {renderIcon()}
         </button>
     ); 
