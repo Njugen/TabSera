@@ -15,11 +15,13 @@ module.exports = {
       },
       colors: {
         tbfColor: {
+                  
           darkpurple: '#6D00C2',
           lighterpurple: 'rgba(109,0,194,0.3)',
           lighterpurple2: 'rgba(109,0,194,0.3)',
           lightpurple: 'rgba(109,0,194,0.5)',
           lightgrey: '#f9f9f9',
+          lightergrey: '#e8e8e8',
           middlegrey: 'rgba(0,0,0,0.1)',
           middlegrey2: 'rgba(0,0,0,0.4)',
           middlegrey3: 'rgba(0,0,0,0.2)',

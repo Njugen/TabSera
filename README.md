@@ -1,14 +1,16 @@
 # TabSera - Browser Extension
 Tab Folders is a browser extension which enables the user to sort, group and manage browser windows and tabs.
 
-# Upcoming Features in extension settings
+# Ideas of upcoming features
+
+## Options page
 - Sort folders
 - Sort windows/tabs
 - Search tabs/folders
 - Display number of folders, windows and tabs
 - Current session
 - Create/Edit folders
-- Drag drop folders
+- Drag/drop folders
 - Expand/Collapse all
 - Close/Undo close tab(s)
 - Merge folders
@@ -18,6 +20,25 @@ Tab Folders is a browser extension which enables the user to sort, group and man
 - Suspend tabs/windows of a folder when opened
 - Dark theme
 - Language (FI, SWE, EN)
+- Close duplicate pages
+
+## Extension popup
+- Search tabs by title or url
+- Current session's windows and tabs as grid or list
+- List all available folders (grid or list)
+- Open folders, windows or tabs
+- Close one or multiple tabs/windows
+- Mark and book mark tabs
+- Mark and pin tabs (or only current tab???)
+- Create folder from session
+- Sort
+- Expand/Contract folders
+- (Export/Sync/Save To cloud or json file)
+- (Undo close)
+- Close duplicate pages
+
+## Uninstallation
+- Feedback form
 
 # Upcoming features in extension quick popup
 - Coming soon

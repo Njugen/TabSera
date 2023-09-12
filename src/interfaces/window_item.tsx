@@ -2,7 +2,8 @@ import { iTabItem } from "./tab_item"
 
 interface iWindowItem {
     id: number,
-    tabs: Array<iTabItem>
+    tabs: Array<iTabItem>,
+    initExpand?: boolean
 }
 
 export {

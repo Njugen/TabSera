@@ -10,6 +10,7 @@ import Switcher from './switcher';
 import Dropdown from './dropdown';
 import { iPopup } from "../../interfaces/popup";
 import styles from "./../../styles/global_utils.module.scss";
+import WindowManager from './window_manager';
 
 function Popup(props: iPopup){
     const { onClose, onSave, title, children } = props;
@@ -63,12 +64,10 @@ function Popup(props: iPopup){
                             <Switcher onCallback={(e) => console.log(e.state)} />
                         </FormField>
                         <div className="py-6 flex flex-row items-center">
-                            <div className="w-2/5">
+                            <div className="w-full">
                                 <h4 className="font-semibold text-lg mb-1">Windows and tabs</h4>
                                 <Paragraph lineheight="leading-6" size="text-sm" text="E.g. the purpose of this folder..." />
-                            </div>
-                            <div className="w-3/5 ml-24">
-                                abc
+                                <WindowManager />
                             </div>
                         </div>
                     </div>

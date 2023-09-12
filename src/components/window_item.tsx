@@ -5,11 +5,12 @@ import PrimaryButton from "./utils/primary_button";
 import GreyBorderButton from "./utils/grey_border_button";
 import TabItem from "./tab_item";
 import { iWindowItem} from "../interfaces/window_item";
- 
+import EditableTabItem from "./editable_tab_item";
+
 function WindowItem(props: iWindowItem): JSX.Element {
     const [expanded, setExpanded] = useState<boolean>(false);
     const [viewMode, setViewMode] = useState<string>("list");
-    const { id, tabs } = props;
+    const { id, tabs, initExpand } = props;
     
     function handleExpand(): void {
         setExpanded(expanded === true ? false : true);
@@ -27,8 +28,16 @@ function WindowItem(props: iWindowItem): JSX.Element {
         return result;
     }
 
+    function renderNewTab(){
+        return <EditableTabItem onSave={(e) => console.log(e)} />
+    }
+
+    useEffect(() => {
+       if(initExpand === true) setExpanded(true); 
+    },[])
+
     return (
-        <div className="window-item" id={`window-${id}`}>
+        <div className="window-item w-full" id={`window-${id}`}>
             <div className="flex justify-between items-center w-full border-b border-black pb-2">
                 <h3 className="text-lg">
                     {`Window ${id}`}
@@ -41,10 +50,10 @@ function WindowItem(props: iWindowItem): JSX.Element {
             </div>
             <div className={`tabs-list mt-6 ${expanded === true ? "block" : "hidden"}`}>
                 <div className={`${viewMode === "list" ? "mx-auto" : "grid grid-cols-3 gap-x-4 gap-y-0"}`}>
-                {[...renderTabs()]}
+                {tabs.length > 0 ? [...renderTabs()] : [renderNewTab()]}
                 </div>
                 <div className="mt-10 flex justify-end">
-                    <GreyBorderButton text="Delete" onClick={() => {}} />
+                    {tabs.length > 0 && <GreyBorderButton text="Delete" onClick={() => {}} />}
                     <PrimaryButton text="New tab" onClick={() => {}} />
                 </div>
             </div>
