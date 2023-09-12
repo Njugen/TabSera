@@ -4,8 +4,7 @@ import GenericIconButton from "./utils/generic_icon_button";
 import PrimaryButton from "./utils/primary_button";
 import GreyBorderButton from "./utils/grey_border_button";
 import TabItem from "./tab_item";
-import { iWindowItem
- } from "../interfaces/window_item";
+import { iWindowItem} from "../interfaces/window_item";
  
 function WindowItem(props: iWindowItem): JSX.Element {
     const [expanded, setExpanded] = useState<boolean>(false);
@@ -41,7 +40,7 @@ function WindowItem(props: iWindowItem): JSX.Element {
                 </div>
             </div>
             <div className={`tabs-list mt-6 ${expanded === true ? "block" : "hidden"}`}>
-                <div className={`${viewMode === "list" ? "mx-auto" : "grid grid-cols-4 gap-x-4 gap-y-0"}`}>
+                <div className={`${viewMode === "list" ? "mx-auto" : "grid grid-cols-3 gap-x-4 gap-y-0"}`}>
                 {[...renderTabs()]}
                 </div>
                 <div className="mt-10 flex justify-end">

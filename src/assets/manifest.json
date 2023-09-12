@@ -3,6 +3,10 @@
     "name": "TabSera",
     "version": "0.0.1",
     "description": "Manage your windows and tabs",
+    "permissions": [
+        "bookmarks",
+        "tabs"
+    ],
     "action": {
         "default_title": "TabSera",
         "default_popup": "popup.html"
@@ -11,5 +15,12 @@
         "page": "options.html",
         "open_in_tab": true
     },
+    "background": {
+        "service_worker": "background.js"
+    },
+    "content_scripts": [{
+        "matches": ["https://*.google.com/*"],
+        "js": ["contentScript.js"]
+    }],
     "author": "Thai Nguyen"
 }
