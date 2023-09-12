@@ -9,7 +9,7 @@ function FormField(props: iFormField): JSX.Element {
         <div className="py-6 flex flex-row items-center">
             <div className="w-2/5">
                 <h4 className="font-semibold text-lg mb-1">{label}</h4>
-                <Paragraph lineheight="leading-6" size="text-xs" text={description} />
+                <Paragraph lineheight="leading-6" size="text-sm" text={description} />
             </div>
             <div className="w-3/5 ml-24">
                 { children }

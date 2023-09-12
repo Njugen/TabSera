@@ -65,7 +65,7 @@ function Popup(props: iPopup){
                         <div className="py-6 flex flex-row items-center">
                             <div className="w-2/5">
                                 <h4 className="font-semibold text-lg mb-1">Windows and tabs</h4>
-                                <Paragraph lineheight="leading-6" size="text-xs" text="E.g. the purpose of this folder..." />
+                                <Paragraph lineheight="leading-6" size="text-sm" text="E.g. the purpose of this folder..." />
                             </div>
                             <div className="w-3/5 ml-24">
                                 abc

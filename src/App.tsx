@@ -11,7 +11,7 @@ import SettingsView from './views/settings';
 function App() {
 
   const [showScrollTop, setShowScrollTop] = useState<boolean>(false);
-  const [activeNavLink, setActiveNavLink] = useState<string>(""); 
+  const [activeNavLink, setActiveNavLink] = useState<string>("options"); 
 
   // Routing Start
 
@@ -40,13 +40,8 @@ function App() {
     return () => rootRef.current?.removeEventListener("scroll", showScrollUpButton);
   }, []);
 
-  useEffect(() => {
-    const firstChildPath: string = window.location.pathname.split("/")[1];
-    setActiveNavLink(firstChildPath);
-  }, []);
-
   const navLinks: Array<JSX.Element> = [
-    <Navlink key="folders-nav-link"  label="Folders" url="/" isActive={activeNavLink === "" ? true : false} onClick={() => setActiveNavLink("")} />,
+    <Navlink key="folders-nav-link"  label="Folders" url="/options" isActive={activeNavLink === "options" ? true : false} onClick={() => setActiveNavLink("options")} />,
     <Navlink key="settings-nav-link" label="Settings" url="/settings" isActive={activeNavLink === "settings" ? true : false} onClick={() => setActiveNavLink("settings")} />
   ];
 
@@ -63,7 +58,11 @@ function App() {
 
   const router = createBrowserRouter([
     {
-      path: "/",
+      path: "/options.html",
+      element: renderViewWrapper(<FolderView />)
+    },
+    {
+      path: "/options",
       element: renderViewWrapper(<FolderView />)
     },
     {

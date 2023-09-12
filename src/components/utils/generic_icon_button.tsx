@@ -14,7 +14,7 @@ import CheckedIcon from "../../images/icons/checked_icon";
 function GenericIconButton(props: iGenericIconButton): JSX.Element {
     const { icon, fill, size, onClick } = props;
     
-    function renderIcon(): any {
+    function renderIcon(): JSX.Element {
         if(icon === "trash"){
             return <TrashIcon size={size} fill={fill} />;
         } else if(icon === "settings"){
@@ -35,7 +35,9 @@ function GenericIconButton(props: iGenericIconButton): JSX.Element {
             return <GridIcon size={size} fill={fill} />;
         } else if(icon === "checked"){
             return <CheckedIcon size={size} fill={fill} />;
-        } 
+        } else {
+            return <></>
+        }
     } 
 
     return (

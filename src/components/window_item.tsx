@@ -10,7 +10,7 @@ import { iWindowItem
 function WindowItem(props: iWindowItem): JSX.Element {
     const [expanded, setExpanded] = useState<boolean>(false);
     const [viewMode, setViewMode] = useState<string>("list");
-    const { id, tabs, key } = props;
+    const { id, tabs } = props;
     
     function handleExpand(): void {
         setExpanded(expanded === true ? false : true);
@@ -23,7 +23,7 @@ function WindowItem(props: iWindowItem): JSX.Element {
     function renderTabs(){
         let result = [];
 
-        result = tabs.map((tab, i) => <TabItem key={i} id={tab.id} label={tab.label} url={tab.url} />)
+        result = tabs.map((tab, i) => <TabItem key={"tab-" + i} id={tab.id} label={tab.label} url={tab.url} />)
 
         return result;
     }

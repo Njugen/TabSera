@@ -30,21 +30,20 @@ function FolderView(props: any) {
         name: "My folder",
         windows: [{
             id: 0,
-            key: 0,
             tabs: [{
                 id: 0,
                 label: "Vasabladet.fi",
-                url: "http://vasabladet.fi"
+                url: "http://vasabladet.fi",
             }]
         }]  
     }]
     
-    function renderFolders(){
-        let result = [];
+    function renderFolders(): Array<JSX.Element> {
+        let result: Array<JSX.Element>  = [];
     
         result = mockFolders.map((folder, i) => <Folder key={i} type={folder.type} id={folder.id} viewMode={folder.viewMode} name={folder.name} windows={folder.windows} />)
-    
-        return result;
+        
+        return result.length > 0 ? result : [<></>];
     }
     
 

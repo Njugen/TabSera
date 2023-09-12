@@ -4,12 +4,12 @@
     "version": "0.0.1",
     "description": "Manage your windows and tabs",
     "action": {
-        "default_popup": "index.html"
+        "default_title": "TabSera",
+        "default_popup": "popup.html"
     },
     "options_ui": {
-        "page": "index.html",
+        "page": "options.html",
         "open_in_tab": true
     },
-    "author": "developer@example.com",
-    "content_security_policy": "script-src 'self'; object-src 'self'"
+    "author": "Thai Nguyen"
 }

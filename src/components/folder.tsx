@@ -41,7 +41,7 @@ function Folder(props: iFolder) {
     function renderWindows(){
         let result = [];
 
-        result = windows.map((window, index) => <WindowItem key={index} id={window.id} tabs={window.tabs} />)
+        result = windows.map((window, index) => <WindowItem key={"window-" + index} id={window.id} tabs={window.tabs} />)
 
         return result;
     }
