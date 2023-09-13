@@ -7,10 +7,15 @@ import WindowItem from "../window_item";
 import { iTabItem } from "../../interfaces/tab_item";
 import { iEditableTabItem } from "../../interfaces/editable_tab_item";
 import { iWindowItem } from "../../interfaces/window_item";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteFolderAction } from "../../redux/actions/FoldersActions";
 
 function WindowManager(props: any): JSX.Element {
     const [createWindow, setCreateWindow] = useState<boolean>(false);
     //const { } = props;
+
+    const dispatch = useDispatch();
+  //  const foldersData = useSelector((state: any) => state.FoldersReducers);
 
     const windows: Array<iWindowItem> = [];
  
@@ -54,6 +59,7 @@ function WindowManager(props: any): JSX.Element {
 
     return (
         <div className="my-6 p-6 min-h-[200px] bg-tbfColor-lightgrey flex flex-col items-center justify-center">
+            <button onClick={() => dispatch(deleteFolderAction(0))}>blablabla</button>
             { renderContents() }
             { renderActionButtons() }            
         </div> 

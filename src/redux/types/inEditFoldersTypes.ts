@@ -1,0 +1,7 @@
+const EDIT_FOLDER: string = "CREATE_FOLDER";
+const UPDATE_IN_EDIT_FOLDER: string = "UPDATE_IN_EDIT_FOLDER";
+
+export {
+    EDIT_FOLDER,
+    UPDATE_IN_EDIT_FOLDER,
+}

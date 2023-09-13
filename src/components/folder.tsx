@@ -47,7 +47,7 @@ function Folder(props: iFolder) {
     }
 
     return (
-        <div className={`${viewMode === "list" ? "my-6" : "my-2"}`}>
+        <div className={`${viewMode === "list" ? "my-6 duration-20075" : "my-2  duration-200"} transition-all ease-in`}>
             <div ref={headerRef} className={`relative container tbf-${type} drop-shadow-contractedFolder bg-white px-5 h-14 flex items-center`}>
                 <div className="inline-block mr-3">
                     {expanded === false ? <ClosedFolderIcon size={36} fill={"#000"} /> : <OpenedFolderIcon size={36} fill={"#fff"} />}

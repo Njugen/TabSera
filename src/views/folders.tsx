@@ -4,16 +4,80 @@ import Folder from '../components/folder'
 import "./../styles/global_utils.module.scss";
 import PrimaryButton from '../components/utils/primary_button';
 import Popup from '../components/utils/popup';
-import {  useState, } from "react";
+import {  useState, useEffect } from "react";
 
 import GenericIconButton from '../components/utils/generic_icon_button';
 import * as predef from "../styles/predef";
 import { iFolder } from '../interfaces/folder';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUpFoldersAction } from '../redux/actions/FoldersActions';
 
 function FolderView(props: any) {
     const [showPopup, setShowPopup] = useState<boolean>(false);
     const [viewMode, setViewMode] = useState<String>("list");
     const [showSearchField, setShowSearchField] = useState<boolean>(false);
+
+    const dispatch = useDispatch();
+    const foldersData = useSelector((state: any) => state.FoldersReducers);
+
+    useEffect(() => {
+        // Set initial folders. This is just a mock test
+        console.log(foldersData);
+        const mockFolders: Array<iFolder> = [{
+            id: 0,
+            type: "collapsed",
+            viewMode: viewMode === "list" ? "list" : "grid",
+            name: "My folder",
+            windows: [{
+                id: 0,
+                tabs: [{
+                    id: 0,
+                    label: "Vasabladet.fi",
+                    url: "http://vasabladet.fi",
+                }]
+            }],
+        },{
+            id: 1,
+            type: "collapsed",
+            viewMode: viewMode === "list" ? "list" : "grid",
+            name: "My folder",
+            windows: [{
+                id: 1,
+                tabs: [{
+                    id: 1,
+                    label: "Vasabladet.fi",
+                    url: "http://vasabladet.fi",
+                }]
+            }],
+        },{
+            id: 2,
+            type: "collapsed",
+            viewMode: viewMode === "list" ? "list" : "grid",
+            name: "My folder",
+            windows: [{
+                id: 2,
+                tabs: [{
+                    id: 2,
+                    label: "Vasabladet.fi",
+                    url: "http://vasabladet.fi",
+                }]
+            }],
+        },{
+            id: 3,
+            type: "collapsed",
+            viewMode: viewMode === "list" ? "list" : "grid",
+            name: "My folder",
+            windows: [{
+                id: 3,
+                tabs: [{
+                    id: 3,
+                    label: "Vasabladet.fi",
+                    url: "http://vasabladet.fi",
+                }]
+            }],
+        }]
+        dispatch(setUpFoldersAction(mockFolders));    
+    }, []);
 
     function handleChangeViewMode(): void {
         setViewMode(viewMode === "list" ? "grid" : "list");
@@ -23,25 +87,11 @@ function FolderView(props: any) {
         setShowSearchField(showSearchField === false ? true : false);
     }
 
-    const mockFolders: Array<iFolder> = [{
-        id: 0,
-        type: "collapsed",
-        viewMode: viewMode === "list" ? "list" : "grid",
-        name: "My folder",
-        windows: [{
-            id: 0,
-            tabs: [{
-                id: 0,
-                label: "Vasabladet.fi",
-                url: "http://vasabladet.fi",
-            }]
-        }]  
-    }]
-    
+   
     function renderFolders(): Array<JSX.Element> {
         let result: Array<JSX.Element>  = [];
     
-        result = mockFolders.map((folder, i) => <Folder key={i} type={folder.type} id={folder.id} viewMode={folder.viewMode} name={folder.name} windows={folder.windows} />)
+        result = foldersData.folders.map((folder: iFolder, i: number) => <Folder key={i} type={folder.type} id={folder.id} viewMode={folder.viewMode} name={folder.name} windows={folder.windows} />)
         
         return result.length > 0 ? result : [<></>];
     }

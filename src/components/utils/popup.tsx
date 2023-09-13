@@ -66,7 +66,7 @@ function Popup(props: iPopup){
                         <div className="py-6 flex flex-row items-center">
                             <div className="w-full">
                                 <h4 className="font-semibold text-lg mb-1">Windows and tabs</h4>
-                                <Paragraph lineheight="leading-6" size="text-sm" text="E.g. the purpose of this folder..." />
+                                <Paragraph lineheight="leading-6" size="text-sm" text="You may add any number of windows and tabs as you like to this folder, but launching a folder with more than 25-30 tabs is not adviced as this might slow down your computer." />
                                 <WindowManager />
                             </div>
                         </div>

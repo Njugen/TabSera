@@ -1,9 +1,34 @@
 # TabSera - Browser Extension
 Tab Folders is a browser extension which enables the user to sort, group and manage browser windows and tabs.
 
-# Ideas of upcoming features
+## Installation
 
-## Options page
+- Firefox users: Download the extension from blablabla
+- Chrome users: Download the extension from Google Web Store
+- Microsoft Edge users: blablabla
+
+## Development
+
+1. Clone/pull this repository to your local machine. 
+2. Open your terminal (command prompt on windows)
+3. Go to the project's folder
+
+### Launch as dev plugin your web browser
+
+1. Run this command
+
+```
+npm run dev
+```
+
+2. Once the command has been run and finished, a /dist folder will be available in the project's folder.
+3. In your web browser, switch it to developer mode and add this extension (dev mode) through the /dist folder
+
+## Test
+
+## Ideas of upcoming features
+
+### Options page
 - Sort folders
 - Sort windows/tabs
 - Search tabs/folders
@@ -22,7 +47,7 @@ Tab Folders is a browser extension which enables the user to sort, group and man
 - Language (FI, SWE, EN)
 - Close duplicate pages
 
-## Extension popup
+### Extension popup
 - Search tabs by title or url
 - Current session's windows and tabs as grid or list
 - List all available folders (grid or list)
@@ -37,17 +62,10 @@ Tab Folders is a browser extension which enables the user to sort, group and man
 - (Undo close)
 - Close duplicate pages
 
-## Uninstallation
+### Uninstallation
 - Feedback form
 
-# Upcoming features in extension quick popup
-- Coming soon
+# Copyright and other legal notices
+TabSera was created by me (Thai Nguyen) and is a properietary web browser plugin. This plugin and the code behind it may not be used as part of any commercial brands or products, and should under no circumstances be re-distributed (this applies to original and modified versions) nor monetized without my permission.
 
-# Copyright
-The code and related graphical files (except Google Icons and external libraries) was created by me (Thai Nguyen). You may clone this repository and play around with the code if you like. You may also download the extension and use it in your browser if you wish (both for private and professional use), as long as you fulfill the following conditions:
-
-- You may not take credit for the project, the code or the application built from it
-- You may not redistribute the code as is, nor are you permitted to redistribute modified versions of the code. You may not redistribute the app built from the code either.
-- You may not use the code nor the app as part of any commercial products or brands
-
-More coming later...
+This plugin may be used for free in both private and professional environments. As this plugin is primarily a hobby project, I am not obliged to provide any support - neither to professional nor private users. Although the plugin contains a handful of automated tests and has been manually tested by myself, I will not take responsibility for any damages this plugin might cause.
