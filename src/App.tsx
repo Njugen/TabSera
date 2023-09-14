@@ -7,11 +7,14 @@ import "./styles/global_utils.module.scss";
 import './App.css';
 import FolderView from './views/folders';
 import SettingsView from './views/settings';
+import getAllTabs from './services/webex_api/tabs';
+import { getAllWindows } from './services/webex_api/windows';
 
 function App() {
-
   const [showScrollTop, setShowScrollTop] = useState<boolean>(false);
   const [activeNavLink, setActiveNavLink] = useState<string>("options"); 
+
+  const { getAll } = chrome.windows;
 
   // Routing Start
 
@@ -29,6 +32,10 @@ function App() {
       setShowScrollTop(false);
     }
   }
+
+  useEffect(() => {
+  
+  }, []);
 
   function handleScrollButtonClick(): void {
     if (rootRef.current === null || rootRef.current?.scrollTop === undefined) return;

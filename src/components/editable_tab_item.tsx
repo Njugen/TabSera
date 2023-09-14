@@ -4,18 +4,33 @@ import Checkbox from "./utils/checkbox";
 import { iEditableTabItem } from "../interfaces/editable_tab_item";
 import * as predef from "../styles/predef";
 import { useEffect, useRef } from "react";
+import randomNumber from "../tools/random_number";
+import { iTabItem } from "../interfaces/tab_item";
 
 function EditableTabItem(props: iEditableTabItem): JSX.Element {
-    const { onSave } = props;
+    const { id, windowId } = props;
     const fieldRef = useRef<HTMLInputElement>(null);
 
-    function handleBlur(): void {
-        onSave({"blablabla": "blablabla"});
+    function saveToStore(e: any): void {
+        const tabId = id ? id : randomNumber();
+
+        const payload: iTabItem = {
+            id: tabId,
+            label: e.target.value,
+            url: e.target.value,
+        };
+
+        // Dispatch
+        // - use tabId and windowId to locate and replace the tab 
+    }
+
+    function handleBlur(e: any): void {
+        saveToStore(e);
     }
 
     function handleKeyDown(e: any): void {
         if (e.key === 'Enter' || e.keyCode === 13) {
-            onSave({"blablabla": "blablabla"});
+            saveToStore(e);
         }
     }
 

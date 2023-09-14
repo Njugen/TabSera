@@ -10,11 +10,12 @@ import GenericIconButton from '../components/utils/generic_icon_button';
 import * as predef from "../styles/predef";
 import { iFolder } from '../interfaces/folder';
 import { useDispatch, useSelector } from 'react-redux';
-import { setUpFoldersAction } from '../redux/actions/FoldersActions';
+import { setUpFoldersAction, clearInEditFolder } from '../redux/actions/FoldersActions';
 
 function FolderView(props: any) {
-    const [showPopup, setShowPopup] = useState<boolean>(false);
-    const [viewMode, setViewMode] = useState<String>("list");
+    const [editFolderId, setEditFolderId] = useState<number | null>(null);
+    const [createFolder, setCreateFolder] = useState<boolean>(false);
+    const [viewMode, setViewMode] = useState<string>("list");
     const [showSearchField, setShowSearchField] = useState<boolean>(false);
 
     const dispatch = useDispatch();
@@ -22,62 +23,11 @@ function FolderView(props: any) {
 
     useEffect(() => {
         // Set initial folders. This is just a mock test
-        console.log(foldersData);
-        const mockFolders: Array<iFolder> = [{
-            id: 0,
-            type: "collapsed",
-            viewMode: viewMode === "list" ? "list" : "grid",
-            name: "My folder",
-            windows: [{
-                id: 0,
-                tabs: [{
-                    id: 0,
-                    label: "Vasabladet.fi",
-                    url: "http://vasabladet.fi",
-                }]
-            }],
-        },{
-            id: 1,
-            type: "collapsed",
-            viewMode: viewMode === "list" ? "list" : "grid",
-            name: "My folder",
-            windows: [{
-                id: 1,
-                tabs: [{
-                    id: 1,
-                    label: "Vasabladet.fi",
-                    url: "http://vasabladet.fi",
-                }]
-            }],
-        },{
-            id: 2,
-            type: "collapsed",
-            viewMode: viewMode === "list" ? "list" : "grid",
-            name: "My folder",
-            windows: [{
-                id: 2,
-                tabs: [{
-                    id: 2,
-                    label: "Vasabladet.fi",
-                    url: "http://vasabladet.fi",
-                }]
-            }],
-        },{
-            id: 3,
-            type: "collapsed",
-            viewMode: viewMode === "list" ? "list" : "grid",
-            name: "My folder",
-            windows: [{
-                id: 3,
-                tabs: [{
-                    id: 3,
-                    label: "Vasabladet.fi",
-                    url: "http://vasabladet.fi",
-                }]
-            }],
-        }]
-        dispatch(setUpFoldersAction(mockFolders));    
-    }, []);
+       // console.log(foldersData);
+       // const mockFolders: Array<iFolder> = [];
+            
+       // dispatch(setUpFoldersAction(mockFolders));    
+    }, [viewMode]);
 
     function handleChangeViewMode(): void {
         setViewMode(viewMode === "list" ? "grid" : "list");
@@ -86,22 +36,48 @@ function FolderView(props: any) {
     function handleShowSearchField(): void {
         setShowSearchField(showSearchField === false ? true : false);
     }
-
    
+    
+    function handlePopupClose(): void {
+        setEditFolderId(null);
+        setCreateFolder(false);
+
+        // Remove inEdit from store
+        dispatch(clearInEditFolder());
+    }
+    
+    function renderPopup(){
+        let render;
+      
+        if(createFolder === true){
+            render = <Popup title="Create folder" onClose={handlePopupClose} >test</Popup>;
+        } else {
+            
+            const targetFolder: Array<iFolder> = foldersData.folders.filter((item: iFolder) => editFolderId === item.id);
+
+            if(targetFolder.length > 0){
+                render = <Popup title={`Edit folder ${targetFolder[0].id}`} folder={targetFolder[0]} onClose={handlePopupClose}>test</Popup>;
+            } else {
+                render = <></>;
+            }
+            
+        }
+
+        return render;
+    }
+
     function renderFolders(): Array<JSX.Element> {
         let result: Array<JSX.Element>  = [];
     
-        result = foldersData.folders.map((folder: iFolder, i: number) => <Folder key={i} type={folder.type} id={folder.id} viewMode={folder.viewMode} name={folder.name} windows={folder.windows} />)
-        
+        result = foldersData.folders.map((folder: iFolder, i: number) => <Folder onEdit={() => setEditFolderId(folder.id)} key={i} type={folder.type} id={folder.id} viewMode={folder.viewMode} name={folder.name} desc={folder.desc} settings={folder.settings} windows={folder.windows} />)
+
         return result.length > 0 ? result : [<></>];
     }
-    
+
 
     return (
         <>
-            {showPopup === true && 
-                <Popup title="Create folder" onSave={() => {}} onClose={() => setShowPopup(false)} >test</Popup>
-            }
+            {renderPopup()}
             <div id="folders-view">
                 <div className="my-10 mx-auto flex justify-between">
                     <h1 className="text-4xl text-tbfColor-darkpurple font-light inline-block">
@@ -115,7 +91,7 @@ function FolderView(props: any) {
                             <GenericIconButton icon="search" fill={showSearchField === false ? "#6D00C2" : "#b2b2b2"} size={30} onClick={handleShowSearchField} />
                             <GenericIconButton icon={viewMode === "list" ? "grid" : "list"} fill="#6D00C2" size={30} onClick={handleChangeViewMode} />
                         </div>
-                        <PrimaryButton text="Create folder" onClick={() => setShowPopup(true)} />
+                        <PrimaryButton text="Create folder" onClick={() => setCreateFolder(true)} />
                     </div>
                 </div>
                 <div className={viewMode === "list" ? "mx-auto" : "grid grid-cols-2 gap-x-4 gap-y-0"}>

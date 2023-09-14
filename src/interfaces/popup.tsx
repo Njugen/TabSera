@@ -1,7 +1,9 @@
+import { iFolder } from "./folder"
+
 interface iPopup {
     title: String,
     children: React.ReactNode,
-    onSave: () => void,
+    folder?: iFolder,
     onClose: () => void
 }
 

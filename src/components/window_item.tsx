@@ -6,6 +6,7 @@ import GreyBorderButton from "./utils/grey_border_button";
 import TabItem from "./tab_item";
 import { iWindowItem} from "../interfaces/window_item";
 import EditableTabItem from "./editable_tab_item";
+import { iTabItem } from "../interfaces/tab_item";
 
 function WindowItem(props: iWindowItem): JSX.Element {
     const [expanded, setExpanded] = useState<boolean>(false);
@@ -28,8 +29,9 @@ function WindowItem(props: iWindowItem): JSX.Element {
         return result;
     }
 
-    function renderNewTab(){
-        return <EditableTabItem onSave={(e) => console.log(e)} />
+
+    function renderEditTab(windowId: number, tabId?: number){
+        return <EditableTabItem windowId={windowId} id={tabId} />
     }
 
     useEffect(() => {
@@ -50,7 +52,7 @@ function WindowItem(props: iWindowItem): JSX.Element {
             </div>
             <div className={`tabs-list mt-6 ${expanded === true ? "block" : "hidden"}`}>
                 <div className={`${viewMode === "list" ? "mx-auto" : "grid grid-cols-3 gap-x-4 gap-y-0"}`}>
-                {tabs.length > 0 ? [...renderTabs()] : [renderNewTab()]}
+                {tabs.length > 0 ? [...renderTabs()] : [renderEditTab(id)]}
                 </div>
                 <div className="mt-10 flex justify-end">
                     {tabs.length > 0 && <GreyBorderButton text="Delete" onClick={() => {}} />}

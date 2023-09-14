@@ -11,14 +11,59 @@ import Dropdown from './dropdown';
 import { iPopup } from "../../interfaces/popup";
 import styles from "./../../styles/global_utils.module.scss";
 import WindowManager from './window_manager';
+import randomNumber from "../../tools/random_number";
+import { useDispatch, useSelector } from "react-redux";
+import { createFolderAction, initInEditFolder, updateInEditFolder, updateFolderAction } from "../../redux/actions/FoldersActions";
+import { iFolder } from "../../interfaces/folder";
 
 function Popup(props: iPopup){
-    const { onClose, onSave, title, children } = props;
+    const { onClose, folder, title, children } = props;
     const [slideDown, setSlideDown] = useState<boolean>(false);
+    const [isCreate, setIsCreate] = useState<boolean>(false);
+
+    const dispatch = useDispatch();
+    const folderData = useSelector((state: any) => state.InEditFolderReducers);
+    //const allFoldersData = useSelector((state: any) => state.InEditFolderReducers);
 
     useEffect(() => {
+        let payload: iFolder | undefined = folder;
+        console.log("wwww", payload);
+        // Slide the popup down
         setSlideDown(true);
+
+        // Generate random id and dispatch to store
+        if(!payload){
+            const randId = randomNumber();
+
+            payload = {
+                id: randId,
+                name: "",
+                desc: "",
+                type: "expanded",
+                viewMode: "grid",
+                settings: {
+                    startup_launch: false,
+                    close_previous: false,
+                    auto_add: false
+                },
+                windows: [],
+            }
+            setIsCreate(true);
+        }
+      
+        dispatch(initInEditFolder(payload));
+
+       
     }, []);
+
+    useEffect(() => {
+
+    }, [folderData])
+
+    function handleChangeField(key: string, value: any){
+        console.log(key, value);
+        dispatch(updateInEditFolder(key, value));
+    }
 
     function handleClose(): void {
         setSlideDown(false);
@@ -26,8 +71,22 @@ function Popup(props: iPopup){
     }
 
     function handleSave(): void {
-        alert("Saved!");
+      //  console.log("DATA", folderData);
+        if(props.folder){
+            dispatch(updateFolderAction(folderData.inEditFolder));
+        } else {
+            dispatch(createFolderAction(folderData.inEditFolder));
+        }   
         handleClose();
+    }
+
+    function updateSettings(key: string, value: any){
+        if(!folderData || folderData.inEditFolder === null) return;
+
+        return {
+            ...folderData.inEditFolder?.settings,
+            [key]: value
+        };
     }
 
     return (<>
@@ -45,23 +104,19 @@ function Popup(props: iPopup){
                     <div id="popup-body" className="px-8">
 
                         <FormField label="Name" description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eu mauris dapibus orci aliquam consequat id lacinia lorem. In sed vulputate neque">
-                            <input type="text" defaultValue={"..."} className={predef.textfield_full} />
+                            <input type="text" defaultValue={folderData.inEditFolder?.name} className={predef.textfield_full} onBlur={(e: any) => handleChangeField("name", e.target.value)} />
                         </FormField>
                         <FormField label="Description" description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eu mauris dapibus orci aliquam consequat id lacinia lorem. In sed vulputate neque">
-                            <textarea maxLength={400} defaultValue={"..."} className={predef.textarea_full}></textarea>
+                            <textarea maxLength={400} defaultValue={folderData.inEditFolder?.desc} className={predef.textarea_full} onBlur={(e: any) => handleChangeField("desc", e.target.value)}></textarea>
                         </FormField>
-                        <FormField label="Launch at startup" description="E.g. the purpose of this folder...">
-                            <Switcher onCallback={(e) => console.log(e.state)} />
+                       <FormField label="Launch at startup" description="E.g. the purpose of this folder...">
+                            <Switcher value={folderData.inEditFolder?.settings.startup_launch} onCallback={(e: any) => handleChangeField("settings", updateSettings("startup_launch", e.state))} />
                         </FormField>
-                        <FormField label="Dropdown menu" description="Click the dropdown menu">
-                            <Dropdown onCallback={(e) => console.log(e.selected)} tag="testdropdown" preset={{ id: 0, label: "This is a preset" }} options={[{ id: 1, label: "Another option" }, { id: 2, label: "Barnabas" }, { id: 3, label: "Vietnam" }]} />
+                        <FormField label="Close previous session" description="E.g. the purpose of this folder...">
+                            <Switcher value={folderData.inEditFolder?.settings.close_previous} onCallback={(e: any) => handleChangeField("settings", updateSettings("close_previous", e.state))} />
                         </FormField>
-                        <FormField label="Dropdown menu" description="Click the dropdown menu">
-                            <Dropdown onCallback={(e) => console.log(e.selected)} tag="testdropdown2" preset={{ id: 0, label: "This is a preset" }} options={[{ id: 1, label: "Another option" }, { id: 2, label: "Barnabas" }, { id: 3, label: "Vietnam" }]} />
-                        </FormField>
-                        
-                        <FormField label="Suspension" description="Automatically suspend inactive tabs">
-                            <Switcher onCallback={(e) => console.log(e.state)} />
+                        <FormField label="Auto add activities" description="E.g. the purpose of this folder...">
+                            <Switcher value={folderData.inEditFolder?.settings.auto_add} onCallback={(e: any) => handleChangeField("settings", updateSettings("auto_add", e.state))} />
                         </FormField>
                         <div className="py-6 flex flex-row items-center">
                             <div className="w-full">
@@ -73,7 +128,7 @@ function Popup(props: iPopup){
                     </div>
                     <div id="popup-footer" className="px-8 py-8 flex justify-end">
                         <GreyBorderButton text="Cancel" onClick={handleClose} />
-                        <PrimaryButton text="Create" onClick={handleSave} />
+                        <PrimaryButton text={isCreate === true ? "Create" : "Save"} onClick={handleSave} />
                     </div>
                 </div>
             </div>

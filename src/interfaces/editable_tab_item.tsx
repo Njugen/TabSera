@@ -1,5 +1,8 @@
+import { iTabItem } from "./tab_item";
+
 interface iEditableTabItem {
-    onSave: (e: any) => void
+    windowId: number,
+    id?: number
 }
 
 export {

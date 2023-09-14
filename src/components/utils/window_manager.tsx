@@ -9,8 +9,10 @@ import { iEditableTabItem } from "../../interfaces/editable_tab_item";
 import { iWindowItem } from "../../interfaces/window_item";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteFolderAction } from "../../redux/actions/FoldersActions";
+import randomNumber from "../../tools/random_number";
+import iWindowManager from "../../interfaces/window_manager";
 
-function WindowManager(props: any): JSX.Element {
+function WindowManager(props: iWindowManager): JSX.Element {
     const [createWindow, setCreateWindow] = useState<boolean>(false);
     //const { } = props;
 
@@ -39,7 +41,9 @@ function WindowManager(props: any): JSX.Element {
     }
 
     function renderNewWindow(): JSX.Element {
-        return <WindowItem id={0} tabs={[]} initExpand={true} />;
+        // Dispatch this to store
+        const randomId = randomNumber();
+        return <WindowItem id={randomNumber()} tabs={[]} initExpand={true} />;
     }
 
 

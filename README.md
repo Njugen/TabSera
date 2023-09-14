@@ -6,6 +6,7 @@ Tab Folders is a browser extension which enables the user to sort, group and man
 - Firefox users: Download the extension from blablabla
 - Chrome users: Download the extension from Google Web Store
 - Microsoft Edge users: blablabla
+- Safari: Throw it out of the window
 
 ## Development
 
@@ -65,7 +66,13 @@ npm run dev
 ### Uninstallation
 - Feedback form
 
-# Copyright and other legal notices
-TabSera was created by me (Thai Nguyen) and is a properietary web browser plugin. This plugin and the code behind it may not be used as part of any commercial brands or products, and should under no circumstances be re-distributed (this applies to original and modified versions) nor monetized without my permission.
+# Feedback
+I would appreciate feedback and suggestions on how to improve this plugin. If you have time, please post an issue in this repository or contact me per email: privat_thai_nguyen@hotmail.com
 
-This plugin may be used for free in both private and professional environments. As this plugin is primarily a hobby project, I am not obliged to provide any support - neither to professional nor private users. Although the plugin contains a handful of automated tests and has been manually tested by myself, I will not take responsibility for any damages this plugin might cause.
+
+# Updates
+Minor updates and improvements will be provided from time to time. There is no definite roadmap or schedule.
+
+
+# Copyright
+TabSera was created by me (Thai Nguyen) and is a properietary web browser plugin. This plugin may be used for free in private and professional environments. The plugin may not be used as part of commercial products or brands. The repository itself and any modified code derived from it may not be re-distributed/monetized.

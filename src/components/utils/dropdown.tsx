@@ -66,13 +66,11 @@ function Dropdown(props: iDropdown): JSX.Element {
         e.stopPropagation();
         if(showSubMenuContainer === false || !e.target.parentElement || ! e.target.parentElement.parentElement) return;
         
-        console.log("e", e.target);
         const targetId = `dropdown-tag-${tag}`;
 
         const firstParent = e.target.parentElement!.id;
         const secondParent = e.target.parentElement.parentElement.id
         if(e.target.id.includes(targetId) === false && firstParent.includes(targetId) === false && secondParent.includes(targetId) === false){
-            console.log("ABC", e.target.id.includes(targetId));
             handleShowSubMenu();
         }
 

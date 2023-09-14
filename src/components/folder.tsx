@@ -17,10 +17,14 @@ function Folder(props: iFolder) {
     const [expanded, setExpanded] = useState<boolean>(false);
 
     const { 
-        type, 
+        id,
+        name,
+        desc,
+        type,
         viewMode,
-        name, 
-        windows 
+        settings,
+        windows,
+        onEdit 
       } = props;
     
     function handleExpandClick(e: any) {
@@ -47,7 +51,7 @@ function Folder(props: iFolder) {
     }
 
     return (
-        <div className={`${viewMode === "list" ? "my-6 duration-20075" : "my-2  duration-200"} transition-all ease-in`}>
+        <div className={`${viewMode === "list" ? "my-4 duration-200" : "my-2 duration-200"} transition-all ease-in`}>
             <div ref={headerRef} className={`relative container tbf-${type} drop-shadow-contractedFolder bg-white px-5 h-14 flex items-center`}>
                 <div className="inline-block mr-3">
                     {expanded === false ? <ClosedFolderIcon size={36} fill={"#000"} /> : <OpenedFolderIcon size={36} fill={"#fff"} />}
@@ -58,9 +62,9 @@ function Folder(props: iFolder) {
                     </h2>
                 </div>
                 <div className="absolute flex items-center right-6">
-                    {viewMode === "list" && <Switcher label="Auto start" dark={expanded} onCallback={() => {}} />}
+                    {/*viewMode === "list" && <Switcher  label="Auto start" dark={expanded} onCallback={() => {}} />*/}
                     <FolderControlButton icon="open_browser" active={expanded} onClick={() => {}} />
-                    <FolderControlButton icon="settings" active={expanded} onClick={() => {}} />
+                    <FolderControlButton icon="settings" active={expanded} onClick={onEdit} />
                     <FolderControlButton icon="trash" active={expanded} onClick={() => {}} />
                     <FolderControlButton icon="collapse_expand" active={expanded} onClick={handleExpandClick} />
                 </div>

@@ -2,11 +2,18 @@ import { iWindowItem
  } from "./window_item";
  
 interface iFolder {
-    id: number;
+    id: number,
+    name: string,
+    desc: string,
     type: "expanded" | "collapsed",
-    viewMode: "grid" | "list",
-    name: String,
-    windows: Array<iWindowItem>
+    viewMode: "list" | "grid",
+    settings: {
+        startup_launch: boolean,
+        close_previous: boolean,
+        auto_add: boolean
+    },
+    windows: Array<iWindowItem>,
+    onEdit?: (e: number) => void
 }
 
 
