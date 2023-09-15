@@ -65,17 +65,17 @@ function App() {
 
   const router = createBrowserRouter([
     {
-      path: "/options.html",
-      element: renderViewWrapper(<FolderView />)
-    },
-    {
       path: "/options",
       element: renderViewWrapper(<FolderView />)
     },
     {
       path: "/settings",
       element: renderViewWrapper(<SettingsView />)
-    }
+    },  
+    {
+      path: "/options.html",
+      element: renderViewWrapper(<FolderView />)
+    },
   ]);
 
   return (

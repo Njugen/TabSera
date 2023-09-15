@@ -21,14 +21,6 @@ function FolderView(props: any) {
     const dispatch = useDispatch();
     const foldersData = useSelector((state: any) => state.FoldersReducers);
 
-    useEffect(() => {
-        // Set initial folders. This is just a mock test
-       // console.log(foldersData);
-       // const mockFolders: Array<iFolder> = [];
-            
-       // dispatch(setUpFoldersAction(mockFolders));    
-    }, [viewMode]);
-
     function handleChangeViewMode(): void {
         setViewMode(viewMode === "list" ? "grid" : "list");
     }
@@ -94,8 +86,8 @@ function FolderView(props: any) {
                         <PrimaryButton text="Create folder" onClick={() => setCreateFolder(true)} />
                     </div>
                 </div>
-                <div className={viewMode === "list" ? "mx-auto" : "grid grid-cols-2 gap-x-4 gap-y-0"}>
-                    {[...renderFolders()]}
+                <div className={viewMode === "list" ? "mx-auto" : "grid grid-cols-2 grid-flow-dense gap-x-4 gap-y-0"}>
+                    {renderFolders()}
                 </div>
             </div>
         </>

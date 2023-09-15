@@ -1,6 +1,6 @@
 interface iSVG {
     size: number,
-    fill: string
+    fill: string,
 }
 
 export {iSVG};

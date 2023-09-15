@@ -4,8 +4,7 @@ import Checkbox from "./utils/checkbox";
 import { iTabItem } from "../interfaces/tab_item";
 
 function TabItem(props: iTabItem): JSX.Element {
-    const { id, label, url } = props;
-    
+    const { id, label, url, onMark } = props;
 
     return (
         <div className="hover:bg-tbfColor-lighterpurple hover:text-tbfColor-darkpurple tab-item border-tbfColor-middlegrey4 hover:border-tbfColor-lightpurple border my-1 flex items-center justify-between">
@@ -15,7 +14,7 @@ function TabItem(props: iTabItem): JSX.Element {
             </a>
           
             <div className="tab-item-settings p-2">
-                <Checkbox onCallback={(e) => {}} />
+                <Checkbox onCallback={(e) => onMark && onMark(id, e.state)} />
             </div>
     </div>
     ); 

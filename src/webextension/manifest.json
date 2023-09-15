@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "TabSera",
     "version": "0.0.1",
-    "description": "Manage your windows and tabs",
+    "description": "Providing great overview and simple tools for efficient tab management.",
     "permissions": [
         "bookmarks",
         "tabs",

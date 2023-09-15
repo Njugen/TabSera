@@ -1,7 +1,8 @@
 import { iWindowItem } from "../../interfaces/window_item";
 import { iFolder } from "../../interfaces/folder";
 import { CREATE_FOLDER, READ_FOLDER, UPDATE_FOLDER, DELETE_FOLDER, SET_UP_FOLDERS } from "../types/foldersTypes";
-import { EDIT_FOLDER, UPDATE_IN_EDIT_FOLDER, CLEAR_IN_EDIT_FOLDER } from "../types/inEditFoldersTypes";
+import { EDIT_FOLDER, UPDATE_IN_EDIT_FOLDER, CLEAR_IN_EDIT_FOLDER, UPDATE_WINDOW_MANAGER } from "../types/inEditFoldersTypes";
+import randomNumber from "../../tools/random_number";
 
 const initialState: {
     folders: Array<iFolder>
@@ -38,6 +39,51 @@ function InEditFolderReducers(state = initialFolderState, action: any){
         return {
             inEditFolder: null
         }
+    } else if(type === UPDATE_WINDOW_MANAGER){
+        
+        const temp = state;
+
+        if(temp.inEditFolder && data){
+            const { windowId, payload } = data; 
+                
+            // Look for the window in inEditFolder store. If none, then create it.
+            let targetIndex: number | null = null;
+            const windowResult = temp.inEditFolder?.windows.filter((target, i) => {
+                if(target.id === windowId) targetIndex = i;
+                return target.id === windowId
+            });
+            console.log("windowResult", windowResult);
+            if(windowResult?.length === 0){
+                const currentWindowItems = temp.inEditFolder.windows;
+                const newWindowItem = {
+                    id: windowId,
+                    tabs: [payload],
+                    initExpand: true
+                }
+                // window does not exist. Create it and add the tab (payload) into it
+                temp.inEditFolder = {
+                    ...temp.inEditFolder,
+                    windows: [...currentWindowItems, newWindowItem]
+                }
+
+                return {
+                    ...temp
+                };
+            } else {
+                console.log("e", targetIndex);
+                // window does exist. Push the tab to target window
+                if(targetIndex !== null){
+                    const tabs = windowResult[0].tabs;
+                    temp.inEditFolder.windows[targetIndex].tabs = [...tabs, payload];
+                }
+
+                return {
+                    ...temp
+                };
+            }
+
+        }
+        
     }
     
     return state;

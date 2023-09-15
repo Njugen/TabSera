@@ -27,7 +27,7 @@ function Popup(props: iPopup){
 
     useEffect(() => {
         let payload: iFolder | undefined = folder;
-        console.log("wwww", payload);
+   
         // Slide the popup down
         setSlideDown(true);
 
@@ -46,7 +46,17 @@ function Popup(props: iPopup){
                     close_previous: false,
                     auto_add: false
                 },
-                windows: [],
+                windows: [/*{
+                    id: 1,
+                    tabs: [
+                        {
+                            id: 1,
+                            label: "test tab",
+                            url: "http://google.com"
+                        }
+                    ],
+                    initExpand: true
+                }*/],
             }
             setIsCreate(true);
         }
@@ -61,7 +71,7 @@ function Popup(props: iPopup){
     }, [folderData])
 
     function handleChangeField(key: string, value: any){
-        console.log(key, value);
+
         dispatch(updateInEditFolder(key, value));
     }
 
@@ -71,7 +81,7 @@ function Popup(props: iPopup){
     }
 
     function handleSave(): void {
-      //  console.log("DATA", folderData);
+
         if(props.folder){
             dispatch(updateFolderAction(folderData.inEditFolder));
         } else {
@@ -107,7 +117,7 @@ function Popup(props: iPopup){
                             <input type="text" defaultValue={folderData.inEditFolder?.name} className={predef.textfield_full} onBlur={(e: any) => handleChangeField("name", e.target.value)} />
                         </FormField>
                         <FormField label="Description" description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eu mauris dapibus orci aliquam consequat id lacinia lorem. In sed vulputate neque">
-                            <textarea maxLength={400} defaultValue={folderData.inEditFolder?.desc} className={predef.textarea_full} onBlur={(e: any) => handleChangeField("desc", e.target.value)}></textarea>
+                            <textarea maxLength={150} defaultValue={folderData.inEditFolder?.desc} className={predef.textarea_full} onBlur={(e: any) => handleChangeField("desc", e.target.value)}></textarea>
                         </FormField>
                        <FormField label="Launch at startup" description="E.g. the purpose of this folder...">
                             <Switcher value={folderData.inEditFolder?.settings.startup_launch} onCallback={(e: any) => handleChangeField("settings", updateSettings("startup_launch", e.state))} />

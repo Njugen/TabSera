@@ -12,7 +12,7 @@ function Switcher(props: iSwitcher): JSX.Element {
     }
 
     useEffect(() => {
-        console.log("switch", props.value);
+
         onCallback({state: switchOn});
     }, [switchOn])
 

@@ -14,20 +14,28 @@ import iWindowManager from "../../interfaces/window_manager";
 
 function WindowManager(props: iWindowManager): JSX.Element {
     const [createWindow, setCreateWindow] = useState<boolean>(false);
+    const [inCreationId, setIncreationId] = useState<number>(-1);
     //const { } = props;
 
     const dispatch = useDispatch();
-  //  const foldersData = useSelector((state: any) => state.FoldersReducers);
+    const folderData = useSelector((state: any) => state.InEditFolderReducers);
 
     const windows: Array<iWindowItem> = [];
  
+
     function handleCreateWindow(): void {
+        setIncreationId(randomNumber());
         setCreateWindow(true);
     }
 
+    useEffect(() => {
+        setIncreationId(-1);
+        setCreateWindow(false);
+    }, [folderData])
+
     function renderActionButtons(): JSX.Element {
         return <div className="flex flex-row mt-10">
-            <PrimaryButton text="Import session" onClick={handleCreateWindow} />
+            <PrimaryButton text="Import session" onClick={() => {}} />
             <PrimaryButton text="New window" onClick={handleCreateWindow} />            
         </div>
     }
@@ -42,20 +50,35 @@ function WindowManager(props: iWindowManager): JSX.Element {
 
     function renderNewWindow(): JSX.Element {
         // Dispatch this to store
-        const randomId = randomNumber();
-        return <WindowItem id={randomNumber()} tabs={[]} initExpand={true} />;
+       // setCreateWindow(false);
+        // Check if id already exists. If not, then create a new window
+       
+        const window = folderData.inEditFolder?.windows.filter((target: iWindowItem) => {
+           return target.id === inCreationId
+        });
+        
+        if(window && window.length === 0){
+            return <WindowItem id={inCreationId} tabs={[]} initExpand={true} />;
+        } else {
+            return <></>;
+        }
     }
 
 
 
-    function renderContents(): JSX.Element {
-        if(createWindow === true){
-            return renderNewWindow();
+    function renderContents(): Array<JSX.Element> {
+        const existingWindows = folderData.inEditFolder?.windows;
+        const existingWindowsElements: Array<JSX.Element> = existingWindows?.map((item: iWindowItem) => <WindowItem id={item.id} tabs={item.tabs} initExpand={item.initExpand} />);
+        
+        if(createWindow === true && inCreationId > 0){
+            return [...existingWindowsElements, renderNewWindow()];
         } else {
-            if(windows.length === 0){
-                return renderNewWindowMessage();
+            if (existingWindowsElements?.length > 0){
+                return [...existingWindowsElements];
+            } else if (windows.length === 0){
+                return [renderNewWindowMessage()];
             } else {
-                return <></>;
+                return [<>abc</>];
             }
         }
         

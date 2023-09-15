@@ -1,5 +1,5 @@
 interface iWindowManager {
-    folderId?: number
+    folderId?: number,
 }
 
 export default iWindowManager;

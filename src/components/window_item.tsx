@@ -7,12 +7,25 @@ import TabItem from "./tab_item";
 import { iWindowItem} from "../interfaces/window_item";
 import EditableTabItem from "./editable_tab_item";
 import { iTabItem } from "../interfaces/tab_item";
+import { useDispatch, useSelector } from "react-redux";
+import { updateInEditFolder } from "../redux/actions/FoldersActions";
 
 function WindowItem(props: iWindowItem): JSX.Element {
     const [expanded, setExpanded] = useState<boolean>(false);
     const [viewMode, setViewMode] = useState<string>("list");
+    const [newTab, setNewTab] = useState<boolean>(false);
+    const [markedTabs, setMarkedTabs] = useState<Array<number>>([]);
     const { id, tabs, initExpand } = props;
     
+    const dispatch = useDispatch();
+    const folderData = useSelector((state: any) => state.InEditFolderReducers);
+
+    useEffect(() => {
+        console.log(folderData);
+        if(newTab === true) setNewTab(false);
+    }, [folderData]);
+
+
     function handleExpand(): void {
         setExpanded(expanded === true ? false : true);
     }
@@ -21,17 +34,81 @@ function WindowItem(props: iWindowItem): JSX.Element {
         setViewMode(viewMode === "list" ? "grid" : "list");
     }
 
-    function renderTabs(){
-        let result = [];
+    function handleDeleteWindow(): void {
+        const windows = folderData.inEditFolder.windows.filter((target: iWindowItem) => target.id !== id);
 
-        result = tabs.map((tab, i) => <TabItem key={"tab-" + i} id={tab.id} label={tab.label} url={tab.url} />)
+        dispatch(updateInEditFolder("windows", windows));
+    }
+
+    function handleAddNewTab(): void {
+        setNewTab(true);
+    }
+
+    function handleMark(tabId: number, checked: boolean): void {
+
+        
+
+        if(checked === true){
+            const findInState = markedTabs.findIndex((target) => target === tabId);
+            if(findInState < 0){  
+                        console.log("AAAA", tabId, checked);  
+                setMarkedTabs([...markedTabs, tabId]);
+            }
+        } else {
+            const filteredMarks = markedTabs.filter((id) => id !== tabId);
+            setMarkedTabs([...filteredMarks]);
+        }
+    }
+
+    function handleDeleteTabs(): void {
+        const windows = folderData.inEditFolder.windows.filter((target: iWindowItem) => target.id === id);
+        const targetWindowIndex = folderData.inEditFolder.windows.findIndex((target: iWindowItem) => target.id === id);
+        const tabs = windows[0]?.tabs;
+        console.log(windows);
+        const newTabCollection: Array<iTabItem> = [];
+      //  console.log("MARKED", markedTabs);
+        if(tabs){
+            tabs.forEach((tab: iTabItem) => {
+                const markedTabIndex = markedTabs.findIndex((target) => target === tab.id);
+           
+                if(markedTabIndex === -1){
+                    console.log(markedTabIndex);
+                    // an index exists. Save it
+                    newTabCollection.push(tab);
+                    
+                }
+            });
+           // console.log("NEW COL", newTabCollection);
+            //windows[0].tabs = [...newTabCollection];
+            //console.log("abc", windows[0].tabs);
+            console.log("WW", windows);
+            folderData.inEditFolder.windows[targetWindowIndex].tabs = [...newTabCollection];
+            
+            setMarkedTabs([]);
+            dispatch(updateInEditFolder("windows", folderData.inEditFolder.windows));
+        }
+    }
+
+    function renderTabs(): Array<JSX.Element> {
+        let result = [];
+        
+        result = tabs.map((tab, i) => <TabItem key={"tab-" + tab.id} id={tab.id} label={tab.label} url={tab.url} onMark={handleMark} />)
 
         return result;
     }
 
 
-    function renderEditTab(windowId: number, tabId?: number){
+    function renderEditTab(windowId: number, tabId?: number): JSX.Element {
         return <EditableTabItem windowId={windowId} id={tabId} />
+    }
+
+    function evaluateNewTabRender(): Array<JSX.Element> {
+       // console.log("WWW");
+        if(newTab === true){
+            return [...renderTabs(), renderEditTab(id)];
+        } else {
+            return [...renderTabs()];
+        }
     }
 
     useEffect(() => {
@@ -46,17 +123,17 @@ function WindowItem(props: iWindowItem): JSX.Element {
                 </h3>
                 <div className={`tab-settings`}>
                     <GenericIconButton icon="grid" size={24} fill="#000" onClick={handleChangeViewMode} />
-                    <GenericIconButton icon="trash" size={24} fill="#000" onClick={() => {}} />
+                    <GenericIconButton icon="trash" size={24} fill="#000" onClick={handleDeleteWindow} />
                     <GenericIconButton icon={expanded === true ? "collapse" : "expand"} size={30} fill="#000" onClick={handleExpand} />
                 </div>
             </div>
             <div className={`tabs-list mt-6 ${expanded === true ? "block" : "hidden"}`}>
                 <div className={`${viewMode === "list" ? "mx-auto" : "grid grid-cols-3 gap-x-4 gap-y-0"}`}>
-                {tabs.length > 0 ? [...renderTabs()] : [renderEditTab(id)]}
+                {tabs.length > 0 ? [...evaluateNewTabRender()] : [renderEditTab(id)]}
                 </div>
                 <div className="mt-10 flex justify-end">
-                    {tabs.length > 0 && <GreyBorderButton text="Delete" onClick={() => {}} />}
-                    <PrimaryButton text="New tab" onClick={() => {}} />
+                    {tabs.length > 0 && <GreyBorderButton text="Delete" onClick={handleDeleteTabs} />}
+                    <PrimaryButton text="New tab" onClick={handleAddNewTab} />
                 </div>
             </div>
             

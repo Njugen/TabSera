@@ -1,6 +1,7 @@
 import { iFolder } from "../../interfaces/folder";
+import { iTabItem } from "../../interfaces/tab_item";
 import { CREATE_FOLDER, READ_FOLDER, UPDATE_FOLDER, DELETE_FOLDER, SET_UP_FOLDERS } from "../types/foldersTypes";
-import { EDIT_FOLDER, UPDATE_IN_EDIT_FOLDER, CLEAR_IN_EDIT_FOLDER } from "../types/inEditFoldersTypes";
+import { EDIT_FOLDER, UPDATE_IN_EDIT_FOLDER, CLEAR_IN_EDIT_FOLDER, UPDATE_WINDOW_MANAGER } from "../types/inEditFoldersTypes";
 
 function createFolderAction(folder: iFolder){
     return {
@@ -60,6 +61,13 @@ function clearInEditFolder(){
     }
 }
 
+function updateWindowManager(windowId: number, payload: iTabItem){
+    return {
+        type: UPDATE_WINDOW_MANAGER,
+        data: { windowId, payload }
+    }
+}
+
 export {
     createFolderAction,
     readFolderAction,
@@ -69,5 +77,6 @@ export {
 
     initInEditFolder,
     updateInEditFolder,
-    clearInEditFolder
+    clearInEditFolder,
+    updateWindowManager
 }

@@ -10,6 +10,13 @@ Tab Folders is a browser extension which enables the user to sort, group and man
 
 ## Development
 
+### Programming and tools
+
+HTML5, CSS3, Javascript/Typescript, React/Redux, SASS, Tailwind
+
+### Flow chart
+
+### Get started
 1. Clone/pull this repository to your local machine. 
 2. Open your terminal (command prompt on windows)
 3. Go to the project's folder
@@ -24,6 +31,8 @@ npm run dev
 
 2. Once the command has been run and finished, a /dist folder will be available in the project's folder.
 3. In your web browser, switch it to developer mode and add this extension (dev mode) through the /dist folder
+
+
 
 ## Test
 
@@ -67,12 +76,13 @@ npm run dev
 - Feedback form
 
 # Feedback
-I would appreciate feedback and suggestions on how to improve this plugin. If you have time, please post an issue in this repository or contact me per email: privat_thai_nguyen@hotmail.com
-
+I would appreciate feedback and suggestions on how to improve this plugin. Reports of possible bugs are also welcomed. Please, post an issue or contact me per email: privat_thai_nguyen@hotmail.com
 
 # Updates
 Minor updates and improvements will be provided from time to time. There is no definite roadmap or schedule.
 
-
 # Copyright
 TabSera was created by me (Thai Nguyen) and is a properietary web browser plugin. This plugin may be used for free in private and professional environments. The plugin may not be used as part of commercial products or brands. The repository itself and any modified code derived from it may not be re-distributed/monetized.
+
+# Contact information
+privat_thai_nguyen@hotmail.com

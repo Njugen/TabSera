@@ -6,22 +6,29 @@ import * as predef from "../styles/predef";
 import { useEffect, useRef } from "react";
 import randomNumber from "../tools/random_number";
 import { iTabItem } from "../interfaces/tab_item";
+import { useDispatch, useSelector } from "react-redux";
+import { updateInEditFolder, updateWindowManager } from "../redux/actions/FoldersActions";
 
 function EditableTabItem(props: iEditableTabItem): JSX.Element {
     const { id, windowId } = props;
     const fieldRef = useRef<HTMLInputElement>(null);
 
+    const dispatch = useDispatch();
+    const folderData = useSelector((state: any) => state.InEditFolderReducers);
+
+
     function saveToStore(e: any): void {
         const tabId = id ? id : randomNumber();
-
+        console.log("WID", windowId);
         const payload: iTabItem = {
             id: tabId,
             label: e.target.value,
             url: e.target.value,
         };
-
+   
         // Dispatch
-        // - use tabId and windowId to locate and replace the tab 
+        // - use tabId and windowId to locate and replace the tab
+        dispatch(updateWindowManager(windowId, payload)); 
     }
 
     function handleBlur(e: any): void {
@@ -35,10 +42,11 @@ function EditableTabItem(props: iEditableTabItem): JSX.Element {
     }
 
     useEffect(() => {
+        // Fetch info from store
+        
         setTimeout(() => {
             if(fieldRef.current) fieldRef.current.focus();
-        }, 200)
-       
+        }, 200);
     }, []);
 
     return (
