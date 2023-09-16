@@ -10,6 +10,7 @@ import SearchIcon from "../../images/icons/search_icon";
 import ListIcon from "../../images/icons/list_icon";
 import GridIcon from "../../images/icons/grid_icon";
 import CheckedIcon from "../../images/icons/checked_icon";
+import PenIcon from "../../images/icons/pen_icon";
 
 function GenericIconButton(props: iGenericIconButton): JSX.Element {
     const { icon, fill, size, onClick } = props;
@@ -35,6 +36,8 @@ function GenericIconButton(props: iGenericIconButton): JSX.Element {
             return <GridIcon size={size} fill={fill} />;
         } else if(icon === "checked"){
             return <CheckedIcon size={size} fill={fill} />;
+        } else if(icon === "edit"){
+            return <PenIcon size={size} fill={fill} />;
         } else {
             return <></>
         }

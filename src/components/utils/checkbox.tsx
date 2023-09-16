@@ -26,7 +26,7 @@ function Checkbox(props: iCheckbox): JSX.Element {
     }, [checked])
 
     return (
-        <div className={`flex items-center ${label && "mx-5"}`}>
+        <div className={`flex items-center ${label ? "mx-5" : "ml-2 mr-0"}`}>
             {label && <span className={`inline-block mr-2 text-sm ${dark === true ? "text-white" : "text-black"}`}>{label}</span>}
             <button onClick={handleSwitch} className={`relative border border-tbfColor-middlegrey2 ${checked === true ? "bg-tbfColor-lightpurple" : "bg-white"} h-[1.1rem] w-[1.1rem]`}>
                 {checked === true && <div className="absolute top-0 left-0"><CheckedIcon fill="#fff" size={16} /></div>}

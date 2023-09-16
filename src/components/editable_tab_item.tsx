@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateInEditFolder, updateWindowManager } from "../redux/actions/FoldersActions";
 
 function EditableTabItem(props: iEditableTabItem): JSX.Element {
-    const { id, windowId } = props;
+    const { id, windowId, onStop } = props;
     const fieldRef = useRef<HTMLInputElement>(null);
 
     const dispatch = useDispatch();
@@ -29,6 +29,7 @@ function EditableTabItem(props: iEditableTabItem): JSX.Element {
         // Dispatch
         // - use tabId and windowId to locate and replace the tab
         dispatch(updateWindowManager(windowId, payload)); 
+        onStop();
     }
 
     function handleBlur(e: any): void {

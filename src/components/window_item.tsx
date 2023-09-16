@@ -14,8 +14,9 @@ function WindowItem(props: iWindowItem): JSX.Element {
     const [expanded, setExpanded] = useState<boolean>(false);
     const [viewMode, setViewMode] = useState<string>("list");
     const [newTab, setNewTab] = useState<boolean>(false);
+    const [editTab, setEditTab] = useState<number | null>(null);
     const [markedTabs, setMarkedTabs] = useState<Array<number>>([]);
-    const { id, tabs, initExpand } = props;
+    const { id, tabs, initExpand, disableEdit } = props;
     
     const dispatch = useDispatch();
     const folderData = useSelector((state: any) => state.InEditFolderReducers);
@@ -32,6 +33,7 @@ function WindowItem(props: iWindowItem): JSX.Element {
 
     function handleChangeViewMode(): void {
         setViewMode(viewMode === "list" ? "grid" : "list");
+        setExpanded(true);
     }
 
     function handleDeleteWindow(): void {
@@ -89,19 +91,32 @@ function WindowItem(props: iWindowItem): JSX.Element {
         }
     }
 
+    function handleTabEdit(id: number): void {
+        setEditTab(id);
+    }
+
+    function renderEditTab(windowId: number, tabId?: number): JSX.Element {
+        return <EditableTabItem windowId={windowId} id={tabId} onStop={() => setEditTab(null)} />
+    }
+
     function renderTabs(): Array<JSX.Element> {
         let result = [];
         
-        result = tabs.map((tab, i) => <TabItem key={"tab-" + tab.id} id={tab.id} label={tab.label} url={tab.url} onMark={handleMark} />)
+        result = tabs.map((tab, i) => {
+            if(editTab === tab.id){
+                console.log("TRIGGER EDIT");
+                return renderEditTab(id, editTab);
+            } else {
+                return <TabItem key={"tab-" + tab.id} id={tab.id} label={tab.label} url={tab.url} onMark={handleMark} onEdit={handleTabEdit} />
+            }
+            
+        })
 
         return result;
     }
 
 
-    function renderEditTab(windowId: number, tabId?: number): JSX.Element {
-        return <EditableTabItem windowId={windowId} id={tabId} />
-    }
-
+    
     function evaluateNewTabRender(): Array<JSX.Element> {
        // console.log("WWW");
         if(newTab === true){
@@ -123,7 +138,7 @@ function WindowItem(props: iWindowItem): JSX.Element {
                 </h3>
                 <div className={`tab-settings`}>
                     <GenericIconButton icon="grid" size={24} fill="#000" onClick={handleChangeViewMode} />
-                    <GenericIconButton icon="trash" size={24} fill="#000" onClick={handleDeleteWindow} />
+                    {disableEdit === false && <GenericIconButton icon="trash" size={24} fill="#000" onClick={handleDeleteWindow} />}
                     <GenericIconButton icon={expanded === true ? "collapse" : "expand"} size={30} fill="#000" onClick={handleExpand} />
                 </div>
             </div>
@@ -132,8 +147,8 @@ function WindowItem(props: iWindowItem): JSX.Element {
                 {tabs.length > 0 ? [...evaluateNewTabRender()] : [renderEditTab(id)]}
                 </div>
                 <div className="mt-10 flex justify-end">
-                    {tabs.length > 0 && <GreyBorderButton text="Delete" onClick={handleDeleteTabs} />}
-                    <PrimaryButton text="New tab" onClick={handleAddNewTab} />
+                    {tabs.length > 0 && disableEdit === false && <GreyBorderButton text="Delete" onClick={handleDeleteTabs} />}
+                    {disableEdit === false && <PrimaryButton text="New tab" onClick={handleAddNewTab} />}
                 </div>
             </div>
             

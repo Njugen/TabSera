@@ -45,7 +45,7 @@ function Folder(props: iFolder) {
     function renderWindows(){
         let result = [];
 
-        result = windows.map((window, index) => <WindowItem key={"window-" + index} id={window.id} tabs={window.tabs} />)
+        result = windows.map((window, index) => <WindowItem disableEdit={true} key={"window-" + index} id={window.id} tabs={window.tabs} />)
 
         return result;
     }
@@ -74,9 +74,9 @@ function Folder(props: iFolder) {
                     {viewMode === "list" && <div className="inline-block w-fit">
                         <Paragraph text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque rutrum, eros semper gravida ultricies, velit ipsum lacinia tortor, at varius mauris tortor in orci. Sed maximus orci vitae metus accumsan." />
                     </div>}
-                    <div className={`flex ${viewMode === "list" ? "w-[240px] justify-end" : "w-full justify-center"}`}>
+                    {/*<div className={`flex ${viewMode === "list" ? "w-[240px] justify-end" : "w-full justify-center"}`}>
                         <PrimaryButton text="New window" onClick={() => {}} />
-                    </div>
+    </div>*/}
                 </div>
                 <div className="px-5 mb-8">
                     {[...renderWindows()]}

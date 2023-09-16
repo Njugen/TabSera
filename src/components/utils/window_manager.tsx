@@ -31,7 +31,7 @@ function WindowManager(props: iWindowManager): JSX.Element {
     useEffect(() => {
         setIncreationId(-1);
         setCreateWindow(false);
-    }, [folderData])
+    }, [folderData]);
 
     function renderActionButtons(): JSX.Element {
         return <div className="flex flex-row mt-10">
@@ -56,9 +56,9 @@ function WindowManager(props: iWindowManager): JSX.Element {
         const window = folderData.inEditFolder?.windows.filter((target: iWindowItem) => {
            return target.id === inCreationId
         });
-        
+      
         if(window && window.length === 0){
-            return <WindowItem id={inCreationId} tabs={[]} initExpand={true} />;
+            return <WindowItem disableEdit={false} id={inCreationId} tabs={[]} initExpand={true} />;
         } else {
             return <></>;
         }
@@ -68,7 +68,7 @@ function WindowManager(props: iWindowManager): JSX.Element {
 
     function renderContents(): Array<JSX.Element> {
         const existingWindows = folderData.inEditFolder?.windows;
-        const existingWindowsElements: Array<JSX.Element> = existingWindows?.map((item: iWindowItem) => <WindowItem id={item.id} tabs={item.tabs} initExpand={item.initExpand} />);
+        const existingWindowsElements: Array<JSX.Element> = existingWindows?.map((item: iWindowItem) => <WindowItem disableEdit={false} id={item.id} tabs={item.tabs} initExpand={item.initExpand} />);
         
         if(createWindow === true && inCreationId > 0){
             return [...existingWindowsElements, renderNewWindow()];
@@ -86,7 +86,6 @@ function WindowManager(props: iWindowManager): JSX.Element {
 
     return (
         <div className="my-6 p-6 min-h-[200px] bg-tbfColor-lightgrey flex flex-col items-center justify-center">
-            <button onClick={() => dispatch(deleteFolderAction(0))}>blablabla</button>
             { renderContents() }
             { renderActionButtons() }            
         </div> 
