@@ -52,7 +52,7 @@ function InEditFolderReducers(state = initialFolderState, action: any){
                 if(target.id === windowId) targetIndex = i;
                 return target.id === windowId
             });
-            console.log("windowResult", windowResult);
+
             if(windowResult?.length === 0){
                 const currentWindowItems = temp.inEditFolder.windows;
                 const newWindowItem = {
@@ -70,7 +70,6 @@ function InEditFolderReducers(state = initialFolderState, action: any){
                     ...temp
                 };
             } else {
-                console.log("e", targetIndex);
                 // window does exist. Push the tab to target window
       
                 if(targetIndex !== null){
@@ -78,14 +77,13 @@ function InEditFolderReducers(state = initialFolderState, action: any){
 
                     // Check whether or not a tab already exists. If it exists, then replace it with the new payload
                     const tabIndex: number = tabs.findIndex((tab) => tab.id === payload.id);
-                    console.log("TAB INDEX", tabIndex);
+
                     if(tabIndex > -1){
                         temp.inEditFolder.windows[targetIndex].tabs[tabIndex] = payload;
                         
                     } else {
                         temp.inEditFolder.windows[targetIndex].tabs = [...tabs, payload];
                     }
-                    console.log("tem", temp);
                 }
 
                 return {

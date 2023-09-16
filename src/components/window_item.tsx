@@ -22,7 +22,6 @@ function WindowItem(props: iWindowItem): JSX.Element {
     const folderData = useSelector((state: any) => state.InEditFolderReducers);
 
     useEffect(() => {
-        console.log(folderData);
         if(newTab === true) setNewTab(false);
     }, [folderData]);
 
@@ -53,7 +52,6 @@ function WindowItem(props: iWindowItem): JSX.Element {
         if(checked === true){
             const findInState = markedTabs.findIndex((target) => target === tabId);
             if(findInState < 0){  
-                        console.log("AAAA", tabId, checked);  
                 setMarkedTabs([...markedTabs, tabId]);
             }
         } else {
@@ -66,24 +64,19 @@ function WindowItem(props: iWindowItem): JSX.Element {
         const windows = folderData.inEditFolder.windows.filter((target: iWindowItem) => target.id === id);
         const targetWindowIndex = folderData.inEditFolder.windows.findIndex((target: iWindowItem) => target.id === id);
         const tabs = windows[0]?.tabs;
-        console.log(windows);
+
         const newTabCollection: Array<iTabItem> = [];
-      //  console.log("MARKED", markedTabs);
         if(tabs){
             tabs.forEach((tab: iTabItem) => {
                 const markedTabIndex = markedTabs.findIndex((target) => target === tab.id);
            
                 if(markedTabIndex === -1){
-                    console.log(markedTabIndex);
                     // an index exists. Save it
                     newTabCollection.push(tab);
                     
                 }
             });
-           // console.log("NEW COL", newTabCollection);
-            //windows[0].tabs = [...newTabCollection];
-            //console.log("abc", windows[0].tabs);
-            console.log("WW", windows);
+
             folderData.inEditFolder.windows[targetWindowIndex].tabs = [...newTabCollection];
             
             setMarkedTabs([]);
@@ -104,7 +97,6 @@ function WindowItem(props: iWindowItem): JSX.Element {
         
         result = tabs.map((tab, i) => {
             if(editTab === tab.id){
-                console.log("TRIGGER EDIT");
                 return renderEditTab(id, editTab);
             } else {
                 return <TabItem key={"tab-" + tab.id} id={tab.id} label={tab.label} url={tab.url} onMark={handleMark} onEdit={handleTabEdit} />
@@ -118,7 +110,6 @@ function WindowItem(props: iWindowItem): JSX.Element {
 
     
     function evaluateNewTabRender(): Array<JSX.Element> {
-       // console.log("WWW");
         if(newTab === true){
             return [...renderTabs(), renderEditTab(id)];
         } else {

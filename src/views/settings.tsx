@@ -20,13 +20,13 @@ function SettingsView(props: any) {
                 </div>
                 <div className="w-6/12">
                     <FormField label="Auto suspend" description="Suspend all inactive tabs after a certain time">
-                        <Dropdown onCallback={(e) => console.log(e.selected)} tag="testdropdown2" preset={{ id: 0, label: "10 minutes" }} options={[{ id: 0, label: "10 minutes" }, { id: 1, label: "20 minutes" }, { id: 2, label: "30 minutes" }, { id: 3, label: "1 hour" }, { id: 4, label: "Never" }]} />
+                        <Dropdown onCallback={(e) => {}} tag="testdropdown2" preset={{ id: 0, label: "10 minutes" }} options={[{ id: 0, label: "10 minutes" }, { id: 1, label: "20 minutes" }, { id: 2, label: "30 minutes" }, { id: 3, label: "1 hour" }, { id: 4, label: "Never" }]} />
                     </FormField>
                     <FormField label="Performance notification" description="Warn me if the total amount of tabs exceeds the selected value when launching a new windows or folders">
-                        <Dropdown onCallback={(e) => console.log(e.selected)} tag="testdropdown3" preset={{ id: 0, label: "5" }} options={[{ id: 0, label: "10" }, { id: 1, label: "15" }, { id: 2, label: "20" }, { id: 3, label: "30" }, { id: 4, label: "40" }, { id: 5, label: "Don't warn me" } ]} />
+                        <Dropdown onCallback={(e) => {}} tag="testdropdown3" preset={{ id: 0, label: "5" }} options={[{ id: 0, label: "10" }, { id: 1, label: "15" }, { id: 2, label: "20" }, { id: 3, label: "30" }, { id: 4, label: "40" }, { id: 5, label: "Don't warn me" } ]} />
                     </FormField>
                     <FormField label="Log errors" description="Automatically send error reports to the developer">
-                        <Switcher value={false} onCallback={(e) => console.log(e.state)} />
+                        <Switcher value={false} onCallback={(e) => {}} />
                     </FormField>
                 </div>
             </div>

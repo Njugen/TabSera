@@ -17,10 +17,6 @@ function Checkbox(props: iCheckbox): JSX.Element {
         setChecked(checked === false ? true : false);
     }
 
-    useEffect(() => {  
-        console.log("CHECKBOX");
-    },[])
-
     useEffect(() => {
         onCallback({state: checked});
     }, [checked])
