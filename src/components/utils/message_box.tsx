@@ -8,8 +8,8 @@ function MessageBox(props: iMessageBox): JSX.Element {
 
     return (
         <div className="absolute flex justify-center items-center top-0 left-0 w-full h-full overflow-hidden bg-tbfColor-middlegrey2 z-[1000]">
-            {title && <h4 className="text-lg">{title}</h4>}
             <div className="p-10 w-[500px] bg-tbfColor-darkpurple rounded-lg drop-shadow-2xl text-center leading-7 text-md">
+                {title && <h4 className="text-lg text-white">{title}</h4>}
                 <p className="mb-8 text-white">
                     {text}
                 </p>

@@ -33,22 +33,26 @@ function FolderView(props: any) {
     function handlePopupClose(): void {
         setEditFolderId(null);
         setCreateFolder(false);
+        dispatch(clearInEditFolder());
 
         // Remove inEdit from store
-        dispatch(clearInEditFolder());
+       
     }
+
     
     function renderPopup(){
         let render;
       
         if(createFolder === true){
-            render = <Popup title="Create folder" onClose={handlePopupClose} >test</Popup>;
+            render = <Popup title="Create folder" onClose={handlePopupClose}>test</Popup>;
         } else {
             
             const targetFolder: Array<iFolder> = foldersData.folders.filter((item: iFolder) => editFolderId === item.id);
+            const input: iFolder = {...targetFolder[0]};
 
             if(targetFolder.length > 0){
-                render = <Popup title={`Edit folder ${targetFolder[0].id}`} folder={targetFolder[0]} onClose={handlePopupClose}>test</Popup>;
+      
+                render = <Popup title={`Edit folder ${targetFolder[0].id}`} folder={input} onClose={handlePopupClose}>test</Popup>;
             } else {
                 render = <></>;
             }
@@ -61,7 +65,7 @@ function FolderView(props: any) {
     function renderFolders(): Array<JSX.Element> {
         let result: Array<JSX.Element>  = [];
     
-        result = foldersData.folders.map((folder: iFolder, i: number) => <Folder onEdit={() => setEditFolderId(folder.id)} key={i} type={folder.type} id={folder.id} viewMode={folder.viewMode} name={folder.name} desc={folder.desc} settings={folder.settings} windows={folder.windows} />)
+        result = foldersData.folders.map((folder: iFolder, i: number) => <Folder onEdit={() => setEditFolderId(folder.id)} key={folder.id} type={folder.type} id={folder.id} viewMode={folder.viewMode} name={folder.name} desc={folder.desc} settings={folder.settings} windows={folder.windows} />)
 
         return result.length > 0 ? result : [<></>];
     }

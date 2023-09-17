@@ -22,9 +22,9 @@ function WindowItem(props: iWindowItem): JSX.Element {
     const folderData = useSelector((state: any) => state.InEditFolderReducers);
 
     useEffect(() => {
+      
         if(newTab === true) setNewTab(false);
     }, [folderData]);
-
 
     function handleExpand(): void {
         setExpanded(expanded === true ? false : true);
@@ -99,7 +99,7 @@ function WindowItem(props: iWindowItem): JSX.Element {
             if(editTab === tab.id){
                 return renderEditTab(id, editTab);
             } else {
-                return <TabItem key={"tab-" + tab.id} id={tab.id} label={tab.label} url={tab.url} onMark={handleMark} onEdit={handleTabEdit} />
+                return <TabItem key={tab.id} id={tab.id} label={tab.label} url={tab.url} onMark={handleMark} onEdit={handleTabEdit} />
             }
             
         })
@@ -111,8 +111,10 @@ function WindowItem(props: iWindowItem): JSX.Element {
     
     function evaluateNewTabRender(): Array<JSX.Element> {
         if(newTab === true){
+            
             return [...renderTabs(), renderEditTab(id)];
         } else {
+
             return [...renderTabs()];
         }
     }

@@ -15,17 +15,16 @@ function EditableTabItem(props: iEditableTabItem): JSX.Element {
 
     const dispatch = useDispatch();
     const folderData = useSelector((state: any) => state.InEditFolderReducers);
-
-
+ 
     function saveToStore(e: any): void {
         const tabId = id ? id : randomNumber();
-        console.log("WID", windowId);
+    
         const payload: iTabItem = {
             id: tabId,
             label: e.target.value,
             url: e.target.value,
         };
-   
+   //     console.log("BBBB", testData);
         // Dispatch
         // - use tabId and windowId to locate and replace the tab
         dispatch(updateWindowManager(windowId, payload)); 
@@ -37,6 +36,7 @@ function EditableTabItem(props: iEditableTabItem): JSX.Element {
     }
 
     function handleKeyDown(e: any): void {
+       // console.log("BBBB", testData);
         if (e.key === 'Enter' || e.keyCode === 13) {
             saveToStore(e);
         }

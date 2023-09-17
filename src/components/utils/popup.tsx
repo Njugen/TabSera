@@ -13,7 +13,7 @@ import styles from "./../../styles/global_utils.module.scss";
 import WindowManager from './window_manager';
 import randomNumber from "../../tools/random_number";
 import { useDispatch, useSelector } from "react-redux";
-import { createFolderAction, initInEditFolder, updateInEditFolder, updateFolderAction } from "../../redux/actions/FoldersActions";
+import { createFolderAction, initInEditFolder, updateInEditFolder, updateFolderAction, clearInEditFolder } from "../../redux/actions/FoldersActions";
 import { iFolder } from "../../interfaces/folder";
 import { iWindowItem } from "../../interfaces/window_item";
 import MessageBox from './message_box';
@@ -24,6 +24,7 @@ function Popup(props: iPopup){
     const [isCreate, setIsCreate] = useState<boolean>(false);
     const [modified, setModified] = useState<boolean>(false);
     const [warning, setWarning] = useState<boolean>(false);
+    const [originWindows, setOriginWindows] = useState<string>("");
     const [inValidFields, setInValidFields] = useState<{ name: boolean, desc: boolean, windows: boolean }>({
         name: false,
         desc: false,
@@ -34,6 +35,8 @@ function Popup(props: iPopup){
 
     const dispatch = useDispatch();
     const folderData = useSelector((state: any) => state.InEditFolderReducers);
+ 
+    
     //const allFoldersData = useSelector((state: any) => state.InEditFolderReducers);
 
     useEffect(() => {
@@ -43,6 +46,7 @@ function Popup(props: iPopup){
         setSlideDown(true);
 
         // Generate random id and dispatch to store
+     
         if(!payload){
             const randId = randomNumber();
 
@@ -71,15 +75,40 @@ function Popup(props: iPopup){
             }
             setIsCreate(true);
         }
-      
+
+        setOriginWindows(JSON.stringify(payload.windows));
         dispatch(initInEditFolder(payload));
 
        
     }, []);
 
+    function windowListChanged(): boolean {
+        const presetWindows: string = originWindows;
+        const modifiedWindows: string = JSON.stringify(folderData.inEditFolder?.windows);
+
+        if(!modifiedWindows || !presetWindows) return false;
+        if(originWindows !== JSON.stringify(folderData.inEditFolder?.windows)){
+            return true;
+        }
+
+        return false;
+    }
+
+    useEffect(() => {
+         
+        if(windowListChanged() === true){
+            setModified(true);
+        }
+    }, [folderData]);
+
     function handleChangeField(key: string, value: any){
-        if(modified === false && value !== undefined) setModified(true);
+        //console.log("folder", folderData.inEditFolder);
+        if(!folderData.inEditFolder) return;
+      
+        
+        if(modified === false && JSON.stringify(folderData.inEditFolder[key]) !== JSON.stringify(value)) setModified(true);
         dispatch(updateInEditFolder(key, value));
+     
     }
 
     function scrollTop(): void {
@@ -116,19 +145,24 @@ function Popup(props: iPopup){
     }
 
     function handleClose(skipWarning?: boolean): void {
-        if(modified === true && skipWarning !== true){
+
+        if((modified === true && skipWarning !== true)){
             setWarning(true);
         } else {
             setSlideDown(false);
-            console.log(folderData);
+            
             setWarning(false);
             setModified(false)
+            setOriginWindows("");
+            setIsCreate(false);
+        
             setTimeout(() => onClose(), 500);
         }
     }
 
     function handleSave(): void {
         validateForm(() => {
+          
             if(props.folder){
                 dispatch(updateFolderAction(folderData.inEditFolder));
             } else {
