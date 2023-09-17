@@ -3,6 +3,7 @@
 interface CssExports {
   'input_textfield': string;
   'opacity_hover_effect': string;
+  'sidebar_shadow': string;
   'popup_container': string;
   'scroll_button_shadow': string;
   'shadow_no_pos': string;

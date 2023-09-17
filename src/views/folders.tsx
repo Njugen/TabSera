@@ -11,11 +11,12 @@ import * as predef from "../styles/predef";
 import { iFolder } from '../interfaces/folder';
 import { useDispatch, useSelector } from 'react-redux';
 import { setUpFoldersAction, clearInEditFolder } from '../redux/actions/FoldersActions';
+import Paragraph from '../components/utils/paragraph';
 
 function FolderView(props: any) {
     const [editFolderId, setEditFolderId] = useState<number | null>(null);
     const [createFolder, setCreateFolder] = useState<boolean>(false);
-    const [viewMode, setViewMode] = useState<string>("list");
+    const [viewMode, setViewMode] = useState<string>("grid");
     const [showSearchField, setShowSearchField] = useState<boolean>(false);
 
     const dispatch = useDispatch();
@@ -70,29 +71,54 @@ function FolderView(props: any) {
         return result.length > 0 ? result : [<></>];
     }
 
+    function renderPageOptionsMenu(): JSX.Element {
+        return <>
+            <div className="inline-flex items-center">
+                <div className="mr-4 inline-flex items-center">
+                    <div className={`w-[300px]`}>
+                        <input type="text" defaultValue={"..."} className={`${predef.textfield} float-right transition-all ease-in ${showSearchField === true ? "w-[300px] p-2" : "w-[0px] py-2 px-0 border-0"}`} />
+                    </div>
+                    <GenericIconButton icon="search" fill={showSearchField === false ? "#6D00C2" : "#b2b2b2"} size={30} onClick={handleShowSearchField} />
+                    <GenericIconButton icon={viewMode === "list" ? "grid" : "list"} fill="#6D00C2" size={30} onClick={handleChangeViewMode} />
+                </div>
+                <PrimaryButton text="Create folder" onClick={() => setCreateFolder(true)} />
+            </div>
+        </>
+    }
+
+    function renderMessageBox(): JSX.Element {
+        return <>
+            <div className="flex flex-col items-center justify-center">
+                <Paragraph text="You currently have no folders available. Please, create a new folder or import previous folders." />
+                <div className="mt-8">
+                    <PrimaryButton text="Import folders" onClick={() => setCreateFolder(true)} />
+                    <PrimaryButton text="Create folder" onClick={() => setCreateFolder(true)} />
+                </div>
+            </div>
+        </>
+    }
+
+    function hasFolders(): boolean {
+        if(foldersData && foldersData.folders.length > 0){
+            return true;
+        }
+        return false;
+    }
 
     return (
         <>
             {renderPopup()}
             <div id="folders-view">
-                <div className="my-10 mx-auto flex justify-between">
+                <div className="mb-10 mx-auto flex justify-between">
                     <h1 className="text-4xl text-tbfColor-darkpurple font-light inline-block">
                         Folders
                     </h1>
-                    <div className="inline-flex items-center">
-                        <div className="mr-4 inline-flex items-center">
-                            <div className={`w-[300px]`}>
-                                <input type="text" defaultValue={"..."} className={`${predef.textfield} float-right transition-all ease-in ${showSearchField === true ? "w-[300px] p-2" : "w-[0px] py-2 px-0 border-0"}`} />
-                            </div>
-                            <GenericIconButton icon="search" fill={showSearchField === false ? "#6D00C2" : "#b2b2b2"} size={30} onClick={handleShowSearchField} />
-                            <GenericIconButton icon={viewMode === "list" ? "grid" : "list"} fill="#6D00C2" size={30} onClick={handleChangeViewMode} />
-                        </div>
-                        <PrimaryButton text="Create folder" onClick={() => setCreateFolder(true)} />
-                    </div>
+                    {hasFolders() && renderPageOptionsMenu()}
                 </div>
-                <div className={viewMode === "list" ? "mx-auto" : "grid grid-cols-2 grid-flow-dense gap-x-4 gap-y-0"}>
+                {!hasFolders() && renderMessageBox()}
+                {hasFolders() === true && <div className={viewMode === "list" ? "mx-auto" : "grid grid-cols-2 grid-flow-dense gap-x-4 gap-y-0"}>
                     {renderFolders()}
-                </div>
+                </div>}
             </div>
         </>
     );

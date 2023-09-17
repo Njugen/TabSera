@@ -25,9 +25,8 @@ function Popup(props: iPopup){
     const [modified, setModified] = useState<boolean>(false);
     const [warning, setWarning] = useState<boolean>(false);
     const [originWindows, setOriginWindows] = useState<string>("");
-    const [inValidFields, setInValidFields] = useState<{ name: boolean, desc: boolean, windows: boolean }>({
+    const [inValidFields, setInValidFields] = useState<{ name: boolean, windows: boolean }>({
         name: false,
-        desc: false,
         windows: false
     });
 
@@ -121,22 +120,18 @@ function Popup(props: iPopup){
 
             const updatedFieldState = {
                 name: false,
-                desc: false,
                 windows: false
             }
             if(data.name.length === 0){
                 updatedFieldState.name = true;
             } 
-            if(data.desc.length === 0){
-                updatedFieldState.desc = true;
-            } 
-            
+
             if(data.windows && data.windows.length === 0) {
                 updatedFieldState.windows = true;
             } 
             
             setInValidFields({...updatedFieldState});
-            if(updatedFieldState.name === false && updatedFieldState.desc === false && updatedFieldState.windows === false){
+            if(updatedFieldState.name === false && updatedFieldState.windows === false){
                 callback();
             } else {
                 scrollTop();
@@ -183,20 +178,6 @@ function Popup(props: iPopup){
     }
 
     return (<>
-        {/*warning === true && <div className="absolute flex justify-center items-center top-0 left-0 w-full h-full overflow-hidden bg-tbfColor-middlegrey2 z-[1000]">
-            <div className="p-10 w-[500px] bg-tbfColor-darkpurple rounded-lg drop-shadow-2xl text-center leading-7 text-md">
-                <p className="mb-8 text-white">
-                    You have made changes to this form. Closing it will result in all changes being lost. Do you want to proceed?
-                </p>
-                <button onClick={() => setWarning(false)} className="hover:opacity-60 transition-all ease-in border-2 border-white bg-tbfColor-darkpurple text-white font-semibold px-3 py-2 mx-2 rounded-md">
-                    No, keep editing
-                </button>
-                <button onClick={() => handleClose(true)} className="hover:opacity-60 transition-all ease-in border-2 border-white bg-white text-tbfColor-darkpurple font-semibold px-3 py-2 mx-2 rounded-md">
-                    Yes, close this form
-                </button>
-            </div>
-        </div>*/
-        }
         {warning === true && 
             <MessageBox 
                 title="Warning" 
@@ -220,11 +201,11 @@ function Popup(props: iPopup){
                         </button>
                     </div>
                     <div id="popup-body" className="px-8">
-                        <p className="text-center pb-0 mt-8 mb-0 text-tbfColor-middlegrey2 italic">* mandatory field</p>
+                    
                         <FormField label="Name *" error={inValidFields.name} description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eu mauris dapibus orci aliquam consequat id lacinia lorem. In sed vulputate neque">
                             <input type="text" defaultValue={folderData.inEditFolder?.name} className={predef.textfield_full} onBlur={(e: any) => handleChangeField("name", e.target.value)} />
                         </FormField>
-                        <FormField label="Description *" error={inValidFields.desc} description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eu mauris dapibus orci aliquam consequat id lacinia lorem. In sed vulputate neque">
+                        <FormField label="Description" description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eu mauris dapibus orci aliquam consequat id lacinia lorem. In sed vulputate neque">
                             <textarea maxLength={150} defaultValue={folderData.inEditFolder?.desc} className={predef.textarea_full} onBlur={(e: any) => handleChangeField("desc", e.target.value)}></textarea>
                         </FormField>
                        <FormField label="Launch at startup" description="E.g. the purpose of this folder...">

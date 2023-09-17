@@ -11,6 +11,8 @@ import ListIcon from "../../images/icons/list_icon";
 import GridIcon from "../../images/icons/grid_icon";
 import CheckedIcon from "../../images/icons/checked_icon";
 import PenIcon from "../../images/icons/pen_icon";
+import MultipleFoldersIcon from "../../images/icons/multiple_folders_icon";
+import ConfigIcon from "../../images/icons/config_icon";
 
 function GenericIconButton(props: iGenericIconButton): JSX.Element {
     const { icon, fill, size, onClick } = props;
@@ -38,7 +40,11 @@ function GenericIconButton(props: iGenericIconButton): JSX.Element {
             return <CheckedIcon size={size} fill={fill} />;
         } else if(icon === "edit"){
             return <PenIcon size={size} fill={fill} />;
-        } else {
+        } else if(icon === "multi_folders"){
+            return <MultipleFoldersIcon size={size} fill={fill} />;
+        } else if(icon === "config"){
+            return <ConfigIcon size={size} fill={fill} />;
+        }else {
             return <></>
         }
     } 

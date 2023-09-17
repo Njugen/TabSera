@@ -5,7 +5,8 @@ type tNavLink = {
     onClick: () => void,
 }
 interface iNavlink {
-    label: string,
+    iconSize: number,
+    label?: string,
     url: string,
     isActive: boolean,
     onClick: () => void,

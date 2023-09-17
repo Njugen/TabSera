@@ -13,7 +13,7 @@ function SettingsView(props: any) {
     return (
         <>
             <div id="settings-view">
-                <div className="my-10 mx-auto flex justify-between">
+                <div className="mb-10 mx-auto flex justify-between">
                     <h1 className="text-4xl text-tbfColor-darkpurple font-light inline-block">
                         Settings
                     </h1>
