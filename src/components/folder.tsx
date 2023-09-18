@@ -1,13 +1,9 @@
-"use client"
-
 import { useRef, useState } from "react";
 import ClosedFolderIcon from "../images/icons/closed_folder_icon";
 import Paragraph from "../components/utils/paragraph";
-import PrimaryButton from "./utils/primary_button";
 import FolderControlButton from "./utils/folder_control_button";
 import OpenedFolderIcon from "../images/icons/opened_folder_icon";
 import "../styles/global_utils.module.scss";
-import Switcher from "./utils/switcher";
 import WindowItem from "./window_item";
 import { iFolder } from "../interfaces/folder";
 import { useDispatch } from "react-redux";
@@ -51,10 +47,8 @@ function Folder(props: iFolder) {
         setRemovalWarning(true);
     }
 
-    function renderWindows(){
-        let result = [];
-        
-        result = windows.map((window, index) => <WindowItem disableEdit={true} key={"window-" + index} id={window.id} tabs={window.tabs} />)
+    function renderWindows(): Array<JSX.Element>{
+        const result: Array<JSX.Element> = windows.map((window, index) => <WindowItem disableEdit={true} key={"window-" + index} id={window.id} tabs={window.tabs} />)
 
         return result;
     }
@@ -80,7 +74,6 @@ function Folder(props: iFolder) {
                         </h2>
                     </div>
                     <div className="absolute flex items-center right-6">
-                        {/*viewMode === "list" && <Switcher  label="Auto start" dark={expanded} onCallback={() => {}} />*/}
                         <FolderControlButton icon="open_browser" active={expanded} onClick={() => {}} />
                         <FolderControlButton icon="settings" active={expanded} onClick={onEdit} />
                         <FolderControlButton icon="trash" active={expanded} onClick={handleRemoveClick} />
@@ -93,7 +86,6 @@ function Folder(props: iFolder) {
                             <Paragraph text={desc} />
                         </div>
                     </div>}
-
                     
                     <div className="px-5 mb-8 mt-8">
                         {[...renderWindows()]}

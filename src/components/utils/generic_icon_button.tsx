@@ -1,5 +1,6 @@
-import styles from "./../../styles/global_utils.module.scss";
 import { iGenericIconButton } from "../../interfaces/generic_icon_button";
+import styles from "./../../styles/global_utils.module.scss";
+
 import OpenBrowserIcon from "../../images/icons/open_browser_icon";
 import SettingsIcon from "../../images/icons/settings_icon";
 import TrashIcon from "../../images/icons/trash_icon";
@@ -45,7 +46,7 @@ function GenericIconButton(props: iGenericIconButton): JSX.Element {
         } else if(icon === "config"){
             return <ConfigIcon size={size} fill={fill} />;
         }else {
-            return <></>
+            return <></>;
         }
     } 
 

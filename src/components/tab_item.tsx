@@ -9,8 +9,8 @@ function TabItem(props: iTabItem): JSX.Element {
 
     return (
         <div className="hover:bg-tbfColor-lighterpurple hover:text-tbfColor-darkpurple tab-item border-tbfColor-middlegrey4 hover:border-tbfColor-lightpurple bg-white border my-1 flex items-center justify-between">
-            <a href={url} className="text-sm p-2 tab-item-info w-full" target="_blank">
-                <img src="/" className="w-18 h-18 bg-black inline-block" />
+            <a href={url} rel="noreferrer" className="text-sm p-2 tab-item-info w-full" target="_blank">
+                <img src="/" className="w-18 h-18 bg-black inline-block" alt="Tab icon" />
                 <span className="mx-3">{label}</span>
             </a>
           

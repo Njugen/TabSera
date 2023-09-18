@@ -1,6 +1,3 @@
-import styles from "./../../styles/global_utils.module.scss";
-import { iNavlink } from "../../interfaces/nav_link";
-import {Route, Link, Routes, useLocation} from 'react-router-dom';
 import iMessageBox from './../../interfaces/message_box';
 
 function MessageBox(props: iMessageBox): JSX.Element {

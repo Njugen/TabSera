@@ -1,27 +1,17 @@
-import styles from "../../styles/global_utils.module.scss";
-import { iFormField } from "../../interfaces/form_field";
-import Paragraph from './paragraph';
 import PrimaryButton from './primary_button';
 import { useEffect, useState } from "react";
 import WindowItem from "../window_item";
-import { iTabItem } from "../../interfaces/tab_item";
-import { iEditableTabItem } from "../../interfaces/editable_tab_item";
 import { iWindowItem } from "../../interfaces/window_item";
-import { useDispatch, useSelector } from "react-redux";
-import { deleteFolderAction } from "../../redux/actions/FoldersActions";
+import { useSelector } from "react-redux";
 import randomNumber from "../../tools/random_number";
 import iWindowManager from "../../interfaces/window_manager";
 
 function WindowManager(props: iWindowManager): JSX.Element {
     const [createWindow, setCreateWindow] = useState<boolean>(false);
     const [inCreationId, setIncreationId] = useState<number>(-1);
-    //const { } = props;
 
-    const dispatch = useDispatch();
     const folderData = useSelector((state: any) => state.InEditFolderReducers);
-
     const windows: Array<iWindowItem> = [];
- 
 
     function handleCreateWindow(): void {
         setIncreationId(randomNumber());
@@ -49,10 +39,6 @@ function WindowManager(props: iWindowManager): JSX.Element {
     }
 
     function renderNewWindow(): JSX.Element {
-        // Dispatch this to store
-       // setCreateWindow(false);
-        // Check if id already exists. If not, then create a new window
-       
         const window = folderData.inEditFolder?.windows.filter((target: iWindowItem) => {
            return target.id === inCreationId
         });

@@ -28,3 +28,7 @@ body {
   line-height: 1.5rem; /* 24px */
 
 }
+
+#body {
+  max-width: 100%;
+}

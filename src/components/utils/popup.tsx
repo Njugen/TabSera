@@ -3,23 +3,20 @@ import { useState, useEffect, useRef } from "react";
 import GenericIconButton from './generic_icon_button';
 import PrimaryButton from './primary_button';
 import GreyBorderButton from "./grey_border_button";
-import Paragraph from './paragraph';
 import FormField from "./form_field";
 import * as predef from "../../styles/predef";
 import Switcher from './switcher';
-import Dropdown from './dropdown';
 import { iPopup } from "../../interfaces/popup";
 import styles from "./../../styles/global_utils.module.scss";
 import WindowManager from './window_manager';
 import randomNumber from "../../tools/random_number";
 import { useDispatch, useSelector } from "react-redux";
-import { createFolderAction, initInEditFolder, updateInEditFolder, updateFolderAction, clearInEditFolder } from "../../redux/actions/FoldersActions";
+import { createFolderAction, initInEditFolder, updateInEditFolder, updateFolderAction } from "../../redux/actions/FoldersActions";
 import { iFolder } from "../../interfaces/folder";
-import { iWindowItem } from "../../interfaces/window_item";
 import MessageBox from './message_box';
 
-function Popup(props: iPopup){
-    const { onClose, folder, title, children } = props;
+function Popup(props: iPopup): JSX.Element {
+    const { onClose, folder, title } = props;
     const [slideDown, setSlideDown] = useState<boolean>(false);
     const [isCreate, setIsCreate] = useState<boolean>(false);
     const [modified, setModified] = useState<boolean>(false);
@@ -35,16 +32,10 @@ function Popup(props: iPopup){
     const dispatch = useDispatch();
     const folderData = useSelector((state: any) => state.InEditFolderReducers);
  
-    
-    //const allFoldersData = useSelector((state: any) => state.InEditFolderReducers);
-
     useEffect(() => {
         let payload: iFolder | undefined = folder;
    
-        // Slide the popup down
         setSlideDown(true);
-
-        // Generate random id and dispatch to store
      
         if(!payload){
             const randId = randomNumber();
@@ -60,17 +51,7 @@ function Popup(props: iPopup){
                     close_previous: false,
                     auto_add: false
                 },
-                windows: [/*{
-                    id: 1,
-                    tabs: [
-                        {
-                            id: 1,
-                            label: "test tab",
-                            url: "http://google.com"
-                        }
-                    ],
-                    initExpand: true
-                }*/],
+                windows: [],
             }
             setIsCreate(true);
         }
@@ -94,20 +75,16 @@ function Popup(props: iPopup){
     }
 
     useEffect(() => {
-         
         if(windowListChanged() === true){
             setModified(true);
         }
     }, [folderData]);
 
     function handleChangeField(key: string, value: any){
-        //console.log("folder", folderData.inEditFolder);
         if(!folderData.inEditFolder) return;
-      
         
         if(modified === false && JSON.stringify(folderData.inEditFolder[key]) !== JSON.stringify(value)) setModified(true);
         dispatch(updateInEditFolder(key, value));
-     
     }
 
     function scrollTop(): void {
@@ -131,6 +108,7 @@ function Popup(props: iPopup){
             } 
             
             setInValidFields({...updatedFieldState});
+            
             if(updatedFieldState.name === false && updatedFieldState.windows === false){
                 callback();
             } else {
@@ -157,12 +135,12 @@ function Popup(props: iPopup){
 
     function handleSave(): void {
         validateForm(() => {
-          
             if(props.folder){
                 dispatch(updateFolderAction(folderData.inEditFolder));
             } else {
                 dispatch(createFolderAction(folderData.inEditFolder));
             }   
+
             handleClose(true);
         });
        

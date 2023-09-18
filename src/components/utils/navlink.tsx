@@ -1,6 +1,6 @@
 import styles from "./../../styles/global_utils.module.scss";
 import { iNavlink } from "../../interfaces/nav_link";
-import {Route, Link, Routes, useLocation} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import MultipleFoldersIcon from "../../images/icons/multiple_folders_icon";
 import ConfigIcon from "../../images/icons/config_icon";
 

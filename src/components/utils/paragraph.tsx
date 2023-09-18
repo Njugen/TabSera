@@ -1,6 +1,6 @@
 import { iTextContents } from "../../interfaces/text_contents";
 
-function Paragraph(props: iTextContents){
+function Paragraph(props: iTextContents): JSX.Element {
     const { text, size, lineheight} = props;
     
     return (

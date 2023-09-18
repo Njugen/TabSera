@@ -1,7 +1,7 @@
 import styles from "./../../styles/global_utils.module.scss";
 import { iTextButton } from "../../interfaces/text_button";
 
-function PrimaryButton(props: iTextButton){
+function PrimaryButton(props: iTextButton): JSX.Element{
     const { text, onClick } = props;
     
     return (

@@ -4,16 +4,16 @@ import Folder from '../components/folder'
 import "./../styles/global_utils.module.scss";
 import PrimaryButton from '../components/utils/primary_button';
 import Popup from '../components/utils/popup';
-import {  useState, useEffect } from "react";
+import {  useState } from "react";
 
 import GenericIconButton from '../components/utils/generic_icon_button';
 import * as predef from "../styles/predef";
 import { iFolder } from '../interfaces/folder';
 import { useDispatch, useSelector } from 'react-redux';
-import { setUpFoldersAction, clearInEditFolder } from '../redux/actions/FoldersActions';
+import { clearInEditFolder } from '../redux/actions/FoldersActions';
 import Paragraph from '../components/utils/paragraph';
 
-function FolderView(props: any) {
+function FolderView(props: any): JSX.Element {
     const [editFolderId, setEditFolderId] = useState<number | null>(null);
     const [createFolder, setCreateFolder] = useState<boolean>(false);
     const [viewMode, setViewMode] = useState<string>("grid");
@@ -29,19 +29,15 @@ function FolderView(props: any) {
     function handleShowSearchField(): void {
         setShowSearchField(showSearchField === false ? true : false);
     }
-   
     
     function handlePopupClose(): void {
         setEditFolderId(null);
         setCreateFolder(false);
+
         dispatch(clearInEditFolder());
-
-        // Remove inEdit from store
-       
     }
-
     
-    function renderPopup(){
+    function renderPopup(): JSX.Element {
         let render;
       
         if(createFolder === true){
@@ -64,9 +60,10 @@ function FolderView(props: any) {
     }
 
     function renderFolders(): Array<JSX.Element> {
-        let result: Array<JSX.Element>  = [];
-    
-        result = foldersData.folders.map((folder: iFolder, i: number) => <Folder onEdit={() => setEditFolderId(folder.id)} key={folder.id} type={folder.type} id={folder.id} viewMode={folder.viewMode} name={folder.name} desc={folder.desc} settings={folder.settings} windows={folder.windows} />)
+        let result: Array<JSX.Element> = [];
+        result = foldersData.folders.map((folder: iFolder, i: number) => {
+            return <Folder onEdit={() => setEditFolderId(folder.id)} key={folder.id} type={folder.type} id={folder.id} viewMode={folder.viewMode} name={folder.name} desc={folder.desc} settings={folder.settings} windows={folder.windows} />
+        });
 
         return result.length > 0 ? result : [<></>];
     }

@@ -9,7 +9,7 @@ import CollapseIcon from "../../images/icons/collapse_icon";
 function FolderControlButton(props: iFolderIconButton): JSX.Element {
     const { icon, active, onClick } = props;
     
-    function renderIcon(): any {
+    function renderIcon(): JSX.Element {
         if(icon === "trash"){
             return <TrashIcon size={23} fill={active === false ? "#000" : "#fff"} />;
         } else if(icon === "settings"){
@@ -23,6 +23,7 @@ function FolderControlButton(props: iFolderIconButton): JSX.Element {
                 return <ExpandIcon size={28} fill={"#000"} />;
             }
         }
+        return <></>;
     }
     
     return (

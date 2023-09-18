@@ -61,9 +61,7 @@ function App() {
 
   function expandedSidebarNav(): JSX.Element {
     return <>
-      <button className="float-right h-10 w-8 bg-tbfColor-darkpurple" onClick={handleSidebarExpandButton}>
-        <LeftIcon size={30} fill="#fff" />
-      </button>  
+
       <div id="brand-section" className="h-32">
 
       </div>  
@@ -75,15 +73,17 @@ function App() {
 
   function contractedSidebarNav(): JSX.Element {
     return <>
-      <button className="flex justify-center items-center h-10 w-full bg-tbfColor-darkpurple" onClick={handleSidebarExpandButton}>
-        <RightIcon size={30} fill="#fff" />
-      </button>  
+
       <div id="brand-section" className="h-32">
 
       </div>  
       <div id="main-menu" className="flex flex-col items-center justify-center">
-        <Navlink key="folders-nav-link" iconSize={32} url="/options" isActive={activeNavLink === "options" ? true : false} onClick={() => setActiveNavLink("options")} />,
-        <Navlink key="settings-nav-link" iconSize={32} url="/settings" isActive={activeNavLink === "settings" ? true : false} onClick={() => setActiveNavLink("settings")} />
+        <div className="my-2">
+          <Navlink key="folders-nav-link" iconSize={32} url="/options" isActive={activeNavLink === "options" ? true : false} onClick={() => setActiveNavLink("options")} />
+        </div>
+        <div className="my-2">
+          <Navlink key="settings-nav-link" iconSize={32} url="/settings" isActive={activeNavLink === "settings" ? true : false} onClick={() => setActiveNavLink("settings")} />
+        </div>
       </div>
     </>;
   }
@@ -91,9 +91,12 @@ function App() {
   function renderViewWrapper(view: JSX.Element): JSX.Element {
     return (<>
           <div className="flex h-full">
-            <div id="sidebar" className={`${styles.sidebar_shadow} ${sidebarExpanded === true ? "min-w-[200px]" : "min-w-[70px]"} transition-all ease-in duration-200 border-r  border-tbfColor-middlegrey bg-white`}>
+            <div id="sidebar" className={`relative ${styles.sidebar_shadow} ${sidebarExpanded === true ? "min-w-[200px]" : "min-w-[70px]"} transition-all ease-in duration-200 border-r  border-tbfColor-middlegrey bg-white`}>
+              <button className={`flex justify-center items-center bottom-0 right-0 float-right h-10 ${sidebarExpanded === true ? "w-8" : "w-full"} bg-tbfColor-darkpurple`} onClick={handleSidebarExpandButton}>
+                {sidebarExpanded === true ? <LeftIcon size={30} fill="#fff" /> : <RightIcon size={30} fill="#fff" />}
+              </button>  
+              {sidebarExpanded === true ? expandedSidebarNav() : contractedSidebarNav()}
               
-            {sidebarExpanded === true ? expandedSidebarNav() : contractedSidebarNav()}
             </div>
             <div id="body" className="container w-full mx-8 my-4">
               {view}

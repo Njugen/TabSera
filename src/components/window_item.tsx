@@ -1,5 +1,4 @@
-import { useRef, useState, useEffect } from "react";
-
+import { useState, useEffect } from "react";
 import GenericIconButton from "./utils/generic_icon_button";
 import PrimaryButton from "./utils/primary_button";
 import GreyBorderButton from "./utils/grey_border_button";
@@ -22,7 +21,6 @@ function WindowItem(props: iWindowItem): JSX.Element {
     const folderData = useSelector((state: any) => state.InEditFolderReducers);
 
     useEffect(() => {
-      
         if(newTab === true) setNewTab(false);
     }, [folderData]);
 
@@ -46,9 +44,6 @@ function WindowItem(props: iWindowItem): JSX.Element {
     }
 
     function handleMark(tabId: number, checked: boolean): void {
-
-        
-
         if(checked === true){
             const findInState = markedTabs.findIndex((target) => target === tabId);
             if(findInState < 0){  
@@ -71,9 +66,7 @@ function WindowItem(props: iWindowItem): JSX.Element {
                 const markedTabIndex = markedTabs.findIndex((target) => target === tab.id);
            
                 if(markedTabIndex === -1){
-                    // an index exists. Save it
-                    newTabCollection.push(tab);
-                    
+                    newTabCollection.push(tab);                    
                 }
             });
 
@@ -111,10 +104,8 @@ function WindowItem(props: iWindowItem): JSX.Element {
     
     function evaluateNewTabRender(): Array<JSX.Element> {
         if(newTab === true){
-            
             return [...renderTabs(), renderEditTab(id)];
         } else {
-
             return [...renderTabs()];
         }
     }

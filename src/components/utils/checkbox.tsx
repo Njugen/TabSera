@@ -1,11 +1,4 @@
-import { useRef, useState, useEffect } from "react";
-import styles from "./../../styles/global_utils.module.scss";
-import OpenBrowserIcon from "../../images/icons/open_browser_icon";
-import SettingsIcon from "../../images/icons/settings_icon";
-import TrashIcon from "../../images/icons/trash_icon";
-import ExpandIcon from "../../images/icons/expand_icon";
-import CollapseIcon from "../../images/icons/collapse_icon";
-import Paragraph from '../../components/utils/paragraph';
+import { useState, useEffect } from "react";
 import CheckedIcon from "../../images/icons/checked_icon";
 import { iCheckbox } from "../../interfaces/checkbox";
 
