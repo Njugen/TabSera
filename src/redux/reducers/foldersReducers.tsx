@@ -1,6 +1,12 @@
 import { iFolder } from "../../interfaces/folder";
-import { CREATE_FOLDER, READ_FOLDER, UPDATE_FOLDER, DELETE_FOLDER, SET_UP_FOLDERS } from "../types/foldersTypes";
+import { CREATE_FOLDER, READ_FOLDER, READ_ALL_FOLDERS, UPDATE_FOLDER, DELETE_FOLDER, SET_UP_FOLDERS, READ_ALL_FOLDERS_FROM_BROWSER } from "../types/foldersTypes";
 import { EDIT_FOLDER, UPDATE_IN_EDIT_FOLDER, CLEAR_IN_EDIT_FOLDER, UPDATE_WINDOW_MANAGER } from "../types/inEditFoldersTypes";
+
+import { saveToStorage, getFromStorage } from "../../services/webex_api/storage";
+
+
+const createAsyncThunk = require("@reduxjs/toolkit");
+
 
 const initialState: {
     folders: Array<iFolder>
@@ -126,12 +132,25 @@ function FoldersReducers(state = initialState, action: any) {
             ...state,
             folders: data
         }
-    }
-    if(type === CREATE_FOLDER){
+    } else if(type === CREATE_FOLDER){
+        const updatedFolders = [ ...state.folders, action.data ];
+   
         return {
             ...state,
-            folders: [ ...state.folders, action.data ]
+            folders: updatedFolders
         }
+    } else if(type === READ_ALL_FOLDERS){
+       
+        return {
+            ...state,
+            folders: data
+        }
+    } else if(type === READ_ALL_FOLDERS_FROM_BROWSER) {
+        console.log("DDaDD", data);
+       return {
+        ...state,
+        folders: data
+       } 
     } else if(type === READ_FOLDER){
         return state.folders.filter((target) => target.id === data);
     } else if(type === UPDATE_FOLDER){
@@ -142,13 +161,15 @@ function FoldersReducers(state = initialState, action: any) {
                 return item;
             }
         });
-
+        
         return {
             ...state,
             folders: updatedFolders
         }
     } else if(type === DELETE_FOLDER){
         const updatedFolders = state.folders.filter((target) => target.id !== data)
+
+        if(updatedFolders.length === 0) saveToStorage("local", "folders", []);
 
         return {
             ...state,

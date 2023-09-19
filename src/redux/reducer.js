@@ -3,6 +3,7 @@ import { combineReducers } from "redux";
 import thunk from "redux-thunk";
 import { FoldersReducers, InEditFolderReducers } from "./reducers/foldersReducers";
 
+
 const combinedReducers = combineReducers({
     FoldersReducers: FoldersReducers,
     InEditFolderReducers: InEditFolderReducers
@@ -10,5 +11,5 @@ const combinedReducers = combineReducers({
 
 const middleware = applyMiddleware(thunk);
 const store = createStore(combinedReducers, middleware);
-
+store.subscribe(()=>{});
 export { store }

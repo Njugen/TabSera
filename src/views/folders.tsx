@@ -4,14 +4,16 @@ import Folder from '../components/folder'
 import "./../styles/global_utils.module.scss";
 import PrimaryButton from '../components/utils/primary_button';
 import Popup from '../components/utils/popup';
-import {  useState } from "react";
+import { useEffect, useState } from "react";
 
 import GenericIconButton from '../components/utils/generic_icon_button';
 import * as predef from "../styles/predef";
 import { iFolder } from '../interfaces/folder';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearInEditFolder } from '../redux/actions/FoldersActions';
+import { clearInEditFolder, readAllFoldersFromBrowserAction } from '../redux/actions/FoldersActions';
 import Paragraph from '../components/utils/paragraph';
+
+import { saveToStorage, getFromStorage } from '../services/webex_api/storage';
 
 function FolderView(props: any): JSX.Element {
     const [editFolderId, setEditFolderId] = useState<number | null>(null);
@@ -22,6 +24,15 @@ function FolderView(props: any): JSX.Element {
     const dispatch = useDispatch();
     const foldersData = useSelector((state: any) => state.FoldersReducers);
 
+
+    useEffect(() => {
+        getFromStorage("local", "folders", (data) => {  
+            console.log("DDD", data.folders);
+            dispatch(readAllFoldersFromBrowserAction(data.folders));
+        })
+        //readAllFoldersFromBrowser();
+    }, []);
+
     function handleChangeViewMode(): void {
         setViewMode(viewMode === "list" ? "grid" : "list");
     }
@@ -29,14 +40,22 @@ function FolderView(props: any): JSX.Element {
     function handleShowSearchField(): void {
         setShowSearchField(showSearchField === false ? true : false);
     }
-    
+
     function handlePopupClose(): void {
         setEditFolderId(null);
         setCreateFolder(false);
 
+
         dispatch(clearInEditFolder());
     }
     
+    useEffect(() => {
+        
+        if(foldersData.folders.length > 0){
+            saveToStorage("local", "folders", foldersData.folders);
+        } 
+    }, [foldersData]);
+
     function renderPopup(): JSX.Element {
         let render;
       

@@ -1,7 +1,21 @@
 import { iFolder } from "../../interfaces/folder";
 import { iTabItem } from "../../interfaces/tab_item";
-import { CREATE_FOLDER, READ_FOLDER, UPDATE_FOLDER, DELETE_FOLDER, SET_UP_FOLDERS } from "../types/foldersTypes";
-import { EDIT_FOLDER, UPDATE_IN_EDIT_FOLDER, CLEAR_IN_EDIT_FOLDER, UPDATE_WINDOW_MANAGER } from "../types/inEditFoldersTypes";
+import { 
+    CREATE_FOLDER, 
+    READ_FOLDER, 
+    READ_ALL_FOLDERS, 
+    UPDATE_FOLDER, 
+    DELETE_FOLDER, 
+    SET_UP_FOLDERS, 
+    READ_ALL_FOLDERS_FROM_BROWSER} from "../types/foldersTypes";
+
+import { 
+    EDIT_FOLDER, 
+    UPDATE_IN_EDIT_FOLDER, 
+    CLEAR_IN_EDIT_FOLDER, 
+    UPDATE_WINDOW_MANAGER } from "../types/inEditFoldersTypes";
+
+
 
 function createFolderAction(folder: iFolder){
     return {
@@ -38,6 +52,15 @@ function setUpFoldersAction(folder: Array<iFolder>){
     }
 }
 
+// ASYNC
+
+function readAllFoldersFromBrowserAction(payload: any){
+    return {
+        type: READ_ALL_FOLDERS_FROM_BROWSER,
+        data: payload
+    }
+}
+
 ///////////////
 
 function initInEditFolder(folder: iFolder) {
@@ -71,6 +94,7 @@ function updateWindowManager(windowId: number, payload: iTabItem){
 export {
     createFolderAction,
     readFolderAction,
+    readAllFoldersFromBrowserAction,
     updateFolderAction,
     deleteFolderAction,
     setUpFoldersAction,
@@ -78,5 +102,5 @@ export {
     initInEditFolder,
     updateInEditFolder,
     clearInEditFolder,
-    updateWindowManager
+    updateWindowManager,
 }
