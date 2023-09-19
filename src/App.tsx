@@ -91,12 +91,13 @@ function App() {
   function renderViewWrapper(view: JSX.Element): JSX.Element {
     return (<>
           <div className="flex h-full">
-            <div id="sidebar" className={`relative ${styles.sidebar_shadow} ${sidebarExpanded === true ? "min-w-[200px]" : "min-w-[70px]"} transition-all ease-in duration-200 border-r  border-tbfColor-middlegrey bg-white`}>
-              <button className={`flex justify-center items-center bottom-0 right-0 float-right h-10 ${sidebarExpanded === true ? "w-8" : "w-full"} bg-tbfColor-darkpurple`} onClick={handleSidebarExpandButton}>
-                {sidebarExpanded === true ? <LeftIcon size={30} fill="#fff" /> : <RightIcon size={30} fill="#fff" />}
+            <div id="sidebar" className={`relative ${styles.sidebar_shadow} ${sidebarExpanded === true ? "min-w-[200px]" : "min-w-[70px]"} transition-all ease-in duration-200 border-r items-end flex flex-col justify-between border-tbfColor-middlegrey bg-white`}>
+              <div className="w-full">
+                {sidebarExpanded === true ? expandedSidebarNav() : contractedSidebarNav()}
+              </div>
+              <button className={`flex justify-center items-center bottom-0 right-0 float-right h-6 ${sidebarExpanded === true ? "w-full" : "w-full"} bg-tbfColor-middlegrey4 hover:opacity-70 transition-all ease-in`} onClick={handleSidebarExpandButton}>
+                {sidebarExpanded === true ? <LeftIcon size={20} fill="#828282" /> : <RightIcon size={20} fill="#828282" />}
               </button>  
-              {sidebarExpanded === true ? expandedSidebarNav() : contractedSidebarNav()}
-              
             </div>
             <div id="body" className="container w-full mx-8 my-4">
               {view}

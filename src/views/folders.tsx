@@ -48,7 +48,6 @@ function FolderView(props: any): JSX.Element {
             const input: iFolder = {...targetFolder[0]};
 
             if(targetFolder.length > 0){
-      
                 render = <Popup title={`Edit folder ${targetFolder[0].id}`} folder={input} onClose={handlePopupClose}>test</Popup>;
             } else {
                 render = <></>;
@@ -85,7 +84,7 @@ function FolderView(props: any): JSX.Element {
 
     function renderMessageBox(): JSX.Element {
         return <>
-            <div className="flex flex-col items-center justify-center">
+            <div className="flex flex-col items-center justify-center h-[83.3333333vh]">
                 <Paragraph text="You currently have no folders available. Please, create a new folder or import previous folders." />
                 <div className="mt-8">
                     <PrimaryButton text="Import folders" onClick={() => setCreateFolder(true)} />
@@ -106,7 +105,7 @@ function FolderView(props: any): JSX.Element {
         <>
             {renderPopup()}
             <div id="folders-view">
-                <div className="mb-10 mx-auto flex justify-between">
+                <div className="mb-10 h-1/6 mx-auto flex justify-between">
                     <h1 className="text-4xl text-tbfColor-darkpurple font-light inline-block">
                         Folders
                     </h1>
