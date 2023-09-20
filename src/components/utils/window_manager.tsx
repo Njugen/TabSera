@@ -71,7 +71,7 @@ function WindowManager(props: iWindowManager): JSX.Element {
     }
 
     return (
-        <div className="my-6 p-6 min-h-[200px] bg-tbfColor-lightgrey flex flex-col items-center justify-center">
+        <div className="my-6 py-6 min-h-[200px] flex flex-col items-center justify-center">
             { renderContents() }
             { renderActionButtons() }            
         </div> 

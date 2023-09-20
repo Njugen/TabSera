@@ -8,7 +8,7 @@ function Navlink(props: iNavlink): JSX.Element {
     const { label, url, isActive, iconSize, onClick } = props;
 
     const activeLinkStyle: String = "font-semibold text-tbfColor-lightpurple";
-    const inActiveLinkStyle: String = "font-semibold text-tbfColor-middlegrey2 hover:border-tbfColor-middlegrey2";
+    const inActiveLinkStyle: String = "font-normal text-tbfColor-middlegrey3 hover:border-tbfColor-middlegrey3";
 
     function renderIcon(): JSX.Element {
       if(url === "/options"){
@@ -20,7 +20,7 @@ function Navlink(props: iNavlink): JSX.Element {
     }
 
     return (
-        <Link to={url} className={`text-left flex items-center text-xl ${isActive === true ? activeLinkStyle : inActiveLinkStyle} ${styles.opacity_hover_effect} ${label && "py-2"} mx-1 border-color border-tbfColor-lgrey block`} onClick={onClick}>
+        <Link to={url} className={`text-left flex items-center text-lg ${isActive === true ? activeLinkStyle : inActiveLinkStyle} ${styles.opacity_hover_effect} ${label && "py-2"} mx-1 border-color border-tbfColor-lgrey block`} onClick={onClick}>
           {renderIcon()} {label && <span className="ml-3">{label}</span>}
         </Link>
     ); 

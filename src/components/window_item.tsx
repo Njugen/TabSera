@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateInEditFolder } from "../redux/actions/FoldersActions";
 
 function WindowItem(props: iWindowItem): JSX.Element {
-    const [expanded, setExpanded] = useState<boolean>(false);
+    const [expanded, setExpanded] = useState<boolean>(true);
     const [viewMode, setViewMode] = useState<string>("list");
     const [newTab, setNewTab] = useState<boolean>(false);
     const [editTab, setEditTab] = useState<number | null>(null);
@@ -115,25 +115,25 @@ function WindowItem(props: iWindowItem): JSX.Element {
     },[])
 
     return (
-        <div className="window-item w-full" id={`window-${id}`}>
-            <div className="flex justify-between items-center w-full border-b border-black pb-2">
-                <h3 className="text-lg">
+        <div className="window-item w-full bg-tbfColor-lighterpurple3 px-3 py-3 rounded-md mb-3" id={`window-${id}`}>
+            <div className="flex justify-between items-center w-full">
+                <h3 className="text-sm font-semibold text-tbfColor-lightpurple">
                     {`Window ${id}`}
                 </h3>
                 <div className={`tab-settings`}>
-                    <GenericIconButton icon="grid" size={24} fill="#000" onClick={handleChangeViewMode} />
-                    {disableEdit === false && <GenericIconButton icon="trash" size={24} fill="#000" onClick={handleDeleteWindow} />}
-                    <GenericIconButton icon={expanded === true ? "collapse" : "expand"} size={30} fill="#000" onClick={handleExpand} />
+                    <GenericIconButton icon="grid" size={20} fill="#6D00C2" onClick={handleChangeViewMode} />
+                    {disableEdit === false && <GenericIconButton icon="trash" size={20} fill="#6D00C2" onClick={handleDeleteWindow} />}
+                    <GenericIconButton icon={expanded === true ? "collapse" : "expand"} size={20} fill="#6D00C2" onClick={handleExpand} />
                 </div>
             </div>
             <div className={`tabs-list mt-6 ${expanded === true ? "block" : "hidden"}`}>
-                <div className={`${viewMode === "list" ? "mx-auto" : "grid grid-cols-3 gap-x-4 gap-y-0"}`}>
+                <div className={`${viewMode === "list" ? "mx-auto" : "grid grid-cols-3 gap-x-3 gap-y-0"}`}>
                 {tabs.length > 0 ? [...evaluateNewTabRender()] : [renderEditTab(id)]}
                 </div>
-                <div className="mt-10 flex justify-end">
-                    {tabs.length > 0 && disableEdit === false && <GreyBorderButton text="Delete" onClick={handleDeleteTabs} />}
+                {tabs.length > 0 && disableEdit === false && <div className="mt-10 flex justify-end">
+                    {markedTabs.length > 0 && <GreyBorderButton text="Delete tabs" onClick={handleDeleteTabs} />}
                     {disableEdit === false && <PrimaryButton text="New tab" onClick={handleAddNewTab} />}
-                </div>
+                </div>}
             </div>
             
         </div>

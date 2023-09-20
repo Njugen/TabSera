@@ -4,11 +4,11 @@ interface CssExports {
   'absolute': string;
   'bg-black': string;
   'bg-tbfColor-lighterpurple': string;
-  'bg-tbfColor-lighterpurple2': string;
+  'bg-tbfColor-lighterpurple3': string;
   'bg-tbfColor-lightgrey': string;
   'bg-tbfColor-lightpurple': string;
   'bg-tbfColor-middlegrey': string;
-  'bg-tbfColor-middlegrey3': string;
+  'bg-tbfColor-middlegrey4': string;
   'bg-white': string;
   'block': string;
   'border': string;
@@ -17,13 +17,13 @@ interface CssExports {
   'border-b': string;
   'border-b-2': string;
   'border-black': string;
-  'border-tbfColor-lighterpurple2': string;
+  'border-tbfColor-lighterpurple3': string;
   'border-tbfColor-lightgrey': string;
   'border-tbfColor-lightpurple': string;
   'border-tbfColor-middlegrey': string;
-  'border-tbfColor-middlegrey2': string;
   'border-tbfColor-middlegrey3': string;
   'border-tbfColor-middlegrey4': string;
+  'border-tbfColor-middlegrey2': string;
   'border-tbfColor-middlegrey5': string;
   'bottom-10': string;
   'bottom-12': string;
@@ -65,7 +65,7 @@ interface CssExports {
   'hover:bg-tbfColor-lighterpurple': string;
   'hover:bg-tbfColor-lightgrey': string;
   'hover:border-tbfColor-lightpurple': string;
-  'hover:border-tbfColor-middlegrey2': string;
+  'hover:border-tbfColor-middlegrey3': string;
   'hover:border-tbfColor-middlegrey5': string;
   'hover:cursor-pointer': string;
   'hover:opacity-70': string;
@@ -148,7 +148,7 @@ interface CssExports {
   'text-tbfColor-darkergrey': string;
   'text-tbfColor-darkpurple': string;
   'text-tbfColor-lightpurple': string;
-  'text-tbfColor-middlegrey2': string;
+  'text-tbfColor-middlegrey3': string;
   'text-white': string;
   'text-xl': string;
   'text-xs': string;

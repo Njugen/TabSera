@@ -11,11 +11,11 @@ function FolderControlButton(props: iFolderIconButton): JSX.Element {
     
     function renderIcon(): JSX.Element {
         if(icon === "trash"){
-            return <TrashIcon size={23} fill={active === false ? "#000" : "#fff"} />;
+            return <TrashIcon size={17} fill={active === false ? "#000" : "#fff"} />;
         } else if(icon === "settings"){
-            return <SettingsIcon size={23} fill={active === false ? "#000" : "#fff"} />;
+            return <SettingsIcon size={17} fill={active === false ? "#000" : "#fff"} />;
         } else if(icon === "open_browser"){
-            return <OpenBrowserIcon size={23} fill={active === false ? "#000" : "#fff"} />;
+            return <OpenBrowserIcon size={17} fill={active === false ? "#000" : "#fff"} />;
         } else if(icon === "collapse_expand"){
             if(active === true){
                 return <CollapseIcon size={28} fill={"#fff"} />;
@@ -27,7 +27,7 @@ function FolderControlButton(props: iFolderIconButton): JSX.Element {
     }
     
     return (
-        <button className={`${icon !== "collapse_expand" && "mx-3"} ${icon === "collapse_expand" && "ml-5"} ${styles.opacity_hover_effect}`} onClick={onClick}>
+        <button className={`${icon !== "collapse_expand" && "mx-2"} ${icon === "collapse_expand" && "ml-3"} ${styles.opacity_hover_effect}`} onClick={onClick}>
             {renderIcon()}
         </button>
     ); 

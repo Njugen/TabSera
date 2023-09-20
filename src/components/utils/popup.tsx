@@ -178,7 +178,7 @@ function Popup(props: iPopup): JSX.Element {
                             <GenericIconButton icon="close" size={34} fill="rgba(0,0,0,0.2)" onClick={() => handleClose()} />
                         </button>
                     </div>
-                    <div id="popup-body" className="px-8">
+                    <div id="popup-body" className="px-8 pt-6">
                     
                         <FormField label="Name *" error={inValidFields.name} description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eu mauris dapibus orci aliquam consequat id lacinia lorem. In sed vulputate neque">
                             <input type="text" defaultValue={folderData.inEditFolder?.name} className={predef.textfield_full} onBlur={(e: any) => handleChangeField("name", e.target.value)} />

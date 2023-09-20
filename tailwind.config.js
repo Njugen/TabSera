@@ -14,25 +14,25 @@ module.exports = {
         "500": "500"
       },
       colors: {
-        tbfColor: {
-                  
+        tbfColor: {   
           darkpurple: '#6D00C2',
-          lighterpurple: 'rgba(109,0,194,0.3)',
-          lighterpurple2: 'rgba(109,0,194,0.3)',
-          lightpurple: 'rgba(109,0,194,0.5)',
+          lightpurple: '#a36dce',
+          lighterpurple: '#d5bbe9',
+          lighterpurple1: '#e3cef4',
+          lighterpurple2: '#d5bbe9',
+          lighterpurple3: '#f0e5f9',
           lightgrey: '#f9f9f9',
           lightergrey: '#e8e8e8',
-          middlegrey: 'rgba(0,0,0,0.1)',
-          middlegrey2: 'rgba(0,0,0,0.4)',
-          middlegrey3: 'rgba(0,0,0,0.2)',
-          middlegrey4: 'rgba(0,0,0,0.15)',
-          middlegrey5: 'rgba(0,0,0,0.05)',
+          middlegrey: '#e0e0e0',
+          middlegrey2: '#c7c7c7',
+          middlegrey3: '#9f9f9f',
+          middlegrey4: '#cccccc',
           darkgrey: '#aeaeae',
           darkergrey: '#5c5c5c',
         }
       },
       dropShadow: {
-        contractedFolder: '0 0 2px rgba(0,0,0,0.25)',
+        contractedFolder: '0 0 2px rgba(0,0,0,0.1)',
         no_pos: '0 8px 5px rgba(0,0,0,0.1)'
       },
       backgroundImage: {

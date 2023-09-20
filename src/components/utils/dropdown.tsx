@@ -34,7 +34,7 @@ function Dropdown(props: iDropdown): JSX.Element {
         if(selected === id){
             return "hover:opacity-70 border-b bottom flex items-center text-sm text-white weight-bold px-3 py-6 h-10 w-full bg-tbfColor-lightpurple h-9";
         } else {
-            return "hover:bg-tbfColor-lightgrey border-b border-tbfColor-middlegrey hover:border-tbfColor-middlegrey5 flex items-center text-sm text-tbfColor-darkergrey weight-bold px-3 py-6 h-10 w-full";
+            return "hover:bg-tbfColor-lightgrey border-b border-tbfColor-middlegrey hover:border-tbfColor-lightergrey flex items-center text-sm text-tbfColor-darkergrey weight-bold px-3 py-6 h-10 w-full";
         }
     }
 
@@ -97,7 +97,7 @@ function Dropdown(props: iDropdown): JSX.Element {
 
     return (
         
-        <div ref={dropdown} className={`hover:cursor-pointer bg-white relative text-sm w-full text-tbfColor-darkergrey rounded-lg h-10 border transition-all duration-75 ${showSubMenuContainer === true ? " border-tbfColor-lightpurple" : "border-tbfColor-middlegrey3"}`}>
+        <div ref={dropdown} className={`hover:cursor-pointer bg-white relative text-sm w-full text-tbfColor-darkergrey rounded-lg h-10 border transition-all duration-75 ${showSubMenuContainer === true ? " border-tbfColor-lightpurple" : "border-tbfColor-middlegrey4"}`}>
             <div id={`dropdown-tag-${tag}-selector`} className="flex items-center justify-between mx-3 h-full" onClick={handleShowSubMenu}>          
                 <span className="hover:cursor-pointer">{!getSelectedOption() ? preset.label : getSelectedOption()!.label}</span>
                 {showSubMenuContainer === true ? <CollapseIcon size={28} fill={"#000"} /> : <ExpandIcon size={28} fill={"#000"} />}

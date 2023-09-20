@@ -1,5 +1,5 @@
 # TabSera - Browser Extension
-Tab Folders is a browser extension which enables the user to sort, group and manage browser windows and tabs.
+TabSera is a browser extension which lets the user to sort, group and manage browser windows and tabs.
 
 ## Installation
 
@@ -82,7 +82,7 @@ I would appreciate feedback and suggestions on how to improve this plugin. Repor
 Minor updates and improvements will be provided from time to time. There is no definite roadmap or schedule.
 
 # Copyright
-TabSera was created by me (Thai Nguyen) and is a properietary web browser plugin. This plugin may be used for free in private and professional environments. The plugin may not be used as part of commercial products or brands. The repository itself and any modified code derived from it may not be re-distributed/monetized.
+TabSera was created by me (Thai Nguyen) and is a properietary web browser plugin. This plugin may be used for free in private and professional environments (no limits, no obligations, no features behind paywalls either!). The plugin may not be used as part of commercial products or brands. The repository itself and any modified code derived from it may not be re-distributed/monetized.
 
 # Contact information
 privat_thai_nguyen@hotmail.com

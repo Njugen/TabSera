@@ -9,12 +9,14 @@ import { iFolder } from "../interfaces/folder";
 import { useDispatch } from "react-redux";
 import { deleteFolderAction } from "../redux/actions/FoldersActions";
 import MessageBox from "./utils/message_box";
+import Checkbox from './utils/checkbox';
+
 
 function Folder(props: iFolder) {
     const contentsRef = useRef<HTMLDivElement>(null);
     const headerRef = useRef<HTMLDivElement>(null)
     const [expanded, setExpanded] = useState<boolean>(false);
-    const [removalWarning, setRemovalWarning] = useState<boolean>(false);
+    
     const dispatch = useDispatch();
 
     const { 
@@ -25,6 +27,7 @@ function Folder(props: iFolder) {
         viewMode,
         settings,
         windows,
+        onDelete,
         onEdit 
       } = props;
     
@@ -32,21 +35,16 @@ function Folder(props: iFolder) {
         if(contentsRef.current === null || headerRef.current === null) return;
   
             if(expanded === false){
-                headerRef.current.className = `relative container tbf-${type} drop-shadow-contractedFolder bg-tbfColor-lightpurple px-5 h-14 flex items-center transition-all ease-in duration-400`;
-                contentsRef.current.className = "max-h-[2000px] overflow-none transition-all ease-in duration-700 bg-white border border-tbfColor-lightpurple";
+                headerRef.current.className = `relative tbf-${type} bg-tbfColor-lightpurple  px-3 h-10 flex items-center transition-all ease-in duration-400 rounded-t-md`;
+                contentsRef.current.className = "max-h-[2000px] overflow-none transition-all ease-in duration-700 bg-white border border-tbfColor-lightpurple rounded-b-md";
                 setExpanded(true);
             } else {
-                headerRef.current.className = `relative container tbf-${type} drop-shadow-contractedFolder bg-white px-5 h-14 flex items-center transition-all ease-out duration-600 bg-white`;
-                contentsRef.current.className = "max-h-0 overflow-hidden transition-all ease-out duration-300 bg-white";
+                headerRef.current.className = `relative tbf-${type} hover:border-tbfColor-lighterpurple border-tbfColor-lightergrey border bg-white hover:bg-tbfColor-lighterpurple3 px-3 h-10 rounded-md flex items-center transition-all ease-out duration-600 bg-white`;
+                contentsRef.current.className = "max-h-0 overflow-hidden transition-all ease-out duration-300 bg-white rounded-b-md";
                 setExpanded(false);
             }
         
     }
-
-    function handleRemoveClick(): void {
-        setRemovalWarning(true);
-    }
-
     function renderWindows(): Array<JSX.Element>{
         const result: Array<JSX.Element> = windows.map((window, index) => <WindowItem disableEdit={true} key={"window-" + index} id={window.id} tabs={window.tabs} />)
 
@@ -55,29 +53,23 @@ function Folder(props: iFolder) {
 
     return (
         <>
-            {removalWarning === true && 
-                <MessageBox 
-                    title="Warning" 
-                    text={`You are about to remove the "${name}" folder and all its contents. This is irreversible, do you want to proceed?`}
-                    primaryButton={{ text: "Yes, remove this folder", callback: () => { dispatch(deleteFolderAction(id)); setRemovalWarning(false)} }}
-                    secondaryButton={{ text: "No, don't remove", callback: () => setRemovalWarning(false) }}    
-                />
-            }
-            <div className={`${viewMode === "list" ? "my-4 duration-200" : "my-2 duration-200"} transition-all ease-in`}>
-                <div ref={headerRef} className={`relative container tbf-${type} drop-shadow-contractedFolder bg-white px-5 h-14 flex items-center`}>
+         
+            <div className={`${viewMode === "list" ? "my-4 duration-200" : "my-2 duration-200"} transition-all ease-in w-full rounded-md`}>
+                <div ref={headerRef} className={`relative tbf-${type}  hover:bg-tbfColor-lighterpurple3 border border-tbfColor-lightergrey hover:border-tbfColor-lighterpurple bg-white px-3 h-10 flex items-center rounded-md`}>
                     <div className="inline-block mr-3">
-                        {expanded === false ? <ClosedFolderIcon size={36} fill={"#000"} /> : <OpenedFolderIcon size={36} fill={"#fff"} />}
+                        {expanded === false ? <ClosedFolderIcon size={23} fill={"#000"} /> : <OpenedFolderIcon size={26} fill={"#fff"} />}
                     </div>
                     <div className={`inline-block ${viewMode === "list" ? "w-10/12" : "w-5/12"}`}>
-                        <h2 className={`text-xl truncate ${expanded === false ? "text-black" : "text-white"}`}>
+                        <h2 className={`text-md truncate ${expanded === false ? "text-black" : "text-white"}`}>
                             {name}
                         </h2>
                     </div>
-                    <div className="absolute flex items-center right-6">
+                    <div className="absolute flex items-center right-2">
                         <FolderControlButton icon="open_browser" active={expanded} onClick={() => {}} />
                         <FolderControlButton icon="settings" active={expanded} onClick={onEdit} />
-                        <FolderControlButton icon="trash" active={expanded} onClick={handleRemoveClick} />
+                        <FolderControlButton icon="trash" active={expanded} onClick={() => { onDelete!(props); }} />
                         <FolderControlButton icon="collapse_expand" active={expanded} onClick={handleExpandClick} />
+                        <Checkbox onCallback={(e) => {}} />
                     </div>
                 </div>
                 <div ref={contentsRef} className="max-h-0 overflow-y-hidden bg-white ">

@@ -14,6 +14,7 @@ interface iFolder {
     },
     windows: Array<iWindowItem>,
     onEdit?: (e: number) => void
+    onDelete?: (e: iFolder) => void
 }
 
 

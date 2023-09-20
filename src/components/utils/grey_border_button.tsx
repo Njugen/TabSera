@@ -5,7 +5,7 @@ function GreyBorderButton(props: iTextButton): JSX.Element {
     const { text, onClick } = props;
     
     return (
-        <button className={`text-tbfColor-middlegrey2 border-2 border-tbfColor-middlegrey3 font-medium py-2 px-6 mx-2 bg-white rounded-3xl ${styles.opacity_hover_effect}`} onClick={onClick}>
+        <button className={`text-tbfColor-lightpurple font-medium py-2 px-6 mx-2 bg-transparent border-2 border-tbfColor-lightpurple rounded-3xl ${styles.opacity_hover_effect}`} onClick={onClick}>
             {text}
         </button>
     ); 
