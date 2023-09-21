@@ -6,7 +6,7 @@ import { useEffect, useRef } from "react";
 import randomNumber from "../tools/random_number";
 import { iTabItem } from "../interfaces/tab_item";
 import { useDispatch } from "react-redux";
-import { updateWindowManager } from "../redux/actions/FoldersActions";
+import { updateWindowManager } from "../redux/actions/inEditFolderActions";
 
 function EditableTabItem(props: iEditableTabItem): JSX.Element {
     const { id, windowId, onStop } = props;

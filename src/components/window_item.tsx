@@ -7,7 +7,7 @@ import { iWindowItem} from "../interfaces/window_item";
 import EditableTabItem from "./editable_tab_item";
 import { iTabItem } from "../interfaces/tab_item";
 import { useDispatch, useSelector } from "react-redux";
-import { updateInEditFolder } from "../redux/actions/FoldersActions";
+import { updateInEditFolder } from "../redux/actions/inEditFolderActions";
 
 function WindowItem(props: iWindowItem): JSX.Element {
     const [expanded, setExpanded] = useState<boolean>(true);

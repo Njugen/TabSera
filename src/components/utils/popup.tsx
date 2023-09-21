@@ -11,7 +11,8 @@ import styles from "./../../styles/global_utils.module.scss";
 import WindowManager from './window_manager';
 import randomNumber from "../../tools/random_number";
 import { useDispatch, useSelector } from "react-redux";
-import { createFolderAction, initInEditFolder, updateInEditFolder, updateFolderAction } from "../../redux/actions/FoldersActions";
+import { initInEditFolder, updateInEditFolder} from "../../redux/actions/inEditFolderActions";
+import { createFolderAction, updateFolderAction } from "../../redux/actions/folderCollectionActions";
 import { iFolder } from "../../interfaces/folder";
 import MessageBox from './message_box';
 
