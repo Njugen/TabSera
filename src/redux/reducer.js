@@ -1,8 +1,8 @@
 import { createStore, applyMiddleware } from "redux";
 import { combineReducers } from "redux";
 import thunk from "redux-thunk";
-import { FolderCollectionReducer, InEditFolderReducer } from "./reducers/foldersReducers";
-
+import { FolderCollectionReducer } from "./reducers/folderCollectionReducer";
+import { InEditFolderReducer } from "./reducers/inEditFolderReducer";
 
 const combinedReducers = combineReducers({
     FolderCollectionReducer: FolderCollectionReducer,
