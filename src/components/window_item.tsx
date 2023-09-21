@@ -34,7 +34,7 @@ function WindowItem(props: iWindowItem): JSX.Element {
     }
 
     function handleDeleteWindow(): void {
-        const windows = folderData.inEditFolder.windows.filter((target: iWindowItem) => target.id !== id);
+        const windows = folderData.windows.filter((target: iWindowItem) => target.id !== id);
 
         dispatch(updateInEditFolder("windows", windows));
     }
@@ -56,8 +56,8 @@ function WindowItem(props: iWindowItem): JSX.Element {
     }
 
     function handleDeleteTabs(): void {
-        const windows = folderData.inEditFolder.windows.filter((target: iWindowItem) => target.id === id);
-        const targetWindowIndex = folderData.inEditFolder.windows.findIndex((target: iWindowItem) => target.id === id);
+        const windows = folderData.windows.filter((target: iWindowItem) => target.id === id);
+        const targetWindowIndex = folderData.windows.findIndex((target: iWindowItem) => target.id === id);
         const tabs = windows[0]?.tabs;
 
         const newTabCollection: Array<iTabItem> = [];
@@ -70,10 +70,10 @@ function WindowItem(props: iWindowItem): JSX.Element {
                 }
             });
 
-            folderData.inEditFolder.windows[targetWindowIndex].tabs = [...newTabCollection];
+            folderData.windows[targetWindowIndex].tabs = [...newTabCollection];
             
             setMarkedTabs([]);
-            dispatch(updateInEditFolder("windows", folderData.inEditFolder.windows));
+            dispatch(updateInEditFolder("windows", folderData.windows));
         }
     }
 

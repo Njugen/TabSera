@@ -66,10 +66,10 @@ function Popup(props: iPopup): JSX.Element {
 
     function windowListChanged(): boolean {
         const presetWindows: string = originWindows;
-        const modifiedWindows: string = JSON.stringify(folderData.inEditFolder?.windows);
+        const modifiedWindows: string = JSON.stringify(folderData?.windows);
 
         if(!modifiedWindows || !presetWindows) return false;
-        if(originWindows !== JSON.stringify(folderData.inEditFolder?.windows)){
+        if(originWindows !== JSON.stringify(folderData?.windows)){
             return true;
         }
 
@@ -83,9 +83,9 @@ function Popup(props: iPopup): JSX.Element {
     }, [folderData]);
 
     function handleChangeField(key: string, value: any){
-        if(!folderData.inEditFolder) return;
+        if(!folderData) return;
         
-        if(modified === false && JSON.stringify(folderData.inEditFolder[key]) !== JSON.stringify(value)) setModified(true);
+        if(modified === false && JSON.stringify(folderData[key]) !== JSON.stringify(value)) setModified(true);
         dispatch(updateInEditFolder(key, value));
     }
 
@@ -95,7 +95,7 @@ function Popup(props: iPopup): JSX.Element {
     }
 
     function validateForm(callback: () => void){
-        const data = folderData.inEditFolder;
+        const data = folderData;
 
             const updatedFieldState = {
                 name: false,
@@ -142,12 +142,12 @@ function Popup(props: iPopup): JSX.Element {
                 const targetIndex = foldersData.folders.findIndex((target: any) => target.id === props.folder?.id);
 
                 if(targetIndex === -1){
-                    dispatch(createFolderAction(folderData.inEditFolder));
+                    dispatch(createFolderAction(folderData));
                 } else {
-                    dispatch(updateFolderAction(folderData.inEditFolder));
+                    dispatch(updateFolderAction(folderData));
                 }
             } else {
-                dispatch(createFolderAction(folderData.inEditFolder));
+                dispatch(createFolderAction(folderData));
             }   
 
             handleClose(true);
@@ -156,10 +156,10 @@ function Popup(props: iPopup): JSX.Element {
     }
 
     function updateSettings(key: string, value: any){
-        if(!folderData || folderData.inEditFolder === null) return;
+        if(!folderData || folderData === null) return;
 
         return {
-            ...folderData.inEditFolder?.settings,
+            ...folderData?.settings,
             [key]: value
         };
     }
@@ -190,19 +190,19 @@ function Popup(props: iPopup): JSX.Element {
                     <div id="popup-body" className="px-8 pt-6">
                     
                         <FormField label="Name *" error={inValidFields.name} description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eu mauris dapibus orci aliquam consequat id lacinia lorem. In sed vulputate neque">
-                            <input type="text" defaultValue={folderData.inEditFolder?.name} className={predef.textfield_full} onBlur={(e: any) => handleChangeField("name", e.target.value)} />
+                            <input type="text" defaultValue={folderData?.name} className={predef.textfield_full} onBlur={(e: any) => handleChangeField("name", e.target.value)} />
                         </FormField>
                         <FormField label="Description" description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eu mauris dapibus orci aliquam consequat id lacinia lorem. In sed vulputate neque">
-                            <textarea maxLength={150} defaultValue={folderData.inEditFolder?.desc} className={predef.textarea_full} onBlur={(e: any) => handleChangeField("desc", e.target.value)}></textarea>
+                            <textarea maxLength={150} defaultValue={folderData?.desc} className={predef.textarea_full} onBlur={(e: any) => handleChangeField("desc", e.target.value)}></textarea>
                         </FormField>
                        <FormField label="Launch at startup" description="E.g. the purpose of this folder...">
-                            <Switcher value={folderData.inEditFolder?.settings.startup_launch} onCallback={(e: any) => handleChangeField("settings", updateSettings("startup_launch", e.state))} />
+                            <Switcher value={folderData?.settings.startup_launch} onCallback={(e: any) => handleChangeField("settings", updateSettings("startup_launch", e.state))} />
                         </FormField>
                         <FormField label="Close previous session" description="E.g. the purpose of this folder...">
-                            <Switcher value={folderData.inEditFolder?.settings.close_previous} onCallback={(e: any) => handleChangeField("settings", updateSettings("close_previous", e.state))} />
+                            <Switcher value={folderData?.settings.close_previous} onCallback={(e: any) => handleChangeField("settings", updateSettings("close_previous", e.state))} />
                         </FormField>
                         <FormField label="Auto add activities" description="E.g. the purpose of this folder...">
-                            <Switcher value={folderData.inEditFolder?.settings.auto_add} onCallback={(e: any) => handleChangeField("settings", updateSettings("auto_add", e.state))} />
+                            <Switcher value={folderData?.settings.auto_add} onCallback={(e: any) => handleChangeField("settings", updateSettings("auto_add", e.state))} />
                         </FormField>
                         <div className={`py-6 flex flex-row items-center`}>
                             <div className="w-full">

@@ -39,7 +39,7 @@ function WindowManager(props: iWindowManager): JSX.Element {
     }
 
     function renderNewWindow(): JSX.Element {
-        const window = folderData.inEditFolder?.windows.filter((target: iWindowItem) => {
+        const window = folderData?.windows.filter((target: iWindowItem) => {
            return target.id === inCreationId
         });
       
@@ -53,7 +53,7 @@ function WindowManager(props: iWindowManager): JSX.Element {
 
 
     function renderContents(): Array<JSX.Element> {
-        const existingWindows = folderData.inEditFolder?.windows;
+        const existingWindows = folderData?.windows;
         const existingWindowsElements: Array<JSX.Element> = existingWindows?.map((item: iWindowItem) => <WindowItem disableEdit={false} key={item.id} id={item.id} tabs={item.tabs} initExpand={item.initExpand} />);
         
         if(createWindow === true && inCreationId > 0){
