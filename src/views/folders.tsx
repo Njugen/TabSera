@@ -75,13 +75,13 @@ function FolderView(props: any): JSX.Element {
             windows: [],
         }
 
-        if(foldersData.folders && markedFoldersId){
+        if(foldersData && markedFoldersId){
             const mergedWindows: Array<iWindowItem> = [];
             markedFoldersId.forEach((targetId: number) => {
-                const markedFolderIndex = foldersData.folders.findIndex((folder: iFolder) => targetId === folder.id);
+                const markedFolderIndex = foldersData.findIndex((folder: iFolder) => targetId === folder.id);
 
                 if(markedFolderIndex > -1){
-                    mergedWindows.push(...foldersData.folders[markedFolderIndex].windows);
+                    mergedWindows.push(...foldersData[markedFolderIndex].windows);
                 }
             });
             payload.windows = [...mergedWindows];
@@ -94,7 +94,7 @@ function FolderView(props: any): JSX.Element {
 
             const updatedMarks: Array<number> = [];
 
-            foldersData.folders.forEach((folder: iFolder) => {
+            foldersData.forEach((folder: iFolder) => {
                 updatedMarks.push(folder.id);
                 
             });
@@ -105,12 +105,12 @@ function FolderView(props: any): JSX.Element {
     
 
     function handleDeleteFolders(): void {
-        if(foldersData.folders && markedFoldersId){
+        if(foldersData && markedFoldersId){
             markedFoldersId.forEach((targetId: number) => {
-                const markedFolderIndex = foldersData.folders.findIndex((folder: iFolder) => targetId === folder.id);
+                const markedFolderIndex = foldersData.findIndex((folder: iFolder) => targetId === folder.id);
 
                 if(markedFolderIndex > -1){
-                    dispatch(deleteFolderAction(foldersData.folders[markedFolderIndex].id));
+                    dispatch(deleteFolderAction(foldersData[markedFolderIndex].id));
                     
                 }
             });
@@ -119,12 +119,12 @@ function FolderView(props: any): JSX.Element {
     }
 
     function handleDuplicateFolders(): void {
-        if(foldersData.folders && markedFoldersId){
+        if(foldersData && markedFoldersId){
             markedFoldersId.forEach((targetId: number) => {
-                const markedFolderIndex = foldersData.folders.findIndex((folder: iFolder) => targetId === folder.id);
+                const markedFolderIndex = foldersData.findIndex((folder: iFolder) => targetId === folder.id);
 
                 if(markedFolderIndex > -1){
-                    const newFolder: iFolder = {...foldersData.folders[markedFolderIndex]};
+                    const newFolder: iFolder = {...foldersData[markedFolderIndex]};
 
                   
                     newFolder.id = randomNumber();
@@ -155,8 +155,8 @@ function FolderView(props: any): JSX.Element {
     
     useEffect(() => {
         
-        if(foldersData.folders.length > 0){
-            saveToStorage("local", "folders", foldersData.folders);
+        if(foldersData.length > 0){
+            saveToStorage("local", "folders", foldersData);
         } 
     }, [foldersData]);
 
@@ -170,7 +170,7 @@ function FolderView(props: any): JSX.Element {
             if(mergeProcess !== null){
                 return <Popup title={`Create folder by merge`} folder={mergeProcess} onClose={handlePopupClose}>test</Popup>
             } else {
-                const targetFolder: Array<iFolder> = foldersData.folders.filter((item: iFolder) => editFolderId === item.id);
+                const targetFolder: Array<iFolder> = foldersData.filter((item: iFolder) => editFolderId === item.id);
                 const input: iFolder = {...targetFolder[0]};
 
                 if(targetFolder.length > 0){
@@ -187,7 +187,7 @@ function FolderView(props: any): JSX.Element {
 
     function renderFolders(): Array<JSX.Element> {
         let result: Array<JSX.Element> = [];
-        result = foldersData.folders.map((folder: iFolder, i: number) => {
+        result = foldersData.map((folder: iFolder, i: number) => {
             return <Folder onDelete={(e) => setRemovalTarget(folder)} marked={markedFoldersId?.find((id) => folder.id === id) ? true : false} onMark={handleMarkFolder} onEdit={() => setEditFolderId(folder.id)} key={folder.id} type={folder.type} id={folder.id} viewMode={folder.viewMode} name={folder.name} desc={folder.desc} settings={folder.settings} windows={folder.windows} />
         });
 
@@ -235,7 +235,7 @@ function FolderView(props: any): JSX.Element {
     }
 
     function hasFolders(): boolean {
-        if(foldersData && foldersData.folders.length > 0){
+        if(foldersData && foldersData.length > 0){
             return true;
         }
         return false;

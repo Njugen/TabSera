@@ -139,7 +139,7 @@ function Popup(props: iPopup): JSX.Element {
         validateForm(() => {
             if(props.folder){
                 // Find out if process is merge or edit
-                const targetIndex = foldersData.folders.findIndex((target: any) => target.id === props.folder?.id);
+                const targetIndex = foldersData.findIndex((target: any) => target.id === props.folder?.id);
 
                 if(targetIndex === -1){
                     dispatch(createFolderAction(folderData));
