@@ -10,7 +10,7 @@ function WindowManager(props: iWindowManager): JSX.Element {
     const [createWindow, setCreateWindow] = useState<boolean>(false);
     const [inCreationId, setIncreationId] = useState<number>(-1);
 
-    const folderData = useSelector((state: any) => state.InEditFolderReducers);
+    const folderData = useSelector((state: any) => state.InEditFolderReducer);
     const windows: Array<iWindowItem> = [];
 
     function handleCreateWindow(): void {

@@ -29,7 +29,7 @@ function FolderView(props: any): JSX.Element {
     const [markedFoldersId, setMarkedFoldersId] = useState<Array<number> | null>(null);
     const [mergeProcess, setMergeProcess] = useState<iFolder | null>(null);
     const dispatch = useDispatch();
-    const foldersData = useSelector((state: any) => state.FoldersReducers);
+    const foldersData = useSelector((state: any) => state.FolderCollectionReducer);
 
 
     useEffect(() => {

@@ -2,25 +2,21 @@ import { iFolder } from "../../interfaces/folder";
 import { CREATE_FOLDER, READ_FOLDER, READ_ALL_FOLDERS, UPDATE_FOLDER, DELETE_FOLDER, SET_UP_FOLDERS, READ_ALL_FOLDERS_FROM_BROWSER } from "../types/foldersTypes";
 import { EDIT_FOLDER, UPDATE_IN_EDIT_FOLDER, CLEAR_IN_EDIT_FOLDER, UPDATE_WINDOW_MANAGER } from "../types/inEditFoldersTypes";
 
-import { saveToStorage, getFromStorage } from "../../services/webex_api/storage";
+import { saveToStorage } from "../../services/webex_api/storage";
 
-
-const createAsyncThunk = require("@reduxjs/toolkit");
-
-
-const initialState: {
+const folderCollectionState: {
     folders: Array<iFolder>
 } = {
     folders: [],
 }
 
-const initialFolderState: {
+const inEditFolderState: {
     inEditFolder: iFolder | null,
 } = {
     inEditFolder: null
 }
 
-function InEditFolderReducers(state = initialFolderState, action: any){
+function InEditFolderReducer(state = inEditFolderState, action: any){
     const { type, data } = action;
 
     if(type === EDIT_FOLDER){
@@ -124,7 +120,7 @@ function InEditFolderReducers(state = initialFolderState, action: any){
     return state;
 }
 
-function FoldersReducers(state = initialState, action: any) {
+function FolderCollectionReducer(state = folderCollectionState, action: any) {
     const { type, data } = action;
 
     if(type === SET_UP_FOLDERS){
@@ -180,4 +176,4 @@ function FoldersReducers(state = initialState, action: any) {
     }
 }
 
-export { FoldersReducers, InEditFolderReducers }
+export { FolderCollectionReducer, InEditFolderReducer }

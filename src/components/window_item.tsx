@@ -18,7 +18,7 @@ function WindowItem(props: iWindowItem): JSX.Element {
     const { id, tabs, initExpand, disableEdit } = props;
     
     const dispatch = useDispatch();
-    const folderData = useSelector((state: any) => state.InEditFolderReducers);
+    const folderData = useSelector((state: any) => state.InEditFolderReducer);
 
     useEffect(() => {
         if(newTab === true) setNewTab(false);

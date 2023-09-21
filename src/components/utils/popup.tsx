@@ -30,8 +30,8 @@ function Popup(props: iPopup): JSX.Element {
     const popupRef = useRef<HTMLDivElement>(null);
 
     const dispatch = useDispatch();
-    const folderData = useSelector((state: any) => state.InEditFolderReducers);
-    const foldersData = useSelector((state: any) => state.FoldersReducers);
+    const folderData = useSelector((state: any) => state.InEditFolderReducer);
+    const foldersData = useSelector((state: any) => state.FolderCollectionReducer);
 
     useEffect(() => {
         let payload: iFolder | undefined = folder;
