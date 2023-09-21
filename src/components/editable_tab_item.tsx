@@ -51,7 +51,7 @@ function EditableTabItem(props: iEditableTabItem): JSX.Element {
             defaultValue={"https://"}
             onBlur={handleBlur}
             onKeyDown={handleKeyDown}
-            className={predef.textfield_full} 
+            className={`${predef.textfield_full} h-10 px-2 my-2 w-full text-sm text-tbfColor-darkergrey rounded-lg border border-tbfColor-middlegrey4`} 
         />
     ); 
 }

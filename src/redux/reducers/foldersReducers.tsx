@@ -146,7 +146,7 @@ function FoldersReducers(state = initialState, action: any) {
             folders: data
         }
     } else if(type === READ_ALL_FOLDERS_FROM_BROWSER) {
-        console.log("DDaDD", data);
+     
        return {
         ...state,
         folders: data

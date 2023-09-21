@@ -31,7 +31,8 @@ function Popup(props: iPopup): JSX.Element {
 
     const dispatch = useDispatch();
     const folderData = useSelector((state: any) => state.InEditFolderReducers);
- 
+    const foldersData = useSelector((state: any) => state.FoldersReducers);
+
     useEffect(() => {
         let payload: iFolder | undefined = folder;
    
@@ -46,6 +47,7 @@ function Popup(props: iPopup): JSX.Element {
                 desc: "",
                 type: "expanded",
                 viewMode: "grid",
+                marked: false,
                 settings: {
                     startup_launch: false,
                     close_previous: false,
@@ -136,7 +138,14 @@ function Popup(props: iPopup): JSX.Element {
     function handleSave(): void {
         validateForm(() => {
             if(props.folder){
-                dispatch(updateFolderAction(folderData.inEditFolder));
+                // Find out if process is merge or edit
+                const targetIndex = foldersData.folders.findIndex((target: any) => target.id === props.folder?.id);
+
+                if(targetIndex === -1){
+                    dispatch(createFolderAction(folderData.inEditFolder));
+                } else {
+                    dispatch(updateFolderAction(folderData.inEditFolder));
+                }
             } else {
                 dispatch(createFolderAction(folderData.inEditFolder));
             }   

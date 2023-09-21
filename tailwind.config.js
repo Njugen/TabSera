@@ -21,6 +21,7 @@ module.exports = {
           lighterpurple1: '#e3cef4',
           lighterpurple2: '#d5bbe9',
           lighterpurple3: '#f0e5f9',
+          lighterpurple4: '#f6effb',
           lightgrey: '#f9f9f9',
           lightergrey: '#e8e8e8',
           middlegrey: '#e0e0e0',

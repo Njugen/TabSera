@@ -7,12 +7,14 @@ function Checkbox(props: iCheckbox): JSX.Element {
     const { onCallback, label, dark } = props;
 
     function handleSwitch(): void {
-        setChecked(checked === false ? true : false);
+        const updatedState = checked === false ? true : false
+        setChecked(updatedState);
+        onCallback({state: updatedState});
     }
 
     useEffect(() => {
-        onCallback({state: checked});
-    }, [checked])
+        setChecked(props.checked);
+    }, [props.checked])
 
     return (
         <div className={`flex items-center ${label ? "mx-5" : "ml-2 mr-0"}`}>

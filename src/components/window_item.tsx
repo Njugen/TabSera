@@ -92,7 +92,7 @@ function WindowItem(props: iWindowItem): JSX.Element {
             if(editTab === tab.id){
                 return renderEditTab(id, editTab);
             } else {
-                return <TabItem key={tab.id} id={tab.id} label={tab.label} url={tab.url} onMark={handleMark} onEdit={handleTabEdit} />
+                return <TabItem disableEdit={disableEdit} key={tab.id} id={tab.id} label={tab.label} url={tab.url} onMark={handleMark} onEdit={handleTabEdit} />
             }
             
         })
@@ -115,22 +115,22 @@ function WindowItem(props: iWindowItem): JSX.Element {
     },[])
 
     return (
-        <div className="window-item w-full bg-tbfColor-lighterpurple3 px-3 py-3 rounded-md mb-3" id={`window-${id}`}>
-            <div className="flex justify-between items-center w-full">
-                <h3 className="text-sm font-semibold text-tbfColor-lightpurple">
+        <div className="window-item w-full py-1 rounded-md mb-3" id={`window-${id}`}>
+            <div className="flex justify-between items-center w-full border-b border-tbfColor-darkgrey">
+                <h3 className="text-sm font-semibold ">
                     {`Window ${id}`}
                 </h3>
                 <div className={`tab-settings`}>
-                    <GenericIconButton icon="grid" size={20} fill="#6D00C2" onClick={handleChangeViewMode} />
-                    {disableEdit === false && <GenericIconButton icon="trash" size={20} fill="#6D00C2" onClick={handleDeleteWindow} />}
-                    <GenericIconButton icon={expanded === true ? "collapse" : "expand"} size={20} fill="#6D00C2" onClick={handleExpand} />
+                    {/*<GenericIconButton icon="grid" size={18} fill="#000" onClick={handleChangeViewMode} />*/}
+                    {disableEdit === false && <GenericIconButton icon="trash" size={20} fill="#000" onClick={handleDeleteWindow} />}
+                    <GenericIconButton icon={expanded === true ? "collapse" : "expand"} size={20} fill="#000" onClick={handleExpand} />
                 </div>
             </div>
-            <div className={`tabs-list mt-6 ${expanded === true ? "block" : "hidden"}`}>
-                <div className={`${viewMode === "list" ? "mx-auto" : "grid grid-cols-3 gap-x-3 gap-y-0"}`}>
+            <div className={`tabs-list mt-3 ${expanded === true ? "block" : "hidden"}`}>
+                <div className={`${/*viewMode === "list" ? "mx-auto" : "grid grid-cols-3 gap-x-3 gap-y-0"*/ "mx-auto"}`}>
                 {tabs.length > 0 ? [...evaluateNewTabRender()] : [renderEditTab(id)]}
                 </div>
-                {tabs.length > 0 && disableEdit === false && <div className="mt-10 flex justify-end">
+                {tabs.length > 0 && disableEdit === false && <div className="mt-10 mb-8 flex justify-end">
                     {markedTabs.length > 0 && <GreyBorderButton text="Delete tabs" onClick={handleDeleteTabs} />}
                     {disableEdit === false && <PrimaryButton text="New tab" onClick={handleAddNewTab} />}
                 </div>}

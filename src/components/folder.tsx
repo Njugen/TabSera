@@ -22,11 +22,13 @@ function Folder(props: iFolder) {
     const { 
         id,
         name,
+        marked,
         desc,
         type,
         viewMode,
         settings,
         windows,
+        onMark,
         onDelete,
         onEdit 
       } = props;
@@ -35,12 +37,12 @@ function Folder(props: iFolder) {
         if(contentsRef.current === null || headerRef.current === null) return;
   
             if(expanded === false){
-                headerRef.current.className = `relative tbf-${type} bg-tbfColor-lightpurple  px-3 h-10 flex items-center transition-all ease-in duration-400 rounded-t-md`;
-                contentsRef.current.className = "max-h-[2000px] overflow-none transition-all ease-in duration-700 bg-white border border-tbfColor-lightpurple rounded-b-md";
+                headerRef.current.className = `relative tbf-${type} bg-tbfColor-lightpurple px-3 h-10 flex items-center transition-all ease-in duration-400 rounded-t-md`;
+                contentsRef.current.className = "max-h-[2000px] overflow-none transition-all ease-in duration-200 bg-tbfColor-lighterpurple4 border border-tbfColor-lightpurple rounded-b-md";
                 setExpanded(true);
             } else {
-                headerRef.current.className = `relative tbf-${type} hover:border-tbfColor-lighterpurple border-tbfColor-lightergrey border bg-white hover:bg-tbfColor-lighterpurple3 px-3 h-10 rounded-md flex items-center transition-all ease-out duration-600 bg-white`;
-                contentsRef.current.className = "max-h-0 overflow-hidden transition-all ease-out duration-300 bg-white rounded-b-md";
+                headerRef.current.className = `relative tbf-${type}  hover:bg-tbfColor-lighterpurple2 border border-tbfColor-lighterpurple hover:border-tbfColor-lightpurple bg-tbfColor-lighterpurple3 px-3 h-10 flex items-center rounded-md transition-all ease-in duration-100`;
+                contentsRef.current.className = "max-h-0 overflow-hidden transition-all ease-out duration-200 bg-tbfColor-lighterpurple4 rounded-b-md";
                 setExpanded(false);
             }
         
@@ -55,7 +57,7 @@ function Folder(props: iFolder) {
         <>
          
             <div className={`${viewMode === "list" ? "my-4 duration-200" : "my-2 duration-200"} transition-all ease-in w-full rounded-md`}>
-                <div ref={headerRef} className={`relative tbf-${type}  hover:bg-tbfColor-lighterpurple3 border border-tbfColor-lightergrey hover:border-tbfColor-lighterpurple bg-white px-3 h-10 flex items-center rounded-md`}>
+                <div ref={headerRef} className={`relative tbf-${type}  hover:bg-tbfColor-lighterpurple2 border border-tbfColor-lighterpurple hover:border-tbfColor-lightpurple bg-tbfColor-lighterpurple4 px-3 h-10 flex items-center rounded-md transition-all ease-in duration-100`}>
                     <div className="inline-block mr-3">
                         {expanded === false ? <ClosedFolderIcon size={23} fill={"#000"} /> : <OpenedFolderIcon size={26} fill={"#fff"} />}
                     </div>
@@ -69,10 +71,10 @@ function Folder(props: iFolder) {
                         <FolderControlButton icon="settings" active={expanded} onClick={onEdit} />
                         <FolderControlButton icon="trash" active={expanded} onClick={() => { onDelete!(props); }} />
                         <FolderControlButton icon="collapse_expand" active={expanded} onClick={handleExpandClick} />
-                        <Checkbox onCallback={(e) => {}} />
+                        <Checkbox checked={marked} onCallback={(e) => onMark!(id)} />
                     </div>
                 </div>
-                <div ref={contentsRef} className="max-h-0 overflow-y-hidden bg-white ">
+                <div ref={contentsRef} className="max-h-0 overflow-y-hidden bg-tbfColor-lighterpurple3">
                     {desc.length > 0 && <div className="px-5 mt-8 flex justify-between items-start">
                     <div className="inline-block w-fit">
                             <Paragraph text={desc} />

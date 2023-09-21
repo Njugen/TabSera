@@ -5,6 +5,7 @@ interface iFolder {
     id: number,
     name: string,
     desc: string,
+    marked: boolean,
     type: "expanded" | "collapsed",
     viewMode: "list" | "grid",
     settings: {
@@ -13,6 +14,7 @@ interface iFolder {
         auto_add: boolean
     },
     windows: Array<iWindowItem>,
+    onMark?: (e: number) => void,
     onEdit?: (e: number) => void
     onDelete?: (e: iFolder) => void
 }
