@@ -15,13 +15,13 @@ import { initInEditFolder, updateInEditFolder} from "../../redux/actions/inEditF
 import { createFolderAction, updateFolderAction } from "../../redux/actions/folderCollectionActions";
 import { iFolder } from "../../interfaces/folder";
 import MessageBox from './message_box';
+import { setShowFolderChangeWarning } from "../../redux/actions/warningActions";
 
 function Popup(props: iPopup): JSX.Element {
     const { onClose, folder, title } = props;
     const [slideDown, setSlideDown] = useState<boolean>(false);
     const [isCreate, setIsCreate] = useState<boolean>(false);
     const [modified, setModified] = useState<boolean>(false);
-    const [warning, setWarning] = useState<boolean>(false);
     const [originWindows, setOriginWindows] = useState<string>("");
     const [inValidFields, setInValidFields] = useState<{ name: boolean, windows: boolean }>({
         name: false,
@@ -32,7 +32,8 @@ function Popup(props: iPopup): JSX.Element {
 
     const dispatch = useDispatch();
     const folderData = useSelector((state: any) => state.InEditFolderReducer);
-    const foldersData = useSelector((state: any) => state.FolderCollectionReducer);
+    const folderCollection = useSelector((state: any) => state.FolderCollectionReducer);
+    const warningActions = useSelector((state: any) => state.WarningActionsReducer);
 
     useEffect(() => {
         let payload: iFolder | undefined = folder;
@@ -123,11 +124,11 @@ function Popup(props: iPopup): JSX.Element {
     function handleClose(skipWarning?: boolean): void {
 
         if((modified === true && skipWarning !== true)){
-            setWarning(true);
+            dispatch(setShowFolderChangeWarning(true));
         } else {
             setSlideDown(false);
             
-            setWarning(false);
+            dispatch(setShowFolderChangeWarning(false));
             setModified(false)
             setOriginWindows("");
             setIsCreate(false);
@@ -140,7 +141,7 @@ function Popup(props: iPopup): JSX.Element {
         validateForm(() => {
             if(props.folder){
                 // Find out if process is merge or edit
-                const targetIndex = foldersData.findIndex((target: any) => target.id === props.folder?.id);
+                const targetIndex = folderCollection.findIndex((target: any) => target.id === props.folder?.id);
 
                 if(targetIndex === -1){
                     dispatch(createFolderAction(folderData));
@@ -166,12 +167,12 @@ function Popup(props: iPopup): JSX.Element {
     }
 
     return (<>
-        {warning === true && 
+        {warningActions.showFolderChangeWarning === true && 
             <MessageBox 
                 title="Warning" 
                 text="You have made changes to this form. Closing it will result in all changes being lost. Do you want to proceed?"
                 primaryButton={{ text: "Yes, close this form", callback: () => handleClose(true) }}
-                secondaryButton={{ text: "No, keep editing", callback: () => setWarning(false) }}    
+                secondaryButton={{ text: "No, keep editing", callback: () => dispatch(setShowFolderChangeWarning(false)) }}    
             />
         }
         <div ref={popupRef} className={`${styles.popup_container} scroll-smooth overflow-y-scroll flex fixed top-0 left-0 justify-center items-center w-screen z-50 ${slideDown === false ? "transition-all ease-out h-0 duration-200" : "transition-all h-screen ease-in duration-75"}`}>

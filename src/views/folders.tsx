@@ -20,6 +20,7 @@ import GreyBorderButton from '../components/utils/grey_border_button';
 import TextIconButton from '../components/utils/text_icon_button';
 import randomNumber from '../tools/random_number';
 import { iWindowItem } from '../interfaces/window_item';
+import { clearMarkedFoldersAction, setMarkedFoldersAction, setMarkMultipleFoldersAction } from '../redux/actions/dataCollectionActions';
 
 function FolderView(props: any): JSX.Element {
     const [editFolderId, setEditFolderId] = useState<number | null>(null);
@@ -27,11 +28,12 @@ function FolderView(props: any): JSX.Element {
     const [viewMode, setViewMode] = useState<string>("grid");
     const [showSearchField, setShowSearchField] = useState<boolean>(true);
     const [ removalTarget, setRemovalTarget] = useState<iFolder | null>(null);
-    const [markedFoldersId, setMarkedFoldersId] = useState<Array<number> | null>(null);
     const [mergeProcess, setMergeProcess] = useState<iFolder | null>(null);
+    const [showDeleteWarning, setShowDeleteWarning] = useState<boolean>(false);
     const dispatch = useDispatch();
-    const foldersData = useSelector((state: any) => state.FolderCollectionReducer);
 
+    const folderCollection = useSelector((state: any) => state.FolderCollectionReducer);
+    const dataCollection = useSelector((state: any) => state.DataCollectionReducer);
 
     useEffect(() => {
         getFromStorage("local", "folders", (data) => {  
@@ -42,24 +44,12 @@ function FolderView(props: any): JSX.Element {
     }, []);
 
     function handleMarkFolder(id: number): void{
-
-        const currentMarkedFoldersId = markedFoldersId === null ? [] : markedFoldersId;
-        const targetIndex: number = currentMarkedFoldersId.findIndex((targetId: number) => targetId === id);
-     
-        if(targetIndex === -1){
-            const updatedMarks: Array<number> = currentMarkedFoldersId;
-            updatedMarks.push(id);
-
-            setMarkedFoldersId([...updatedMarks]);
-        } else {
-            const updatedFoldersId = currentMarkedFoldersId.filter((targetId: number) => targetId !== id);
-
-            setMarkedFoldersId([...updatedFoldersId]);
-        }
+        dispatch(setMarkedFoldersAction(id));
     }
 
     function handleMergeFolders(): void {
         const newId = randomNumber();
+        const { markedFoldersId } = dataCollection;
 
         const payload: iFolder = {
             id: newId,
@@ -76,18 +66,18 @@ function FolderView(props: any): JSX.Element {
             windows: [],
         }
 
-        if(foldersData && markedFoldersId){
+        if(folderCollection && markedFoldersId){
             const mergedWindows: Array<iWindowItem> = [];
             markedFoldersId.forEach((targetId: number) => {
-                const markedFolderIndex = foldersData.findIndex((folder: iFolder) => targetId === folder.id);
+                const markedFolderIndex = folderCollection.findIndex((folder: iFolder) => targetId === folder.id);
 
                 if(markedFolderIndex > -1){
-                    mergedWindows.push(...foldersData[markedFolderIndex].windows);
+                    mergedWindows.push(...folderCollection[markedFolderIndex].windows);
                 }
             });
             payload.windows = [...mergedWindows];
             setMergeProcess({...payload});
-            setMarkedFoldersId(null);
+       
         }
     }
 
@@ -95,37 +85,41 @@ function FolderView(props: any): JSX.Element {
 
             const updatedMarks: Array<number> = [];
 
-            foldersData.forEach((folder: iFolder) => {
+            folderCollection.forEach((folder: iFolder) => {
                 updatedMarks.push(folder.id);
                 
             });
-            setMarkedFoldersId([...updatedMarks]);
-            
+
+            dispatch(setMarkMultipleFoldersAction([...updatedMarks]));
         
     }
     
 
     function handleDeleteFolders(): void {
-        if(foldersData && markedFoldersId){
+        const { markedFoldersId } = dataCollection;
+        if(folderCollection && markedFoldersId){
             markedFoldersId.forEach((targetId: number) => {
-                const markedFolderIndex = foldersData.findIndex((folder: iFolder) => targetId === folder.id);
+                const markedFolderIndex = folderCollection.findIndex((folder: iFolder) => targetId === folder.id);
 
                 if(markedFolderIndex > -1){
-                    dispatch(deleteFolderAction(foldersData[markedFolderIndex].id));
+                    dispatch(deleteFolderAction(folderCollection[markedFolderIndex].id));
                     
                 }
             });
-            setMarkedFoldersId(null);
+            setShowDeleteWarning(false);
+            dispatch(clearMarkedFoldersAction());
         }
     }
 
     function handleDuplicateFolders(): void {
-        if(foldersData && markedFoldersId){
+        const { markedFoldersId } = dataCollection;
+
+        if(folderCollection && markedFoldersId){
             markedFoldersId.forEach((targetId: number) => {
-                const markedFolderIndex = foldersData.findIndex((folder: iFolder) => targetId === folder.id);
+                const markedFolderIndex = folderCollection.findIndex((folder: iFolder) => targetId === folder.id);
 
                 if(markedFolderIndex > -1){
-                    const newFolder: iFolder = {...foldersData[markedFolderIndex]};
+                    const newFolder: iFolder = {...folderCollection[markedFolderIndex]};
 
                   
                     newFolder.id = randomNumber();
@@ -134,7 +128,7 @@ function FolderView(props: any): JSX.Element {
                     dispatch(createFolderAction({...newFolder}));
                 }
             });
-            setMarkedFoldersId(null);
+            dispatch(clearMarkedFoldersAction());
         }
     }
 
@@ -151,15 +145,16 @@ function FolderView(props: any): JSX.Element {
         setCreateFolder(false);
         setMergeProcess(null);
 
+        dispatch(clearMarkedFoldersAction());
         dispatch(clearInEditFolder());
     }
     
     useEffect(() => {
         
-        if(foldersData.length > 0){
-            saveToStorage("local", "folders", foldersData);
+        if(folderCollection.length > 0){
+            saveToStorage("local", "folders", folderCollection);
         } 
-    }, [foldersData]);
+    }, [folderCollection]);
 
     function renderPopup(): JSX.Element {
         let render;
@@ -171,7 +166,7 @@ function FolderView(props: any): JSX.Element {
             if(mergeProcess !== null){
                 return <Popup title={`Create folder by merge`} folder={mergeProcess} onClose={handlePopupClose}>test</Popup>
             } else {
-                const targetFolder: Array<iFolder> = foldersData.filter((item: iFolder) => editFolderId === item.id);
+                const targetFolder: Array<iFolder> = folderCollection.filter((item: iFolder) => editFolderId === item.id);
                 const input: iFolder = {...targetFolder[0]};
 
                 if(targetFolder.length > 0){
@@ -188,8 +183,9 @@ function FolderView(props: any): JSX.Element {
 
     function renderFolders(): Array<JSX.Element> {
         let result: Array<JSX.Element> = [];
-        result = foldersData.map((folder: iFolder, i: number) => {
-            return <Folder onDelete={(e) => setRemovalTarget(folder)} marked={markedFoldersId?.find((id) => folder.id === id) ? true : false} onMark={handleMarkFolder} onEdit={() => setEditFolderId(folder.id)} key={folder.id} type={folder.type} id={folder.id} viewMode={folder.viewMode} name={folder.name} desc={folder.desc} settings={folder.settings} windows={folder.windows} />
+        result = folderCollection.map((folder: iFolder, i: number) => {
+            const collection: Array<number> = dataCollection.markedFoldersId;
+            return <Folder onDelete={(e) => setRemovalTarget(folder)} marked={collection.find((id) => folder.id === id) ? true : false} onMark={handleMarkFolder} onEdit={() => setEditFolderId(folder.id)} key={folder.id} type={folder.type} id={folder.id} viewMode={folder.viewMode} name={folder.name} desc={folder.desc} settings={folder.settings} windows={folder.windows} />
         });
 
         return result.length > 0 ? result : [<></>];
@@ -210,7 +206,7 @@ function FolderView(props: any): JSX.Element {
                         <TextIconButton icon={"close"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Mark all" onClick={handleMarkAllFolders} />
                         <TextIconButton icon={"close"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Duplicate" onClick={handleDuplicateFolders} />
                         <TextIconButton icon={"close"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Merge" onClick={handleMergeFolders} />
-                        <TextIconButton icon={"close"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Delete" onClick={handleDeleteFolders} />
+                        <TextIconButton icon={"close"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Delete" onClick={() => setShowDeleteWarning(true)} />
                     </div>
                     <div className="flex">
                         <strong className="mr-2">Viewport:</strong>
@@ -236,7 +232,7 @@ function FolderView(props: any): JSX.Element {
     }
 
     function hasFolders(): boolean {
-        if(foldersData && foldersData.length > 0){
+        if(folderCollection && folderCollection.length > 0){
             return true;
         }
         return false;
@@ -262,6 +258,14 @@ function FolderView(props: any): JSX.Element {
                     text={`You are about to remove the "${removalTarget.name}" folder and all its contents. This is irreversible, do you want to proceed?`}
                     primaryButton={{ text: "Yes, remove this folder", callback: () => { dispatch(deleteFolderAction(removalTarget.id)); setRemovalTarget(null)}}}
                     secondaryButton={{ text: "No, don't remove", callback: () => setRemovalTarget(null)}}    
+                />
+            }
+            {showDeleteWarning === true && 
+                <MessageBox 
+                    title="Warning" 
+                    text={`You are about to remove multiple folders and all their contents. This is irreversible, do you want to proceed?`}
+                    primaryButton={{ text: "Yes, remove these folders", callback: () =>  handleDeleteFolders()}}
+                    secondaryButton={{ text: "No, don't remove", callback: () => setShowDeleteWarning(false)}}    
                 />
             }
             {renderPopup()}

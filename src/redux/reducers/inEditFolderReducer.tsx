@@ -24,10 +24,7 @@ function InEditFolderReducer(state = inEditFolderState, action: any){
             ...stateClone
         }
     } else if(type === CLEAR_IN_EDIT_FOLDER){
-        return {
-            ...state,
-            inEditFolder: null
-        }
+        return null;
     } else if(type === UPDATE_WINDOW_MANAGER){
         if(state === null) return state;
 
