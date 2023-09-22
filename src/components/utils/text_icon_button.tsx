@@ -14,6 +14,11 @@ import CheckedIcon from "../../images/icons/checked_icon";
 import PenIcon from "../../images/icons/pen_icon";
 import MultipleFoldersIcon from "../../images/icons/multiple_folders_icon";
 import ConfigIcon from "../../images/icons/config_icon";
+import FolderDuplicateIcon from "../../images/icons/folder_duplicate_icon";
+import MergeIcon from "../../images/icons/merge_icon";
+import SelectedCheckboxIcon from "../../images/icons/selected_checkbox_icon";
+import DeselectedCheckboxIcon from "../../images/icons/deselected_checkbox_icon";
+import SortIcon from "../../images/icons/sort_icon";
 
 function TextIconButton(props: iTextIconButton): JSX.Element {
     const { icon, text, fill, size, onClick } = props;
@@ -45,13 +50,23 @@ function TextIconButton(props: iTextIconButton): JSX.Element {
             return <MultipleFoldersIcon size={size.icon} fill={fill} />;
         } else if(icon === "config"){
             return <ConfigIcon size={size.icon} fill={fill} />;
-        }else {
+        } else if(icon === "folder_duplicate"){
+            return <FolderDuplicateIcon size={size.icon} fill={fill} />;
+        } else if(icon === "merge"){
+            return <MergeIcon size={size.icon} fill={fill} />;
+        } else if(icon === "selected_checkbox"){
+            return <SelectedCheckboxIcon size={size.icon} fill={fill} />;
+        } else if(icon === "deselected_checkbox"){
+            return <DeselectedCheckboxIcon size={size.icon} fill={fill} />;
+        } else if(icon === "sort"){
+            return <SortIcon size={size.icon} fill={fill} />;
+        } else {
             return <></>;
         }
     } 
 
     return (
-        <button className={`flex mx-3 items-center ${styles.opacity_hover_effect}`} onClick={onClick}>
+        <button className={`flex mr-6 items-center ${styles.opacity_hover_effect}`} onClick={onClick}>
             {renderIcon()} 
             <span className={`${size.text} ml-2`}>
                 {text}

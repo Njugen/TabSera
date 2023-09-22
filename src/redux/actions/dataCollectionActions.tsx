@@ -1,5 +1,9 @@
 import { iFolder } from "../../interfaces/folder";
-import { SET_MARKED_FOLDERS_ID, SET_MULTIPLE_MARKED_FOLDERS_ID, CLEAR_ALL_MARKED_FOLDERS_ID } from "../types/dataCollectionTypes";
+import { SET_MARKED_FOLDERS_ID, 
+    SET_MULTIPLE_MARKED_FOLDERS_ID, 
+    CLEAR_ALL_MARKED_FOLDERS_ID,
+    SET_FOLDERS_SORT_ORDER
+} from "../types/dataCollectionTypes";
 
 
 function setMarkedFoldersAction(input: number){
@@ -23,8 +27,16 @@ function clearMarkedFoldersAction(){
     }
 }
 
+function setFoldersSortOrder(input: string){
+    return {
+        type: SET_FOLDERS_SORT_ORDER,
+        data: input
+    }
+}
+
 export {
     setMarkedFoldersAction,
     setMarkMultipleFoldersAction,
-    clearMarkedFoldersAction
+    clearMarkedFoldersAction,
+    setFoldersSortOrder
 }

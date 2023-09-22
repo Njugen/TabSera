@@ -74,10 +74,10 @@ function App() {
 
       </div>  
       <div id="main-menu" className="flex flex-col items-center justify-center">
-        <div className={`my-1 border p-2 rounded-lg ${activeNavLink === "options" && "border-tbfColor-lightpurple"}`}>
+        <div className={`my-1 border p-2 rounded-lg ${activeNavLink === "options" ? "border-tbfColor-lightpurple" : "border-tbfColor-middlegrey2"}`}>
           <Navlink key="folders-nav-link" iconSize={32} url="/options" isActive={activeNavLink === "options" ? true : false} onClick={() => setActiveNavLink("options")} />
         </div>
-        <div className={`my-1 border p-2 rounded-lg  ${activeNavLink === "settings" && "border-tbfColor-lightpurple"}`}>
+        <div className={`my-1 border p-2 rounded-lg  ${activeNavLink === "settings" ? "border-tbfColor-lightpurple" : "border-tbfColor-middlegrey2"}`}>
           <Navlink key="settings-nav-link" iconSize={32} url="/settings" isActive={activeNavLink === "settings" ? true : false} onClick={() => setActiveNavLink("settings")} />
         </div>
       </div>

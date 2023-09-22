@@ -20,7 +20,10 @@ import GreyBorderButton from '../components/utils/grey_border_button';
 import TextIconButton from '../components/utils/text_icon_button';
 import randomNumber from '../tools/random_number';
 import { iWindowItem } from '../interfaces/window_item';
-import { clearMarkedFoldersAction, setMarkedFoldersAction, setMarkMultipleFoldersAction } from '../redux/actions/dataCollectionActions';
+import { clearMarkedFoldersAction, setFoldersSortOrder, setMarkedFoldersAction, setMarkMultipleFoldersAction } from '../redux/actions/dataCollectionActions';
+import Dropdown from '../components/utils/dropdown';
+import GridIcon from '../images/icons/grid_icon';
+import SortIcon from '../images/icons/sort_icon';
 
 function FolderView(props: any): JSX.Element {
     const [editFolderId, setEditFolderId] = useState<number | null>(null);
@@ -29,6 +32,7 @@ function FolderView(props: any): JSX.Element {
     const [showSearchField, setShowSearchField] = useState<boolean>(true);
     const [ removalTarget, setRemovalTarget] = useState<iFolder | null>(null);
     const [mergeProcess, setMergeProcess] = useState<iFolder | null>(null);
+    const [sortSlideDown, setSortSlideDown] = useState<boolean>(false);
     const [showDeleteWarning, setShowDeleteWarning] = useState<boolean>(false);
     const dispatch = useDispatch();
 
@@ -79,6 +83,14 @@ function FolderView(props: any): JSX.Element {
             setMergeProcess({...payload});
        
         }
+    }
+
+    function handleUnmarkAllFolders(): void {
+
+
+
+        dispatch(setMarkMultipleFoldersAction([]));
+        
     }
 
     function handleMarkAllFolders(): void {
@@ -181,9 +193,23 @@ function FolderView(props: any): JSX.Element {
         return render;
     }
 
+    function handleSortFolders(e: any): void{
+        dispatch(setFoldersSortOrder(e.selected === 0 ? "asc" : "desc"));
+    }
+
     function renderFolders(): Array<JSX.Element> {
+        console.log(dataCollection.folderSort);
         let result: Array<JSX.Element> = [];
-        result = folderCollection.map((folder: iFolder, i: number) => {
+
+        function condition(a: iFolder, b: iFolder) {
+            const { folderSort } = dataCollection
+
+            return folderSort === "asc" ? (a.name > b.name) : (b.name > a.name);
+        }
+
+        const sortedFolders = [...folderCollection].sort((a: any, b: any) => condition(a, b) ? 1 : -1);
+        console.log(sortedFolders);
+        result = sortedFolders.map((folder: iFolder, i: number) => {
             const collection: Array<number> = dataCollection.markedFoldersId;
             return <Folder onDelete={(e) => setRemovalTarget(folder)} marked={collection.find((id) => folder.id === id) ? true : false} onMark={handleMarkFolder} onEdit={() => setEditFolderId(folder.id)} key={folder.id} type={folder.type} id={folder.id} viewMode={folder.viewMode} name={folder.name} desc={folder.desc} settings={folder.settings} windows={folder.windows} />
         });
@@ -193,37 +219,41 @@ function FolderView(props: any): JSX.Element {
 
     function renderPageOptionsMenu(): JSX.Element {
         return <>
-            <div className="inline-flex items-center">
-                <div className="mr-4 inline-flex items-center">
-                    <div className={`mr-6`}>
-                        {/*<input type="text" defaultValue={"..."} className={`${predef.textfield}  transition-all ease-in ${showSearchField === true ? "w-[450px] p-2" : "w-[0px] py-2 px-0 border-0"}`} />*/}
-                        {/*<input className="p-2 bg-white drop-shadow-sm border border-tbfColor-lightgrey" />*/}
-                    
-                        {/*<GenericIconButton icon="search" fill={showSearchField === false ? "#6D00C2" : "#b2b2b2"} size={30} onClick={handleShowSearchField} />*/}
-                    </div>
-                    <div className="mr-12 flex">
-                        <strong className="mr-2">Actions:</strong>
-                        <TextIconButton icon={"close"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Mark all" onClick={handleMarkAllFolders} />
-                        <TextIconButton icon={"close"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Duplicate" onClick={handleDuplicateFolders} />
-                        <TextIconButton icon={"close"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Merge" onClick={handleMergeFolders} />
-                        <TextIconButton icon={"close"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Delete" onClick={() => setShowDeleteWarning(true)} />
-                    </div>
-                    <div className="flex">
-                        <strong className="mr-2">Viewport:</strong>
-                        <TextIconButton icon={"close"} size={{ icon: 20, text: "text-sm" }} fill="#6D00C2" text="Sort" onClick={() => {}} />
-                        <TextIconButton icon={viewMode === "list" ? "grid" : "list"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text={viewMode === "list" ? "Grid" : "List"} onClick={handleChangeViewMode} />
-                    </div>
+        
+            <div className="mr-4 inline-flex items-center justify-between w-full">
+                
+                <div className="flex w-7/12">
+                    <TextIconButton icon={"selected_checkbox"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Mark all" onClick={handleMarkAllFolders} />
+                    <TextIconButton icon={"deselected_checkbox"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Unmark all" onClick={handleUnmarkAllFolders} />
+                    <TextIconButton icon={"folder_duplicate"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Duplicate" onClick={handleDuplicateFolders} />
+                    <TextIconButton icon={"merge"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Merge" onClick={handleMergeFolders} />
+                    <TextIconButton icon={"trash"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Delete" onClick={handlePrepareMultipleRemovals} />
                 </div>
-                <PrimaryButton text="Create workspace" onClick={() => setCreateFolder(true)} />
+                <div className="flex items-center justify-end w-5/12">
+                    
+                    <TextIconButton icon={viewMode === "list" ? "grid" : "list"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text={viewMode === "list" ? "Grid" : "List"} onClick={handleChangeViewMode} />
+                    <div className="relative w-5/12 mr-4 flex items-center">
+                    
+                        <div className="mr-2">
+                            <SortIcon size={24} fill="#6D00C2" />
+                        </div> 
+                        <div className="text-sm mr-4">Sort:</div> 
+                        <Dropdown tag="sort-folders" preset={{id: 0, label: "Ascending"}} options={[{id: 0, label: "Ascending"}, {id: 1, label: "Descending"}]} onCallback={handleSortFolders} />
+                    </div>
+                    <PrimaryButton text="Create workspace" onClick={() => setCreateFolder(true)} />
+                </div>
             </div>
+               
+            
         </>
     }
 
     function renderMessageBox(): JSX.Element {
         return <>
-            <div className="flex flex-col items-center justify-center h-[83.3333333vh]">
+            <div className="flex flex-col items-center justify-center h-full">
                 <Paragraph text="You currently have no folders available. Please, create a new folder or import previous folders." />
-                <div className="mt-8">
+                <div className="mt-8">import SortIcon from './../images/icons/sort_icon';
+
                     <PrimaryButton text="Import workspaces" onClick={() => setCreateFolder(true)} />
                     <PrimaryButton text="Create workspace" onClick={() => setCreateFolder(true)} />
                 </div>
@@ -250,6 +280,12 @@ function FolderView(props: any): JSX.Element {
         }
     };
 
+    function handlePrepareMultipleRemovals(): void {
+        const { markedFoldersId } = dataCollection;
+        
+        if(markedFoldersId.length > 0) setShowDeleteWarning(true)
+    }
+
     return (
         <>
             {removalTarget && 
@@ -264,7 +300,7 @@ function FolderView(props: any): JSX.Element {
                 <MessageBox 
                     title="Warning" 
                     text={`You are about to remove multiple folders and all their contents. This is irreversible, do you want to proceed?`}
-                    primaryButton={{ text: "Yes, remove these folders", callback: () =>  handleDeleteFolders()}}
+                    primaryButton={{ text: "Yes, remove these folders", callback: () => handleDeleteFolders()}}
                     secondaryButton={{ text: "No, don't remove", callback: () => setShowDeleteWarning(false)}}    
                 />
             }
@@ -274,15 +310,31 @@ function FolderView(props: any): JSX.Element {
                     <h1 className="text-4xl text-tbfColor-darkpurple font-light inline-block">
                         Workspaces
                     </h1>
-                    {hasFolders() && renderPageOptionsMenu()}
-                </div>
-                {!hasFolders() && renderMessageBox()}
-                {hasFolders() === true && <div className="bg-white p-6 drop-shadow-md min-h-[83.33333333333vh]">
                     
-                    {<div className={`${viewMode === "list" ? "mx-auto" : `grid grid-cols-${decideGridCols()} grid-flow-dense gap-x-4 gap-y-0`}`}>
-                        {renderFolders()}
-                    </div>}
-                </div>}
+                </div>
+                <div className="flex justify-between bg-white px-6 drop-shadow-md">
+                    <div className="pt-6 pb-12 w-full min-h-[83.33333333333vh]">
+                        {!hasFolders() && renderMessageBox()}
+                        {hasFolders() === true && <div className="">
+                            {hasFolders() && renderPageOptionsMenu()}
+                            {<div className={`${viewMode === "list" ? "mx-auto my-6" : `grid grid-cols-${decideGridCols()}  grid-flow-dense gap-x-4 gap-y-0 my-6`}`}>
+                                {renderFolders()}
+                            </div>}
+                            
+                        </div>}
+                    </div>
+                    <div id="right-hand-bar" className="min-h-[83.33333333333vh] pl-4 py-2 flex flex-col w-80 ml-6 border-l border-tbfColor-middlegrey2">
+                        <div className="w-full my-2">
+                            History
+                        </div>
+                        <div className="w-full my-2">
+                            Favourite
+                        </div>
+                        <div className="w-full my-2">
+                            Tags
+                        </div>
+                    </div>
+                </div>
             </div>
         </>
     );
