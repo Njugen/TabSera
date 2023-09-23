@@ -19,7 +19,7 @@ function DataCollectionReducer(state = dataCollectionState, action: any) {
 
     if(type === SET_MARKED_FOLDERS_ID){
         let currentFoldersId: Array<number> = state.markedFoldersId;
-        const isMarked: number | undefined = currentFoldersId.find((id) => data);
+        const isMarked: number | undefined = currentFoldersId.find((id) => id === data);
         
         if(isMarked){
             currentFoldersId = currentFoldersId.filter((id) => id !== data);

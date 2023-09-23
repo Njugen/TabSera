@@ -113,6 +113,7 @@ function Workspaces(props: any): JSX.Element {
     }
 
     function handleMarkFolder(id: number): void{
+        console.log("aaaa", id);
         dispatch(setMarkedFoldersAction(id));
     }
 
@@ -185,7 +186,6 @@ function Workspaces(props: any): JSX.Element {
     }
 
     function renderFolders(): Array<JSX.Element> {
-        console.log(dataCollection.folderSort);
         let result: Array<JSX.Element> = [];
 
         function condition(a: iFolder, b: iFolder) {
@@ -195,7 +195,7 @@ function Workspaces(props: any): JSX.Element {
         }
 
         const sortedFolders = [...folderCollection].sort((a: any, b: any) => condition(a, b) ? 1 : -1);
-        console.log(sortedFolders);
+
         result = sortedFolders.map((folder: iFolder, i: number) => {
             const collection: Array<number> = dataCollection.markedFoldersId;
             return <Folder onDelete={(e) => setRemovalTarget(folder)} marked={collection.find((id) => folder.id === id) ? true : false} onMark={handleMarkFolder} onEdit={() => setEditFolderId(folder.id)} key={folder.id} type={folder.type} id={folder.id} viewMode={folder.viewMode} name={folder.name} desc={folder.desc} settings={folder.settings} windows={folder.windows} />
@@ -239,9 +239,7 @@ function Workspaces(props: any): JSX.Element {
         return <>
             <div className="flex flex-col items-center justify-center h-full">
                 <Paragraph text="You currently have no folders available. Please, create a new folder or import previous folders." />
-                <div className="mt-8">import ManageFolderPopup from './../../components/utils/manage_folder_popup';
-
-
+                <div className="mt-8">
                     <PrimaryButton text="Import workspaces" onClick={() => setCreateFolder(true)} />
                     <PrimaryButton text="Create workspace" onClick={() => setCreateFolder(true)} />
                 </div>
@@ -294,18 +292,18 @@ function Workspaces(props: any): JSX.Element {
                 />
             }
             {renderPopup()}
-            <div id="folders-view">
+            <div id="workspace-section" className="mb-12">
                 <div className="mb-6 mx-auto flex justify-between">
                     <h1 className="text-4xl text-tbfColor-darkpurple font-light inline-block">
                         Workspaces
                     </h1>
                 </div>
                 <div className="flex justify-between bg-white px-6 drop-shadow-md">
-                    <div className="pt-6 w-full">
+                    <div className="pt-6 w-full mb-6">
                         {!hasFolders() && renderMessageBox()}
                         {hasFolders() === true && <div className="">
                             {hasFolders() && renderOptionsMenu()}
-                            {<div className={`${viewMode === "list" ? "mx-auto my-6" : `grid grid-cols-${decideGridCols()}  grid-flow-dense gap-x-4 gap-y-0 my-6`}`}>
+                            {<div className={`${viewMode === "list" ? "mx-auto mt-10" : `grid grid-cols-${decideGridCols()}  grid-flow-dense gap-x-4 gap-y-0 mt-8`}`}>
                                 {renderFolders()}
                             </div>}
                             

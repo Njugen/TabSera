@@ -92,7 +92,7 @@ function WindowItem(props: iWindowItem): JSX.Element {
             if(editTab === tab.id){
                 return renderEditTab(id, editTab);
             } else {
-                return <TabItem disableEdit={disableEdit} key={tab.id} id={tab.id} label={tab.label} url={tab.url} onMark={handleMark} onEdit={handleTabEdit} />
+                return <TabItem disableEdit={tab.disableEdit} key={tab.id} id={tab.id} label={tab.label} url={tab.url} onMark={handleMark} onEdit={handleTabEdit} />
             }
             
         })
