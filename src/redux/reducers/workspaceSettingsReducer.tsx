@@ -1,23 +1,28 @@
 import { iFolder } from "../../interfaces/folder";
 import { 
-    SET_MARKED_FOLDERS_ID, 
-    SET_MULTIPLE_MARKED_FOLDERS_ID, 
-    CLEAR_ALL_MARKED_FOLDERS_ID, 
-    SET_FOLDERS_SORT_ORDER } from "../types/dataCollectionTypes";
+    SET_MARKED_WORKSPACES_ID, 
+    SET_MULTIPLE_MARKED_WORKSPACES_ID, 
+    CLEAR_ALL_MARKED_WORKSPACES_ID, 
+    SET_WORKSPACES_SORT_ORDER,
+    
+    CHANGE_WORKSPACES_VIEWMODE
+} from "../types/workspaceSettingsTypes";
 import { saveToStorage } from "../../services/webex_api/storage";
 
-const dataCollectionState: {
+const workspaceSettingsState: {
     markedFoldersId: Array<number>
     folderSort: string,
+    viewMode: "list" | "grid",
 } = {
     markedFoldersId: [],
     folderSort: "asc",
+    viewMode: "grid"
 }
 
-function DataCollectionReducer(state = dataCollectionState, action: any) {
+function WorkspaceSettingsReducer(state = workspaceSettingsState, action: any) {
     const { type, data } = action;
 
-    if(type === SET_MARKED_FOLDERS_ID){
+    if(type === SET_MARKED_WORKSPACES_ID){
         let currentFoldersId: Array<number> = state.markedFoldersId;
         const isMarked: number | undefined = currentFoldersId.find((id) => id === data);
         
@@ -31,24 +36,29 @@ function DataCollectionReducer(state = dataCollectionState, action: any) {
             ...state,
             markedFoldersId: [...currentFoldersId]
         }
-    } else if(type === SET_MULTIPLE_MARKED_FOLDERS_ID){
+    } else if(type === SET_MULTIPLE_MARKED_WORKSPACES_ID){
         return {
             ...state,
             markedFoldersId: data
         }
-    } else if(type === CLEAR_ALL_MARKED_FOLDERS_ID){
+    } else if(type === CLEAR_ALL_MARKED_WORKSPACES_ID){
         return {
             ...state,
             markedFoldersId: []
         }
-    } else if(type === SET_FOLDERS_SORT_ORDER){
+    } else if(type === SET_WORKSPACES_SORT_ORDER){
         return {
             ...state,
             folderSort: data
+        }
+    } else if(type === CHANGE_WORKSPACES_VIEWMODE){
+        return {
+            ...state,
+            viewMode: data
         }
     } else {
         return state;
     }
 }
 
-export { DataCollectionReducer }
+export { WorkspaceSettingsReducer }

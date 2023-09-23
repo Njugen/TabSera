@@ -4,13 +4,15 @@ import thunk from "redux-thunk";
 import { FolderCollectionReducer } from "./reducers/folderCollectionReducer";
 import { InEditFolderReducer } from "./reducers/inEditFolderReducer";
 import { WarningActionsReducer } from "./reducers/warningActionsReducer";
-import { DataCollectionReducer } from "./reducers/dataCollectionReducer";
+import { WorkspaceSettingsReducer } from "./reducers/workspaceSettingsReducer";
+import { HistorySettingsReducer } from "./reducers/historySettingsReducer";
 
 const combinedReducers = combineReducers({
     FolderCollectionReducer: FolderCollectionReducer,
     InEditFolderReducer: InEditFolderReducer,
     WarningActionsReducer: WarningActionsReducer,
-    DataCollectionReducer: DataCollectionReducer
+    WorkspaceSettingsReducer: WorkspaceSettingsReducer,
+    HistorySettingsReducer: HistorySettingsReducer
 });
 
 const middleware = applyMiddleware(thunk);

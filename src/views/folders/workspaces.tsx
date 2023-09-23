@@ -18,7 +18,7 @@ import GreyBorderButton from '../../components/utils/grey_border_button';
 import TextIconButton from '../../components/utils/text_icon_button';
 import randomNumber from '../../tools/random_number';
 import { iWindowItem } from '../../interfaces/window_item';
-import { clearMarkedFoldersAction, setFoldersSortOrder, setMarkedFoldersAction, setMarkMultipleFoldersAction } from '../../redux/actions/dataCollectionActions';
+import { changeWorkspacesViewMode, clearMarkedFoldersAction, setFoldersSortOrder, setMarkedFoldersAction, setMarkMultipleFoldersAction } from '../../redux/actions/workspaceSettingsActions';
 import Dropdown from '../../components/utils/dropdown';
 import GridIcon from '../../images/icons/grid_icon';
 import SortIcon from '../../images/icons/sort_icon';
@@ -30,11 +30,9 @@ function Workspaces(props: any): JSX.Element {
     const [showDeleteWarning, setShowDeleteWarning] = useState<boolean>(false);
     const [mergeProcess, setMergeProcess] = useState<iFolder | null>(null);
 
-    const [viewMode, setViewMode] = useState<string>("grid");
-
     const dispatch = useDispatch();
     const folderCollection = useSelector((state: any) => state.FolderCollectionReducer);
-    const dataCollection = useSelector((state: any) => state.DataCollectionReducer);
+    const workspaceSettings = useSelector((state: any) => state.WorkspaceSettingsReducer);
 
     useEffect(() => {
         
@@ -51,7 +49,7 @@ function Workspaces(props: any): JSX.Element {
 
 
     function handleDeleteFolders(): void {
-        const { markedFoldersId } = dataCollection;
+        const { markedFoldersId } = workspaceSettings;
         if(folderCollection && markedFoldersId){
             markedFoldersId.forEach((targetId: number) => {
                 const markedFolderIndex = folderCollection.findIndex((folder: iFolder) => targetId === folder.id);
@@ -67,7 +65,7 @@ function Workspaces(props: any): JSX.Element {
     }
 
     function handleDuplicateFolders(): void {
-        const { markedFoldersId } = dataCollection;
+        const { markedFoldersId } = workspaceSettings;
 
         if(folderCollection && markedFoldersId){
             markedFoldersId.forEach((targetId: number) => {
@@ -119,7 +117,7 @@ function Workspaces(props: any): JSX.Element {
 
     function handleMergeFolders(): void {
         const newId = randomNumber();
-        const { markedFoldersId } = dataCollection;
+        const { markedFoldersId } = workspaceSettings;
 
         const payload: iFolder = {
             id: newId,
@@ -178,7 +176,9 @@ function Workspaces(props: any): JSX.Element {
     }
 
     function handleChangeViewMode(): void {
-        setViewMode(viewMode === "list" ? "grid" : "list");
+        const { viewMode } = workspaceSettings;
+        
+        dispatch(changeWorkspacesViewMode(viewMode === "list" ? "grid" : "list"));
     }
 
     function handleSortFolders(e: any): void{
@@ -189,7 +189,7 @@ function Workspaces(props: any): JSX.Element {
         let result: Array<JSX.Element> = [];
 
         function condition(a: iFolder, b: iFolder) {
-            const { folderSort } = dataCollection
+            const { folderSort } = workspaceSettings
 
             return folderSort === "asc" ? (a.name > b.name) : (b.name > a.name);
         }
@@ -197,7 +197,7 @@ function Workspaces(props: any): JSX.Element {
         const sortedFolders = [...folderCollection].sort((a: any, b: any) => condition(a, b) ? 1 : -1);
 
         result = sortedFolders.map((folder: iFolder, i: number) => {
-            const collection: Array<number> = dataCollection.markedFoldersId;
+            const collection: Array<number> = workspaceSettings.markedFoldersId;
             return <Folder onDelete={(e) => setRemovalTarget(folder)} marked={collection.find((id) => folder.id === id) ? true : false} onMark={handleMarkFolder} onEdit={() => setEditFolderId(folder.id)} key={folder.id} type={folder.type} id={folder.id} viewMode={folder.viewMode} name={folder.name} desc={folder.desc} settings={folder.settings} windows={folder.windows} />
         });
 
@@ -218,7 +218,7 @@ function Workspaces(props: any): JSX.Element {
                 </div>
                 <div className="flex items-center justify-end w-5/12">
                     
-                    <TextIconButton icon={viewMode === "list" ? "grid" : "list"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text={viewMode === "list" ? "Grid" : "List"} onClick={handleChangeViewMode} />
+                    <TextIconButton icon={workspaceSettings.viewMode === "list" ? "grid" : "list"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text={workspaceSettings.viewMode === "list" ? "Grid" : "List"} onClick={handleChangeViewMode} />
                     <div className="relative w-5/12 mr-4 flex items-center">
                     
                         <div className="mr-2">
@@ -267,7 +267,7 @@ function Workspaces(props: any): JSX.Element {
     };
 
     function handlePrepareMultipleRemovals(): void {
-        const { markedFoldersId } = dataCollection;
+        const { markedFoldersId } = workspaceSettings;
         
         if(markedFoldersId.length > 0) setShowDeleteWarning(true)
     }
@@ -278,7 +278,7 @@ function Workspaces(props: any): JSX.Element {
             {removalTarget && 
                 <MessageBox 
                     title="Warning" 
-                    text={`You are about to remove the "${removalTarget.name}" folder and all its contents. This is irreversible, do you want to proceed?`}
+                    text={`You are about to remove the "${removalTarget.name}" workspace and all its contents. This is irreversible, do you want to proceed?`}
                     primaryButton={{ text: "Yes, remove this folder", callback: () => { dispatch(deleteFolderAction(removalTarget.id)); setRemovalTarget(null)}}}
                     secondaryButton={{ text: "No, don't remove", callback: () => setRemovalTarget(null)}}    
                 />
@@ -286,7 +286,7 @@ function Workspaces(props: any): JSX.Element {
             {showDeleteWarning === true && 
                 <MessageBox 
                     title="Warning" 
-                    text={`You are about to remove multiple folders and all their contents. This is irreversible, do you want to proceed?`}
+                    text={`You are about to remove one or more workspaces and all their contents. This is irreversible, do you want to proceed?`}
                     primaryButton={{ text: "Yes, remove these folders", callback: () => handleDeleteFolders()}}
                     secondaryButton={{ text: "No, don't remove", callback: () => setShowDeleteWarning(false)}}    
                 />
@@ -303,7 +303,7 @@ function Workspaces(props: any): JSX.Element {
                         {!hasFolders() && renderMessageBox()}
                         {hasFolders() === true && <div className="">
                             {hasFolders() && renderOptionsMenu()}
-                            {<div className={`${viewMode === "list" ? "mx-auto mt-10" : `grid grid-cols-${decideGridCols()}  grid-flow-dense gap-x-4 gap-y-0 mt-8`}`}>
+                            {<div className={`${workspaceSettings.viewMode === "list" ? "mx-auto mt-10" : `grid grid-cols-${decideGridCols()}  grid-flow-dense gap-x-4 gap-y-0 mt-8`}`}>
                                 {renderFolders()}
                             </div>}
                             

@@ -4,6 +4,7 @@
     "version": "0.0.1",
     "description": "Providing great overview and simple tools for efficient tab management.",
     "permissions": [
+        "history",
         "bookmarks",
         "tabs",
         "storage"

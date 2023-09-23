@@ -18,17 +18,22 @@ import GreyBorderButton from '../../components/utils/grey_border_button';
 import TextIconButton from '../../components/utils/text_icon_button';
 import randomNumber from '../../tools/random_number';
 import { iWindowItem } from '../../interfaces/window_item';
-import { clearMarkedFoldersAction, setFoldersSortOrder, setMarkedFoldersAction, setMarkMultipleFoldersAction } from '../../redux/actions/dataCollectionActions';
+import { clearMarkedFoldersAction, setFoldersSortOrder, setMarkedFoldersAction, setMarkMultipleFoldersAction } from '../../redux/actions/workspaceSettingsActions';
 import Dropdown from '../../components/utils/dropdown';
 import GridIcon from '../../images/icons/grid_icon';
 import SortIcon from '../../images/icons/sort_icon';
 import TabItem from '../../components/tab_item';
 import WindowItem from '../../components/window_item';
+import { setTabsSortOrder, setUpTabsAction } from '../../redux/actions/historySettingsActions';
+import { iTabItem } from '../../interfaces/tab_item';
+import { iFieldOption } from '../../interfaces/dropdown';
 
 function History(props: any): JSX.Element {
     const [viewMode, setViewMode] = useState<string>("grid");
+    const [historyList, setHistoryList] = useState<Array<chrome.history.HistoryItem>>([]);
 
     const dispatch = useDispatch();
+    const tabsData = useSelector((state: any) => state.HistorySettingsReducer);
 
     function handleChangeViewMode(): void {
         setViewMode(viewMode === "list" ? "grid" : "list");
@@ -36,6 +41,31 @@ function History(props: any): JSX.Element {
 
     function handleSort(e: any): void{
       //  dispatch(setFoldersSortOrder(e.selected === 0 ? "asc" : "desc"));
+        let option = "asc";
+
+        if(e.selected === 0){
+            option = "asc";
+        } else if(e.selected === 1){
+            option = "desc";
+        } else if(e.selected === 2){
+            option = "lv";
+        } else if(e.selected === 3){
+            option = "mv";
+        }
+        
+        dispatch(setTabsSortOrder(option));
+    }
+
+    function renderSortingDropdown(): JSX.Element {
+        const optionsList: Array<iFieldOption> = [
+            {id: 0, label: "Ascending title"},
+            {id: 1, label: "Descending title"},
+            {id: 2, label: "Last visited"},
+            {id: 3, label: "Most visited"}
+        ];
+
+        return <Dropdown tag="sort-folders" preset={{id: 0, label: "Ascending"}} options={optionsList} onCallback={handleSort} />
+
     }
 
     function renderOptionsMenu(): JSX.Element {
@@ -57,7 +87,9 @@ function History(props: any): JSX.Element {
                             <SortIcon size={24} fill="#6D00C2" />
                         </div> 
                         <div className="text-sm mr-4">Sort:</div> 
-                        <Dropdown tag="sort-folders" preset={{id: 0, label: "Ascending"}} options={[{id: 0, label: "Ascending"}, {id: 1, label: "Descending"}]} onCallback={handleSort} />
+                        {
+                            renderSortingDropdown()
+                        }
                     </div>
                     <PrimaryButton text="Open selected" onClick={() => {}} />
                     <PrimaryButton text="Add to workspace" onClick={() => {}} />
@@ -67,6 +99,62 @@ function History(props: any): JSX.Element {
             
         </>
     }
+
+    useEffect(() => {
+        const query = {
+            text: "",
+            maxResults: 10
+        }
+
+        chrome.history.search(query, (items: Array<chrome.history.HistoryItem>) => {
+            //console.log("RESULT", result);
+            console.log("ABC");
+            
+            dispatch(setUpTabsAction(items));
+        });
+    }, []);
+
+    function renderTabs(): Array<JSX.Element> {
+        const { tabsSort, tabs } = tabsData;
+        let sortedTabs: Array<chrome.history.HistoryItem> = tabs;
+        
+
+        function titleCondition(a: chrome.history.HistoryItem, b: chrome.history.HistoryItem) {
+            a.title = a.title ? a.title : "";
+            b.title = b.title ? b.title : "";
+
+            return tabsSort === "asc" ? (a.title > b.title) : (b.title > a.title);
+        }
+
+        console.log("TABS SORT", tabsSort);
+        if(tabsSort === "asc" || tabsSort === "desc"){
+            sortedTabs = [...tabs].sort((a: any, b: any) => titleCondition(a, b) ? 1 : -1);
+        } else if(tabsSort === "lv"){
+            sortedTabs = [...tabs].sort((a: any, b: any) => a.lastVisitTime - b.lastVisitTime);
+        } else if(tabsSort === "mv"){
+            sortedTabs = [...tabs].sort((a: any, b: any) => a.visitCount - b.visitCount);
+        }
+
+        console.log("SORTED TABS", sortedTabs);
+
+        const result = sortedTabs.map((item: chrome.history.HistoryItem) => {
+            return <TabItem id={parseInt(item.id)} label={item.title || ""} url={item.url || "https://"} disableEdit={true} />
+        });
+
+        return result; 
+    };
+
+    function decideGridCols(): number {
+        const { innerWidth } = window;
+        
+        if(innerWidth > 1920){
+            return 4;
+        } else if(innerWidth > 1280){
+            return 4;
+        } else {
+            return 3;
+        }
+    };
 
     return (
         <>
@@ -80,29 +168,14 @@ function History(props: any): JSX.Element {
                 <div className="flex justify-between bg-white px-6 drop-shadow-md">
                     <div className="pt-6 w-full mb-6">
                         {renderOptionsMenu()}
-                        <div className="w-full flex mt-10">
-                            <div className="w-6/12 mr-8">
-                                <h2 className="text-2xl text-black inline-block">
-                                    Windows
-                                </h2>
-                                <div className="mt-6">
-                                <WindowItem id={0} tabs={[
-                                        {
-                                            id: 0,
-                                            label: "Another test tab",
-                                            url: "https://facebook.com",
-                                            disableEdit: true
-                                        }
-                                ]} />
-                                </div>
-                            </div>
-                            <div className="w-6/12 ml-8">
-                                <h2 className="text-2xl text-black inline-block">
-                                    Single tabs
-                                </h2>
-                                <div className="mt-6">
-                                    <TabItem id={0} label="Test Tab" url="https://google.com" disableEdit={true} />
-                                </div>
+                        <div className="w-full mt-10">
+                           
+                          
+                            <h2 className="text-2xl text-black inline-block">
+                                Single tabs
+                            </h2>
+                            <div className={`${viewMode === "list" ? "mx-auto mt-10" : `grid grid-cols-${decideGridCols()}  grid-flow-dense gap-x-4 gap-y-0 mt-8`}`}>
+                                {renderTabs()}
                             </div>
                         </div>
                     </div>

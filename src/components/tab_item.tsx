@@ -11,7 +11,7 @@ function TabItem(props: iTabItem): JSX.Element {
     
     return (
         <div className="bg-white border border-tbfColor-lightergrey shadow-md  hover:border-tbfColor-lighterpurple transition-all rounded-md ease-in duration-100 tab-item my-2 flex items-center justify-between">
-            <a href={url} rel="noreferrer" className="text-sm px-2 py-2 tab-item-info hover:underline" target="_blank">
+            <a href={url} rel="noreferrer" className="text-sm truncate px-2 py-2 tab-item-info hover:underline" target="_blank">
                 <img src="/" className="w-18 h-18 bg-black inline-block" alt="Tab icon" />
                 <span className="mx-3">{label}</span>
             </a>
