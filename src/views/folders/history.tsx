@@ -76,7 +76,7 @@ function History(props: any): JSX.Element {
                 <div className="flex w-5/12">
                     <TextIconButton icon={"selected_checkbox"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Mark all" onClick={() => {}} />
                     <TextIconButton icon={"deselected_checkbox"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Unmark all" onClick={() => {}} />
-                    <TextIconButton icon={"trash"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Delete" onClick={() => {}} />
+                    <TextIconButton icon={"trash"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Delete from history" onClick={() => {}} />
                 </div>
                 <div className="flex items-center justify-end w-8/12">
                     
@@ -123,7 +123,10 @@ function History(props: any): JSX.Element {
             a.title = a.title ? a.title : "";
             b.title = b.title ? b.title : "";
 
-            return tabsSort === "asc" ? (a.title > b.title) : (b.title > a.title);
+            const aTitleLowerCase = a.title.toLowerCase();
+            const bTitleToLowerCase = b.title.toLowerCase();
+
+            return tabsSort === "asc" ? (aTitleLowerCase > bTitleToLowerCase) : (bTitleToLowerCase > aTitleLowerCase);
         }
 
         console.log("TABS SORT", tabsSort);
@@ -162,7 +165,7 @@ function History(props: any): JSX.Element {
             <div id="history-view" className="mb-12">
                 <div className="mb-6 mx-auto flex justify-between">
                     <h1 className="text-4xl text-tbfColor-darkpurple font-light inline-block">
-                        Previously closed
+                        History
                     </h1>
                 </div>
                 <div className="flex justify-between bg-white px-6 drop-shadow-md">

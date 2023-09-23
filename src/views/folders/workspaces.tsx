@@ -191,6 +191,9 @@ function Workspaces(props: any): JSX.Element {
         function condition(a: iFolder, b: iFolder) {
             const { folderSort } = workspaceSettings
 
+            a.name = a.name.toLowerCase();
+            b.name = b.name.toLowerCase();
+
             return folderSort === "asc" ? (a.name > b.name) : (b.name > a.name);
         }
 
