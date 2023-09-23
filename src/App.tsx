@@ -5,7 +5,7 @@ import Navlink from './components/utils/navlink';
 import { useEffect, useRef, useState } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import CollapseIcon from './images/icons/collapse_icon';
-import FolderView from './views/folders';
+import FolderView from './views/folders/folders';
 import SettingsView from './views/settings';
 import LeftIcon from './images/icons/left_icon';
 import RightIcon from './images/icons/right_icon';
@@ -51,7 +51,7 @@ function App() {
   }
 
   const navLinks: Array<JSX.Element> = [
-    <Navlink key="folders-nav-link" iconSize={20} label="Workspaces" url="/options" isActive={activeNavLink === "options" ? true : false} onClick={() => setActiveNavLink("options")} />,
+    <Navlink key="folders-nav-link" iconSize={20} label="Dashboard" url="/options" isActive={activeNavLink === "options" ? true : false} onClick={() => setActiveNavLink("options")} />,
     <Navlink key="settings-nav-link" iconSize={20} label="Settings" url="/settings" isActive={activeNavLink === "settings" ? true : false} onClick={() => setActiveNavLink("settings")} />
   ];
 

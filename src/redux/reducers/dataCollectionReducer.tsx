@@ -8,10 +8,10 @@ import { saveToStorage } from "../../services/webex_api/storage";
 
 const dataCollectionState: {
     markedFoldersId: Array<number>
-    folderSort: string
+    folderSort: string,
 } = {
     markedFoldersId: [],
-    folderSort: "asc"
+    folderSort: "asc",
 }
 
 function DataCollectionReducer(state = dataCollectionState, action: any) {

@@ -1,51 +1,116 @@
-"use client";
-
-import Folder from '../components/folder'
-import "./../styles/global_utils.module.scss";
-import PrimaryButton from '../components/utils/primary_button';
-import Popup from '../components/utils/popup';
+import Folder from '../../components/folder'
+import "./../../styles/global_utils.module.scss";
+import PrimaryButton from '../../components/utils/primary_button';
+import ManageFolderPopup from '../../components/utils/manage_folder_popup';
 import { useEffect, useState } from "react";
 
-import GenericIconButton from '../components/utils/generic_icon_button';
-import * as predef from "../styles/predef";
-import { iFolder } from '../interfaces/folder';
+import GenericIconButton from '../../components/utils/generic_icon_button';
+import * as predef from "../../styles/predef";
+import { iFolder } from '../../interfaces/folder';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearInEditFolder  } from '../redux/actions/inEditFolderActions';
-import {  createFolderAction, readAllFoldersFromBrowserAction } from '../redux/actions/folderCollectionActions';
-import Paragraph from '../components/utils/paragraph';
-import { deleteFolderAction } from "../redux/actions/folderCollectionActions";
-import { saveToStorage, getFromStorage } from '../services/webex_api/storage';
-import MessageBox from '../components/utils/message_box';
-import GreyBorderButton from '../components/utils/grey_border_button';
-import TextIconButton from '../components/utils/text_icon_button';
-import randomNumber from '../tools/random_number';
-import { iWindowItem } from '../interfaces/window_item';
-import { clearMarkedFoldersAction, setFoldersSortOrder, setMarkedFoldersAction, setMarkMultipleFoldersAction } from '../redux/actions/dataCollectionActions';
-import Dropdown from '../components/utils/dropdown';
-import GridIcon from '../images/icons/grid_icon';
-import SortIcon from '../images/icons/sort_icon';
+import { clearInEditFolder  } from '../../redux/actions/inEditFolderActions';
+import {  createFolderAction, readAllFoldersFromBrowserAction } from '../../redux/actions/folderCollectionActions';
+import Paragraph from '../../components/utils/paragraph';
+import { deleteFolderAction } from "../../redux/actions/folderCollectionActions";
+import { saveToStorage, getFromStorage } from '../../services/webex_api/storage';
+import MessageBox from '../../components/utils/message_box';
+import GreyBorderButton from '../../components/utils/grey_border_button';
+import TextIconButton from '../../components/utils/text_icon_button';
+import randomNumber from '../../tools/random_number';
+import { iWindowItem } from '../../interfaces/window_item';
+import { clearMarkedFoldersAction, setFoldersSortOrder, setMarkedFoldersAction, setMarkMultipleFoldersAction } from '../../redux/actions/dataCollectionActions';
+import Dropdown from '../../components/utils/dropdown';
+import GridIcon from '../../images/icons/grid_icon';
+import SortIcon from '../../images/icons/sort_icon';
 
-function FolderView(props: any): JSX.Element {
+function Workspaces(props: any): JSX.Element {
     const [editFolderId, setEditFolderId] = useState<number | null>(null);
     const [createFolder, setCreateFolder] = useState<boolean>(false);
-    const [viewMode, setViewMode] = useState<string>("grid");
-    const [showSearchField, setShowSearchField] = useState<boolean>(true);
-    const [ removalTarget, setRemovalTarget] = useState<iFolder | null>(null);
-    const [mergeProcess, setMergeProcess] = useState<iFolder | null>(null);
-    const [sortSlideDown, setSortSlideDown] = useState<boolean>(false);
+    const [removalTarget, setRemovalTarget] = useState<iFolder | null>(null);
     const [showDeleteWarning, setShowDeleteWarning] = useState<boolean>(false);
-    const dispatch = useDispatch();
+    const [mergeProcess, setMergeProcess] = useState<iFolder | null>(null);
 
+    const [viewMode, setViewMode] = useState<string>("grid");
+
+    const dispatch = useDispatch();
     const folderCollection = useSelector((state: any) => state.FolderCollectionReducer);
     const dataCollection = useSelector((state: any) => state.DataCollectionReducer);
 
     useEffect(() => {
-        getFromStorage("local", "folders", (data) => {  
+        
+        if(folderCollection.length > 0){
+            saveToStorage("local", "folders", folderCollection);
+        } 
+    }, [folderCollection]);
 
+    useEffect(() => {
+        getFromStorage("local", "folders", (data) => {  
             dispatch(readAllFoldersFromBrowserAction(data.folders));
         })
-        //readAllFoldersFromBrowser();
     }, []);
+
+
+    function handleDeleteFolders(): void {
+        const { markedFoldersId } = dataCollection;
+        if(folderCollection && markedFoldersId){
+            markedFoldersId.forEach((targetId: number) => {
+                const markedFolderIndex = folderCollection.findIndex((folder: iFolder) => targetId === folder.id);
+
+                if(markedFolderIndex > -1){
+                    dispatch(deleteFolderAction(folderCollection[markedFolderIndex].id));
+                    
+                }
+            });
+            setShowDeleteWarning(false);
+            dispatch(clearMarkedFoldersAction());
+        }
+    }
+
+    function handleDuplicateFolders(): void {
+        const { markedFoldersId } = dataCollection;
+
+        if(folderCollection && markedFoldersId){
+            markedFoldersId.forEach((targetId: number) => {
+                const markedFolderIndex = folderCollection.findIndex((folder: iFolder) => targetId === folder.id);
+
+                if(markedFolderIndex > -1){
+                    const newFolder: iFolder = {...folderCollection[markedFolderIndex]};
+
+                  
+                    newFolder.id = randomNumber();
+                    newFolder.name = newFolder.name + " (duplicate)";
+
+                    dispatch(createFolderAction({...newFolder}));
+                }
+            });
+            dispatch(clearMarkedFoldersAction());
+        }
+    }
+
+    function renderPopup(): JSX.Element {
+        let render;
+
+        if(createFolder === true){
+            render = <ManageFolderPopup title="Create workspace" onClose={handlePopupClose}>test</ManageFolderPopup>;
+        } else {
+
+            if(mergeProcess !== null){
+                return <ManageFolderPopup title={`Create folder by merge`} folder={mergeProcess} onClose={handlePopupClose}>test</ManageFolderPopup>
+            } else {
+                const targetFolder: Array<iFolder> = folderCollection.filter((item: iFolder) => editFolderId === item.id);
+                const input: iFolder = {...targetFolder[0]};
+
+                if(targetFolder.length > 0){
+                    render = <ManageFolderPopup title={`Edit folder ${targetFolder[0].id}`} folder={input} onClose={handlePopupClose}>test</ManageFolderPopup>;
+                } else {
+                    render = <></>;
+                }
+            }
+            
+        }
+
+        return render;
+    }
 
     function handleMarkFolder(id: number): void{
         dispatch(setMarkedFoldersAction(id));
@@ -85,12 +150,17 @@ function FolderView(props: any): JSX.Element {
         }
     }
 
+    function handlePopupClose(): void {
+        setEditFolderId(null);
+        setCreateFolder(false);
+        setMergeProcess(null);
+
+        dispatch(clearMarkedFoldersAction());
+        dispatch(clearInEditFolder());
+    }
+
     function handleUnmarkAllFolders(): void {
-
-
-
         dispatch(setMarkMultipleFoldersAction([]));
-        
     }
 
     function handleMarkAllFolders(): void {
@@ -105,92 +175,9 @@ function FolderView(props: any): JSX.Element {
             dispatch(setMarkMultipleFoldersAction([...updatedMarks]));
         
     }
-    
-
-    function handleDeleteFolders(): void {
-        const { markedFoldersId } = dataCollection;
-        if(folderCollection && markedFoldersId){
-            markedFoldersId.forEach((targetId: number) => {
-                const markedFolderIndex = folderCollection.findIndex((folder: iFolder) => targetId === folder.id);
-
-                if(markedFolderIndex > -1){
-                    dispatch(deleteFolderAction(folderCollection[markedFolderIndex].id));
-                    
-                }
-            });
-            setShowDeleteWarning(false);
-            dispatch(clearMarkedFoldersAction());
-        }
-    }
-
-    function handleDuplicateFolders(): void {
-        const { markedFoldersId } = dataCollection;
-
-        if(folderCollection && markedFoldersId){
-            markedFoldersId.forEach((targetId: number) => {
-                const markedFolderIndex = folderCollection.findIndex((folder: iFolder) => targetId === folder.id);
-
-                if(markedFolderIndex > -1){
-                    const newFolder: iFolder = {...folderCollection[markedFolderIndex]};
-
-                  
-                    newFolder.id = randomNumber();
-                    newFolder.name = newFolder.name + " (duplicate)";
-
-                    dispatch(createFolderAction({...newFolder}));
-                }
-            });
-            dispatch(clearMarkedFoldersAction());
-        }
-    }
 
     function handleChangeViewMode(): void {
         setViewMode(viewMode === "list" ? "grid" : "list");
-    }
-
-    function handleShowSearchField(): void {
-        setShowSearchField(showSearchField === false ? true : false);
-    }
-
-    function handlePopupClose(): void {
-        setEditFolderId(null);
-        setCreateFolder(false);
-        setMergeProcess(null);
-
-        dispatch(clearMarkedFoldersAction());
-        dispatch(clearInEditFolder());
-    }
-    
-    useEffect(() => {
-        
-        if(folderCollection.length > 0){
-            saveToStorage("local", "folders", folderCollection);
-        } 
-    }, [folderCollection]);
-
-    function renderPopup(): JSX.Element {
-        let render;
-
-        if(createFolder === true){
-            render = <Popup title="Create workspace" onClose={handlePopupClose}>test</Popup>;
-        } else {
-
-            if(mergeProcess !== null){
-                return <Popup title={`Create folder by merge`} folder={mergeProcess} onClose={handlePopupClose}>test</Popup>
-            } else {
-                const targetFolder: Array<iFolder> = folderCollection.filter((item: iFolder) => editFolderId === item.id);
-                const input: iFolder = {...targetFolder[0]};
-
-                if(targetFolder.length > 0){
-                    render = <Popup title={`Edit folder ${targetFolder[0].id}`} folder={input} onClose={handlePopupClose}>test</Popup>;
-                } else {
-                    render = <></>;
-                }
-            }
-            
-        }
-
-        return render;
     }
 
     function handleSortFolders(e: any): void{
@@ -217,7 +204,7 @@ function FolderView(props: any): JSX.Element {
         return result.length > 0 ? result : [<></>];
     }
 
-    function renderPageOptionsMenu(): JSX.Element {
+    function renderOptionsMenu(): JSX.Element {
         return <>
         
             <div className="mr-4 inline-flex items-center justify-between w-full">
@@ -252,7 +239,8 @@ function FolderView(props: any): JSX.Element {
         return <>
             <div className="flex flex-col items-center justify-center h-full">
                 <Paragraph text="You currently have no folders available. Please, create a new folder or import previous folders." />
-                <div className="mt-8">import SortIcon from './../images/icons/sort_icon';
+                <div className="mt-8">import ManageFolderPopup from './../../components/utils/manage_folder_popup';
+
 
                     <PrimaryButton text="Import workspaces" onClick={() => setCreateFolder(true)} />
                     <PrimaryButton text="Create workspace" onClick={() => setCreateFolder(true)} />
@@ -272,11 +260,11 @@ function FolderView(props: any): JSX.Element {
         const { innerWidth } = window;
         
         if(innerWidth > 1920){
-            return 4;
-        } else if(innerWidth > 1280){
             return 3;
-        } else {
+        } else if(innerWidth > 1280){
             return 2;
+        } else {
+            return 1;
         }
     };
 
@@ -285,6 +273,7 @@ function FolderView(props: any): JSX.Element {
         
         if(markedFoldersId.length > 0) setShowDeleteWarning(true)
     }
+    
 
     return (
         <>
@@ -310,34 +299,24 @@ function FolderView(props: any): JSX.Element {
                     <h1 className="text-4xl text-tbfColor-darkpurple font-light inline-block">
                         Workspaces
                     </h1>
-                    
                 </div>
                 <div className="flex justify-between bg-white px-6 drop-shadow-md">
-                    <div className="pt-6 pb-12 w-full min-h-[83.33333333333vh]">
+                    <div className="pt-6 w-full">
                         {!hasFolders() && renderMessageBox()}
                         {hasFolders() === true && <div className="">
-                            {hasFolders() && renderPageOptionsMenu()}
+                            {hasFolders() && renderOptionsMenu()}
                             {<div className={`${viewMode === "list" ? "mx-auto my-6" : `grid grid-cols-${decideGridCols()}  grid-flow-dense gap-x-4 gap-y-0 my-6`}`}>
                                 {renderFolders()}
                             </div>}
                             
                         </div>}
                     </div>
-                    <div id="right-hand-bar" className="min-h-[83.33333333333vh] pl-4 py-2 flex flex-col w-80 ml-6 border-l border-tbfColor-middlegrey2">
-                        <div className="w-full my-2">
-                            History
-                        </div>
-                        <div className="w-full my-2">
-                            Favourite
-                        </div>
-                        <div className="w-full my-2">
-                            Tags
-                        </div>
-                    </div>
+                
                 </div>
             </div>
-        </>
+        </>  
     );
+
 }
 
-export default FolderView;
+export default Workspaces
