@@ -1,5 +1,6 @@
 import iMessageBox from './../../interfaces/message_box';
 import styles from "./../../styles/global_utils.module.scss";
+import Dropdown from './dropdown';
 
 function MessageBox(props: iMessageBox): JSX.Element {
     const { title, text, primaryButton, secondaryButton } = props;
@@ -11,6 +12,7 @@ function MessageBox(props: iMessageBox): JSX.Element {
                 <p className="mb-8 text-white">
                     {text}
                 </p>
+              
                 <button onClick={secondaryButton.callback} className="hover:opacity-60 transition-all ease-in border-2 border-white bg-tbfColor-darkpurple text-white font-semibold px-3 py-2 mx-2 rounded-md">
                     { secondaryButton.text }
                 </button>

@@ -1,6 +1,6 @@
 interface iMessageBox {
     title?: string,
-    text: string
+    text: string,
     primaryButton: {
         text: string,
         callback: () => void

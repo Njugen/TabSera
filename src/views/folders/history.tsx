@@ -3,7 +3,7 @@ import "./../../styles/global_utils.module.scss";
 import PrimaryButton from '../../components/utils/primary_button';
 import ManageFolderPopup from '../../components/utils/manage_folder_popup';
 import { useEffect, useState } from "react";
-
+import styles from "./../../styles/global_utils.module.scss";
 import GenericIconButton from '../../components/utils/generic_icon_button';
 import * as predef from "../../styles/predef";
 import { iFolder } from '../../interfaces/folder';
@@ -24,16 +24,20 @@ import GridIcon from '../../images/icons/grid_icon';
 import SortIcon from '../../images/icons/sort_icon';
 import TabItem from '../../components/tab_item';
 import WindowItem from '../../components/window_item';
-import { setMarkMultipleTabsAction, setMarkedTabsAction, setTabsSortOrder, setUpTabsAction } from '../../redux/actions/historySettingsActions';
+import { clearMarkedTabsAction, setMarkMultipleTabsAction, setMarkedTabsAction, setTabsSortOrder, setUpTabsAction } from '../../redux/actions/historySettingsActions';
 import { iTabItem } from '../../interfaces/tab_item';
-import { iFieldOption } from '../../interfaces/dropdown';
+import { iDropdown, iFieldOption } from '../../interfaces/dropdown';
 
 function History(props: any): JSX.Element {
     const [viewMode, setViewMode] = useState<string>("grid");
-    const [historyList, setHistoryList] = useState<Array<chrome.history.HistoryItem>>([]);
+    const [addToWorkSpaceMessage, setAddToWorkspaceMessage] = useState<boolean>(false);
+    const [mergeProcess, setMergeProcess] = useState<iFolder | null>(null);
+    const [editFolderId, setEditFolderId] = useState<number | null>(null);
+    const [createFolder, setCreateFolder] = useState<boolean>(false);
 
     const dispatch = useDispatch();
     const tabsData = useSelector((state: any) => state.HistorySettingsReducer);
+    const folderCollection: Array<iFolder> = useSelector((state: any) => state.FolderCollectionReducer);
 
     function handleChangeViewMode(): void {
         setViewMode(viewMode === "list" ? "grid" : "list");
@@ -68,17 +72,21 @@ function History(props: any): JSX.Element {
 
     }
 
+    function handleMark(input: number): void {
+        
+        const tabFromCollection: chrome.history.HistoryItem = tabsData.tabs.find((tab: chrome.history.HistoryItem) => input === parseInt(tab.id));
+        if(tabFromCollection) {
+            
+            dispatch(setMarkedTabsAction(tabFromCollection));
+        }
+
+    }
+
+
     function handleMarkAll(): void {
         const tabs: Array<chrome.history.HistoryItem> = tabsData.tabs as Array<chrome.history.HistoryItem>;
-        
 
-        
-        const updatedMarks= tabs.map((tab) => {
-            return tab
-        });
-        
-
-        dispatch(setMarkMultipleTabsAction(updatedMarks));
+        dispatch(setMarkMultipleTabsAction(tabs));
     }
 
     function handleUnMarkAll(): void {
@@ -89,13 +97,24 @@ function History(props: any): JSX.Element {
     function handleDeleteFromHistory(): void {
    
         let updatedMarks = tabsData.tabs;
-        console.log("updatedMarks", tabsData.markedTabs);
+
         tabsData.markedTabs.forEach((tab: chrome.history.HistoryItem) => {
-            console.log(tab.url);
             chrome.history.deleteUrl({ url: tab.url! });
             updatedMarks = updatedMarks.filter((target: chrome.history.HistoryItem) => target.url !== tab.url);
         });
         dispatch(setUpTabsAction(updatedMarks));
+    }
+
+    function handleOpenSelected(): void {
+        const markedTabs: Array<chrome.history.HistoryItem> = tabsData.markedTabs as Array<chrome.history.HistoryItem>;
+        
+        markedTabs.forEach((tab: chrome.history.HistoryItem) => {
+            const properties: object = {
+                active: false,
+                url: tab.url
+            };
+            chrome.tabs.create(properties);
+        })
     }
 
     function renderOptionsMenu(): JSX.Element {
@@ -121,8 +140,8 @@ function History(props: any): JSX.Element {
                             renderSortingDropdown()
                         }
                     </div>
-                    <PrimaryButton text="Open selected" onClick={() => {}} />
-                    <PrimaryButton text="Add to workspace" onClick={() => {}} />
+                    <PrimaryButton text="Open selected" onClick={handleOpenSelected} />
+                    <PrimaryButton text="Add to workspace" onClick={() => setAddToWorkspaceMessage(true)} />
                 </div>
             </div>
                
@@ -143,22 +162,10 @@ function History(props: any): JSX.Element {
         });
     }, []);
 
-    function handleMark(input: number): void {
-        
-        const tabFromCollection: chrome.history.HistoryItem = tabsData.tabs.find((tab: chrome.history.HistoryItem) => input === parseInt(tab.id));
-
-        if(tabFromCollection) {
-            
-            dispatch(setMarkedTabsAction(tabFromCollection));
-        }
-
-    }
-
     function renderTabs(): Array<JSX.Element> {
         const { tabsSort, tabs } = tabsData;
         let sortedTabs: Array<chrome.history.HistoryItem> = tabs;
         
-
         function titleCondition(a: chrome.history.HistoryItem, b: chrome.history.HistoryItem) {
             a.title = a.title ? a.title : "";
             b.title = b.title ? b.title : "";
@@ -180,7 +187,8 @@ function History(props: any): JSX.Element {
         const result = sortedTabs.map((item: chrome.history.HistoryItem) => {
             const collection = tabsData.markedTabs;
            
-            const isMarked = collection.find((target: any) => target.id === parseInt(item.id));
+            const isMarked = collection.find((target: chrome.history.HistoryItem) => parseInt(target.id) === parseInt(item.id));
+    
             return <TabItem onMark={handleMark} key={`sorted-tab-${item.id}`} id={parseInt(item.id)} label={item.title || ""} url={item.url || "https://"} disableEdit={true} disableMark={false} marked={isMarked ? true : false} />
         });
 
@@ -199,9 +207,152 @@ function History(props: any): JSX.Element {
         }
     };
 
+    function renderAddTabsMessage(): JSX.Element {
+        const currentFolders: Array<iFolder> = folderCollection;
+
+        const options: Array<iFieldOption> = currentFolders.map((folder) => {
+            return { id: folder.id, label: folder.name }
+        });
+
+        const dropdownOptions: Array<iFieldOption> = [
+            {
+                id: -1,
+                label: "Select a workspace"
+            },
+            ...options
+        ];
+
+        function handleAddToNewWorkspace(): void {
+            
+
+            setAddToWorkspaceMessage(false);
+            setCreateFolder(true);
+        }
+
+        function handleAddToExistingWorkspace(e: any): void {
+            if(e.selected === -1) return;
+
+            const targetFolderId = e.selected;
+            const targetFolder: iFolder | undefined = folderCollection.find((folder: iFolder) => folder.id === targetFolderId);
+         
+            if(!targetFolder) return;
+            
+            const markedTabs: Array<iTabItem> = tabsData.markedTabs.map((tab: chrome.history.HistoryItem) => {
+                return {
+                    id: tab.id,
+                    label: tab.title,
+                    url: tab.url,
+                    disableEdit: false,
+                    disableMark: false,
+                }
+            });
+
+            const presetWindow: iWindowItem = {
+                id: randomNumber(),
+                tabs: markedTabs
+            };
+
+            const updatedFolder: iFolder = {...targetFolder};
+            updatedFolder.windows = [...updatedFolder.windows, presetWindow];
+
+            if(targetFolder){
+                setAddToWorkspaceMessage(false);
+                setMergeProcess(updatedFolder);
+            }
+        }
+
+        return (
+            <div className={`absolute flex ${styles.popup_container} justify-center items-center top-0 left-0 w-full h-full overflow-hidden z-[1000]`}>
+                <div className="pl-8 pr-5 pb-10 pt-6 w-[800px] min-h-[300px] bg-white rounded-lg drop-shadow-2xl leading-7 text-md">
+                    <div className="flex justify-center">
+                        <h1 className="text-3xl text-tbfColor-darkpurple font-light inline-block">
+                            Choose where to add the selected tabs
+                        </h1>
+                    </div>
+                    <div className="flex flex-col items-center">
+                        <div className="w-[350px] mt-10 text-center">
+                            <p className="text-lg text-black inline-block mb-4 font-semibold">
+                                To an existing workspace
+                            </p>
+                            <Dropdown tag="" preset={dropdownOptions[0]} options={dropdownOptions} onCallback={handleAddToExistingWorkspace} />
+                        </div>
+                        <div className="w-[350px] mt-5 text-center flex flex-col">
+                            <p className="text-lg text-black block mb-6 mt-2 font-semibold">
+                                Or
+                            </p>
+                            <div className="">
+                                <PrimaryButton text="To a new workspace" onClick={handleAddToNewWorkspace} />
+                            </div>
+                            <div className="mt-20">
+                                <GreyBorderButton text="Cancel" onClick={() => setAddToWorkspaceMessage(false)} />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+
+    function handlePopupClose(): void {
+        console.log("close");
+        setEditFolderId(null);
+        setCreateFolder(false);
+        setMergeProcess(null);
+
+        dispatch(clearMarkedTabsAction());
+        dispatch(clearMarkedFoldersAction());
+        dispatch(clearInEditFolder());
+    }
+
+
+    function renderPopup(): JSX.Element {
+        let render;
+        if(createFolder === true){
+            const markedTabs: Array<iTabItem> = tabsData.markedTabs.map((tab: chrome.history.HistoryItem) => {
+                return {
+                    id: tab.id,
+                    label: tab.title,
+                    url: tab.url,
+                    disableEdit: false,
+                    disableMark: false,
+                }
+            });
+
+            const presetWindow: iWindowItem = {
+                id: randomNumber(),
+                tabs: markedTabs
+            };
+            
+            const payload: iFolder = {
+                id: randomNumber(),
+                name: "",
+                desc: "",
+                type: "expanded",
+                viewMode: "grid",
+                marked: false,
+                settings: {
+                    startup_launch: false,
+                    close_previous: false,
+                    auto_add: false
+                },
+                windows: [presetWindow],
+            }
+            render = <ManageFolderPopup title="Create workspace" folder={payload} onClose={handlePopupClose}>test</ManageFolderPopup>;
+        } else if(mergeProcess !== null) {
+
+            render = <ManageFolderPopup title={`Merge tabs to ${mergeProcess.name}`} folder={mergeProcess} onClose={handlePopupClose}>test</ManageFolderPopup>;
+        } else {
+            render = <></>;
+        }
+
+        return render;
+    }
+
     return (
         <>
-            
+            {addToWorkSpaceMessage && renderAddTabsMessage()}
+            {renderPopup()}
             <div id="history-view" className="mb-12">
                 <div className="mb-6 mx-auto flex justify-between">
                     <h1 className="text-4xl text-tbfColor-darkpurple font-light inline-block">

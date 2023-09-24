@@ -1,9 +1,9 @@
 import { iFolder } from "../../interfaces/folder";
 import { iTabItem } from "../../interfaces/tab_item";
 import { 
-    SET_MARKED_TABS_ID, 
-    SET_MULTIPLE_MARKED_TABS_ID, 
-    CLEAR_ALL_MARKED_TABS_ID,
+    SET_MARKED_TABS, 
+    SET_MULTIPLE_MARKED_TABS, 
+    CLEAR_ALL_MARKED_TABS,
     SET_TABS_SORT_ORDER,
     SET_UP_TABS,
 
@@ -19,21 +19,21 @@ function setUpTabsAction(input: Array<chrome.history.HistoryItem>){
 
 function setMarkedTabsAction(input: chrome.history.HistoryItem){
     return {
-        type: SET_MARKED_TABS_ID,
+        type: SET_MARKED_TABS,
         data: input
     }
 }
 
 function setMarkMultipleTabsAction(input: Array<chrome.history.HistoryItem>){
     return {
-        type: SET_MULTIPLE_MARKED_TABS_ID,
+        type: SET_MULTIPLE_MARKED_TABS,
         data: input
     }
 }
 
 function clearMarkedTabsAction(){
     return {
-        type: CLEAR_ALL_MARKED_TABS_ID,
+        type: CLEAR_ALL_MARKED_TABS,
         data: null
     }
 }

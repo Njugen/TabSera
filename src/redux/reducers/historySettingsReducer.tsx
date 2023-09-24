@@ -1,8 +1,8 @@
 import { iFolder } from "../../interfaces/folder";
 import { 
-    SET_MARKED_TABS_ID, 
-    SET_MULTIPLE_MARKED_TABS_ID, 
-    CLEAR_ALL_MARKED_TABS_ID,
+    SET_MARKED_TABS, 
+    SET_MULTIPLE_MARKED_TABS, 
+    CLEAR_ALL_MARKED_TABS,
     SET_TABS_SORT_ORDER,
     SET_UP_TABS,
 
@@ -31,7 +31,7 @@ function HistorySettingsReducer(state = historySettingsState, action: any) {
             ...state,
             tabs: data
         }
-    } else if(type === SET_MARKED_TABS_ID){
+    } else if(type === SET_MARKED_TABS){
         let currentTabs = state.markedTabs;
         const isMarked = currentTabs.find((tab) => tab.id === data);
         
@@ -45,13 +45,13 @@ function HistorySettingsReducer(state = historySettingsState, action: any) {
             ...state,
             markedTabs: [...currentTabs]
         }
-    } else if(type === SET_MULTIPLE_MARKED_TABS_ID){
+    } else if(type === SET_MULTIPLE_MARKED_TABS){
         console.log("DDDD", data);
         return {
             ...state,
             markedTabs: [...data]
         }
-    } else if(type === CLEAR_ALL_MARKED_TABS_ID){
+    } else if(type === CLEAR_ALL_MARKED_TABS){
         return {
             ...state,
             markedTabs: []
