@@ -17,14 +17,14 @@ function setUpTabsAction(input: Array<chrome.history.HistoryItem>){
     }
 }
 
-function setMarkedTabsAction(input: number){
+function setMarkedTabsAction(input: chrome.history.HistoryItem){
     return {
         type: SET_MARKED_TABS_ID,
         data: input
     }
 }
 
-function setMarkMultipleTabsAction(input: Array<number>){
+function setMarkMultipleTabsAction(input: Array<chrome.history.HistoryItem>){
     return {
         type: SET_MULTIPLE_MARKED_TABS_ID,
         data: input

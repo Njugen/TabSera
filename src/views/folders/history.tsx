@@ -24,7 +24,7 @@ import GridIcon from '../../images/icons/grid_icon';
 import SortIcon from '../../images/icons/sort_icon';
 import TabItem from '../../components/tab_item';
 import WindowItem from '../../components/window_item';
-import { setTabsSortOrder, setUpTabsAction } from '../../redux/actions/historySettingsActions';
+import { setMarkMultipleTabsAction, setMarkedTabsAction, setTabsSortOrder, setUpTabsAction } from '../../redux/actions/historySettingsActions';
 import { iTabItem } from '../../interfaces/tab_item';
 import { iFieldOption } from '../../interfaces/dropdown';
 
@@ -68,15 +68,45 @@ function History(props: any): JSX.Element {
 
     }
 
+    function handleMarkAll(): void {
+        const tabs: Array<chrome.history.HistoryItem> = tabsData.tabs as Array<chrome.history.HistoryItem>;
+        
+
+        
+        const updatedMarks= tabs.map((tab) => {
+            return tab
+        });
+        
+
+        dispatch(setMarkMultipleTabsAction(updatedMarks));
+    }
+
+    function handleUnMarkAll(): void {
+        
+        dispatch(setMarkMultipleTabsAction([]));
+    }
+
+    function handleDeleteFromHistory(): void {
+   
+        let updatedMarks = tabsData.tabs;
+        console.log("updatedMarks", tabsData.markedTabs);
+        tabsData.markedTabs.forEach((tab: chrome.history.HistoryItem) => {
+            console.log(tab.url);
+            chrome.history.deleteUrl({ url: tab.url! });
+            updatedMarks = updatedMarks.filter((target: chrome.history.HistoryItem) => target.url !== tab.url);
+        });
+        dispatch(setUpTabsAction(updatedMarks));
+    }
+
     function renderOptionsMenu(): JSX.Element {
         return <>
         
             <div className="mr-4 inline-flex items-center justify-between w-full">
                 
                 <div className="flex w-5/12">
-                    <TextIconButton icon={"selected_checkbox"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Mark all" onClick={() => {}} />
-                    <TextIconButton icon={"deselected_checkbox"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Unmark all" onClick={() => {}} />
-                    <TextIconButton icon={"trash"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Delete from history" onClick={() => {}} />
+                    <TextIconButton icon={"selected_checkbox"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Mark all" onClick={handleMarkAll} />
+                    <TextIconButton icon={"deselected_checkbox"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Unmark all" onClick={handleUnMarkAll} />
+                    <TextIconButton icon={"trash"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Delete from history" onClick={handleDeleteFromHistory} />
                 </div>
                 <div className="flex items-center justify-end w-8/12">
                     
@@ -103,16 +133,26 @@ function History(props: any): JSX.Element {
     useEffect(() => {
         const query = {
             text: "",
-            maxResults: 10
+            maxResults: 25
         }
 
         chrome.history.search(query, (items: Array<chrome.history.HistoryItem>) => {
             //console.log("RESULT", result);
-            console.log("ABC");
             
             dispatch(setUpTabsAction(items));
         });
     }, []);
+
+    function handleMark(input: number): void {
+        
+        const tabFromCollection: chrome.history.HistoryItem = tabsData.tabs.find((tab: chrome.history.HistoryItem) => input === parseInt(tab.id));
+
+        if(tabFromCollection) {
+            
+            dispatch(setMarkedTabsAction(tabFromCollection));
+        }
+
+    }
 
     function renderTabs(): Array<JSX.Element> {
         const { tabsSort, tabs } = tabsData;
@@ -129,7 +169,6 @@ function History(props: any): JSX.Element {
             return tabsSort === "asc" ? (aTitleLowerCase > bTitleToLowerCase) : (bTitleToLowerCase > aTitleLowerCase);
         }
 
-        console.log("TABS SORT", tabsSort);
         if(tabsSort === "asc" || tabsSort === "desc"){
             sortedTabs = [...tabs].sort((a: any, b: any) => titleCondition(a, b) ? 1 : -1);
         } else if(tabsSort === "lv"){
@@ -138,10 +177,11 @@ function History(props: any): JSX.Element {
             sortedTabs = [...tabs].sort((a: any, b: any) => a.visitCount - b.visitCount);
         }
 
-        console.log("SORTED TABS", sortedTabs);
-
         const result = sortedTabs.map((item: chrome.history.HistoryItem) => {
-            return <TabItem id={parseInt(item.id)} label={item.title || ""} url={item.url || "https://"} disableEdit={true} />
+            const collection = tabsData.markedTabs;
+           
+            const isMarked = collection.find((target: any) => target.id === parseInt(item.id));
+            return <TabItem onMark={handleMark} key={`sorted-tab-${item.id}`} id={parseInt(item.id)} label={item.title || ""} url={item.url || "https://"} disableEdit={true} disableMark={false} marked={isMarked ? true : false} />
         });
 
         return result; 
@@ -177,7 +217,7 @@ function History(props: any): JSX.Element {
                             <h2 className="text-2xl text-black inline-block">
                                 Single tabs
                             </h2>
-                            <div className={`${viewMode === "list" ? "mx-auto mt-10" : `grid grid-cols-${decideGridCols()}  grid-flow-dense gap-x-4 gap-y-0 mt-8`}`}>
+                            <div className={`overflow-y-auto ${viewMode === "list" ? "mx-auto mt-10" : `grid grid-cols-${decideGridCols()} grid-flow-dense gap-x-4 gap-y-0 mt-8`}`}>
                                 {renderTabs()}
                             </div>
                         </div>

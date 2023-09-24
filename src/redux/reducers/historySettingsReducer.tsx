@@ -13,12 +13,12 @@ import { iTabItem } from "../../interfaces/tab_item";
 
 const historySettingsState: {
     tabs: Array<chrome.history.HistoryItem>
-    markedTabsId: Array<number>
+    markedTabs: Array<chrome.history.HistoryItem>
     tabsSort: string,
     viewMode: "list" | "grid",
 } = {
     tabs: [],
-    markedTabsId: [],
+    markedTabs: [],
     tabsSort: "asc",
     viewMode: "grid"
 }
@@ -32,28 +32,29 @@ function HistorySettingsReducer(state = historySettingsState, action: any) {
             tabs: data
         }
     } else if(type === SET_MARKED_TABS_ID){
-        let currentTabsId: Array<number> = state.markedTabsId;
-        const isMarked: number | undefined = currentTabsId.find((id) => id === data);
+        let currentTabs = state.markedTabs;
+        const isMarked = currentTabs.find((tab) => tab.id === data);
         
         if(isMarked){
-            currentTabsId = currentTabsId.filter((id) => id !== data);
+            currentTabs = currentTabs.filter((tab) => tab.id !== data);
         } else {
-            currentTabsId.push(data);
+            currentTabs.push(data);
         }
 
         return {
             ...state,
-            markedTabsId: [...currentTabsId]
+            markedTabs: [...currentTabs]
         }
     } else if(type === SET_MULTIPLE_MARKED_TABS_ID){
+        console.log("DDDD", data);
         return {
             ...state,
-            markedFoldersId: data
+            markedTabs: [...data]
         }
     } else if(type === CLEAR_ALL_MARKED_TABS_ID){
         return {
             ...state,
-            markedFoldersId: []
+            markedTabs: []
         }
     } else if(type === SET_TABS_SORT_ORDER){
 

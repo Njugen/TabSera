@@ -4,6 +4,7 @@ interface iWindowItem {
     id: number,
     tabs: Array<iTabItem>,
     initExpand?: boolean,
+    disableMark?: boolean,
     disableEdit?: boolean
 }
 

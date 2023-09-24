@@ -21,6 +21,7 @@ function EditableTabItem(props: iEditableTabItem): JSX.Element {
             id: tabId,
             label: e.target.value,
             url: e.target.value,
+            marked: e.target.marked
         };
 
         dispatch(updateWindowManager(windowId, payload)); 

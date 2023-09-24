@@ -15,7 +15,7 @@ function WindowItem(props: iWindowItem): JSX.Element {
     const [newTab, setNewTab] = useState<boolean>(false);
     const [editTab, setEditTab] = useState<number | null>(null);
     const [markedTabs, setMarkedTabs] = useState<Array<number>>([]);
-    const { id, tabs, initExpand, disableEdit } = props;
+    const { id, tabs, initExpand, disableEdit, disableMark } = props;
     
     const dispatch = useDispatch();
     const folderData = useSelector((state: any) => state.InEditFolderReducer);
@@ -92,7 +92,7 @@ function WindowItem(props: iWindowItem): JSX.Element {
             if(editTab === tab.id){
                 return renderEditTab(id, editTab);
             } else {
-                return <TabItem disableEdit={disableEdit} key={tab.id} id={tab.id} label={tab.label} url={tab.url} onMark={handleMark} onEdit={handleTabEdit} />
+                return <TabItem marked={false} disableMark={disableMark} disableEdit={disableEdit} key={tab.id} id={tab.id} label={tab.label} url={tab.url} onMark={handleMark} onEdit={handleTabEdit} />
             }
             
         })
