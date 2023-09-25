@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 import { updateWindowManager } from "../redux/actions/inEditFolderActions";
 
 function EditableTabItem(props: iEditableTabItem): JSX.Element {
-    const { id, windowId, onStop } = props;
+    const { id, windowId, preset, onStop } = props;
     const fieldRef = useRef<HTMLInputElement>(null);
 
     const dispatch = useDispatch();
@@ -49,10 +49,10 @@ function EditableTabItem(props: iEditableTabItem): JSX.Element {
             autoFocus 
             ref={fieldRef} 
             type="text" 
-            defaultValue={"https://"}
+            defaultValue={preset ? preset : "https://"}
             onBlur={handleBlur}
             onKeyDown={handleKeyDown}
-            className={`${predef.textfield_full} h-[42px] px-2 w-full text-sm text-tbfColor-darkergrey rounded-lg border border-tbfColor-middlegrey4`} 
+            className={`${predef.textfield_full} h-[42px] px-2 w-full my-2 text-sm text-tbfColor-darkergrey rounded-lg border border-tbfColor-middlegrey4`} 
         />
     ); 
 }

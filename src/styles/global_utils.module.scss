@@ -100,3 +100,34 @@
     animation-name: folder_item_expanded;
     animation-duration: 500ms;
 }
+
+
+@keyframes window_item_contracted {
+    from {
+        max-height: 2000px;
+    }
+    to {
+        max-height: 0px;
+    }
+}
+
+@keyframes window_item_expanded {
+    from {
+        
+        max-height: 0px;
+    }
+    to {
+        max-height: 2000px;
+    }
+}
+
+
+.window_item_animation_contracted {
+    animation-name: window_item_contracted;
+    animation-duration: 200ms;
+}
+
+.window_item_animation_expanded {
+    animation-name: window_item_expanded;
+    animation-duration: 200ms;
+}

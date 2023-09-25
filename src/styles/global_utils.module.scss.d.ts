@@ -11,6 +11,8 @@ interface CssExports {
   'sidebar_animation_expanded': string;
   'folder_item_animation_contracted': string;
   'folder_item_animation_expanded': string;
+  'window_item_animation_contracted': string;
+  'window_item_animation_expanded': string;
 }
 export const cssExports: CssExports;
 export default cssExports;

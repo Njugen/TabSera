@@ -152,7 +152,7 @@ function History(props: any): JSX.Element {
                         }
                     </div>
                     <PrimaryButton disabled={markedTabs.length > 0 ? false : true} text="Open selected" onClick={handleOpenSelected} />
-                    <PrimaryButton disabled={false} text="Add to workspace" onClick={() => setAddToWorkspaceMessage(true)} />
+                    <PrimaryButton disabled={markedTabs.length > 0 ? false : true} text="Add to workspace" onClick={() => setAddToWorkspaceMessage(true)} />
                 </div>
             </div>
                
@@ -360,6 +360,35 @@ function History(props: any): JSX.Element {
         return render;
     }
 
+    function renderHistoryManagement(): JSX.Element {
+        return (
+            <div className="flex justify-center bg-white px-6 drop-shadow-md min-h-[350px]">
+                <div className="pt-6 w-full mb-6">
+                    {renderOptionsMenu()}
+                    <div className="w-full mt-10">
+                        
+                        
+                        <h2 className="text-2xl text-black inline-block">
+                            Previous tabs
+                        </h2>
+                        <div className={`overflow-y-auto ${viewMode === "list" ? "mx-auto mt-10" : `grid grid-cols-${decideGridCols()} grid-flow-dense gap-x-4 gap-y-0 mt-8`}`}>
+                            {renderTabs()}
+                        </div>
+                    </div> 
+                </div>
+                
+            </div>
+        );
+    }
+
+    function renderEmptyMessage(): JSX.Element {
+        return (
+            <div className="flex justify-center items-center bg-white px-6 drop-shadow-md min-h-[350px]">
+                <p> Your browing history is empty.</p>
+            </div>
+        );
+    }
+
     return (
         <>
             {addToWorkSpaceMessage && renderAddTabsMessage()}
@@ -370,22 +399,7 @@ function History(props: any): JSX.Element {
                         History
                     </h1>
                 </div>
-                <div className="flex justify-between bg-white px-6 drop-shadow-md">
-                    <div className="pt-6 w-full mb-6">
-                        {renderOptionsMenu()}
-                        <div className="w-full mt-10">
-                           
-                          
-                            <h2 className="text-2xl text-black inline-block">
-                                Previous tabs
-                            </h2>
-                            <div className={`overflow-y-auto ${viewMode === "list" ? "mx-auto mt-10" : `grid grid-cols-${decideGridCols()} grid-flow-dense gap-x-4 gap-y-0 mt-8`}`}>
-                                {renderTabs()}
-                            </div>
-                        </div>
-                    </div>
-                
-                </div>
+                {tabsData.tabs.length > 0 ? renderHistoryManagement() : renderEmptyMessage()}
             </div>
         </>  
     );

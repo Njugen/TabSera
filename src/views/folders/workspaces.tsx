@@ -111,7 +111,7 @@ function Workspaces(props: any): JSX.Element {
     }
 
     function handleMarkFolder(id: number): void{
-        console.log("aaaa", id);
+
         dispatch(setMarkedFoldersAction(id));
     }
 
@@ -302,7 +302,7 @@ function Workspaces(props: any): JSX.Element {
                         Workspaces
                     </h1>
                 </div>
-                <div className="flex justify-between bg-white px-6 drop-shadow-md">
+                <div className="flex justify-between bg-white min-h-[350px] px-6 drop-shadow-md">
                     <div className="pt-6 w-full mb-6">
                         {!hasFolders() && renderMessageBox()}
                         {hasFolders() === true && <div className="">
