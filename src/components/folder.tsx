@@ -38,11 +38,11 @@ function Folder(props: iFolder) {
   
             if(expanded === false){
                 headerRef.current.className = `relative tbf-${type} bg-tbfColor-lightpurple px-3 h-10 flex items-center transition-all ease-in duration-400 rounded-t-md`;
-                contentsRef.current.className = "max-h-[2000px] overflow-none transition-all ease-in duration-200 bg-tbfColor-lighterpurple4 border border-tbfColor-lightpurple rounded-b-md";
+                contentsRef.current.className = "max-h-[2000px] overflow-hidden transition-all ease-in duration-[50ms] bg-tbfColor-lighterpurple4 border border-tbfColor-lightpurple rounded-b-md";
                 setExpanded(true);
             } else {
                 headerRef.current.className = `relative tbf-${type}  hover:bg-tbfColor-lighterpurple2 border border-tbfColor-lighterpurple hover:border-tbfColor-lightpurple bg-tbfColor-lighterpurple3 px-3 h-10 flex items-center rounded-md transition-all ease-in duration-100`;
-                contentsRef.current.className = "max-h-0 overflow-hidden transition-all ease-out duration-200 bg-tbfColor-lighterpurple4 rounded-b-md";
+                contentsRef.current.className = "max-h-0 overflow-hidden transition-all ease-out duration-[50ms] bg-tbfColor-lighterpurple4 rounded-b-md";
                 setExpanded(false);
             }
         

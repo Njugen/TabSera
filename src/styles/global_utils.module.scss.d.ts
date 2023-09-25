@@ -7,6 +7,10 @@ interface CssExports {
   'popup_container': string;
   'scroll_button_shadow': string;
   'shadow_no_pos': string;
+  'sidebar_animation_contracted': string;
+  'sidebar_animation_expanded': string;
+  'folder_item_animation_contracted': string;
+  'folder_item_animation_expanded': string;
 }
 export const cssExports: CssExports;
 export default cssExports;

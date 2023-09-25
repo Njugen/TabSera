@@ -46,7 +46,7 @@ function HistorySettingsReducer(state = historySettingsState, action: any) {
             markedTabs: [...currentTabs]
         }
     } else if(type === SET_MULTIPLE_MARKED_TABS){
-        console.log("DDDD", data);
+
         return {
             ...state,
             markedTabs: [...data]

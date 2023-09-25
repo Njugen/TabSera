@@ -21,7 +21,7 @@ import DeselectedCheckboxIcon from "../../images/icons/deselected_checkbox_icon"
 import SortIcon from "../../images/icons/sort_icon";
 
 function TextIconButton(props: iTextIconButton): JSX.Element {
-    const { icon, text, fill, size, onClick } = props;
+    const { icon, text, fill, size, disabled, onClick } = props;
     
     function renderIcon(): JSX.Element {
         if(icon === "trash"){
@@ -66,7 +66,7 @@ function TextIconButton(props: iTextIconButton): JSX.Element {
     } 
 
     return (
-        <button className={`flex mr-6 items-center ${styles.opacity_hover_effect}`} onClick={onClick}>
+        <button disabled={disabled} className={`flex mr-6 items-center ${styles.opacity_hover_effect}`} onClick={onClick}>
             {renderIcon()} 
             <span className={`${size.text} ml-2`}>
                 {text}

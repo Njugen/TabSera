@@ -61,7 +61,7 @@ function App() {
       <div id="brand-section" className="h-32">
 
       </div>  
-      <div id="main-menu" className="px-4">
+      <div id="main-menu" className="px-2">
         {navLinks.map((link) => link)}
       </div>
     </>;
@@ -75,10 +75,10 @@ function App() {
       </div>  
       <div id="main-menu" className="flex flex-col items-center justify-center">
         <div>
-          <div className={`my-1 border p-2 rounded-lg ${activeNavLink === "options" ? "border-tbfColor-lightpurple" : "border-tbfColor-middlegrey2"}`}>
+          <div className={`my-2 border p-2 rounded-lg ${activeNavLink === "options" ? "border-tbfColor-lightpurple" : "border-tbfColor-middlegrey2"}`}>
             <Navlink key="folders-nav-link" iconSize={32} url="/options" isActive={activeNavLink === "options" ? true : false} onClick={() => setActiveNavLink("options")} />
           </div>
-          <div className={`my-1 border p-2 rounded-lg  ${activeNavLink === "settings" ? "border-tbfColor-lightpurple" : "border-tbfColor-middlegrey2"}`}>
+          <div className={`my-2 border p-2 rounded-lg  ${activeNavLink === "settings" ? "border-tbfColor-lightpurple" : "border-tbfColor-middlegrey2"}`}>
             <Navlink key="settings-nav-link" iconSize={32} url="/settings" isActive={activeNavLink === "settings" ? true : false} onClick={() => setActiveNavLink("settings")} />
           </div>
         </div>
@@ -90,8 +90,8 @@ function App() {
   function renderViewWrapper(view: JSX.Element): JSX.Element {
     return (<>
           <div className="flex h-screen">
-            <div id="sidebar" className={`relative ${styles.sidebar_shadow} ${sidebarExpanded === true ? "min-w-[200px]" : "min-w-[70px]"} transition-all ease-in duration-200  items-end flex flex-col justify-between border-tbfColor-middlegrey bg-white`}>
-              <div className="w-full">
+            <div id="sidebar" className={`relative ${styles.sidebar_shadow} ${sidebarExpanded === true ? `${styles.sidebar_animation_expanded}` : `${styles.sidebar_animation_contracted}`} overflow-x-hidden items-end flex flex-col justify-between border-tbfColor-middlegrey bg-white`}>
+              <div className="w-full px-2 ">
                 {sidebarExpanded === true ? expandedSidebarNav() : contractedSidebarNav()}
               </div>
               <button className={`flex justify-center items-center bottom-0 right-0 float-right h-6 ${sidebarExpanded === true ? "w-full" : "w-full"} bg-tbfColor-middlegrey2 hover:opacity-70 transition-all ease-in`} onClick={handleSidebarExpandButton}>

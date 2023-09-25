@@ -366,7 +366,7 @@ function History(props: any): JSX.Element {
                            
                           
                             <h2 className="text-2xl text-black inline-block">
-                                Single tabs
+                                Previous tabs
                             </h2>
                             <div className={`overflow-y-auto ${viewMode === "list" ? "mx-auto mt-10" : `grid grid-cols-${decideGridCols()} grid-flow-dense gap-x-4 gap-y-0 mt-8`}`}>
                                 {renderTabs()}

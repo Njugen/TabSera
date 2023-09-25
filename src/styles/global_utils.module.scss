@@ -42,3 +42,61 @@
     box-shadow: 0px 0px 4px rgba(0,0,0,0.1);
 }
 
+@keyframes sidebar_expanded {
+    from {
+        width: 70px;
+    }
+    to {
+        width: 220px;
+    }
+}
+
+@keyframes sidebar_contracted {
+    from {
+        width: 220px;
+    }
+    to {
+        width: 70px;
+    }
+}
+
+@keyframes folder_item_contracted {
+    from {
+        max-height: 2000px;
+    }
+    to {
+        max-height: 0px;
+    }
+}
+
+@keyframes folder_item_expanded {
+    from {
+        
+        max-height: 0px;
+    }
+    to {
+        max-height: 2000px;
+    }
+}
+
+.sidebar_animation_expanded {
+    width: 220px;
+    animation-name: sidebar_expanded;
+    animation-duration: 300ms;
+}
+
+
+.sidebar_animation_contracted {
+    animation-name: sidebar_contracted;
+    animation-duration: 300ms;
+}
+
+.folder_item_animation_contracted {
+    animation-name: folder_item_contracted;
+    animation-duration: 500ms;
+}
+
+.folder_item_animation_expanded {
+    animation-name: folder_item_expanded;
+    animation-duration: 500ms;
+}
