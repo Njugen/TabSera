@@ -73,13 +73,22 @@ function History(props: any): JSX.Element {
     }
 
     function handleMark(input: number): void {
-        
-        const tabFromCollection: chrome.history.HistoryItem = tabsData.tabs.find((tab: chrome.history.HistoryItem) => input === parseInt(tab.id));
-        if(tabFromCollection) {
-            
-            dispatch(setMarkedTabsAction(tabFromCollection));
-        }
+        const tabCollection: Array<chrome.history.HistoryItem> = tabsData.tabs;
+        const markedTabs: Array<chrome.history.HistoryItem> = tabsData.markedTabs;
+        const index = tabCollection.findIndex((tab: chrome.history.HistoryItem) => input === parseInt(tab.id));
 
+        if(index > -1){
+            const isMarked = markedTabs.find((tab: chrome.history.HistoryItem) => input === parseInt(tab.id));
+            
+            if(isMarked){
+                const updatedMarkedTabCollection: Array<chrome.history.HistoryItem> = markedTabs.filter((tab) => parseInt(tab.id) !== input);
+
+                dispatch(setMarkMultipleTabsAction(updatedMarkedTabCollection));
+            } else {
+                const newTab = tabCollection[index];
+                dispatch(setMarkedTabsAction(newTab));
+            }  
+        }
     }
 
 
@@ -103,6 +112,7 @@ function History(props: any): JSX.Element {
             updatedMarks = updatedMarks.filter((target: chrome.history.HistoryItem) => target.url !== tab.url);
         });
         dispatch(setUpTabsAction(updatedMarks));
+        dispatch(setMarkMultipleTabsAction([]));
     }
 
     function handleOpenSelected(): void {
@@ -118,18 +128,19 @@ function History(props: any): JSX.Element {
     }
 
     function renderOptionsMenu(): JSX.Element {
+        const {markedTabs} = tabsData;
         return <>
         
             <div className="mr-4 inline-flex items-center justify-between w-full">
                 
                 <div className="flex w-5/12">
-                    <TextIconButton icon={"selected_checkbox"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Mark all" onClick={handleMarkAll} />
-                    <TextIconButton icon={"deselected_checkbox"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Unmark all" onClick={handleUnMarkAll} />
-                    <TextIconButton icon={"trash"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Delete from history" onClick={handleDeleteFromHistory} />
+                    <TextIconButton disabled={false} icon={"selected_checkbox"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Mark all" onClick={handleMarkAll} />
+                    <TextIconButton disabled={false} icon={"deselected_checkbox"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Unmark all" onClick={handleUnMarkAll} />
+                    <TextIconButton disabled={markedTabs.length > 0 ? false : true} icon={"trash"} size={{ icon: 20, text: "text-sm" }}  fill={markedTabs.length > 0 ? "#6D00C2" : "#9f9f9f"} text="Delete from history" onClick={handleDeleteFromHistory} />
                 </div>
                 <div className="flex items-center justify-end w-8/12">
                     
-                    <TextIconButton icon={viewMode === "list" ? "grid" : "list"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text={viewMode === "list" ? "Grid" : "List"} onClick={handleChangeViewMode} />
+                    <TextIconButton disabled={false} icon={viewMode === "list" ? "grid" : "list"} size={{ icon: 20, text: "text-sm" }} fill="#6D00C2" text={viewMode === "list" ? "Grid" : "List"} onClick={handleChangeViewMode} />
                     <div className="relative w-4/12 mr-4 flex items-center">
                     
                         <div className="mr-2">
@@ -140,8 +151,8 @@ function History(props: any): JSX.Element {
                             renderSortingDropdown()
                         }
                     </div>
-                    <PrimaryButton text="Open selected" onClick={handleOpenSelected} />
-                    <PrimaryButton text="Add to workspace" onClick={() => setAddToWorkspaceMessage(true)} />
+                    <PrimaryButton disabled={markedTabs.length > 0 ? false : true} text="Open selected" onClick={handleOpenSelected} />
+                    <PrimaryButton disabled={false} text="Add to workspace" onClick={() => setAddToWorkspaceMessage(true)} />
                 </div>
             </div>
                
@@ -281,10 +292,10 @@ function History(props: any): JSX.Element {
                                 Or
                             </p>
                             <div className="">
-                                <PrimaryButton text="To a new workspace" onClick={handleAddToNewWorkspace} />
+                                <PrimaryButton disabled={false} text="To a new workspace" onClick={handleAddToNewWorkspace} />
                             </div>
                             <div className="mt-20">
-                                <GreyBorderButton text="Cancel" onClick={() => setAddToWorkspaceMessage(false)} />
+                                <GreyBorderButton disabled={false} text="Cancel" onClick={() => setAddToWorkspaceMessage(false)} />
                             </div>
                         </div>
                     </div>

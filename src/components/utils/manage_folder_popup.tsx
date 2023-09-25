@@ -217,8 +217,8 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
                         </div>
                     </div>
                     <div id="popup-footer" className="px-8 py-8 flex justify-end">
-                        <GreyBorderButton text="Cancel" onClick={handleClose} />
-                        <PrimaryButton text={isCreate === true ? "Create" : "Save"} onClick={handleSave} />
+                        <GreyBorderButton disabled={false} text="Cancel" onClick={handleClose} />
+                        <PrimaryButton disabled={false} text={isCreate === true ? "Create" : "Save"} onClick={handleSave} />
                     </div>
                 </div>
             </div>

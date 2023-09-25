@@ -208,20 +208,21 @@ function Workspaces(props: any): JSX.Element {
     }
 
     function renderOptionsMenu(): JSX.Element {
+        const { markedFoldersId } = workspaceSettings;
         return <>
         
             <div className="mr-4 inline-flex items-center justify-between w-full">
                 
                 <div className="flex w-7/12">
-                    <TextIconButton icon={"selected_checkbox"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Mark all" onClick={handleMarkAllFolders} />
-                    <TextIconButton icon={"deselected_checkbox"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Unmark all" onClick={handleUnmarkAllFolders} />
-                    <TextIconButton icon={"folder_duplicate"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Duplicate" onClick={handleDuplicateFolders} />
-                    <TextIconButton icon={"merge"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Merge" onClick={handleMergeFolders} />
-                    <TextIconButton icon={"trash"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Delete" onClick={handlePrepareMultipleRemovals} />
+                    <TextIconButton disabled={false} icon={"selected_checkbox"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Mark all" onClick={handleMarkAllFolders} />
+                    <TextIconButton disabled={false} icon={"deselected_checkbox"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Unmark all" onClick={handleUnmarkAllFolders} />
+                    <TextIconButton disabled={markedFoldersId.length > 0 ? false : true} icon={"folder_duplicate"} size={{ icon: 20, text: "text-sm" }}  fill={markedFoldersId.length > 0 ? "#6D00C2" : "#9f9f9f"} text="Duplicate" onClick={handleDuplicateFolders} />
+                    <TextIconButton disabled={markedFoldersId.length >= 2 ? false : true} icon={"merge"} size={{ icon: 20, text: "text-sm" }}  fill={markedFoldersId.length >= 2 ? "#6D00C2" : "#9f9f9f"} text="Merge" onClick={handleMergeFolders} />
+                    <TextIconButton disabled={markedFoldersId.length > 0 ? false : true} icon={"trash"} size={{ icon: 20, text: "text-sm" }}  fill={markedFoldersId.length > 0 ? "#6D00C2" : "#9f9f9f"} text="Delete" onClick={handlePrepareMultipleRemovals} />
                 </div>
                 <div className="flex items-center justify-end w-5/12">
                     
-                    <TextIconButton icon={workspaceSettings.viewMode === "list" ? "grid" : "list"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text={workspaceSettings.viewMode === "list" ? "Grid" : "List"} onClick={handleChangeViewMode} />
+                    <TextIconButton disabled={false} icon={workspaceSettings.viewMode === "list" ? "grid" : "list"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text={workspaceSettings.viewMode === "list" ? "Grid" : "List"} onClick={handleChangeViewMode} />
                     <div className="relative w-5/12 mr-4 flex items-center">
                     
                         <div className="mr-2">
@@ -230,7 +231,7 @@ function Workspaces(props: any): JSX.Element {
                         <div className="text-sm mr-4">Sort:</div> 
                         <Dropdown tag="sort-folders" preset={{id: 0, label: "Ascending"}} options={[{id: 0, label: "Ascending"}, {id: 1, label: "Descending"}]} onCallback={handleSortFolders} />
                     </div>
-                    <PrimaryButton text="Create workspace" onClick={() => setCreateFolder(true)} />
+                    <PrimaryButton disabled={false} text="Create workspace" onClick={() => setCreateFolder(true)} />
                 </div>
             </div>
                
@@ -243,8 +244,8 @@ function Workspaces(props: any): JSX.Element {
             <div className="flex flex-col items-center justify-center h-full">
                 <Paragraph text="You currently have no folders available. Please, create a new folder or import previous folders." />
                 <div className="mt-8">
-                    <PrimaryButton text="Import workspaces" onClick={() => setCreateFolder(true)} />
-                    <PrimaryButton text="Create workspace" onClick={() => setCreateFolder(true)} />
+                    <PrimaryButton disabled={false} text="Import workspaces" onClick={() => setCreateFolder(true)} />
+                    <PrimaryButton disabled={false} text="Create workspace" onClick={() => setCreateFolder(true)} />
                 </div>
             </div>
         </>

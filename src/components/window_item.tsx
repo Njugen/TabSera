@@ -131,8 +131,8 @@ function WindowItem(props: iWindowItem): JSX.Element {
                 {tabs.length > 0 ? [...evaluateNewTabRender()] : [renderEditTab(id)]}
                 </div>
                 {tabs.length > 0 && disableEdit === false && <div className="mt-10 mb-8 flex justify-end">
-                    {markedTabs.length > 0 && <GreyBorderButton text="Delete tabs" onClick={handleDeleteTabs} />}
-                    {disableEdit === false && <PrimaryButton text="New tab" onClick={handleAddNewTab} />}
+                    {markedTabs.length > 0 && <GreyBorderButton disabled={false} text="Delete tabs" onClick={handleDeleteTabs} />}
+                    {disableEdit === false && <PrimaryButton disabled={false} text="New tab" onClick={handleAddNewTab} />}
                 </div>}
             </div>
             

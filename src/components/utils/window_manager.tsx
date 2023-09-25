@@ -25,8 +25,8 @@ function WindowManager(props: iWindowManager): JSX.Element {
 
     function renderActionButtons(): JSX.Element {
         return <div className="flex flex-row mt-10">
-            <PrimaryButton text="Import session" onClick={() => {}} />
-            <PrimaryButton text="New window" onClick={handleCreateWindow} />            
+            <PrimaryButton disabled={false} text="Import session" onClick={() => {}} />
+            <PrimaryButton disabled={false} text="New window" onClick={handleCreateWindow} />            
         </div>
     }
 

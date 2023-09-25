@@ -66,7 +66,7 @@ function TextIconButton(props: iTextIconButton): JSX.Element {
     } 
 
     return (
-        <button disabled={disabled} className={`flex mr-6 items-center ${styles.opacity_hover_effect}`} onClick={onClick}>
+        <button disabled={disabled} className={`flex mr-6 items-center disabled:opacity-50 ${disabled === false && styles.opacity_hover_effect}`} onClick={onClick}>
             {renderIcon()} 
             <span className={`${size.text} ml-2`}>
                 {text}
