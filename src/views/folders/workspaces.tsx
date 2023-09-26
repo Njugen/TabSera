@@ -76,6 +76,10 @@ function Workspaces(props: any): JSX.Element {
 
                   
                     newFolder.id = randomNumber();
+                    newFolder.windows.forEach((window) => {
+                        window.id = randomNumber();
+                        window.tabs.forEach((tab) => tab.id = randomNumber());
+                    });
                     newFolder.name = newFolder.name + " (duplicate)";
 
                     dispatch(createFolderAction({...newFolder}));

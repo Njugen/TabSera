@@ -28,7 +28,7 @@ import { clearMarkedTabsAction, setMarkMultipleTabsAction, setMarkedTabsAction, 
 import { iTabItem } from '../../interfaces/tab_item';
 import { iDropdown, iFieldOption } from '../../interfaces/dropdown';
 
-function History(props: any): JSX.Element {
+function CurrentSession(props: any): JSX.Element {
     const [viewMode, setViewMode] = useState<string>("grid");
     const [addToWorkSpaceMessage, setAddToWorkspaceMessage] = useState<boolean>(false);
     const [mergeProcess, setMergeProcess] = useState<iFolder | null>(null);
@@ -41,33 +41,17 @@ function History(props: any): JSX.Element {
     const tabsData = useSelector((state: any) => state.HistorySettingsReducer);
     const folderCollection: Array<iFolder> = useSelector((state: any) => state.FolderCollectionReducer);
 
-    /*
-    function loadMoreTabs(): void {
-        dispatch(...);
-    }
-
-    useEffect(() => {
-        historyListRef.current?.addEventListener("scroll", loadMoreTabs);
-        return () => historyListRef.current?.removeEventListener("historyListRef", loadMoreTabs);
-      }, []);*/
-    
-
     function handleChangeViewMode(): void {
         setViewMode(viewMode === "list" ? "grid" : "list");
     }
 
     function handleSort(e: any): void{
-      //  dispatch(setFoldersSortOrder(e.selected === 0 ? "asc" : "desc"));
         let option = "asc";
 
         if(e.selected === 0){
             option = "asc";
         } else if(e.selected === 1){
             option = "desc";
-        } else if(e.selected === 2){
-            option = "lv";
-        } else if(e.selected === 3){
-            option = "mv";
         }
         
         dispatch(setTabsSortOrder(option));
@@ -77,8 +61,6 @@ function History(props: any): JSX.Element {
         const optionsList: Array<iFieldOption> = [
             {id: 0, label: "Ascending title"},
             {id: 1, label: "Descending title"},
-            {id: 2, label: "Last visited"},
-            {id: 3, label: "Most visited"}
         ];
 
         return <Dropdown tag="sort-folders" preset={{id: 0, label: "Ascending"}} options={optionsList} onCallback={handleSort} />
@@ -290,7 +272,7 @@ function History(props: any): JSX.Element {
                 <div className="pl-8 pr-5 pb-10 pt-6 w-[800px] min-h-[300px] bg-white rounded-lg drop-shadow-2xl leading-7 text-md">
                     <div className="flex justify-center">
                         <h1 className="text-3xl text-tbfColor-darkpurple font-light inline-block">
-                            Choose where to add the selected tabs
+                            Choose where to add the windows/tabs
                         </h1>
                     </div>
                     <div className="flex flex-col items-center">
@@ -362,10 +344,10 @@ function History(props: any): JSX.Element {
                 },
                 windows: [presetWindow],
             }
-            render = <ManageFolderPopup title="Create workspace" folder={payload} onClose={handlePopupClose}>test</ManageFolderPopup>;
+            render = <ManageFolderPopup title="Create workspace from session" folder={payload} onClose={handlePopupClose}>test</ManageFolderPopup>;
         } else if(mergeProcess !== null) {
 
-            render = <ManageFolderPopup title={`Merge tabs to ${mergeProcess.name}`} folder={mergeProcess} onClose={handlePopupClose}>test</ManageFolderPopup>;
+            render = <ManageFolderPopup title={`Merge session to ${mergeProcess.name}`} folder={mergeProcess} onClose={handlePopupClose}>test</ManageFolderPopup>;
         } else {
             render = <></>;
         }
@@ -373,7 +355,7 @@ function History(props: any): JSX.Element {
         return render;
     }
 
-    function renderHistoryManagement(): JSX.Element {
+    function renderSessionManagement(): JSX.Element {
         return (
             <div className="flex justify-center bg-white drop-shadow-md min-h-[350px]">
                 <div className="pt-6 w-full">
@@ -396,29 +378,21 @@ function History(props: any): JSX.Element {
         );
     }
 
-    function renderEmptyMessage(): JSX.Element {
-        return (
-            <div className="flex justify-center items-center bg-white px-6 drop-shadow-md min-h-[350px]">
-                <p> Your browing history is empty.</p>
-            </div>
-        );
-    }
-
     return (
         <>
             {addToWorkSpaceMessage && renderAddTabsMessage()}
             {renderPopup()}
-            <div id="history-view" className="mb-12">
+            <div id="current-session-view" className="mb-12">
                 <div className="mb-6 mx-auto flex justify-between">
                     <h1 className="text-4xl text-tbfColor-darkpurple font-light inline-block">
-                        History
+                        Current session
                     </h1>
                 </div>
-                {tabsData.tabs.length > 0 ? renderHistoryManagement() : renderEmptyMessage()}
+                {renderSessionManagement()}
             </div>
         </>  
     );
 
 }
 
-export default History
+export default CurrentSession;

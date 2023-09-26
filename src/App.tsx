@@ -42,8 +42,8 @@ function App() {
   }
 
   useEffect(() => {
-    rootRef.current?.addEventListener("scroll", showScrollUpButton);
-    return () => rootRef.current?.removeEventListener("scroll", showScrollUpButton);
+    //rootRef.current?.addEventListener("scroll", showScrollUpButton);
+    //return () => rootRef.current?.removeEventListener("scroll", showScrollUpButton);
   }, []);
 
   function handleSidebarExpandButton(): void {
@@ -100,7 +100,7 @@ function App() {
             </div>
             <div ref={rootRef} id="body" className="container w-full overflow-y-scroll scroll-smooth">
               
-              <div className="mx-8 my-4">  
+              <div className="mx-8 my-4 pb-[50px]">  
                 {view}
               </div>
             </div>
@@ -125,10 +125,10 @@ function App() {
 
   return (
     <div className="App bg-tbfColor-lightgrey">
-       {showScrollTop === true && <button className={`bg-tbfColor-lightpurple hover:bg-tbfColor-darkpurple transition-all ease-in drop-shadow-2xl flex scroll_button_shadow justify-center items-center w-14 h-14 rounded-full absolute bottom-10 right-10 z-[500]`} onClick={handleScrollButtonClick}>
+       {showScrollTop === true && <button className={`${styles.scroll_up_button_shadow} bg-tbfColor-lightpurple hover:bg-tbfColor-darkpurple transition-all ease-in flex scroll_button_shadow justify-center items-center w-14 h-14 rounded-full absolute bottom-10 right-10 z-[500]`} onClick={handleScrollButtonClick}>
           <CollapseIcon size={40} fill={"#fff"} />
         </button>}
-        <div id="root" className={`none:container force_hide_overflow h-screen w-screen`}>
+        <div id="root" className={`none:container force_hide_overflow h-screen w-screen pb`}>
           <RouterProvider router={router} />
       </div>
     </div>

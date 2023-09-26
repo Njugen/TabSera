@@ -13,6 +13,7 @@ interface CssExports {
   'folder_item_animation_expanded': string;
   'window_item_animation_contracted': string;
   'window_item_animation_expanded': string;
+  'scroll_up_button_shadow': string;
 }
 export const cssExports: CssExports;
 export default cssExports;

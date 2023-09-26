@@ -59,7 +59,7 @@ function WindowItem(props: iWindowItem): JSX.Element {
         const windows = folderData.windows.filter((target: iWindowItem) => target.id === id);
         const targetWindowIndex = folderData.windows.findIndex((target: iWindowItem) => target.id === id);
         const tabs = windows[0]?.tabs;
-
+        console.log("targetWindoiwIndex", targetWindowIndex);
         const newTabCollection: Array<iTabItem> = [];
         if(tabs){
             tabs.forEach((tab: iTabItem) => {
@@ -118,7 +118,7 @@ function WindowItem(props: iWindowItem): JSX.Element {
         <div className="window-item w-full py-1 rounded-md mb-3" id={`window-${id}`}>
             <div className="flex justify-between items-center w-full border-b border-tbfColor-darkgrey">
                 <h3 className="text-sm font-semibold ">
-                    {`Window ${id}`}
+                    {`Window`}
                 </h3>
                 <div className={`tab-settings`}>
                     {/*<GenericIconButton icon="grid" size={18} fill="#000" onClick={handleChangeViewMode} />*/}

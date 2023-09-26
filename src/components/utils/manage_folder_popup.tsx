@@ -194,7 +194,7 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
                             <input type="text" defaultValue={folderData?.name} className={predef.textfield_full} onBlur={(e: any) => handleChangeField("name", e.target.value)} />
                         </FormField>
                         <FormField label="Description" description="Describe the purpose of this workspace.">
-                            <textarea maxLength={150} defaultValue={folderData?.desc} className={predef.textarea_full} onBlur={(e: any) => handleChangeField("desc", e.target.value)}></textarea>
+                            <textarea defaultValue={folderData?.desc} className={predef.textarea_full} onBlur={(e: any) => handleChangeField("desc", e.target.value)}></textarea>
                         </FormField>
                        <FormField label="Launch at startup" description="Automatically open all windows and tabs in this workspace when starting the browser. This will override browser defaults.">
                             <Switcher value={folderData?.settings.startup_launch} onCallback={(e: any) => handleChangeField("settings", updateSettings("startup_launch", e.state))} />
