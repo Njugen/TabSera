@@ -19,6 +19,7 @@ import MergeIcon from "../../images/icons/merge_icon";
 import SelectedCheckboxIcon from "../../images/icons/selected_checkbox_icon";
 import DeselectedCheckboxIcon from "../../images/icons/deselected_checkbox_icon";
 import SortIcon from "../../images/icons/sort_icon";
+import CloseLightIcon from "../../images/icons/close_light_icon";
 
 function GenericIconButton(props: iGenericIconButton): JSX.Element {
     const { icon, fill, size, onClick } = props;
@@ -60,6 +61,8 @@ function GenericIconButton(props: iGenericIconButton): JSX.Element {
             return <DeselectedCheckboxIcon size={size} fill={fill} />;
         } else if(icon === "sort"){
             return <SortIcon size={size} fill={fill} />;
+        } else if(icon === "close_light"){ 
+            return <CloseLightIcon size={size} fill={fill} />;
         } else {
             return <></>;
         }

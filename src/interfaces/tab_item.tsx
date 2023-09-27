@@ -3,10 +3,12 @@ interface iTabItem {
     label: string,
     url: string,
     marked: boolean,
+    disableCloseButton?: boolean,
     disableEdit?: boolean,
     disableMark?: boolean,
     onMark?: (tabId: number, checked: boolean) => void,
-    onEdit?: (tabId: number) => void
+    onEdit?: (tabId: number) => void,
+    onClose?: (tabId: number) => void
 }
 
 export {

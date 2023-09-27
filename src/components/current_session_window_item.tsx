@@ -8,8 +8,9 @@ import EditableTabItem from "./editable_tab_item";
 import { iTabItem } from "../interfaces/tab_item";
 import { useDispatch, useSelector } from "react-redux";
 import { updateInEditFolder } from "../redux/actions/inEditFolderActions";
+import { CurrentSessionSettingsReducer } from "../redux/reducers/currentSessionReducer";
 
-function WindowItem(props: iWindowItem): JSX.Element {
+function CurrentSessionWindowItem(props: iWindowItem): JSX.Element {
     const [expanded, setExpanded] = useState<boolean>(true);
     const [viewMode, setViewMode] = useState<string>("list");
     const [newTab, setNewTab] = useState<boolean>(false);
@@ -18,11 +19,12 @@ function WindowItem(props: iWindowItem): JSX.Element {
     const { id, tabs, tabsCol, initExpand, disableEdit, disableTabEdit, disableTabMark } = props;
     
     const dispatch = useDispatch();
-    const folderData = useSelector((state: any) => state.InEditFolderReducer);
+    const currentSessionData = useSelector((state: any) => state.CurrentSessionSettingsReducer);
 
+    /*
     useEffect(() => {
         if(newTab === true) setNewTab(false);
-    }, [folderData]);
+    }, [currentSessionData]); */
 
     function handleExpand(): void {
         setExpanded(expanded === true ? false : true);
@@ -34,7 +36,7 @@ function WindowItem(props: iWindowItem): JSX.Element {
     }
 
     function handleDeleteWindow(): void {
-        const windows = folderData.windows.filter((target: iWindowItem) => target.id !== id);
+        const windows = currentSessionData.windows.filter((target: iWindowItem) => target.id !== id);
 
         dispatch(updateInEditFolder("windows", windows));
     }
@@ -56,25 +58,8 @@ function WindowItem(props: iWindowItem): JSX.Element {
     }
 
     function handleDeleteTabs(): void {
-        const windows = folderData.windows.filter((target: iWindowItem) => target.id === id);
-        const targetWindowIndex = folderData.windows.findIndex((target: iWindowItem) => target.id === id);
-        const tabs = windows[0]?.tabs;
-        console.log("targetWindoiwIndex", targetWindowIndex);
-        const newTabCollection: Array<iTabItem> = [];
-        if(tabs){
-            tabs.forEach((tab: iTabItem) => {
-                const markedTabIndex = markedTabs.findIndex((target) => target === tab.id);
-           
-                if(markedTabIndex === -1){
-                    newTabCollection.push(tab);                    
-                }
-            });
-
-            folderData.windows[targetWindowIndex].tabs = [...newTabCollection];
-            
-            setMarkedTabs([]);
-            dispatch(updateInEditFolder("windows", folderData.windows));
-        }
+        console.log(markedTabs);
+        chrome.tabs.remove(markedTabs);
     }
 
     function handleTabEdit(id: number): void {
@@ -85,6 +70,10 @@ function WindowItem(props: iWindowItem): JSX.Element {
         return <EditableTabItem windowId={windowId} id={tabId} preset={url} onStop={() => setEditTab(null)} />
     }
 
+    function handleCloseTab(tabId: number){
+        chrome.tabs.remove(tabId);
+    }
+
     function renderTabs(): Array<JSX.Element> {
         let result = [];
         
@@ -92,7 +81,7 @@ function WindowItem(props: iWindowItem): JSX.Element {
             if(editTab === tab.id){
                 return renderEditTab(id, tab.url, editTab);
             } else {
-                return <TabItem marked={false} disableMark={disableTabMark} disableEdit={disableTabEdit} key={tab.id} id={tab.id} label={tab.label} url={tab.url} onMark={handleMark} onEdit={handleTabEdit} />
+                return <TabItem marked={false} disableCloseButton={tabs.length > 1 ? false : true} disableMark={true} disableEdit={disableTabEdit} key={tab.id} id={tab.id} label={tab.label} url={tab.url} onMark={handleMark} onEdit={handleTabEdit} onClose={handleCloseTab} />
             }
             
         })
@@ -109,6 +98,7 @@ function WindowItem(props: iWindowItem): JSX.Element {
             return [...renderTabs()];
         }
     }
+
 
     useEffect(() => {
        if(initExpand === true) setExpanded(true); 
@@ -131,8 +121,8 @@ function WindowItem(props: iWindowItem): JSX.Element {
                 {tabs.length > 0 ? [...evaluateNewTabRender()] : [renderEditTab(id)]}
                 </div>
                 {tabs.length > 0 && <div className="mt-10 mb-8 flex justify-end">
-                    {markedTabs.length > 0 && <GreyBorderButton disabled={false} text="Delete tabs" onClick={handleDeleteTabs} />}
-                    {disableEdit === false && <PrimaryButton disabled={false} text="New tab" onClick={handleAddNewTab} />}
+                    {/*markedTabs.length > 0 && <GreyBorderButton disabled={false} text="Close marked tabs" onClick={handleDeleteTabs} />*/}
+                    {/*disableEdit === false && <PrimaryButton disabled={false} text="New tab" onClick={handleAddNewTab} />*/}
                 </div>}
             </div>
             
@@ -140,4 +130,4 @@ function WindowItem(props: iWindowItem): JSX.Element {
     ); 
 }
 
-export default WindowItem;
+export default CurrentSessionWindowItem;

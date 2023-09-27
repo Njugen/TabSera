@@ -44,7 +44,7 @@ function WindowManager(props: iWindowManager): JSX.Element {
         });
       
         if(window && window.length === 0){
-            return <WindowItem key={"new-window"} disableMark={true} disableEdit={false} id={inCreationId} tabs={[]} initExpand={true} />;
+            return <WindowItem key={"new-window"} tabsCol={2} disableMark={true} disableEdit={false} id={inCreationId} tabs={[]} initExpand={true} />;
         } else {
             return <></>;
         }
@@ -54,7 +54,7 @@ function WindowManager(props: iWindowManager): JSX.Element {
 
     function renderContents(): Array<JSX.Element> {
         const existingWindows = folderData?.windows;
-        const existingWindowsElements: Array<JSX.Element> = existingWindows?.map((item: iWindowItem) => <WindowItem disableMark={false} disableEdit={false} key={item.id} id={item.id} tabs={item.tabs} initExpand={item.initExpand} />);
+        const existingWindowsElements: Array<JSX.Element> = existingWindows?.map((item: iWindowItem) => <WindowItem tabsCol={2} disableMark={false} disableEdit={false} key={item.id} id={item.id} tabs={item.tabs} initExpand={item.initExpand} />);
         
         if(createWindow === true && inCreationId > 0){
             return [...existingWindowsElements, renderNewWindow()];

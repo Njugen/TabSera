@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { useEffect, useCallback } from "react";
 
 function TabItem(props: iTabItem): JSX.Element {
-    const { id, label, url, marked, onMark, onEdit, disableEdit, disableMark } = props;
+    const { id, label, url, marked, onMark, onEdit, onClose, disableCloseButton, disableEdit, disableMark } = props;
     
     let address;
     
@@ -32,6 +32,7 @@ function TabItem(props: iTabItem): JSX.Element {
                 {!disableMark &&
                     <Checkbox checked={marked} onCallback={(e) => onMark && onMark(id, e.state)} />
                 }
+                {disableCloseButton === false && <GenericIconButton icon="close_light" size={20} fill={"#000"} onClick={() => onClose && onClose(id)} />}
             </div>
         </div>
     ); 

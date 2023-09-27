@@ -19,6 +19,7 @@ import MergeIcon from "../../images/icons/merge_icon";
 import SelectedCheckboxIcon from "../../images/icons/selected_checkbox_icon";
 import DeselectedCheckboxIcon from "../../images/icons/deselected_checkbox_icon";
 import SortIcon from "../../images/icons/sort_icon";
+import CloseLightIcon from "../../images/icons/close_light_icon";
 
 function TextIconButton(props: iTextIconButton): JSX.Element {
     const { icon, text, fill, size, disabled, onClick } = props;
@@ -60,6 +61,8 @@ function TextIconButton(props: iTextIconButton): JSX.Element {
             return <DeselectedCheckboxIcon size={size.icon} fill={fill} />;
         } else if(icon === "sort"){
             return <SortIcon size={size.icon} fill={fill} />;
+        } else if(icon === "close_light"){
+            return <CloseLightIcon size={size.icon} fill={fill} />;
         } else {
             return <></>;
         }

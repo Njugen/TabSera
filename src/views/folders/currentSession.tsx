@@ -27,8 +27,12 @@ import WindowItem from '../../components/window_item';
 import { clearMarkedTabsAction, setMarkMultipleTabsAction, setMarkedTabsAction, setTabsSortOrder, setUpTabsAction } from '../../redux/actions/historySettingsActions';
 import { iTabItem } from '../../interfaces/tab_item';
 import { iDropdown, iFieldOption } from '../../interfaces/dropdown';
+import WindowManager from './../../components/utils/window_manager';
+import { setCurrentTabsSortOrder, setUpWindowsAction } from '../../redux/actions/currentSessionActions';
+import { QueryOptions } from '@testing-library/react';
+import CurrentSessionWindowItem from '../../components/current_session_window_item';
 
-function History(props: any): JSX.Element {
+function CurrentSession(props: any): JSX.Element {
     const [viewMode, setViewMode] = useState<string>("grid");
     const [addToWorkSpaceMessage, setAddToWorkspaceMessage] = useState<boolean>(false);
     const [mergeProcess, setMergeProcess] = useState<iFolder | null>(null);
@@ -36,10 +40,10 @@ function History(props: any): JSX.Element {
     const [createFolder, setCreateFolder] = useState<boolean>(false);
 
     const historyListRef = useRef<HTMLDivElement>(null);
+    const folderCollection: Array<iFolder> = useSelector((state: any) => state.FolderCollectionReducer);
 
     const dispatch = useDispatch();
-    const tabsData = useSelector((state: any) => state.HistorySettingsReducer);
-    const folderCollection: Array<iFolder> = useSelector((state: any) => state.FolderCollectionReducer);
+    const currentSessionData = useSelector((state: any) => state.CurrentSessionSettingsReducer);
 
     /*
     function loadMoreTabs(): void {
@@ -56,60 +60,7 @@ function History(props: any): JSX.Element {
         setViewMode(viewMode === "list" ? "grid" : "list");
     }
 
-    function handleSort(e: any): void{
-      //  dispatch(setFoldersSortOrder(e.selected === 0 ? "asc" : "desc"));
-        let option = "asc";
 
-        if(e.selected === 0){
-            option = "asc";
-        } else if(e.selected === 1){
-            option = "desc";
-        } else if(e.selected === 2){
-            option = "lv";
-        } else if(e.selected === 3){
-            option = "mv";
-        }
-        
-        dispatch(setTabsSortOrder(option));
-    }
-
-    function renderSortingDropdown(): JSX.Element {
-        const optionsList: Array<iFieldOption> = [
-            {id: 0, label: "Ascending title"},
-            {id: 1, label: "Descending title"},
-            {id: 2, label: "Last visited"},
-            {id: 3, label: "Most visited"}
-        ];
-
-        return <Dropdown tag="sort-folders" preset={{id: 0, label: "Ascending"}} options={optionsList} onCallback={handleSort} />
-
-    }
-
-    function handleMark(input: number): void {
-        const tabCollection: Array<chrome.history.HistoryItem> = tabsData.tabs;
-        const markedTabs: Array<chrome.history.HistoryItem> = tabsData.markedTabs;
-        const index = tabCollection.findIndex((tab: chrome.history.HistoryItem) => input === parseInt(tab.id));
-
-        if(index > -1){
-            const isMarked = markedTabs.find((tab: chrome.history.HistoryItem) => input === parseInt(tab.id));
-            
-            if(isMarked){
-                const updatedMarkedTabCollection: Array<chrome.history.HistoryItem> = markedTabs.filter((tab) => parseInt(tab.id) !== input);
-
-                dispatch(setMarkMultipleTabsAction(updatedMarkedTabCollection));
-            } else {
-                const newTab = tabCollection[index];
-                dispatch(setMarkedTabsAction(newTab));
-            }  
-        }
-    }
-
-
-    function handleMarkAll(): void {
-        const tabs: Array<chrome.history.HistoryItem> = tabsData.tabs as Array<chrome.history.HistoryItem>;
-
-        dispatch(setMarkMultipleTabsAction(tabs));
-    }
 
     function handleUnMarkAll(): void {
         
@@ -118,9 +69,9 @@ function History(props: any): JSX.Element {
 
     function handleDeleteFromHistory(): void {
    
-        let updatedMarks = tabsData.tabs;
+        let updatedMarks = currentSessionData.tabs;
 
-        tabsData.markedTabs.forEach((tab: chrome.history.HistoryItem) => {
+        currentSessionData.markedTabs.forEach((tab: chrome.history.HistoryItem) => {
             chrome.history.deleteUrl({ url: tab.url! });
             updatedMarks = updatedMarks.filter((target: chrome.history.HistoryItem) => target.url !== tab.url);
         });
@@ -129,7 +80,7 @@ function History(props: any): JSX.Element {
     }
 
     function handleOpenSelected(): void {
-        const markedTabs: Array<chrome.history.HistoryItem> = tabsData.markedTabs as Array<chrome.history.HistoryItem>;
+        const markedTabs: Array<chrome.history.HistoryItem> = currentSessionData.markedTabs as Array<chrome.history.HistoryItem>;
         
         markedTabs.forEach((tab: chrome.history.HistoryItem) => {
             const properties: object = {
@@ -139,85 +90,62 @@ function History(props: any): JSX.Element {
             chrome.tabs.create(properties);
         })
     }
+    
+    function getAllWindows(): void {
+        const queryOptions: chrome.windows.QueryOptions = {
+            populate: true,
+            windowTypes: ["normal", "popup"]
+        };
+        chrome.windows.getAll(queryOptions, (windows: Array<chrome.windows.Window>) => {
+            dispatch(setUpWindowsAction(windows));
+        });
+    };
 
-    function renderOptionsMenu(): JSX.Element {
-        const {markedTabs} = tabsData;
-        return <>
-        
-            <div className="mr-4 inline-flex items-center justify-between w-full">
-                
-                <div className="flex w-5/12">
-                    <TextIconButton disabled={false} icon={"selected_checkbox"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Mark all" onClick={handleMarkAll} />
-                    <TextIconButton disabled={false} icon={"deselected_checkbox"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Unmark all" onClick={handleUnMarkAll} />
-                    <TextIconButton disabled={markedTabs.length > 0 ? false : true} icon={"trash"} size={{ icon: 20, text: "text-sm" }}  fill={markedTabs.length > 0 ? "#6D00C2" : "#9f9f9f"} text="Delete from history" onClick={handleDeleteFromHistory} />
-                </div>
-                <div className="flex items-center justify-end w-8/12">
-                    
-                    <TextIconButton disabled={false} icon={viewMode === "list" ? "grid" : "list"} size={{ icon: 20, text: "text-sm" }} fill="#6D00C2" text={viewMode === "list" ? "Grid" : "List"} onClick={handleChangeViewMode} />
-                    <div className="relative w-4/12 mr-4 flex items-center">
-                    
-                        <div className="mr-2">
-                            <SortIcon size={24} fill="#6D00C2" />
-                        </div> 
-                        <div className="text-sm mr-4">Sort:</div> 
-                        {
-                            renderSortingDropdown()
-                        }
-                    </div>
-                    <PrimaryButton disabled={markedTabs.length > 0 ? false : true} text="Open selected" onClick={handleOpenSelected} />
-                    <PrimaryButton disabled={markedTabs.length > 0 ? false : true} text="Add to workspace" onClick={() => setAddToWorkspaceMessage(true)} />
-                </div>
-            </div>
-               
-            
-        </>
-    }
+   
 
     useEffect(() => {
-        const query = {
-            text: "",
-            maxResults: 25
-        }
 
-        chrome.history.search(query, (items: Array<chrome.history.HistoryItem>) => {
-
+        /*chrome.history.search(query, (items: Array<chrome.history.HistoryItem>) => {
             
-            dispatch(setUpTabsAction(items));
+            
+            dispatch(setUpWindows);
+        });*/
+        
+        getAllWindows();
+        chrome.windows.onCreated.addListener(() => {
+            console.log("ABC");
+            getAllWindows();
+        });
+    
+        chrome.windows.onRemoved.addListener(() => {
+            console.log("edef");
+            getAllWindows();
+        });
+
+        chrome.tabs.onCreated.addListener(() => {
+            getAllWindows();
+        });
+
+        chrome.tabs.onRemoved.addListener(() => {
+            getAllWindows();
+        });
+
+        chrome.tabs.onDetached.addListener(() => {
+            getAllWindows();
+        });
+
+        chrome.tabs.onMoved.addListener(() => {
+            getAllWindows();
+        });
+
+        chrome.tabs.onReplaced.addListener(() => {
+            getAllWindows();
+        });
+
+        chrome.tabs.onUpdated.addListener(() => {
+            getAllWindows();
         });
     }, []);
-
-    function renderTabs(): Array<JSX.Element> {
-        const { tabsSort, tabs } = tabsData;
-        let sortedTabs: Array<chrome.history.HistoryItem> = tabs;
-        
-        function titleCondition(a: chrome.history.HistoryItem, b: chrome.history.HistoryItem) {
-            a.title = a.title ? a.title : "";
-            b.title = b.title ? b.title : "";
-
-            const aTitleLowerCase = a.title.toLowerCase();
-            const bTitleToLowerCase = b.title.toLowerCase();
-
-            return tabsSort === "asc" ? (aTitleLowerCase > bTitleToLowerCase) : (bTitleToLowerCase > aTitleLowerCase);
-        }
-
-        if(tabsSort === "asc" || tabsSort === "desc"){
-            sortedTabs = [...tabs].sort((a: any, b: any) => titleCondition(a, b) ? 1 : -1);
-        } else if(tabsSort === "lv"){
-            sortedTabs = [...tabs].sort((a: any, b: any) => a.lastVisitTime - b.lastVisitTime);
-        } else if(tabsSort === "mv"){
-            sortedTabs = [...tabs].sort((a: any, b: any) => a.visitCount - b.visitCount);
-        }
-
-        const result = sortedTabs.map((item: chrome.history.HistoryItem) => {
-            const collection = tabsData.markedTabs;
-           
-            const isMarked = collection.find((target: chrome.history.HistoryItem) => parseInt(target.id) === parseInt(item.id));
-    
-            return <TabItem onMark={handleMark} key={`sorted-tab-${item.id}`} id={parseInt(item.id)} label={item.title || ""} url={item.url || "https://"} disableEdit={true} disableMark={false} marked={isMarked ? true : false} />
-        });
-
-        return result; 
-    };
 
     function decideGridCols(): number {
         const { innerWidth } = window;
@@ -230,6 +158,100 @@ function History(props: any): JSX.Element {
             return 3;
         }
     };
+
+
+
+    function handlePopupClose(): void {
+
+        setEditFolderId(null);
+        setCreateFolder(false);
+        setMergeProcess(null);
+
+        dispatch(clearMarkedTabsAction());
+        dispatch(clearMarkedFoldersAction());
+        dispatch(clearInEditFolder());
+    }
+
+    function renderEmptyMessage(): JSX.Element {
+        return (
+            <div className={"flex justify-center items-center"}>
+                <p> Your browing history is empty.</p>
+            </div>
+        );
+    }
+
+    function renderSortingDropdown(): JSX.Element {
+        const optionsList: Array<iFieldOption> = [
+            {id: 0, label: "Ascending title"},
+            {id: 1, label: "Descending title"},
+        ];
+
+        return <Dropdown tag="sort-folders" preset={{id: 0, label: "Ascending"}} options={optionsList} onCallback={handleSort} />
+
+    }
+
+    function handleSort(e: any): void{
+        //  dispatch(setFoldersSortOrder(e.selected === 0 ? "asc" : "desc"));
+        let option = "asc";
+
+        if(e.selected === 0){
+            option = "asc";
+        } else if(e.selected === 1){
+            option = "desc";
+        }
+        dispatch(setCurrentTabsSortOrder(option));
+    }
+
+    function renderOptionsMenu(): JSX.Element {
+        const markedTabs = [] ;
+        return <>
+        
+            <div className="mr-4 inline-flex items-center justify-between w-full">
+                
+                <div className="flex w-5/12">
+                    {/*<TextIconButton disabled={false} icon={"selected_checkbox"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Mark all tabs" onClick={() => {}} />
+                    <TextIconButton disabled={false} icon={"deselected_checkbox"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Unmark all tabs" onClick={() => {}} />
+                    <TextIconButton disabled={markedTabs.length > 0 ? false : true} icon={"trash"} size={{ icon: 20, text: "text-sm" }}  fill={markedTabs.length > 0 ? "#6D00C2" : "#9f9f9f"} text="Close tabs" onClick={handleDeleteFromHistory} />
+                    */}
+                </div>
+                <div className="flex items-center justify-end w-8/12">
+                    
+                    {/*<TextIconButton disabled={false} icon={viewMode === "list" ? "grid" : "list"} size={{ icon: 20, text: "text-sm" }} fill="#6D00C2" text={viewMode === "list" ? "Grid" : "List"} onClick={handleChangeViewMode} />
+                    <div className="relative w-4/12 mr-4 flex items-center">
+                    
+                        <div className="mr-2">
+                            <SortIcon size={24} fill="#6D00C2" />
+                        </div> 
+                        <div className="text-sm mr-4">Sort:</div> 
+                        {
+                            renderSortingDropdown()
+                        }
+                    </div>
+                    <PrimaryButton disabled={markedTabs.length > 0 ? false : true} text="Open selected" onClick={handleOpenSelected} />*/}
+                    <PrimaryButton disabled={false} text="Save this session to workspace" onClick={() => setAddToWorkspaceMessage(true)} />
+                </div>
+            </div>
+               
+            
+        </>
+    }
+
+    function renderContents(): Array<JSX.Element> {
+        const existingWindows = currentSessionData?.windows;
+        const existingWindowsElements: Array<JSX.Element> = existingWindows?.map((item: iWindowItem) => <CurrentSessionWindowItem tabsCol={4} disableEdit={currentSessionData.windows.length < 2 ? true : false} disableTabMark={false} disableTabEdit={true} key={item.id} id={item.id} tabs={item.tabs} initExpand={item.initExpand} />);
+        
+        if (existingWindowsElements?.length > 0){
+            return [...existingWindowsElements];
+        } else {
+            return [renderEmptyMessage()];
+        }
+    }
+
+    function renderActionButtons(): JSX.Element {
+        return <div className="flex flex-row my-6 justify-center">
+            <PrimaryButton disabled={false} text="New window" onClick={() => {}} />            
+        </div>
+    }
 
     function renderAddTabsMessage(): JSX.Element {
         const currentFolders: Array<iFolder> = folderCollection;
@@ -261,7 +283,7 @@ function History(props: any): JSX.Element {
          
             if(!targetFolder) return;
             
-            const markedTabs: Array<iTabItem> = tabsData.markedTabs.map((tab: chrome.history.HistoryItem) => {
+            /*const markedTabs: Array<iTabItem> = tabsData.markedTabs.map((tab: chrome.history.HistoryItem) => {
                 return {
                     id: tab.id,
                     label: tab.title,
@@ -274,15 +296,37 @@ function History(props: any): JSX.Element {
             const presetWindow: iWindowItem = {
                 id: randomNumber(),
                 tabs: markedTabs
-            };
+            };*/
+            if(currentSessionData.windows){
+                const newWindowItems: Array<iWindowItem> = currentSessionData.windows.map((window: chrome.windows.Window) => {
+                    if(window.tabs){
+                        const tabs: Array<iTabItem> = window.tabs.map((tab: chrome.tabs.Tab) => {
+                            return {
+                                id: tab.id || randomNumber(),
+                                label: tab.title || "",
+                                url: tab.url || "",
+                                marked: false,
+                                disableEdit: false,
+                                disableMark: false,
+                            }
+                        })
 
-            const updatedFolder: iFolder = {...targetFolder};
-            updatedFolder.windows = [...updatedFolder.windows, presetWindow];
+                        return {
+                            id: randomNumber(),
+                            tabs: tabs
+                        }
+                    }
+                })
 
-            if(targetFolder){
-                setAddToWorkspaceMessage(false);
-                setMergeProcess(updatedFolder);
+                const updatedFolder: iFolder = {...targetFolder};
+                updatedFolder.windows = [...updatedFolder.windows,  ...newWindowItems];
+
+                if(targetFolder){
+                    setAddToWorkspaceMessage(false);
+                    setMergeProcess(updatedFolder);
+                }
             }
+            
         }
 
         return (
@@ -290,7 +334,7 @@ function History(props: any): JSX.Element {
                 <div className="pl-8 pr-5 pb-10 pt-6 w-[800px] min-h-[300px] bg-white rounded-lg drop-shadow-2xl leading-7 text-md">
                     <div className="flex justify-center">
                         <h1 className="text-3xl text-tbfColor-darkpurple font-light inline-block">
-                            Choose where to add the selected tabs
+                            Choose where to save the current session
                         </h1>
                     </div>
                     <div className="flex flex-col items-center">
@@ -316,38 +360,38 @@ function History(props: any): JSX.Element {
             </div>
         );
     }
-
-
-    function handlePopupClose(): void {
-
-        setEditFolderId(null);
-        setCreateFolder(false);
-        setMergeProcess(null);
-
-        dispatch(clearMarkedTabsAction());
-        dispatch(clearMarkedFoldersAction());
-        dispatch(clearInEditFolder());
-    }
-
-
+    
     function renderPopup(): JSX.Element {
         let render;
         if(createFolder === true){
-            const markedTabs: Array<iTabItem> = tabsData.markedTabs.map((tab: chrome.history.HistoryItem) => {
-                return {
-                    id: tab.id,
-                    label: tab.title,
-                    url: tab.url,
-                    disableEdit: false,
-                    disableMark: false,
-                }
-            });
+            
 
-            const presetWindow: iWindowItem = {
+
+            /*const presetWindows: iWindowItem = {
                 id: randomNumber(),
                 tabs: markedTabs
-            };
+            };*/
             
+            const presetWindows: Array<iWindowItem> = currentSessionData.windows.map((window: chrome.windows.Window) => {
+                if(window.tabs){
+                    const tabs: Array<iTabItem> = window.tabs.map((tab: chrome.tabs.Tab) => {
+                        return {
+                            id: tab.id || randomNumber(),
+                            label: tab.title || "",
+                            url: tab.url || "",
+                            marked: false,
+                            disableEdit: false,
+                            disableMark: false,
+                        }
+                    })
+
+                    return {
+                        id: randomNumber(),
+                        tabs: tabs
+                    }
+                }
+            })
+
             const payload: iFolder = {
                 id: randomNumber(),
                 name: "",
@@ -360,7 +404,7 @@ function History(props: any): JSX.Element {
                     close_previous: false,
                     auto_add: false
                 },
-                windows: [presetWindow],
+                windows: [...presetWindows],
             }
             render = <ManageFolderPopup title="Create workspace" folder={payload} onClose={handlePopupClose}>test</ManageFolderPopup>;
         } else if(mergeProcess !== null) {
@@ -373,52 +417,35 @@ function History(props: any): JSX.Element {
         return render;
     }
 
-    function renderHistoryManagement(): JSX.Element {
-        return (
-            <div className="flex justify-center bg-white drop-shadow-md min-h-[350px]">
-                <div className="pt-6 w-full">
-                   
-                    <div className="px-6 w-full mb-6">
-                        {renderOptionsMenu()}
-                        
-                        <h2 className="text-2xl mt-10 text-black inline-block">
-                            Previous tabs
-                        </h2>
-                    </div>
-                    <div className="pb-6">
-                        <div ref={historyListRef} className={`px-6 overflow-y-auto ${viewMode === "list" ? "mx-auto mt-10" : `grid grid-cols-${decideGridCols()} grid-flow-dense gap-x-4 gap-y-0 mt-8`} max-h-[350px]`}>
-                            {renderTabs()}
-                        </div>
-                    </div> 
-                </div>
-                
-            </div>
-        );
-    }
-
-    function renderEmptyMessage(): JSX.Element {
-        return (
-            <div className="flex justify-center items-center bg-white px-6 drop-shadow-md min-h-[350px]">
-                <p> Your browing history is empty.</p>
-            </div>
-        );
-    }
-
     return (
         <>
             {addToWorkSpaceMessage && renderAddTabsMessage()}
             {renderPopup()}
-            <div id="history-view" className="mb-12">
+            <div id="currentSession-view" className="mb-12">
                 <div className="mb-6 mx-auto flex justify-between">
                     <h1 className="text-4xl text-tbfColor-darkpurple font-light inline-block">
                         Currently opened windows and tabs
                     </h1>
                 </div>
-                {tabsData.tabs.length > 0 ? renderHistoryManagement() : renderEmptyMessage()}
+               
+                <div className={"py-6 w-full bg-white px-6 drop-shadow-md min-h-[350px]"}>
+                 
+                        <div className="w-full mb-12">
+                            {renderOptionsMenu()}
+                        </div>
+                    
+                    <div className={""}>
+                        
+                        {renderContents()}
+                        {/*renderActionButtons()*/}
+                    </div>
+                    
+                </div>
             </div>
+            
         </>  
     );
 
 }
 
-export default History
+export default CurrentSession
