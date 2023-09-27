@@ -41,11 +41,12 @@ function App() {
     rootRef.current.scrollTop = 0;
   }
 
+/*
   useEffect(() => {
     //rootRef.current?.addEventListener("scroll", showScrollUpButton);
     //return () => rootRef.current?.removeEventListener("scroll", showScrollUpButton);
   }, []);
-
+*/
   function handleSidebarExpandButton(): void {
     setSidebarExpanded(sidebarExpanded === true ? false : true);
   }
@@ -89,8 +90,8 @@ function App() {
 
   function renderViewWrapper(view: JSX.Element): JSX.Element {
     return (<>
-          <div className="flex h-screen">
-            <div id="sidebar" className={`relative ${styles.sidebar_shadow} ${sidebarExpanded === true ? `${styles.sidebar_animation_expanded}` : `${styles.sidebar_animation_contracted}`} overflow-x-hidden items-end flex flex-col justify-between border-tbfColor-middlegrey bg-white`}>
+          <div className="flex h-full w-full relative">
+            <div id="sidebar" className={`sticky h-screen top-0 left-0 self-start ${styles.sidebar_shadow} ${sidebarExpanded === true ? `${styles.sidebar_animation_expanded}` : `${styles.sidebar_animation_contracted}`} overflow-x-hidden items-end flex flex-col justify-between border-tbfColor-middlegrey bg-white`}>
               <div className="w-full px-2 ">
                 {sidebarExpanded === true ? expandedSidebarNav() : contractedSidebarNav()}
               </div>
@@ -98,7 +99,7 @@ function App() {
                 {sidebarExpanded === true ? <LeftIcon size={20} fill="#828282" /> : <RightIcon size={20} fill="#828282" />}
               </button>  
             </div>
-            <div ref={rootRef} id="body" className="container w-full overflow-y-scroll scroll-smooth">
+            <div ref={rootRef} id="body" className="container">
               
               <div className="mx-8 my-4 pb-[50px]">  
                 {view}
@@ -128,7 +129,7 @@ function App() {
        {showScrollTop === true && <button className={`${styles.scroll_up_button_shadow} bg-tbfColor-lightpurple hover:bg-tbfColor-darkpurple transition-all ease-in flex scroll_button_shadow justify-center items-center w-14 h-14 rounded-full absolute bottom-10 right-10 z-[500]`} onClick={handleScrollButtonClick}>
           <CollapseIcon size={40} fill={"#fff"} />
         </button>}
-        <div id="root" className={`none:container force_hide_overflow h-screen w-screen pb`}>
+        <div id="root" className={` w-screen pb`}>
           <RouterProvider router={router} />
       </div>
     </div>

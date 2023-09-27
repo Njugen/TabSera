@@ -17,6 +17,7 @@
   }
 }
 
+
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
@@ -25,11 +26,13 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+    background: url("./images/global_bg.svg") #fafafa no-repeat bottom fixed;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 #root {
-  background: url("./images/global_bg.svg") #fafafa no-repeat bottom;
-  background-size: 100%;
-  overflow-x: hidden;
-  overflow-y: hidden;
+
+  /*background-size: 100%;*/
+  
 }
