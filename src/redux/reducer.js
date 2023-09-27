@@ -6,13 +6,15 @@ import { InEditFolderReducer } from "./reducers/inEditFolderReducer";
 import { WarningActionsReducer } from "./reducers/warningActionsReducer";
 import { WorkspaceSettingsReducer } from "./reducers/workspaceSettingsReducer";
 import { HistorySettingsReducer } from "./reducers/historySettingsReducer";
+import { CurrentSessionSettingsReducer } from "./reducers/currentSessionReducer";
 
 const combinedReducers = combineReducers({
     FolderCollectionReducer: FolderCollectionReducer,
     InEditFolderReducer: InEditFolderReducer,
     WarningActionsReducer: WarningActionsReducer,
     WorkspaceSettingsReducer: WorkspaceSettingsReducer,
-    HistorySettingsReducer: HistorySettingsReducer
+    HistorySettingsReducer: HistorySettingsReducer,
+    CurrentSessionSettingsReducer: CurrentSessionSettingsReducer
 });
 
 const middleware = applyMiddleware(thunk);

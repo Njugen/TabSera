@@ -5,7 +5,6 @@
     "description": "Providing great overview and simple tools for efficient tab management.",
     "permissions": [
         "history",
-        "bookmarks",
         "tabs",
         "storage"
     ],
