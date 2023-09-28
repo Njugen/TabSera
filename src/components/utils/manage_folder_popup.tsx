@@ -65,6 +65,10 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
        
     }, []);
 
+    useEffect(() => {
+        document.body.style.overflowY = "hidden";
+    }, []);
+
     function windowListChanged(): boolean {
         const presetWindows: string = originWindows;
         const modifiedWindows: string = JSON.stringify(folderData?.windows);
@@ -131,8 +135,11 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
             setModified(false)
             setOriginWindows("");
             setIsCreate(false);
-        
-            setTimeout(() => onClose(), 500);
+            
+            setTimeout(() => {
+                document.body.style.overflowY = "scroll";
+                onClose()
+            }, 500);
         }
     }
 

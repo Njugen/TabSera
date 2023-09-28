@@ -31,6 +31,7 @@ import WindowManager from './../../components/utils/window_manager';
 import { setCurrentTabsSortOrder, setUpWindowsAction } from '../../redux/actions/currentSessionActions';
 import { QueryOptions } from '@testing-library/react';
 import CurrentSessionWindowItem from '../../components/current_session_window_item';
+import AddToWorkspacePopup from '../../components/utils/add_to_workspace_popup';
 
 function CurrentSession(props: any): JSX.Element {
     const [viewMode, setViewMode] = useState<string>("grid");
@@ -330,34 +331,13 @@ function CurrentSession(props: any): JSX.Element {
         }
 
         return (
-            <div className={`absolute flex ${styles.popup_container} justify-center items-center top-0 left-0 w-full h-full overflow-hidden z-[1000]`}>
-                <div className="pl-8 pr-5 pb-10 pt-6 w-[800px] min-h-[300px] bg-white rounded-lg drop-shadow-2xl leading-7 text-md">
-                    <div className="flex justify-center">
-                        <h1 className="text-3xl text-tbfColor-darkpurple font-light inline-block">
-                            Choose where to save the current session
-                        </h1>
-                    </div>
-                    <div className="flex flex-col items-center">
-                        <div className="w-[350px] mt-10 text-center">
-                            <p className="text-lg text-black inline-block mb-4 font-semibold">
-                                To an existing workspace
-                            </p>
-                            <Dropdown tag="" preset={dropdownOptions[0]} options={dropdownOptions} onCallback={handleAddToExistingWorkspace} />
-                        </div>
-                        <div className="w-[350px] mt-5 text-center flex flex-col">
-                            <p className="text-lg text-black block mb-6 mt-2 font-semibold">
-                                Or
-                            </p>
-                            <div className="">
-                                <PrimaryButton disabled={false} text="To a new workspace" onClick={handleAddToNewWorkspace} />
-                            </div>
-                            <div className="mt-20">
-                                <GreyBorderButton disabled={false} text="Cancel" onClick={() => setAddToWorkspaceMessage(false)} />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <AddToWorkspacePopup 
+                title="Choose where to save the current session"
+                dropdownOptions={dropdownOptions}
+                onNewWorkspace={handleAddToNewWorkspace}
+                onExistingWorkspace={handleAddToExistingWorkspace}
+                onCancel={() => setAddToWorkspaceMessage(false)}
+            />
         );
     }
     
