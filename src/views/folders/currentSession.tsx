@@ -105,21 +105,12 @@ function CurrentSession(props: any): JSX.Element {
    
 
     useEffect(() => {
-
-        /*chrome.history.search(query, (items: Array<chrome.history.HistoryItem>) => {
-            
-            
-            dispatch(setUpWindows);
-        });*/
-        
         getAllWindows();
         chrome.windows.onCreated.addListener(() => {
-            console.log("ABC");
             getAllWindows();
         });
     
         chrome.windows.onRemoved.addListener(() => {
-            console.log("edef");
             getAllWindows();
         });
 

@@ -28,10 +28,11 @@ function SettingsView(props: any) {
     ];
 
     const duplicationWarningOptions = [
-        { id: 0, label: "3 folders" }, 
-        { id: 1, label: "4 folders" }, 
-        { id: 2, label: "5 folders" }, 
-        { id: 3, label: "Never" }
+        { id: 0, label: "2 folders" }, 
+        { id: 1, label: "3 folders" }, 
+        { id: 2, label: "4 folders" }, 
+        { id: 3, label: "5 folders" }, 
+        { id: 4, label: "Never" }
     ];
 
 
@@ -48,36 +49,6 @@ function SettingsView(props: any) {
     const getPresetDuplicationWarning = (): any => {
         const result = duplicationWarningOptions.filter((target) => target.id === settings.duplication_warning_setting);
         return result[0] || duplicationWarningOptions[0];
-    }
-
-    const saveAutoSuspend = (e: iDropdownSelected): void => {
-        if(typeof e.selected !== "number") return;
-
-        console.log("AUTO SUSPEND", e);
-        saveToStorage("sync", "auto_suspend_setting", e.selected);
-        setSettings({
-            ...settings,
-            "auto_suspend_setting": e.selected
-        });
-    } 
-
-    const savePerformanceNotification = (e: iDropdownSelected): void => {
-        if(typeof e.selected !== "number") return;
-
-        saveToStorage("sync", "performance_notification_setting", e.selected);
-        setSettings({
-            ...settings,
-            "performance_notification_setting": e.selected
-        });
-    } 
-
-    const saveDuplicationWarning = (e: iDropdownSelected): void => {
-        if(typeof e.selected !== "number") return;
-        saveToStorage("sync", "duplication_warning_setting", e.selected);
-        setSettings({
-            ...settings,
-            "duplication_warning_setting": e.selected
-        });
     }
 
     const saveSelectedOption = (key: string, value: number): void => {

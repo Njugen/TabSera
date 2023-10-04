@@ -59,7 +59,7 @@ function WindowItem(props: iWindowItem): JSX.Element {
         const windows = folderData.windows.filter((target: iWindowItem) => target.id === id);
         const targetWindowIndex = folderData.windows.findIndex((target: iWindowItem) => target.id === id);
         const tabs = windows[0]?.tabs;
-        console.log("targetWindoiwIndex", targetWindowIndex);
+     
         const newTabCollection: Array<iTabItem> = [];
         if(tabs){
             tabs.forEach((tab: iTabItem) => {

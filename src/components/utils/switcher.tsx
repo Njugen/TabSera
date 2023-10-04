@@ -12,7 +12,6 @@ function Switcher(props: iSwitcher): JSX.Element {
     }
 
     useEffect(() => {
-        console.log(switchOn);
         if(value !== null) onCallback({state: switchOn});
     }, [switchOn])
 

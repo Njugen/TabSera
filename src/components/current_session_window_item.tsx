@@ -58,7 +58,6 @@ function CurrentSessionWindowItem(props: iWindowItem): JSX.Element {
     }
 
     function handleDeleteTabs(): void {
-        console.log(markedTabs);
         chrome.tabs.remove(markedTabs);
     }
 

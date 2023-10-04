@@ -203,9 +203,21 @@ function Workspaces(props: any): JSX.Element {
 
         const sortedFolders = [...folderCollection].sort((a: any, b: any) => condition(a, b) ? 1 : -1);
 
+        function handleFolderDelete(target: iFolder): void {
+            chrome.storage.sync.get("removal_warning_setting", (data) => {
+                if(data.removal_warning_setting === true) {
+                    setRemovalTarget(target);
+                } else {
+                    dispatch(deleteFolderAction(target.id)); 
+                    setRemovalTarget(null);
+                }
+            });
+            
+        }
+
         result = sortedFolders.map((folder: iFolder, i: number) => {
             const collection: Array<number> = workspaceSettings.markedFoldersId;
-            return <Folder onDelete={(e) => setRemovalTarget(folder)} marked={collection.find((id) => folder.id === id) ? true : false} onMark={handleMarkFolder} onEdit={() => setEditFolderId(folder.id)} key={folder.id} type={folder.type} id={folder.id} viewMode={folder.viewMode} name={folder.name} desc={folder.desc} settings={folder.settings} windows={folder.windows} />
+            return <Folder onDelete={(e) => handleFolderDelete(folder)} marked={collection.find((id) => folder.id === id) ? true : false} onMark={handleMarkFolder} onEdit={() => setEditFolderId(folder.id)} key={folder.id} type={folder.type} id={folder.id} viewMode={folder.viewMode} name={folder.name} desc={folder.desc} settings={folder.settings} windows={folder.windows} />
         });
 
         return result.length > 0 ? result : [<></>];
@@ -277,13 +289,23 @@ function Workspaces(props: any): JSX.Element {
     function handlePrepareMultipleRemovals(): void {
         const { markedFoldersId } = workspaceSettings;
         
-        if(markedFoldersId.length > 0) setShowDeleteWarning(true)
+        if(markedFoldersId.length > 0) {
+            chrome.storage.sync.get("removal_warning_setting", (data) => {
+                if(data.removal_warning_setting === true) {
+                    setShowDeleteWarning(true);
+                } else {
+                    handleDeleteFolders();
+                }
+            });
+            
+        }
     }
     
 
     return (
         <>
-            {removalTarget && 
+            {removalTarget &&
+                
                 <MessageBox 
                     title="Warning" 
                     text={`You are about to remove the "${removalTarget.name}" workspace and all its contents. This is irreversible, do you want to proceed?`}

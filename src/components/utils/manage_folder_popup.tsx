@@ -125,22 +125,24 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
     }
 
     function handleClose(skipWarning?: boolean): void {
-
-        if((modified === true && skipWarning !== true)){
-            dispatch(setShowFolderChangeWarning(true));
-        } else {
-            setSlideDown(false);
-            
-            dispatch(setShowFolderChangeWarning(false));
-            setModified(false)
-            setOriginWindows("");
-            setIsCreate(false);
-            
-            setTimeout(() => {
-                document.body.style.overflowY = "scroll";
-                onClose()
-            }, 500);
-        }
+        chrome.storage.sync.get("cancellation_warning_setting", (data) => {
+            if((modified === true && skipWarning !== true) && data.cancellation_warning_setting === true){
+                dispatch(setShowFolderChangeWarning(true));
+            } else {
+                setSlideDown(false);
+                
+                dispatch(setShowFolderChangeWarning(false));
+                setModified(false)
+                setOriginWindows("");
+                setIsCreate(false);
+                
+                setTimeout(() => {
+                    document.body.style.overflowY = "scroll";
+                    onClose()
+                }, 500);
+            }
+        })
+        
     }
 
     function handleSave(): void {

@@ -51,6 +51,18 @@ function Folder(props: iFolder) {
     }
 
     function handleLaunchFolder(e: any): void {
+        
+        // Now, snapshot current session
+        let snapshot: Array<chrome.windows.Window> = [];
+
+        const queryOptions: chrome.windows.QueryOptions = {
+            populate: true,
+            windowTypes: ["normal", "popup"]
+        };
+        chrome.windows.getAll(queryOptions, (windows: Array<chrome.windows.Window>) => {
+            snapshot = windows;
+        });
+
         windows.forEach((window: iWindowItem, i) => {
             const windowSettings: object = {
                 focused: i === 0 ? true : false,
@@ -60,6 +72,15 @@ function Folder(props: iFolder) {
             
             chrome.windows.create(windowSettings);
         });
+
+        chrome.storage.sync.get("browser_relaunch_setting", (data) => {
+            if(data.browser_relaunch_setting === true){
+                snapshot.forEach((window) => {
+                    if(window.id) chrome.windows.remove(window.id);
+                });
+            }
+        });
+        
     }
 
     function renderWindows(): Array<JSX.Element>{
