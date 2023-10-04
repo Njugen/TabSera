@@ -1,10 +1,12 @@
+interface iSwitcherSelected {
+    state: boolean | null
+}
+
 interface iSwitcher {
     label?: String,
     dark?: boolean,
     value: boolean,
-    onCallback: (e: {
-        state: boolean
-    }) => void
+    onCallback: (e: iSwitcherSelected) => void
 }
 
-export {iSwitcher};
+export {iSwitcherSelected, iSwitcher};

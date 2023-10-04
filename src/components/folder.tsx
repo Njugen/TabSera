@@ -10,6 +10,8 @@ import { useDispatch } from "react-redux";
 import { deleteFolderAction } from "../redux/actions/folderCollectionActions";
 import MessageBox from "./utils/message_box";
 import Checkbox from './utils/checkbox';
+import { iWindowItem } from "../interfaces/window_item";
+import { iTabItem } from "../interfaces/tab_item";
 
 
 function Folder(props: iFolder) {
@@ -47,6 +49,19 @@ function Folder(props: iFolder) {
             }
         
     }
+
+    function handleLaunchFolder(e: any): void {
+        windows.forEach((window: iWindowItem, i) => {
+            const windowSettings: object = {
+                focused: i === 0 ? true : false,
+                url: window.tabs.map((tab) => tab.url)
+                
+            }
+            
+            chrome.windows.create(windowSettings);
+        });
+    }
+
     function renderWindows(): Array<JSX.Element>{
         const result: Array<JSX.Element> = windows.map((window, index) => <WindowItem disableMark={true} disableEdit={true} key={"window-" + index} id={window.id} tabs={window.tabs} />)
 
@@ -67,7 +82,7 @@ function Folder(props: iFolder) {
                         </h2>
                     </div>
                     <div className="absolute flex items-center right-2">
-                        <FolderControlButton icon="open_browser" active={expanded} onClick={() => {}} />
+                        <FolderControlButton icon="open_browser" active={expanded} onClick={handleLaunchFolder} />
                         <FolderControlButton icon="settings" active={expanded} onClick={onEdit} />
                         <FolderControlButton icon="trash" active={expanded} onClick={() => { onDelete!(props); }} />
                         <FolderControlButton icon="collapse_expand" active={expanded} onClick={handleExpandClick} />

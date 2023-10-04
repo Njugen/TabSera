@@ -4,16 +4,16 @@ import { iSwitcher } from "../../interfaces/switcher";
 
 function Switcher(props: iSwitcher): JSX.Element {
     
-    const [switchOn, setSwitchOn] = useState<boolean>(false);
-    const { onCallback, label, dark } = props;
+    const [switchOn, setSwitchOn] = useState<boolean | null>(null);
+    const { onCallback, label, dark, value } = props;
 
     function handleSwitch(): void {
         setSwitchOn(switchOn === false ? true : false);
     }
 
     useEffect(() => {
-
-        onCallback({state: switchOn});
+        console.log(switchOn);
+        if(value !== null) onCallback({state: switchOn});
     }, [switchOn])
 
     useEffect(() => {

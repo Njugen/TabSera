@@ -3,13 +3,15 @@ interface iFieldOption {
     label: String
 }
 
+interface iDropdownSelected {
+    selected: number | null
+}
+
 interface iDropdown {
     tag: String,
     preset: iFieldOption,
     options: Array<iFieldOption>,
-    onCallback: (e: {
-        selected: number | null
-    }) => void
+    onCallback: (e: iDropdownSelected) => void
 }
 
-export { iFieldOption, iDropdown }
+export { iFieldOption, iDropdownSelected, iDropdown }

@@ -26,7 +26,7 @@ HTML5, CSS3, Javascript/Typescript, React/Redux, SASS, Webextension API, Tailwin
 1. Run this command
 
 ```
-npm run dev
+npm run watch
 ```
 
 2. Once the command has been run and finished, a /dist folder will be available in the project's folder.
@@ -35,6 +35,8 @@ npm run dev
 
 
 ## Test
+
+Coming soon
 
 ## Ideas of upcoming features
 
