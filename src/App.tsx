@@ -10,6 +10,7 @@ import SettingsView from './views/settings';
 import LeftIcon from './images/icons/left_icon';
 import RightIcon from './images/icons/right_icon';
 import * as predef from "./styles/predef";
+import SearchBar from './components/utils/search_bar';
 
 function App() {
   const [showScrollTop, setShowScrollTop] = useState<boolean>(false);
@@ -91,9 +92,8 @@ function App() {
   function renderViewWrapper(view: JSX.Element): JSX.Element {
     return (<>
           
-            <div className="p-4 top-0 z-50 sticky flex justify-center bg-tbfColor-lighterpurple drop-shadow-md">
-                <input className="text-sm h-10 w-5/12 opacity-50 focus:opacity-90 border-tbfColor-lightergrey focus:outline-0 focus:outline-tbfColor-lighterpurple4 focus:shadow-md hover:shadow p-5 rounded-3xl" type="text" />
-            </div>
+            <SearchBar />
+           
             <div className="flex h-full w-full relative">
               <div id="sidebar" className={`sticky h-[calc(100vh-4.5rem)] top-[4.5rem] left-0 self-start ${styles.sidebar_shadow} ${sidebarExpanded === true ? `${styles.sidebar_animation_expanded}` : `${styles.sidebar_animation_contracted}`} overflow-x-hidden items-end flex flex-col justify-between border-tbfColor-middlegrey bg-white`}>
                 <div className="w-full px-2 ">
