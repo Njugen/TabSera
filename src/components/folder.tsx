@@ -73,8 +73,8 @@ function Folder(props: iFolder) {
             chrome.windows.create(windowSettings);
         });
 
-        chrome.storage.sync.get("browser_relaunch_setting", (data) => {
-            if(data.browser_relaunch_setting === true){
+        chrome.storage.sync.get("quick_launch_setting", (data) => {
+            if(data.quick_launch_setting === 2){
                 snapshot.forEach((window) => {
                     if(window.id) chrome.windows.remove(window.id);
                 });

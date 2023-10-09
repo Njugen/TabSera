@@ -45,9 +45,9 @@ function Dropdown(props: iDropdown): JSX.Element {
                     { options.map((option, i) => {
                         return (
                             <li id={`dropdown-tag-${tag}-${i}`} key={`dropdown-tag-${tag}-${i}`}>
-                                <a key={option.id} href="#" onClick={() => handleSelect(option.id)} className={applyClasses(option.id)}>
+                                <button key={option.id} onClick={() => handleSelect(option.id)} className={applyClasses(option.id)}>
                                     {option.label}
-                                </a>
+                                </button>
                             </li>
                         );
                     })}

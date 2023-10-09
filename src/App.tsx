@@ -90,22 +90,25 @@ function App() {
 
   function renderViewWrapper(view: JSX.Element): JSX.Element {
     return (<>
-          <div className="flex h-full w-full relative">
-            <div id="sidebar" className={`sticky h-screen top-0 left-0 self-start ${styles.sidebar_shadow} ${sidebarExpanded === true ? `${styles.sidebar_animation_expanded}` : `${styles.sidebar_animation_contracted}`} overflow-x-hidden items-end flex flex-col justify-between border-tbfColor-middlegrey bg-white`}>
-              <div className="w-full px-2 ">
-                {sidebarExpanded === true ? expandedSidebarNav() : contractedSidebarNav()}
-              </div>
-              <button className={`flex justify-center items-center bottom-0 right-0 float-right h-6 ${sidebarExpanded === true ? "w-full" : "w-full"} bg-tbfColor-middlegrey2 hover:opacity-70 transition-all ease-in`} onClick={handleSidebarExpandButton}>
-                {sidebarExpanded === true ? <LeftIcon size={20} fill="#828282" /> : <RightIcon size={20} fill="#828282" />}
-              </button>  
+          
+            <div className="p-4 top-0 z-50 sticky flex justify-center bg-tbfColor-lighterpurple drop-shadow-md">
+                <input className="text-sm h-10 w-5/12 opacity-50 focus:opacity-90 border-tbfColor-lightergrey focus:outline-0 focus:outline-tbfColor-lighterpurple4 focus:shadow-md hover:shadow p-5 rounded-3xl" type="text" />
             </div>
-            <div ref={rootRef} id="body" className="container">
-              
-              <div className="mx-8 my-4 pb-[50px]">  
-                {view}
+            <div className="flex h-full w-full relative">
+              <div id="sidebar" className={`sticky h-[calc(100vh-4.5rem)] top-[4.5rem] left-0 self-start ${styles.sidebar_shadow} ${sidebarExpanded === true ? `${styles.sidebar_animation_expanded}` : `${styles.sidebar_animation_contracted}`} overflow-x-hidden items-end flex flex-col justify-between border-tbfColor-middlegrey bg-white`}>
+                <div className="w-full px-2 ">
+                  {sidebarExpanded === true ? expandedSidebarNav() : contractedSidebarNav()}
+                </div>
+                <button className={`flex justify-center items-center bottom-0 right-0 float-right h-6 ${sidebarExpanded === true ? "w-full" : "w-full"} bg-tbfColor-middlegrey2 hover:opacity-70 transition-all ease-in`} onClick={handleSidebarExpandButton}>
+                  {sidebarExpanded === true ? <LeftIcon size={20} fill="#828282" /> : <RightIcon size={20} fill="#828282" />}
+                </button>  
+              </div>
+              <div ref={rootRef} id="body" className="container">
+                <div className="mx-16 my-12 pb-[50px]">
+                  {view}
+                </div>
               </div>
             </div>
-          </div>
     </>);
   };
 
@@ -125,7 +128,7 @@ function App() {
   ]);
 
   return (
-    <div className="App bg-tbfColor-lightgrey">
+    <div className="App">
        {showScrollTop === true && <button className={`${styles.scroll_up_button_shadow} bg-tbfColor-lightpurple hover:bg-tbfColor-darkpurple transition-all ease-in flex scroll_button_shadow justify-center items-center w-14 h-14 rounded-full absolute bottom-10 right-10 z-[500]`} onClick={handleScrollButtonClick}>
           <CollapseIcon size={40} fill={"#fff"} />
         </button>}

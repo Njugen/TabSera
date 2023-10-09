@@ -174,13 +174,18 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
         };
     }
 
+    function handleKeepEditing(): void {
+        document.body.style.overflowY = "hidden";
+        dispatch(setShowFolderChangeWarning(false))
+    }
+
     return (<>
         {warningActions.showFolderChangeWarning === true && 
             <MessageBox 
                 title="Warning" 
                 text="You have made changes to this form. Closing it will result in all changes being lost. Do you want to proceed?"
                 primaryButton={{ text: "Yes, close this form", callback: () => handleClose(true) }}
-                secondaryButton={{ text: "No, keep editing", callback: () => dispatch(setShowFolderChangeWarning(false)) }}    
+                secondaryButton={{ text: "No, keep editing", callback: () => handleKeepEditing()}}    
             />
         }
         <div ref={popupRef} className={`${styles.popup_container} scroll-smooth overflow-y-scroll flex fixed top-0 left-0 justify-center items-center w-screen z-50 ${slideDown === false ? "transition-all ease-out h-0 duration-200" : "transition-all h-screen ease-in duration-75"}`}>
