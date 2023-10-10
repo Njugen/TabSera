@@ -95,7 +95,7 @@ function App() {
             <SearchBar />
            
             <div className="flex h-full w-full relative">
-              <div id="sidebar" className={`sticky h-[calc(100vh-4.5rem)] top-[4.5rem] left-0 self-start ${styles.sidebar_shadow} ${sidebarExpanded === true ? `${styles.sidebar_animation_expanded}` : `${styles.sidebar_animation_contracted}`} overflow-x-hidden items-end flex flex-col justify-between border-tbfColor-middlegrey bg-white`}>
+              <div id="sidebar" className={`sticky h-[calc(100vh-4.0rem)] top-[4.0rem] left-0 self-start ${styles.sidebar_shadow} ${sidebarExpanded === true ? `${styles.sidebar_animation_expanded}` : `${styles.sidebar_animation_contracted}`} overflow-x-hidden items-end flex flex-col justify-between border-tbfColor-middlegrey bg-white`}>
                 <div className="w-full px-2 ">
                   {sidebarExpanded === true ? expandedSidebarNav() : contractedSidebarNav()}
                 </div>
