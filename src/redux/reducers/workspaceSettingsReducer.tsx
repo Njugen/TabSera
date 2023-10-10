@@ -1,3 +1,4 @@
+import iWorkspaceState from "../../interfaces/states/workspaceState";
 import { 
     SET_MARKED_WORKSPACES_ID, 
     SET_MULTIPLE_MARKED_WORKSPACES_ID, 
@@ -7,11 +8,7 @@ import {
     CHANGE_WORKSPACES_VIEWMODE
 } from "../types/workspaceSettingsTypes";
 
-const workspaceSettingsState: {
-    markedFoldersId: Array<number>
-    folderSort: string,
-    viewMode: "list" | "grid",
-} = {
+const workspaceSettingsState: iWorkspaceState = {
     markedFoldersId: [],
     folderSort: "asc",
     viewMode: "grid"

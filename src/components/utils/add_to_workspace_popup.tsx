@@ -29,7 +29,7 @@ function AddToWorkspacePopup(props: iAddToWorkspacePopup): JSX.Element {
                 <p className="text-lg text-black inline-block mb-4 font-semibold">
                     To an existing workspace
                 </p>
-                <Dropdown tag="" preset={dropdownOptions[0]} options={dropdownOptions} onCallback={onExistingWorkspace} />
+                <Dropdown tag="select-workspace-dropdown" preset={dropdownOptions[0]} options={dropdownOptions} onCallback={onExistingWorkspace} />
             </div>
             <div className="w-[350px] mt-5 text-center flex flex-col">
                 <p className="text-lg text-black block mb-6 mt-2 font-semibold">

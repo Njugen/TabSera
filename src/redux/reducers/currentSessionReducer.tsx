@@ -1,3 +1,4 @@
+import iCurrentSessionState from "../../interfaces/states/currentSessionState";
 import { 
     SET_UP_WINDOWS,
     SET_CURRENT_TABS_SORT_ORDER,
@@ -5,13 +6,7 @@ import {
 } from "../types/currentSessionSettingsTypes";
 
 
-const currentSessionSettingsState: {
-    windows: Array<chrome.windows.Window>
-    markedWindows: Array<chrome.windows.Window>
-    markedTabs: Array<chrome.tabs.Tab>,
-    tabsSort: string,
-    viewMode: "list" | "grid",
-} = {
+const currentSessionSettingsState: iCurrentSessionState = {
     windows: [],
     markedWindows: [],
     markedTabs: [],

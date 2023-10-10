@@ -1,3 +1,4 @@
+import iHistoryState from "../../interfaces/states/historyState";
 import { 
     SET_MARKED_TABS, 
     SET_MULTIPLE_MARKED_TABS, 
@@ -8,12 +9,7 @@ import {
     CHANGE_TABS_VIEWMODE
 } from "../types/historySettingsTypes";
 
-const historySettingsState: {
-    tabs: Array<chrome.history.HistoryItem>
-    markedTabs: Array<chrome.history.HistoryItem>
-    tabsSort: string,
-    viewMode: "list" | "grid",
-} = {
+const historySettingsState: iHistoryState = {
     tabs: [],
     markedTabs: [],
     tabsSort: "asc",
