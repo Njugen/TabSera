@@ -7,11 +7,8 @@ import "../styles/global_utils.module.scss";
 import WindowItem from "./window_item";
 import { iFolder } from "../interfaces/folder";
 import { useDispatch } from "react-redux";
-import { deleteFolderAction } from "../redux/actions/folderCollectionActions";
-import MessageBox from "./utils/message_box";
 import Checkbox from './utils/checkbox';
 import { iWindowItem } from "../interfaces/window_item";
-import { iTabItem } from "../interfaces/tab_item";
 
 
 function Folder(props: iFolder) {

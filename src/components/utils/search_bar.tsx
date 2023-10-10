@@ -1,17 +1,8 @@
-import styles from "./../../styles/global_utils.module.scss";
-import { iFolderIconButton } from "../../interfaces/folder_icon_button";
 import { iFolder } from "../../interfaces/folder";
-import OpenBrowserIcon from "../../images/icons/open_browser_icon";
-import SettingsIcon from "../../images/icons/settings_icon";
-import TrashIcon from "../../images/icons/trash_icon";
-import ExpandIcon from "../../images/icons/expand_icon";
-import CollapseIcon from "../../images/icons/collapse_icon";
 import { useState, useEffect, useRef } from "react";
 import SearchIcon from "../../images/icons/search_icon";
-import { useDispatch, useSelector } from 'react-redux';
-import CurrentSession from './../../views/folders/currentSession';
-import { CurrentSessionSettingsReducer } from "../../redux/reducers/currentSessionReducer";
-import { HistorySettingsReducer } from "../../redux/reducers/historySettingsReducer";
+import { useSelector } from 'react-redux';
+import TabItem from "../tab_item";
 
 function SearchBar(props: any): JSX.Element {
     const [showResultsContainer, setShowResultsContainer] = useState<boolean>(false);
@@ -31,17 +22,18 @@ function SearchBar(props: any): JSX.Element {
 
     function filterCurrentTabs(): Array<chrome.tabs.Tab> {
         let collection: Array<chrome.tabs.Tab> = [];
-         currentSessionSettings.windows.forEach((window: chrome.windows.Window) => collection = collection.concat(window.tabs!));
-        console.log("BLABLABLA", collection);
+        currentSessionSettings.windows.forEach((window: chrome.windows.Window) => {
+            collection = collection.concat(window.tabs!);
+        });
 
         const result: Array<chrome.tabs.Tab> = collection.filter((tab: chrome.tabs.Tab) => tab.title && tab.title.toLowerCase().includes(searchTerm.toLowerCase()));
-        return result;
+        return result.slice(0,5);
     }
 
 
     function filterHistory(): Array<chrome.history.HistoryItem> {
         const result =  historySettings.tabs.filter((tab: chrome.history.HistoryItem) => tab.title!.toLowerCase().includes(searchTerm.toLowerCase()));
-        return result;
+        return result.slice(0,5);
     }
 
     useEffect(() => {
@@ -93,7 +85,7 @@ function SearchBar(props: any): JSX.Element {
         const searchFieldId = "search-field";
         const searchResultsContainerId = "search-results-area";
         
-
+        console.log("TARGET", e.target);
         const firstParent = e.target.parentElement!.id;
         const secondParent = e.target.parentElement.parentElement.id
         if(e.target.id.includes(searchFieldId) === false && 
@@ -115,6 +107,10 @@ function SearchBar(props: any): JSX.Element {
         
     }
 
+    function handleCloseTab(tabId: number){
+        chrome.tabs.remove(tabId);
+    }
+
     return (
         <>
             <div className="p-3 h-16 top-0 z-50 sticky flex justify-center bg-tbfColor-lighterpurple drop-shadow-md">
@@ -126,33 +122,32 @@ function SearchBar(props: any): JSX.Element {
                 </div>
                 <div id="search-results-area" className={`w-7/12 absolute z-500 ${slideDown === true ? "flex justify-center" : "hidden"}`}>
                     <div className="bg-white p-6 mt-16 max-h-96 overflow-hidden w-full z-10 rounded-lg drop-shadow-[0_3px_2px_rgba(0,0,0,0.15)]">
-                        <div className="grid grid-cols-3 gap-x-4">   
+                        {searchTerm.length > 0 ? <div className="grid grid-cols-2 gap-x-[1.75rem]">   
+                           {/* 
                             <div className="">
-                                <h3 className="uppercase font-bold text-md mb-4 text-tbfColor-darkergrey">
-                                    Workspaces
-                                </h3>
-                                <ul className="list-none text-sm text-tbfColor-darkergrey">
-                                    {filterWorkspaces().map((workspace) => <li className="my-2">{workspace}</li>)}
-                                    
-                                </ul>
-                            </div>
+                                    <h3 className="uppercase font-bold text-md mb-4 text-tbfColor-darkergrey">
+                                        Workspaces
+                                    </h3>
+                                    <ul className="list-none text-sm text-tbfColor-darkergrey">
+                                        {filterWorkspaces().map((workspace) => <li className="my-2">{workspace}</li>)}
+                                        
+                                    </ul>
+                                
+                                </div>
+                            */}
                             <div className="">
                                 <h3 className="uppercase font-bold text-md mb-4 text-tbfColor-darkergrey">
                                     Currently opened
                                 </h3>
-                                <ul className="list-none text-sm text-tbfColor-darkergrey">
-                                    {filterCurrentTabs().map((tab) => <li className="my-2">{tab.title}</li>)}
-                                </ul>
+                                {filterCurrentTabs().map((tab) => <TabItem marked={false} id={tab.id!} label={tab.title!} url={tab.url!} disableEdit={true} disableMark={true} disableCloseButton={false} onClose={() => handleCloseTab(tab.id!)} />)}
                             </div>
                             <div className="">
                                 <h3 className="uppercase font-bold text-md mb-4 text-tbfColor-darkergrey">
                                     History
                                 </h3>
-                                <ul className="list-none text-sm text-tbfColor-darkergrey">
-                                    {filterHistory().map((tab) => <li className="my-2">{tab.title}</li>)}
-                                </ul>
+                                {filterHistory().map((tab) => <TabItem marked={false} id={parseInt(tab.id)} label={tab.title!} url={tab.url!} disableEdit={true} disableMark={true} disableCloseButton={true} onClose={() => {}} />)}
                             </div>
-                        </div> 
+                        </div>: <p className="text-center">Enter a search term...</p>}
                     </div>
                 </div> 
             </div>

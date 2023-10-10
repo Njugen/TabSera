@@ -1,8 +1,6 @@
 import { useEffect } from 'react';
 import iMessageBox from './../../interfaces/message_box';
 import styles from "./../../styles/global_utils.module.scss";
-import Dropdown from './dropdown';
-import { unwatchFile } from 'fs';
 
 function MessageBox(props: iMessageBox): JSX.Element {
     const { title, text, primaryButton, secondaryButton } = props;

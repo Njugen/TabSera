@@ -2,10 +2,9 @@ import "./../styles/global_utils.module.scss";
 import FormField from '../components/utils/form_field';
 import Dropdown from '../components/utils/dropdown';
 import Switcher from '../components/utils/switcher';
-import { iDropdownSelected, iFieldOption } from "../interfaces/dropdown";
-import { iSwitcher, iSwitcherSelected } from "../interfaces/switcher";
-import { useEffect, useCallback, useState } from 'react';
-import { saveToStorage, getFromStorage } from "../services/webex_api/storage";
+import { iFieldOption } from "../interfaces/dropdown";
+import { useEffect, useState } from 'react';
+import { saveToStorage } from "../services/webex_api/storage";
 
 function SettingsView(props: any) {
     const [settings, setSettings] = useState<any>({});

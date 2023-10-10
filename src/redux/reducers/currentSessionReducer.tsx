@@ -1,16 +1,9 @@
-import { iFolder } from "../../interfaces/folder";
 import { 
     SET_UP_WINDOWS,
-    SET_MARKED_CURRENT_WINDOWS_ID,
-    SET_MARKED_CURRENT_TABS_ID,
-    CLEAR_ALL_MARKED,
     SET_CURRENT_TABS_SORT_ORDER,
     DELETE_MARKED_CURRENT_TABS_ID,
-    
-    CHANGE_WORKSPACES_VIEWMODE
 } from "../types/currentSessionSettingsTypes";
-import { saveToStorage } from "../../services/webex_api/storage";
-import { iTabItem } from "../../interfaces/tab_item";
+
 
 const currentSessionSettingsState: {
     windows: Array<chrome.windows.Window>

@@ -1,4 +1,3 @@
-import { iFolder } from "../../interfaces/folder";
 import { 
     SET_MARKED_TABS, 
     SET_MULTIPLE_MARKED_TABS, 
@@ -8,8 +7,6 @@ import {
 
     CHANGE_TABS_VIEWMODE
 } from "../types/historySettingsTypes";
-import { saveToStorage } from "../../services/webex_api/storage";
-import { iTabItem } from "../../interfaces/tab_item";
 
 const historySettingsState: {
     tabs: Array<chrome.history.HistoryItem>

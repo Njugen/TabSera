@@ -1,35 +1,18 @@
-import Folder from '../../components/folder'
 import "./../../styles/global_utils.module.scss";
 import PrimaryButton from '../../components/utils/primary_button';
 import ManageFolderPopup from '../../components/utils/manage_folder_popup';
 import { useEffect, useState, useRef } from "react";
-import styles from "./../../styles/global_utils.module.scss";
-import GenericIconButton from '../../components/utils/generic_icon_button';
-import * as predef from "../../styles/predef";
 import { iFolder } from '../../interfaces/folder';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearInEditFolder  } from '../../redux/actions/inEditFolderActions';
-import {  createFolderAction, readAllFoldersFromBrowserAction } from '../../redux/actions/folderCollectionActions';
-import Paragraph from '../../components/utils/paragraph';
-import { deleteFolderAction } from "../../redux/actions/folderCollectionActions";
-import { saveToStorage, getFromStorage } from '../../services/webex_api/storage';
-import MessageBox from '../../components/utils/message_box';
-import GreyBorderButton from '../../components/utils/grey_border_button';
-import TextIconButton from '../../components/utils/text_icon_button';
 import randomNumber from '../../tools/random_number';
 import { iWindowItem } from '../../interfaces/window_item';
-import { clearMarkedFoldersAction, setFoldersSortOrder, setMarkedFoldersAction, setMarkMultipleFoldersAction } from '../../redux/actions/workspaceSettingsActions';
+import { clearMarkedFoldersAction } from '../../redux/actions/workspaceSettingsActions';
 import Dropdown from '../../components/utils/dropdown';
-import GridIcon from '../../images/icons/grid_icon';
-import SortIcon from '../../images/icons/sort_icon';
-import TabItem from '../../components/tab_item';
-import WindowItem from '../../components/window_item';
-import { clearMarkedTabsAction, setMarkMultipleTabsAction, setMarkedTabsAction, setTabsSortOrder, setUpTabsAction } from '../../redux/actions/historySettingsActions';
+import { clearMarkedTabsAction, setMarkMultipleTabsAction, setUpTabsAction } from '../../redux/actions/historySettingsActions';
 import { iTabItem } from '../../interfaces/tab_item';
-import { iDropdown, iFieldOption } from '../../interfaces/dropdown';
-import WindowManager from './../../components/utils/window_manager';
+import { iFieldOption } from '../../interfaces/dropdown';
 import { setCurrentTabsSortOrder, setUpWindowsAction } from '../../redux/actions/currentSessionActions';
-import { QueryOptions } from '@testing-library/react';
 import CurrentSessionWindowItem from '../../components/current_session_window_item';
 import AddToWorkspacePopup from '../../components/utils/add_to_workspace_popup';
 

@@ -1,4 +1,3 @@
-import { iFolder } from "../../interfaces/folder";
 import { 
     SET_MARKED_WORKSPACES_ID, 
     SET_MULTIPLE_MARKED_WORKSPACES_ID, 
@@ -7,7 +6,6 @@ import {
     
     CHANGE_WORKSPACES_VIEWMODE
 } from "../types/workspaceSettingsTypes";
-import { saveToStorage } from "../../services/webex_api/storage";
 
 const workspaceSettingsState: {
     markedFoldersId: Array<number>

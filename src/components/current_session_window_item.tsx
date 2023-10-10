@@ -1,14 +1,10 @@
 import { useState, useEffect } from "react";
 import GenericIconButton from "./utils/generic_icon_button";
-import PrimaryButton from "./utils/primary_button";
-import GreyBorderButton from "./utils/grey_border_button";
 import TabItem from "./tab_item";
 import { iWindowItem} from "../interfaces/window_item";
 import EditableTabItem from "./editable_tab_item";
-import { iTabItem } from "../interfaces/tab_item";
 import { useDispatch, useSelector } from "react-redux";
 import { updateInEditFolder } from "../redux/actions/inEditFolderActions";
-import { CurrentSessionSettingsReducer } from "../redux/reducers/currentSessionReducer";
 
 function CurrentSessionWindowItem(props: iWindowItem): JSX.Element {
     const [expanded, setExpanded] = useState<boolean>(true);
@@ -16,15 +12,10 @@ function CurrentSessionWindowItem(props: iWindowItem): JSX.Element {
     const [newTab, setNewTab] = useState<boolean>(false);
     const [editTab, setEditTab] = useState<number | null>(null);
     const [markedTabs, setMarkedTabs] = useState<Array<number>>([]);
-    const { id, tabs, tabsCol, initExpand, disableEdit, disableTabEdit, disableTabMark } = props;
+    const { id, tabs, tabsCol, initExpand, disableEdit, disableTabEdit} = props;
     
     const dispatch = useDispatch();
     const currentSessionData = useSelector((state: any) => state.CurrentSessionSettingsReducer);
-
-    /*
-    useEffect(() => {
-        if(newTab === true) setNewTab(false);
-    }, [currentSessionData]); */
 
     function handleExpand(): void {
         setExpanded(expanded === true ? false : true);

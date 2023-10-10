@@ -2,14 +2,13 @@ import './App.css';
 import "./styles/global_utils.module.scss";
 import styles from "./styles/global_utils.module.scss";
 import Navlink from './components/utils/navlink';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import CollapseIcon from './images/icons/collapse_icon';
 import FolderView from './views/folders/folders';
 import SettingsView from './views/settings';
 import LeftIcon from './images/icons/left_icon';
 import RightIcon from './images/icons/right_icon';
-import * as predef from "./styles/predef";
 import SearchBar from './components/utils/search_bar';
 
 function App() {

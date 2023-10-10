@@ -3,8 +3,6 @@ import "./../styles/global_utils.module.scss";
 import Checkbox from "./utils/checkbox";
 import { iTabItem } from "../interfaces/tab_item";
 import GenericIconButton from "./utils/generic_icon_button";
-import { useSelector } from "react-redux";
-import { useEffect, useCallback } from "react";
 
 function TabItem(props: iTabItem): JSX.Element {
     const { id, label, url, marked, onMark, onEdit, onClose, disableCloseButton, disableEdit, disableMark } = props;
