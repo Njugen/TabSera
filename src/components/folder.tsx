@@ -9,12 +9,14 @@ import { iFolder } from "../interfaces/folder";
 import { useDispatch } from "react-redux";
 import Checkbox from './utils/checkbox';
 import { iWindowItem } from "../interfaces/window_item";
-
+import MessageBox from "./utils/message_box";
 
 function Folder(props: iFolder) {
     const contentsRef = useRef<HTMLDivElement>(null);
     const headerRef = useRef<HTMLDivElement>(null)
     const [expanded, setExpanded] = useState<boolean>(false);
+    const [totalTabsCount, setTotalTabsCount] = useState<number>(0);
+
     
     const dispatch = useDispatch();
 
@@ -27,6 +29,7 @@ function Folder(props: iFolder) {
         viewMode,
         settings,
         windows,
+        onOpen,
         onMark,
         onDelete,
         onEdit 
@@ -47,39 +50,6 @@ function Folder(props: iFolder) {
         
     }
 
-    function handleLaunchFolder(e: any): void {
-        
-        // Now, snapshot current session
-        let snapshot: Array<chrome.windows.Window> = [];
-
-        const queryOptions: chrome.windows.QueryOptions = {
-            populate: true,
-            windowTypes: ["normal", "popup"]
-        };
-        chrome.windows.getAll(queryOptions, (windows: Array<chrome.windows.Window>) => {
-            snapshot = windows;
-        });
-
-        windows.forEach((window: iWindowItem, i) => {
-            const windowSettings: object = {
-                focused: i === 0 ? true : false,
-                url: window.tabs.map((tab) => tab.url)
-                
-            }
-            
-            chrome.windows.create(windowSettings);
-        });
-
-        chrome.storage.sync.get("quick_launch_setting", (data) => {
-            if(data.quick_launch_setting === 2){
-                snapshot.forEach((window) => {
-                    if(window.id) chrome.windows.remove(window.id);
-                });
-            }
-        });
-        
-    }
-
     function renderWindows(): Array<JSX.Element>{
         const result: Array<JSX.Element> = windows.map((window, index) => <WindowItem disableMark={true} disableEdit={true} key={"window-" + index} id={window.id} tabs={window.tabs} />)
 
@@ -88,7 +58,7 @@ function Folder(props: iFolder) {
 
     return (
         <>
-         
+            
             <div className={`${viewMode === "list" ? "my-4 duration-200" : "my-2 duration-200"} transition-all ease-in w-full rounded-md`}>
                 <div ref={headerRef} className={`relative tbf-${type}  hover:bg-tbfColor-lighterpurple2 border border-tbfColor-lighterpurple hover:border-tbfColor-lightpurple bg-tbfColor-lighterpurple4 px-3 h-10 flex items-center rounded-md transition-all ease-in duration-100`}>
                     <div className="inline-block mr-3">
@@ -100,7 +70,7 @@ function Folder(props: iFolder) {
                         </h2>
                     </div>
                     <div className="absolute flex items-center right-2">
-                        <FolderControlButton icon="open_browser" active={expanded} onClick={handleLaunchFolder} />
+                        <FolderControlButton icon="open_browser" active={expanded} onClick={() => onOpen && onOpen(windows)} />
                         <FolderControlButton icon="settings" active={expanded} onClick={onEdit} />
                         <FolderControlButton icon="trash" active={expanded} onClick={() => { onDelete!(props); }} />
                         <FolderControlButton icon="collapse_expand" active={expanded} onClick={handleExpandClick} />

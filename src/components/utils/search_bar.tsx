@@ -3,12 +3,15 @@ import { useState, useEffect, useRef } from "react";
 import SearchIcon from "../../images/icons/search_icon";
 import { useSelector } from 'react-redux';
 import TabItem from "../tab_item";
+import styles from "../../styles/global_utils.module.scss";
 
 function SearchBar(props: any): JSX.Element {
     const [showResultsContainer, setShowResultsContainer] = useState<boolean>(false);
     const [slideDown, setSlideDown] = useState<boolean>(false);
     const [searchTerm, setSearchTerm] = useState<string>("");
   //  const [filteredWorkspaces, setFilteredWorkspaces] = useState<Array<any>>([]);
+
+    const searchResultsContainerRef = useRef<HTMLDivElement>(null);
 
     const searchFieldRef = useRef<HTMLInputElement>(null);
     const folderCollection = useSelector((state: any) => state.FolderCollectionReducer);
@@ -59,6 +62,11 @@ function SearchBar(props: any): JSX.Element {
                 setSlideDown(slideDown === true ? false : true);
             }, 75);
         } else {
+            if(searchResultsContainerRef.current){
+                searchResultsContainerRef.current.classList.remove("mt-16");
+                searchResultsContainerRef.current.classList.add("mt-10");
+            } 
+            document.body.style.overflowY = "auto";
             setSlideDown(false);
             setTimeout(() => {
                 setShowResultsContainer(false);
@@ -67,32 +75,15 @@ function SearchBar(props: any): JSX.Element {
     
     }
 
-    useEffect(() => {
-        
-        if(searchTerm.length === 0) {
-            if(slideDown === false){
-                searchFieldRef.current!.value = "Search tabs...";
-            } else {
-                searchFieldRef.current!.value = "";
-            }
-        }
-    }, [slideDown]);
-
     function handleWindowClick(e: any): void {
         e.stopPropagation();
         if(showResultsContainer === false || !e.target.parentElement || ! e.target.parentElement.parentElement) return;
         
         const searchFieldId = "search-field";
         const searchResultsContainerId = "search-results-area";
-        
-        console.log("TARGET", e.target);
-        const firstParent = e.target.parentElement!.id;
-        const secondParent = e.target.parentElement.parentElement.id
+
         if(e.target.id.includes(searchFieldId) === false && 
-        e.target.id.includes(searchResultsContainerId) === false &&
-        firstParent.includes(searchFieldId) === false && 
-        firstParent.includes(searchResultsContainerId) === false &&
-        secondParent.includes(searchResultsContainerId) === false){
+        e.target.id.includes(searchResultsContainerId) === true){
             handleShowResultsContainer();
         }
 
@@ -111,6 +102,27 @@ function SearchBar(props: any): JSX.Element {
         chrome.tabs.remove(tabId);
     }
 
+    useEffect(() => {
+        
+        if(searchTerm.length === 0) {
+            if(slideDown === false){
+                searchFieldRef.current!.value = "Search tabs...";
+            } else {
+                searchFieldRef.current!.value = "";
+            }
+        }
+
+        if(slideDown === true){
+            setTimeout(() => {
+                if(searchResultsContainerRef.current){
+                    searchResultsContainerRef.current.classList.remove("mt-10");
+                    searchResultsContainerRef.current.classList.add("mt-16");
+                }
+            }, 50);
+            document.body.style.overflowY = "hidden";
+        }
+    }, [slideDown]);
+
     return (
         <>
             <div className="p-3 h-16 top-0 z-50 sticky flex justify-center bg-tbfColor-lighterpurple drop-shadow-md">
@@ -120,8 +132,8 @@ function SearchBar(props: any): JSX.Element {
                     </div>
                     <input ref={searchFieldRef} id="search-field" defaultValue="Search tabs..." onChange={handleFieldChange} onClick={handleActivateSearch} className={`py-5 h-10 bg-white w-full focus:outline-0`} type="text" />
                 </div>
-                <div id="search-results-area" className={`w-7/12 absolute z-500 ${slideDown === true ? "flex justify-center" : "hidden"}`}>
-                    <div className="bg-white p-6 mt-16 max-h-96 overflow-hidden w-full z-10 rounded-lg drop-shadow-[0_3px_2px_rgba(0,0,0,0.15)]">
+                <div id="search-results-area" className={`${styles.popup_container} w-screen h-screen top-0 bg-[rgba-] absolute z-500 ${slideDown === true ? "flex justify-center" : "hidden"}`}>
+                    <div ref={searchResultsContainerRef} className={`bg-white p-6 mt-10 transition-all ease-in duration-75 max-h-96 overflow-hidden w-7/12 z-10 rounded-lg drop-shadow-[0_3px_2px_rgba(0,0,0,0.15)]`}>
                         {searchTerm.length > 0 ? <div className="grid grid-cols-2 gap-x-[1.75rem]">   
                            {/* 
                             <div className="">

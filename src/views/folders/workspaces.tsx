@@ -24,7 +24,11 @@ function Workspaces(props: any): JSX.Element {
     const [createFolder, setCreateFolder] = useState<boolean>(false);
     const [removalTarget, setRemovalTarget] = useState<iFolder | null>(null);
     const [showDeleteWarning, setShowDeleteWarning] = useState<boolean>(false);
+    const [showDuplicationWarning, setShowDuplicationWarning] = useState<boolean>(false);
     const [mergeProcess, setMergeProcess] = useState<iFolder | null>(null);
+    const [showPerformanceWarning, setShowPerformanceWarning] = useState<boolean>(false);
+    const [totalTabsCount, setTotalTabsCount] = useState<number>(0);
+    const [windowsPayload, setWindowsPayload] = useState<Array<iWindowItem> | null>(null);
 
     const dispatch = useDispatch();
     const folderCollection = useSelector((state: any) => state.FolderCollectionReducer);
@@ -81,6 +85,7 @@ function Workspaces(props: any): JSX.Element {
                     dispatch(createFolderAction({...newFolder}));
                 }
             });
+            setShowDuplicationWarning(false);
             dispatch(clearMarkedFoldersAction());
         }
     }
@@ -213,7 +218,7 @@ function Workspaces(props: any): JSX.Element {
 
         result = sortedFolders.map((folder: iFolder, i: number) => {
             const collection: Array<number> = workspaceSettings.markedFoldersId;
-            return <Folder onDelete={(e) => handleFolderDelete(folder)} marked={collection.find((id) => folder.id === id) ? true : false} onMark={handleMarkFolder} onEdit={() => setEditFolderId(folder.id)} key={folder.id} type={folder.type} id={folder.id} viewMode={folder.viewMode} name={folder.name} desc={folder.desc} settings={folder.settings} windows={folder.windows} />
+            return <Folder onDelete={(e) => handleFolderDelete(folder)} marked={collection.find((id) => folder.id === id) ? true : false} onMark={handleMarkFolder} onEdit={() => setEditFolderId(folder.id)} key={folder.id} type={folder.type} id={folder.id} viewMode={folder.viewMode} name={folder.name} desc={folder.desc} settings={folder.settings} windows={folder.windows} onOpen={handlePrepareLaunchFolder}/>
         });
 
         return result.length > 0 ? result : [<></>];
@@ -228,7 +233,7 @@ function Workspaces(props: any): JSX.Element {
                 <div className="flex w-7/12">
                     <TextIconButton disabled={false} icon={"selected_checkbox"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Mark all" onClick={handleMarkAllFolders} />
                     <TextIconButton disabled={false} icon={"deselected_checkbox"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Unmark all" onClick={handleUnmarkAllFolders} />
-                    <TextIconButton disabled={markedFoldersId.length > 0 ? false : true} icon={"folder_duplicate"} size={{ icon: 20, text: "text-sm" }}  fill={markedFoldersId.length > 0 ? "#6D00C2" : "#9f9f9f"} text="Duplicate" onClick={handleDuplicateFolders} />
+                    <TextIconButton disabled={markedFoldersId.length > 0 ? false : true} icon={"folder_duplicate"} size={{ icon: 20, text: "text-sm" }}  fill={markedFoldersId.length > 0 ? "#6D00C2" : "#9f9f9f"} text="Duplicate" onClick={handlePrepareDuplication} />
                     <TextIconButton disabled={markedFoldersId.length >= 2 ? false : true} icon={"merge"} size={{ icon: 20, text: "text-sm" }}  fill={markedFoldersId.length >= 2 ? "#6D00C2" : "#9f9f9f"} text="Merge" onClick={handleMergeFolders} />
                     <TextIconButton disabled={markedFoldersId.length > 0 ? false : true} icon={"trash"} size={{ icon: 20, text: "text-sm" }}  fill={markedFoldersId.length > 0 ? "#6D00C2" : "#9f9f9f"} text="Delete" onClick={handlePrepareMultipleRemovals} />
                 </div>
@@ -281,7 +286,7 @@ function Workspaces(props: any): JSX.Element {
             return 1;
         }
     };
-
+    
     function handlePrepareMultipleRemovals(): void {
         const { markedFoldersId } = workspaceSettings;
         
@@ -296,10 +301,105 @@ function Workspaces(props: any): JSX.Element {
             
         }
     }
+
+    function handlePrepareDuplication(): void {
+        const { markedFoldersId } = workspaceSettings;
+        
+        if(markedFoldersId.length > 0) {
+            chrome.storage.sync.get("duplication_warning_value", (data) => {
+                console.log("DATA", data, workspaceSettings.markedFoldersId.length);
+                if(data.duplication_warning_value !== -1 && data.duplication_warning_value <= workspaceSettings.markedFoldersId.length) {
+                    setShowDuplicationWarning(true);
+                } else {
+                    handleDuplicateFolders();
+                }
+            });
+            
+        }
+    }
+
+    function handlePrepareLaunchFolder(windows: Array<iWindowItem>): void {
+        let tabsCount = 0;
+        console.log("WINDOWS", windows);
+        setWindowsPayload(windows);
+        windows.forEach((window: iWindowItem) => {
+            tabsCount += window.tabs.length;
+        });
+   
+        chrome.storage.sync.get("performance_notification_value", (data) => {
+            console.log(data.performance_notification_value, tabsCount);
+            setTotalTabsCount(data.performance_notification_value);
+            if(data.performance_notification_value !== -1 && data.performance_notification_value <= tabsCount) {
+                setShowPerformanceWarning(true);
+            } else {
+   
+                handleLaunchFolder(windows);
+            }
+        });
+            
+        
+    }
+
+    useEffect(() => {
+        if(showPerformanceWarning === false) setWindowsPayload(null);
+    }, [showPerformanceWarning]);
+
+    function handleLaunchFolder(windows: Array<iWindowItem>): void {
+        console.log("LAUNCH", windows);
+        // Now, snapshot current session
+        let snapshot: Array<chrome.windows.Window> = [];
+
+        const queryOptions: chrome.windows.QueryOptions = {
+            populate: true,
+            windowTypes: ["normal", "popup"]
+        };
+        chrome.windows.getAll(queryOptions, (currentWindows: Array<chrome.windows.Window>) => {
+            snapshot = currentWindows;
+        });
+
+        windows.forEach((window: iWindowItem, i) => {
+            const windowSettings: object = {
+                focused: i === 0 ? true : false,
+                url: window.tabs.map((tab) => tab.url)
+                
+            }
+            
+            chrome.windows.create(windowSettings);
+        });
+
+        chrome.storage.sync.get("close_current_setting", (data) => {
+            console.log("QQQ", data);
+            if(data.close_current_setting === true){
+                snapshot.forEach((window) => {
+                    if(window.id) chrome.windows.remove(window.id);
+                });
+            }
+        });
+        
+    }
     
 
     return (
         <>
+            {showPerformanceWarning &&
+                
+                <MessageBox 
+                    title="Warning" 
+                    text={`You are about to open ${totalTabsCount} or more tabs at once. Opening this many may slow down your browser. Do you want to proceed?`}
+                    primaryButton={{ text: "Yes, open selected folders", callback: () => { console.log(windowsPayload);windowsPayload && handleLaunchFolder(windowsPayload); setShowPerformanceWarning(false)}}}
+                    secondaryButton={{ text: "No, do not open", callback: () => setShowPerformanceWarning(false)}}    
+                />
+            }
+
+            {showDuplicationWarning &&
+                
+                <MessageBox 
+                    title="Warning" 
+                    text={`You are about to duplicate ${workspaceSettings.markedFoldersId.length} or more folders at once. Unnecessary duplications may clutter your dashboard, do you want to proceed?`}
+                    primaryButton={{ text: "Yes, proceed", callback: () => { handleDuplicateFolders(); setShowDuplicationWarning(false)}}}
+                    secondaryButton={{ text: "No, do not duplicate", callback: () => setShowDuplicationWarning(false)}}    
+                />
+            }
             {removalTarget &&
                 
                 <MessageBox 
