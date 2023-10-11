@@ -29,6 +29,7 @@ function Workspaces(props: any): JSX.Element {
     const [showPerformanceWarning, setShowPerformanceWarning] = useState<boolean>(false);
     const [totalTabsCount, setTotalTabsCount] = useState<number>(0);
     const [windowsPayload, setWindowsPayload] = useState<Array<iWindowItem> | null>(null);
+    const [folderLaunchType, setFolderLaunchType] = useState<string | null>(null); 
 
     const dispatch = useDispatch();
     const folderCollection = useSelector((state: any) => state.FolderCollectionReducer);
@@ -318,26 +319,32 @@ function Workspaces(props: any): JSX.Element {
         }
     }
 
-    function handlePrepareLaunchFolder(windows: Array<iWindowItem>): void {
+    useEffect(() => {
+        
+        if(!windowsPayload || !folderLaunchType) return;
         let tabsCount = 0;
-        console.log("WINDOWS", windows);
-        setWindowsPayload(windows);
-        windows.forEach((window: iWindowItem) => {
+        windowsPayload.forEach((window: iWindowItem) => {
             tabsCount += window.tabs.length;
         });
    
+        windowsPayload.forEach((window: iWindowItem) => {
+            tabsCount += window.tabs.length;
+        });
         chrome.storage.sync.get("performance_notification_value", (data) => {
             console.log(data.performance_notification_value, tabsCount);
             setTotalTabsCount(data.performance_notification_value);
             if(data.performance_notification_value !== -1 && data.performance_notification_value <= tabsCount) {
                 setShowPerformanceWarning(true);
             } else {
-   
-                handleLaunchFolder(windows);
+                
+                handleLaunchFolder(windowsPayload);
             }
         });
-            
-        
+    }, [folderLaunchType]);
+
+    function handlePrepareLaunchFolder(windows: Array<iWindowItem>, type: string): void {
+        setWindowsPayload(windows);
+        setFolderLaunchType(type);
     }
 
     useEffect(() => {
@@ -358,12 +365,12 @@ function Workspaces(props: any): JSX.Element {
         });
 
         windows.forEach((window: iWindowItem, i) => {
-            const windowSettings: object = {
+            console.log("TTTT", folderLaunchType);
+            const windowSettings = {
                 focused: i === 0 ? true : false,
-                url: window.tabs.map((tab) => tab.url)
-                
+                url: window.tabs.map((tab) => tab.url),
+                incognito: folderLaunchType === "incognito" ? true : false
             }
-            
             chrome.windows.create(windowSettings);
         });
 
@@ -375,7 +382,8 @@ function Workspaces(props: any): JSX.Element {
                 });
             }
         });
-        
+        setWindowsPayload(null);
+        setFolderLaunchType(null);
     }
     
 
@@ -387,7 +395,8 @@ function Workspaces(props: any): JSX.Element {
                     title="Warning" 
                     text={`You are about to open ${totalTabsCount} or more tabs at once. Opening this many may slow down your browser. Do you want to proceed?`}
                     primaryButton={{ text: "Yes, open selected folders", callback: () => { console.log(windowsPayload);windowsPayload && handleLaunchFolder(windowsPayload); setShowPerformanceWarning(false)}}}
-                    secondaryButton={{ text: "No, do not open", callback: () => setShowPerformanceWarning(false)}}    
+                    secondaryButton={{ text: "No, do not open", callback: () => { setShowPerformanceWarning(false); setWindowsPayload(null);
+                        setFolderLaunchType(null);}}}    
                 />
             }
 

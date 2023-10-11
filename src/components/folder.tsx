@@ -77,9 +77,10 @@ function Folder(props: iFolder) {
         handleShowSubMenu();
     }
 
-    function handleNormalLaunch(): void {
+    function handleLaunch(type: string): void {
+        console.log("AAAA", type);
         if(onOpen) {
-            onOpen(windows);
+            onOpen(windows, type);
         }
         setShowLaunchOptions(false);
         setSlideDown(false);
@@ -103,17 +104,17 @@ function Folder(props: iFolder) {
                         showLaunchOptions === true && (
                                 <ul className={`z-50 list-none drop-shadow-no_pos overflow-y-auto bg-white absolute max-h-[2000px] mt-2 text-sm text-tbfColor-darkergrey rounded-lg  ${slideDown === false ? "transition-all top-4 ease-out h-0 duration-500" : "transition-all top-12 ease-in duration-75"}`}>
                                     <li>
-                                        <button onClick={handleNormalLaunch} className="hover:bg-tbfColor-lightgrey border-b border-tbfColor-middlegrey hover:border-tbfColor-lightergrey flex items-center text-sm text-tbfColor-darkergrey weight-bold px-3 py-6 h-10 w-full">
+                                        <button onClick={() => handleLaunch("normal")} className="hover:bg-tbfColor-lightgrey border-b border-tbfColor-middlegrey hover:border-tbfColor-lightergrey flex items-center text-sm text-tbfColor-darkergrey weight-bold px-3 py-6 h-10 w-full">
                                             Normal launch
                                         </button>
                                     </li>
                                     <li>
-                                        <button className="hover:bg-tbfColor-lightgrey border-b border-tbfColor-middlegrey hover:border-tbfColor-lightergrey flex items-center text-sm text-tbfColor-darkergrey weight-bold px-3 py-6 h-10 w-full">
+                                        <button onClick={() => handleLaunch("group")} className="hover:bg-tbfColor-lightgrey border-b border-tbfColor-middlegrey hover:border-tbfColor-lightergrey flex items-center text-sm text-tbfColor-darkergrey weight-bold px-3 py-6 h-10 w-full">
                                             Launch as group
                                         </button>
                                     </li>
                                     <li>
-                                        <button className="hover:bg-tbfColor-lightgrey border-b border-tbfColor-middlegrey hover:border-tbfColor-lightergrey flex items-center text-sm text-tbfColor-darkergrey weight-bold px-3 py-6 h-10 w-full">
+                                        <button onClick={() => handleLaunch("incognito")} className="hover:bg-tbfColor-lightgrey border-b border-tbfColor-middlegrey hover:border-tbfColor-lightergrey flex items-center text-sm text-tbfColor-darkergrey weight-bold px-3 py-6 h-10 w-full">
                                             Launch in incognito
                                         </button>
                                     </li>

@@ -14,7 +14,7 @@ interface iFolder {
         auto_add: boolean
     },
     windows: Array<iWindowItem>,
-    onOpen?: (e: Array<iWindowItem>) => void,
+    onOpen?: (e: Array<iWindowItem>, type: string) => void,
     onMark?: (e: number) => void,
     onEdit?: (e: number) => void
     onDelete?: (e: iFolder) => void

@@ -69,7 +69,7 @@ function WindowItem(props: iWindowItem): JSX.Element {
                     newTabCollection.push(tab);                    
                 }
             });
-
+           
             folderData.windows[targetWindowIndex].tabs = [...newTabCollection];
             
             setMarkedTabs([]);

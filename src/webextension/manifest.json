@@ -6,7 +6,8 @@
     "permissions": [
         "history",
         "tabs",
-        "storage"
+        "storage",
+        "incognito"
     ],
     "action": {
         "default_title": "TabSera",
