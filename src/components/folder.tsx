@@ -16,9 +16,25 @@ function Folder(props: iFolder) {
     const headerRef = useRef<HTMLDivElement>(null)
     const [expanded, setExpanded] = useState<boolean>(false);
     const [totalTabsCount, setTotalTabsCount] = useState<number>(0);
+    const [showLaunchOptions, setShowLaunchOptions] = useState<boolean>(false);
+    const [slideDown, setSlideDown] = useState<boolean>(false);
 
-    
     const dispatch = useDispatch();
+
+    function handleShowSubMenu(): void {
+        if(showLaunchOptions === false){
+            setShowLaunchOptions(true);
+            setTimeout(() => {
+                setSlideDown(slideDown === true ? false : true);
+            }, 200);
+        } else {
+            setSlideDown(false);
+            setTimeout(() => {
+                setShowLaunchOptions(false);
+            }, 200);
+        }
+    
+    }
 
     const { 
         id,
@@ -56,6 +72,19 @@ function Folder(props: iFolder) {
         return result;
     }
 
+    function handleOpen(): void {
+        setShowLaunchOptions(true);
+        handleShowSubMenu();
+    }
+
+    function handleNormalLaunch(): void {
+        if(onOpen) {
+            onOpen(windows);
+        }
+        setShowLaunchOptions(false);
+        setSlideDown(false);
+    }
+
     return (
         <>
             
@@ -70,7 +99,28 @@ function Folder(props: iFolder) {
                         </h2>
                     </div>
                     <div className="absolute flex items-center right-2">
-                        <FolderControlButton icon="open_browser" active={expanded} onClick={() => onOpen && onOpen(windows)} />
+                        { 
+                        showLaunchOptions === true && (
+                                <ul className={`z-50 list-none drop-shadow-no_pos overflow-y-auto bg-white absolute max-h-[2000px] mt-2 text-sm text-tbfColor-darkergrey rounded-lg  ${slideDown === false ? "transition-all top-4 ease-out h-0 duration-500" : "transition-all top-12 ease-in duration-75"}`}>
+                                    <li>
+                                        <button onClick={handleNormalLaunch} className="hover:bg-tbfColor-lightgrey border-b border-tbfColor-middlegrey hover:border-tbfColor-lightergrey flex items-center text-sm text-tbfColor-darkergrey weight-bold px-3 py-6 h-10 w-full">
+                                            Normal launch
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button className="hover:bg-tbfColor-lightgrey border-b border-tbfColor-middlegrey hover:border-tbfColor-lightergrey flex items-center text-sm text-tbfColor-darkergrey weight-bold px-3 py-6 h-10 w-full">
+                                            Launch as group
+                                        </button>
+                                    </li>
+                                    <li>
+                                        <button className="hover:bg-tbfColor-lightgrey border-b border-tbfColor-middlegrey hover:border-tbfColor-lightergrey flex items-center text-sm text-tbfColor-darkergrey weight-bold px-3 py-6 h-10 w-full">
+                                            Launch in incognito
+                                        </button>
+                                    </li>
+                                </ul>
+                            )
+                        }
+                        <FolderControlButton icon="open_browser" active={expanded} onClick={handleOpen/*() => onOpen && onOpen(windows)*/} />
                         <FolderControlButton icon="settings" active={expanded} onClick={onEdit} />
                         <FolderControlButton icon="trash" active={expanded} onClick={() => { onDelete!(props); }} />
                         <FolderControlButton icon="collapse_expand" active={expanded} onClick={handleExpandClick} />
