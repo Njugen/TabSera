@@ -327,9 +327,6 @@ function Workspaces(props: any): JSX.Element {
             tabsCount += window.tabs.length;
         });
    
-        windowsPayload.forEach((window: iWindowItem) => {
-            tabsCount += window.tabs.length;
-        });
         chrome.storage.sync.get("performance_notification_value", (data) => {
             console.log(data.performance_notification_value, tabsCount);
             setTotalTabsCount(data.performance_notification_value);
@@ -384,6 +381,7 @@ function Workspaces(props: any): JSX.Element {
         });
         setWindowsPayload(null);
         setFolderLaunchType(null);
+        setShowPerformanceWarning(false);
     }
     
 
@@ -396,7 +394,7 @@ function Workspaces(props: any): JSX.Element {
                     text={`You are about to open ${totalTabsCount} or more tabs at once. Opening this many may slow down your browser. Do you want to proceed?`}
                     primaryButton={{ text: "Yes, open selected folders", callback: () => { console.log(windowsPayload);windowsPayload && handleLaunchFolder(windowsPayload); setShowPerformanceWarning(false)}}}
                     secondaryButton={{ text: "No, do not open", callback: () => { setShowPerformanceWarning(false); setWindowsPayload(null);
-                        setFolderLaunchType(null);}}}    
+                        setFolderLaunchType(null); setShowPerformanceWarning(false);}}}    
                 />
             }
 

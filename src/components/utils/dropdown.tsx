@@ -58,7 +58,7 @@ function Dropdown(props: iDropdown): JSX.Element {
 
     function handleWindowClick(e: any): void {
         e.stopPropagation();
-        if(showSubMenuContainer === false || !e.target.parentElement || ! e.target.parentElement.parentElement) return;
+        if(showSubMenuContainer === false || !e.target.parentElement || !e.target.parentElement.parentElement) return;
         
         const targetId = `dropdown-tag-${tag}`;
 

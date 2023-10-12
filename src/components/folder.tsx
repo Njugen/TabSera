@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import ClosedFolderIcon from "../images/icons/closed_folder_icon";
 import Paragraph from "../components/utils/paragraph";
 import FolderControlButton from "./utils/folder_control_button";
@@ -18,6 +18,8 @@ function Folder(props: iFolder) {
     const [totalTabsCount, setTotalTabsCount] = useState<number>(0);
     const [showLaunchOptions, setShowLaunchOptions] = useState<boolean>(false);
     const [slideDown, setSlideDown] = useState<boolean>(false);
+    
+    const subMenuRef = useRef<HTMLUListElement>(null);
 
     const dispatch = useDispatch();
 
@@ -78,13 +80,44 @@ function Folder(props: iFolder) {
     }
 
     function handleLaunch(type: string): void {
-        console.log("AAAA", type);
         if(onOpen) {
             onOpen(windows, type);
         }
         setShowLaunchOptions(false);
         setSlideDown(false);
     }
+
+    function handleWindowClick(e: any): void {
+       console.log("LAUNCH OPT", showLaunchOptions);
+        e.stopPropagation();
+/*
+       // if(!e.target.parentElement || !e.target.parentElement.parentElement) return;
+        const targetId = `folder-control-dropdown`;
+
+        const firstParent = e.target.parentElement!.id;
+        //const secondParent = e.target.parentElement.parentElement.id
+        console.log("Launch", showLaunchOptions, slideDown);
+        
+            console.log("blabla", e.target);
+            //setShowLaunchOptions(false);
+            //setSlideDown(true);
+         //   handleShowSubMenu();
+     */
+        if(showLaunchOptions === true){
+            setShowLaunchOptions(false);
+            setSlideDown(false);
+            handleShowSubMenu();
+        }
+
+    }
+
+    useEffect(() => {
+        window.addEventListener("click", handleWindowClick);
+
+        return () => {
+            window.removeEventListener("click", handleWindowClick);
+        }
+    }, [slideDown])
 
     return (
         <>
@@ -102,7 +135,7 @@ function Folder(props: iFolder) {
                     <div className="absolute flex items-center right-2">
                         { 
                         showLaunchOptions === true && (
-                                <ul className={`z-50 list-none drop-shadow-no_pos overflow-y-auto bg-white absolute max-h-[2000px] mt-2 text-sm text-tbfColor-darkergrey rounded-lg  ${slideDown === false ? "transition-all top-4 ease-out h-0 duration-500" : "transition-all top-12 ease-in duration-75"}`}>
+                                <ul ref={subMenuRef} id={"folder-control-dropdown"} className={`z-50 list-none drop-shadow-no_pos overflow-y-auto bg-white absolute max-h-[2000px] mt-2 text-sm text-tbfColor-darkergrey rounded-lg  ${slideDown === false ? "transition-all top-4 ease-out h-0 duration-500" : "transition-all top-12 ease-in duration-75"}`}>
                                     <li>
                                         <button onClick={() => handleLaunch("normal")} className="hover:bg-tbfColor-lightgrey border-b border-tbfColor-middlegrey hover:border-tbfColor-lightergrey flex items-center text-sm text-tbfColor-darkergrey weight-bold px-3 py-6 h-10 w-full">
                                             Normal launch
