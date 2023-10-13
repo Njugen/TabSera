@@ -111,7 +111,7 @@ function CurrentSessionWindowItem(props: iWindowItem): JSX.Element {
                 {tabs.length > 0 ? [...evaluateNewTabRender()] : [renderEditTab(id)]}
                 </div>
                 {tabs.length > 0 && <div className="mt-10 mb-8 flex justify-end">
-                    {/*markedTabs.length > 0 && <GreyBorderButton disabled={false} text="Close marked tabs" onClick={handleDeleteTabs} />*/}
+                    {/*markedTabs.length > 0 && <PurpleBorderButton disabled={false} text="Close marked tabs" onClick={handleDeleteTabs} />*/}
                     {/*disableEdit === false && <PrimaryButton disabled={false} text="New tab" onClick={handleAddNewTab} />*/}
                 </div>}
             </div>

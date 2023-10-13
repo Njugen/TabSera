@@ -1,6 +1,13 @@
 import styles from "./../../styles/global_utils.module.scss";
 import { iTextButton } from "../../interfaces/text_button";
 
+/*
+    Button intended to use in positive direction ("continue", "proceed", "Okay", "Yes", etc). 
+
+    In the future, this button should be made into a generic button, offering various colors instead
+    of just being a button intended for one purpose.
+*/
+
 function PrimaryButton(props: iTextButton): JSX.Element{
     const { text, disabled, onClick } = props;
     

@@ -4,6 +4,22 @@ import { Link } from 'react-router-dom';
 import MultipleFoldersIcon from "../../images/icons/multiple_folders_icon";
 import ConfigIcon from "../../images/icons/config_icon";
 
+/*
+  Navigation link, intended to be used in in the sidebar
+
+  Each link has its own icon based on path/url. The path/url should point
+  to a path defined by router-dom (defined in ./aop.tsx)
+
+  To add a new icon based on path, change the if-statement within renderIcon()
+  E.g.
+
+  ...
+    else if(url === "/my-path"){
+      <MyIcon ... />
+    }
+  ...
+*/
+
 function Navlink(props: iNavlink): JSX.Element {
     const { label, url, isActive, iconSize, onClick } = props;
 

@@ -2,14 +2,29 @@ import { useRef, useState, useEffect } from "react";
 import ExpandIcon from "../../images/icons/expand_icon";
 import CollapseIcon from "../../images/icons/collapse_icon";
 import { iDropdown, iFieldOption } from "../../interfaces/dropdown";
+import DropdownMenu from "./dropdown_menu";
+
+/*
+    A dropdown selector, containing a menu with a set of options
+*/
 
 function Dropdown(props: iDropdown): JSX.Element {
+    // The selected option id
     const [selected, setSelected] = useState<number | null>(null);
-    const [showSubMenuContainer, setShowSubMenuContainer] = useState<boolean>(false);
-    const [slideDown, setSlideDown] = useState<boolean>(false);
-    const { tag, preset, options, onCallback } = props;
-    const dropdown = useRef<any>();
 
+    // State defining the visibility of the menu
+    const [showSubMenuContainer, setShowSubMenuContainer] = useState<boolean>(false);
+
+    // Trigger slide down/hide effect in CSS
+    const [slideDown, setSlideDown] = useState<boolean>(false);
+
+    const { tag, preset, options, onCallback } = props;
+
+    // Reference to dropdown selector container
+    const dropdownRef = useRef<HTMLDivElement>(null);
+
+    // Show or hide sub menu based on state by sliding down the menu.
+    // The sliding effect is delayed to allow certain states to take effect
     function handleShowSubMenu(): void {
         if(showSubMenuContainer === false){
             setShowSubMenuContainer(true);
@@ -25,37 +40,19 @@ function Dropdown(props: iDropdown): JSX.Element {
     
     }
 
+    // Trigger once an option has been selected
     function handleSelect(id: number): void {
         setSelected(id);
         handleShowSubMenu();
     }
     
-    function applyClasses(id: number): string {
-        if(selected === id){
-            return "hover:opacity-70 border-b bottom flex items-center text-sm text-white weight-bold px-3 py-6 h-10 w-full bg-tbfColor-lightpurple h-9";
-        } else {
-            return "hover:bg-tbfColor-lightgrey border-b border-tbfColor-middlegrey hover:border-tbfColor-lightergrey flex items-center text-sm text-tbfColor-darkergrey weight-bold px-3 py-6 h-10 w-full";
-        }
-    }
-
-    function renderDropdown(): JSX.Element {
+    function renderDropdownMenu(): JSX.Element {
         return (
-            <>
-                <ul id={`dropdown-tag-${tag}`} className={`z-50 list-none drop-shadow-no_pos overflow-y-auto bg-white absolute max-h-[2000px] mt-2 text-sm w-full text-tbfColor-darkergrey rounded-lg ${slideDown === false ? "transition-all top-0 ease-out h-0 duration-500" : "transition-all top-12 ease-in duration-100"}`}>
-                    { options.map((option, i) => {
-                        return (
-                            <li id={`dropdown-tag-${tag}-${i}`} key={`dropdown-tag-${tag}-${i}`}>
-                                <button key={option.id} onClick={() => handleSelect(option.id)} className={applyClasses(option.id)}>
-                                    {option.label}
-                                </button>
-                            </li>
-                        );
-                    })}
-                </ul>
-            </>
+            <DropdownMenu tag={`dropdown-tag-${tag}`} visible={slideDown} options={options} selected={selected} onSelect={handleSelect} />
         );
     }
 
+    // Close the dropdown menu when user clicks outside the selector or the menu itself
     function handleWindowClick(e: any): void {
         e.stopPropagation();
         if(showSubMenuContainer === false || !e.target.parentElement || !e.target.parentElement.parentElement) return;
@@ -67,10 +64,16 @@ function Dropdown(props: iDropdown): JSX.Element {
         if(e.target.id.includes(targetId) === false && firstParent.includes(targetId) === false && secondParent.includes(targetId) === false){
             handleShowSubMenu();
         }
-
     }
 
-   useEffect(() => {
+    // Get information about the selected option 
+    function getSelectedOption(): iFieldOption | null {
+        const target = options.find((option) => option.id === selected);
+        return target ? target : null;
+    }
+
+    useEffect(() => {
+        // Listen for clicks at all time and determine whether or not the menu should be shown/hidden
         window.addEventListener("click", handleWindowClick);
 
         return () => {
@@ -87,22 +90,17 @@ function Dropdown(props: iDropdown): JSX.Element {
     }, [showSubMenuContainer])
 
     useEffect(() => {
+        // Once the selected option id has been changed, send it back to the parent component
         onCallback({ selected: selected });
     }, [selected]);
 
-    function getSelectedOption(): iFieldOption | null {
-        const target = options.find((option) => option.id === selected);
-        return target ? target : null;
-    }
-
     return (
-        
-        <div ref={dropdown} className={`hover:cursor-pointer bg-white relative text-sm w-full text-tbfColor-darkergrey rounded-lg h-10 border transition-all duration-75 ${showSubMenuContainer === true ? " border-tbfColor-lightpurple" : "border-tbfColor-middlegrey4"}`}>
+        <div ref={dropdownRef} className={`hover:cursor-pointer bg-white relative text-sm w-full text-tbfColor-darkergrey rounded-lg h-10 border transition-all duration-75 ${showSubMenuContainer === true ? " border-tbfColor-lightpurple" : "border-tbfColor-middlegrey4"}`}>
             <div id={`dropdown-tag-${tag}-selector`} className="flex items-center justify-between mx-3 h-full" onClick={handleShowSubMenu}>          
                 <span className="hover:cursor-pointer">{!getSelectedOption() ? preset.label : getSelectedOption()!.label}</span>
                 {showSubMenuContainer === true ? <CollapseIcon size={28} fill={"#000"} /> : <ExpandIcon size={28} fill={"#000"} />}
             </div>
-            { showSubMenuContainer === true && renderDropdown()}
+            { showSubMenuContainer === true && renderDropdownMenu()}
         </div>
     ); 
 }

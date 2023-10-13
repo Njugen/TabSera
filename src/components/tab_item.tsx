@@ -9,10 +9,11 @@ function TabItem(props: iTabItem): JSX.Element {
     
     let address;
     
+    // If the given url is not valid, then put this tab in edit mode
     try {
         address = new URL(url);
     } catch(e){
-
+        if(onEdit) onEdit(id);
     }   
 
 

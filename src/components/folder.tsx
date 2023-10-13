@@ -10,6 +10,8 @@ import { useDispatch } from "react-redux";
 import Checkbox from './utils/checkbox';
 import { iWindowItem } from "../interfaces/window_item";
 import MessageBox from "./utils/message_box";
+import DropdownMenu from "./utils/dropdown_menu";
+import { iFieldOption } from "../interfaces/dropdown";
 
 function Folder(props: iFolder) {
     const contentsRef = useRef<HTMLDivElement>(null);
@@ -45,7 +47,6 @@ function Folder(props: iFolder) {
         desc,
         type,
         viewMode,
-        settings,
         windows,
         onOpen,
         onMark,
@@ -79,7 +80,17 @@ function Folder(props: iFolder) {
         handleShowSubMenu();
     }
 
-    function handleLaunch(type: string): void {
+    function handleLaunch(id: number): void {
+        let type: string = "";
+
+        if(id === 0){
+            type = "normal";
+        } else if(id === 1){
+            type = "group";
+        } else if(id === 2){
+            type = "incognito";
+        }
+
         if(onOpen) {
             onOpen(windows, type);
         }
@@ -107,6 +118,21 @@ function Folder(props: iFolder) {
         }
     }, [slideDown])
 
+    const launchOptions: Array<iFieldOption> = [
+        {
+            id: 0,
+            label: "Open"
+        },
+        {
+            id: 1,
+            label: "Open as group"
+        },
+        {
+            id: 2,
+            label: "Open in incognito"
+        }
+    ]
+
     return (
         <>
             
@@ -122,25 +148,7 @@ function Folder(props: iFolder) {
                     </div>
                     <div className="absolute flex items-center right-2">
                         { 
-                        showLaunchOptions === true && (
-                                <ul ref={subMenuRef} id={"folder-control-dropdown"} className={`z-50 list-none drop-shadow-no_pos overflow-y-auto bg-white absolute max-h-[2000px] mt-2 text-sm text-tbfColor-darkergrey rounded-lg  ${slideDown === false ? "transition-all top-4 ease-out h-0 duration-500" : "transition-all top-12 ease-in duration-75"}`}>
-                                    <li>
-                                        <button onClick={() => handleLaunch("normal")} className="hover:bg-tbfColor-lightgrey border-b border-tbfColor-middlegrey hover:border-tbfColor-lightergrey flex items-center text-sm text-tbfColor-darkergrey weight-bold px-3 py-6 h-10 w-full">
-                                            Normal launch
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button onClick={() => handleLaunch("group")} className="hover:bg-tbfColor-lightgrey border-b border-tbfColor-middlegrey hover:border-tbfColor-lightergrey flex items-center text-sm text-tbfColor-darkergrey weight-bold px-3 py-6 h-10 w-full">
-                                            Launch as group
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <button onClick={() => handleLaunch("incognito")} className="hover:bg-tbfColor-lightgrey border-b border-tbfColor-middlegrey hover:border-tbfColor-lightergrey flex items-center text-sm text-tbfColor-darkergrey weight-bold px-3 py-6 h-10 w-full">
-                                            Launch in incognito
-                                        </button>
-                                    </li>
-                                </ul>
-                            )
+                        showLaunchOptions === true && <DropdownMenu selected={null} tag={"folder-control-dropdown"} visible={slideDown} onSelect={handleLaunch} options={launchOptions} />
                         }
                         <FolderControlButton icon="open_browser" active={expanded} onClick={handleOpen/*() => onOpen && onOpen(windows)*/} />
                         <FolderControlButton icon="settings" active={expanded} onClick={onEdit} />

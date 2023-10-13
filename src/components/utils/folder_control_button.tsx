@@ -6,6 +6,21 @@ import TrashIcon from "../../images/icons/trash_icon";
 import ExpandIcon from "../../images/icons/expand_icon";
 import CollapseIcon from "../../images/icons/collapse_icon";
 
+/*
+    A button used for various options for a folder. Each button may have different icons using the props.icon variable. Used only in the
+    in the folder's action bar.
+
+    To make use of a new icon, insert a new if-statement returning the requested button and
+    check for the icon's prop name.
+
+    E.g.
+    ... 
+    else if(icon === "myNewIcon"){
+        return <MyNewIconComponent ... />
+    } 
+    ...
+*/
+
 function FolderControlButton(props: iFolderIconButton): JSX.Element {
     const { icon, active, onClick } = props;
     

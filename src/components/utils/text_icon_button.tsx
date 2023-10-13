@@ -21,6 +21,21 @@ import DeselectedCheckboxIcon from "../../images/icons/deselected_checkbox_icon"
 import SortIcon from "../../images/icons/sort_icon";
 import CloseLightIcon from "../../images/icons/close_light_icon";
 
+/*
+    An icon button with applied labels, used for all kind of things, 
+
+    To make use of a new icon, insert a new if-statement returning the requested icon and
+    check for the icon's prop name.
+
+    E.g.
+    ... 
+    else if(icon === "myNewIcon"){
+        return <MyNewIconComponent ... />
+    } 
+    ...
+*/
+
+
 function TextIconButton(props: iTextIconButton): JSX.Element {
     const { icon, text, fill, size, disabled, onClick } = props;
     

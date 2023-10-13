@@ -1,5 +1,13 @@
 import { iFormField } from "../../interfaces/form_field";
 
+/*
+    Form field encapsulates other component(s)
+    
+    Offers a label and a description for the encapsulated component (usually input or textarea, but may
+    be something else if necessary).
+
+    If there is an error recorded by the parent component, the label will change to red.
+*/
 function FormField(props: iFormField): JSX.Element {
     const { label, description, children, error } = props;
     

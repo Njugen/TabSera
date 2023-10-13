@@ -353,11 +353,6 @@ function CurrentSession(props: any): JSX.Element {
                 type: "expanded",
                 viewMode: "grid",
                 marked: false,
-                settings: {
-                    startup_launch: false,
-                    close_previous: false,
-                    auto_add: false
-                },
                 windows: [...presetWindows],
             }
             render = <ManageFolderPopup title="Create workspace" folder={payload} onClose={handlePopupClose}>test</ManageFolderPopup>;

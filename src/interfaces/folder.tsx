@@ -8,11 +8,6 @@ interface iFolder {
     marked: boolean,
     type: "expanded" | "collapsed",
     viewMode: "list" | "grid",
-    settings: {
-        startup_launch: boolean,
-        close_previous: boolean,
-        auto_add: boolean
-    },
     windows: Array<iWindowItem>,
     onOpen?: (e: Array<iWindowItem>, type: string) => void,
     onMark?: (e: number) => void,

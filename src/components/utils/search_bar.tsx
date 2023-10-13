@@ -1,28 +1,32 @@
-import { iFolder } from "../../interfaces/folder";
 import { useState, useEffect, useRef } from "react";
 import SearchIcon from "../../images/icons/search_icon";
 import { useSelector } from 'react-redux';
 import TabItem from "../tab_item";
 import styles from "../../styles/global_utils.module.scss";
 
+/*
+    Search bar placed at the top of the viewport
+
+    Filters current and history tabs by input string
+    
+    Upcoming features:
+    - Filter folders (not prioritized, might be redundant)
+    - Filter by tags
+    - Sort search results (e.g. asc, desc, etc)
+*/
+
 function SearchBar(props: any): JSX.Element {
     const [showResultsContainer, setShowResultsContainer] = useState<boolean>(false);
     const [slideDown, setSlideDown] = useState<boolean>(false);
     const [searchTerm, setSearchTerm] = useState<string>("");
-  //  const [filteredWorkspaces, setFilteredWorkspaces] = useState<Array<any>>([]);
 
     const searchResultsContainerRef = useRef<HTMLDivElement>(null);
-
     const searchFieldRef = useRef<HTMLInputElement>(null);
-    const folderCollection = useSelector((state: any) => state.FolderCollectionReducer);
+
     const currentSessionSettings = useSelector((state: any) => state.CurrentSessionSettingsReducer);
     const historySettings = useSelector((state: any) => state.HistorySettingsReducer);
 
-    function filterWorkspaces(): Array<string> {
-        const folders = folderCollection.filter((folder: iFolder) => folder.name.toLowerCase().includes(searchTerm.toLowerCase()));
-        return folders.map((folder: iFolder) => folder.name);
-    }
-
+    // Filter currently opened tabs
     function filterCurrentTabs(): Array<chrome.tabs.Tab> {
         let collection: Array<chrome.tabs.Tab> = [];
         currentSessionSettings.windows.forEach((window: chrome.windows.Window) => {
@@ -33,13 +37,15 @@ function SearchBar(props: any): JSX.Element {
         return result.slice(0,5);
     }
 
-
+    // Filter previously opened tabs
     function filterHistory(): Array<chrome.history.HistoryItem> {
         const result =  historySettings.tabs.filter((tab: chrome.history.HistoryItem) => tab.title!.toLowerCase().includes(searchTerm.toLowerCase()));
         return result.slice(0,5);
     }
 
     useEffect(() => {
+        // Listen for clicks in the viewport. Used primarily to hide the search results
+        // once the user clicks outside the searchfield AND the results area
         window.addEventListener("click", handleWindowClick);
 
         return () => {
@@ -48,6 +54,8 @@ function SearchBar(props: any): JSX.Element {
     }, []);
 
     useEffect(() => {
+        // Listen for clicks in the viewport. Used primarily to hide the search results
+        // once the user clicks outside the searchfield AND the results area
         window.addEventListener("click", handleWindowClick);
 
         return () => {
@@ -55,6 +63,7 @@ function SearchBar(props: any): JSX.Element {
         }
     }, [showResultsContainer]);
 
+    // Show search results by sliding in the results area
     function handleShowResultsContainer(): void {
         if(showResultsContainer === false){
             setShowResultsContainer(true);
@@ -75,6 +84,7 @@ function SearchBar(props: any): JSX.Element {
     
     }
 
+    // Identify clicked viewport area and hide/show search results accordingly
     function handleWindowClick(e: any): void {
         e.stopPropagation();
         if(showResultsContainer === false || !e.target.parentElement || ! e.target.parentElement.parentElement) return;
@@ -86,24 +96,25 @@ function SearchBar(props: any): JSX.Element {
         e.target.id.includes(searchResultsContainerId) === true){
             handleShowResultsContainer();
         }
-
     }
 
+    // Change state of the current search term
     function handleFieldChange(e: any): void {
         setSearchTerm(e.target.value);
     }
 
+    // Show search results area unless already shown
     function handleActivateSearch(e: any): void {
         if(slideDown === false) handleShowResultsContainer();
-        
     }
 
+    // Close a tab
     function handleCloseTab(tabId: number){
         chrome.tabs.remove(tabId);
     }
 
+    // Adjust the search field features based on the slideDown state
     useEffect(() => {
-        
         if(searchTerm.length === 0) {
             if(slideDown === false){
                 searchFieldRef.current!.value = "Search tabs...";

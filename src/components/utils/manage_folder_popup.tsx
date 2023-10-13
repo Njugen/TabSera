@@ -1,10 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import GenericIconButton from './generic_icon_button';
 import PrimaryButton from './primary_button';
-import GreyBorderButton from "./grey_border_button";
+import PurpleBorderButton from "./purpleBorderButton";
 import FormField from "./form_field";
 import * as predef from "../../styles/predef";
-import Switcher from './switcher';
 import { iPopup } from "../../interfaces/popup";
 import styles from "../../styles/global_utils.module.scss";
 import WindowManager from './window_manager';
@@ -15,6 +14,14 @@ import { createFolderAction, updateFolderAction } from "../../redux/actions/fold
 import { iFolder } from "../../interfaces/folder";
 import MessageBox from './message_box';
 import { setShowFolderChangeWarning } from "../../redux/actions/warningActions";
+
+/*
+    A popup providing oversight of a folder's settings and available windows/tabs.
+    The settings may be changed by the user, which then gets applied to redux storage
+
+    Warning messages may be added using the <Messagebox /> component. New fields can be added
+    preferably by using the <FormField /> component. See examples in render() function.
+*/
 
 function ManageFolderPopup(props: iPopup): JSX.Element {
     const { onClose, folder, title } = props;
@@ -30,19 +37,26 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
     const popupRef = useRef<HTMLDivElement>(null);
 
     const dispatch = useDispatch();
+
+    // Read necessary data from redux. These data are are used in this component
+    // for various tasks. Values may be dispatched back to these redux states for use in other multilevel components
     const folderData = useSelector((state: any) => state.InEditFolderReducer);
     const folderCollection = useSelector((state: any) => state.FolderCollectionReducer);
     const warningActions = useSelector((state: any) => state.WarningActionsReducer);
     const miscData = useSelector((state: any) => state.MiscReducer);
 
+
     useEffect(() => {
+        // Information about the folder. If undefined, there are no preset information
         let payload: iFolder | undefined = folder;
-   
+        
+        // Apply slide down effect once this popup is launched
         setSlideDown(true);
      
+        // Payload is undefined, this means this popup is used for creating a new folder.
+        // Otherwise, a folder is being edited.
         if(!payload){
             const randId = randomNumber();
-
             payload = {
                 id: randId,
                 name: "",
@@ -50,26 +64,24 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
                 type: "expanded",
                 viewMode: "grid",
                 marked: false,
-                settings: {
-                    startup_launch: false,
-                    close_previous: false,
-                    auto_add: false
-                },
                 windows: [],
             }
             setIsCreate(true);
         }
 
+        // Track the preset windows of this payload. Used to track new/removed windows
         setOriginWindows(JSON.stringify(payload.windows));
-        dispatch(initInEditFolder(payload));
 
-       
+        // Tell redux this popup is active and a create/edit process is ongoing.
+        dispatch(initInEditFolder(payload));
     }, []);
 
     useEffect(() => {
+        // Hide the sidebar of the body. A sidebar of this component is used instead.
         document.body.style.overflowY = "hidden";
     }, []);
 
+    // Check whether or not the set of windows has been modified
     function windowListChanged(): boolean {
         const presetWindows: string = originWindows;
         const modifiedWindows: string = JSON.stringify(folderData?.windows);
@@ -88,10 +100,15 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
         }
     }, [folderData]);
 
+    // Handle changes to a field
+    // - key: a string to identify the changed field
+    // - value: the new value of this field
     function handleChangeField(key: string, value: any){
         if(!folderData) return;
         
         if(modified === false && JSON.stringify(folderData[key]) !== JSON.stringify(value)) setModified(true);
+
+        // Inform redux about the field change
         dispatch(updateInEditFolder(key, value));
     }
 
@@ -100,8 +117,11 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
         popupRef.current.scrollTop = 0;
     }
 
+    // Read the updated form changes from redux, and determine
+    // whether or not they are valid. If not, mark the affected fields
+    // as invalid. Otherwise, send a callback to proceed.
     function validateForm(callback: () => void){
-        const data = folderData;
+            const data = folderData;
 
             const updatedFieldState = {
                 name: false,
@@ -115,7 +135,6 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
                 updatedFieldState.windows = true;
             } 
 
-
             setInValidFields({...updatedFieldState});
             
             if(updatedFieldState.name === false && updatedFieldState.windows === false){
@@ -126,11 +145,15 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
      
     }
 
+    // Perform tasks and close this form popup
     function handleClose(skipWarning?: boolean): void {
         chrome.storage.sync.get("cancellation_warning_setting", (data) => {
             if((modified === true && skipWarning !== true) && data.cancellation_warning_setting === true){
+                // Show a warning when a form has been modified AND when settings explicitly permits it.
                 dispatch(setShowFolderChangeWarning(true));
             } else {
+                // Perform tasks and close the popup form.
+
                 setSlideDown(false);
                 
                 dispatch(setShowFolderChangeWarning(false));
@@ -139,14 +162,15 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
                 setIsCreate(false);
                 
                 setTimeout(() => {
+                    // Restore the body's scroll bar
                     document.body.style.overflowY = "scroll";
                     onClose()
                 }, 500);
             }
         })
-        
     }
 
+    // Validate and save the data to redux, then close the popup form.
     function handleSave(): void {
         validateForm(() => {
             if(props.folder){
@@ -167,15 +191,7 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
        
     }
 
-    function updateSettings(key: string, value: any){
-        if(!folderData || folderData === null) return;
-
-        return {
-            ...folderData?.settings,
-            [key]: value
-        };
-    }
-
+    // Close error/warning messages, but remain in the popup
     function handleKeepEditing(): void {
         document.body.style.overflowY = "hidden";
         dispatch(setShowFolderChangeWarning(false))
@@ -205,35 +221,24 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
                         </button>
                     </div>
                     <div id="popup-body" className="px-8 pt-6">
-                    
                         <FormField label="Name *" error={inValidFields.name} description="Give a name to this workspace. A sensible name may help your workflow when relevant tabs are needed.">
                             <input type="text" defaultValue={folderData?.name} className={predef.textfield_full} onBlur={(e: any) => handleChangeField("name", e.target.value)} />
                         </FormField>
                         <FormField label="Description" description="Describe the purpose of this workspace.">
                             <textarea defaultValue={folderData?.desc} className={predef.textarea_full} onBlur={(e: any) => handleChangeField("desc", e.target.value)}></textarea>
                         </FormField>
-                       {/*<FormField label="Launch at startup" description="Automatically open all windows and tabs in this workspace when starting the browser. This will override browser defaults.">
-                            <Switcher value={folderData?.settings.startup_launch} onCallback={(e: any) => handleChangeField("settings", updateSettings("startup_launch", e.state))} />
-    </FormField>*/}
-                       {/* <FormField label="Close existing session" description="Close all windows and tabs when launching this folder">
-                            <Switcher value={folderData?.settings.close_previous} onCallback={(e: any) => handleChangeField("settings", updateSettings("close_previous", e.state))} />
-    </FormField>*/}
-                   {/*     <FormField label="Incognito" description="Launch this folder in incognito">
-                            <Switcher value={folderData?.settings.launch_incognito} onCallback={(e: any) => handleChangeField("settings", updateSettings("launch_incognito", e.state))} />
-</FormField>*/}
                         <div className={`py-6 flex flex-row items-center`}>
                             <div className="w-full">
                                 <h4 className={`font-semibold text-lg mb-1 ${inValidFields.windows === true && "text-red-500"}`}>Windows and tabs *</h4>
                                 <p className={`text-sm leading-6 text-tbfColor-darkergrey text-start ${inValidFields.windows === true && "text-red-500"}`}>
-                                    You may add any number of windows and tabs as you like to this workspace, although a maximum of 25-30 tabs is recommended. 
+                                    You may add as windows and tabs to this workspace as you like to this workspace, although a maximum of 25-30 tabs is recommended. 
                                 </p>
-                                {/*<Paragraph lineheight="leading-6" size="text-sm" text="You may add any number of windows and tabs as you like to this folder, but launching a folder with more than 25-30 tabs is not adviced as this might slow down your computer." />*/}
                                 <WindowManager />
                             </div>
                         </div>
                     </div>
                     <div id="popup-footer" className="px-8 py-8 flex justify-end">
-                        <GreyBorderButton disabled={false} text="Cancel" onClick={handleClose} />
+                        <PurpleBorderButton disabled={false} text="Cancel" onClick={handleClose} />
                         <PrimaryButton disabled={false} text={isCreate === true ? "Create" : "Save"} onClick={handleSave} />
                     </div>
                 </div>

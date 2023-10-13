@@ -2,14 +2,25 @@ import { useEffect } from 'react';
 import iMessageBox from './../../interfaces/message_box';
 import styles from "./../../styles/global_utils.module.scss";
 
+/*
+    A customized and generic message box, used primarily to warn the user about
+    certain actions. This box may be used for other purposes as well.
+
+    UI might be modified later to suit other needs...
+*/
+
 function MessageBox(props: iMessageBox): JSX.Element {
     const { title, text, primaryButton, secondaryButton } = props;
 
     useEffect(() => {
+        // Hide body's scrollbar
         document.body.style.overflowY = "hidden";
     }, []);
 
+    // Handle a button click. Perform actions based on the button's purposes
+    // ... this should be rewritten/refactored at a later time...
     function handleButtonClick(option: "primary" | "secondary"): void {
+        // Restore body's scrollbar
         document.body.style.overflowY = "scroll";
 
         if(option === "primary"){

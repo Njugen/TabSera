@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import GenericIconButton from "./utils/generic_icon_button";
 import PrimaryButton from "./utils/primary_button";
-import GreyBorderButton from "./utils/grey_border_button";
+import PurpleBorderButton from "./utils/purpleBorderButton";
 import TabItem from "./tab_item";
 import { iWindowItem} from "../interfaces/window_item";
 import EditableTabItem from "./editable_tab_item";
@@ -142,7 +142,7 @@ function WindowItem(props: iWindowItem): JSX.Element {
                 {tabs.length > 0 ? [...evaluateNewTabRender()] : [renderEditTab(id)]}
                 </div>
                 {tabs.length > 0 && <div className="mt-10 mb-8 flex justify-end">
-                    {markedTabs.length > 0 && <GreyBorderButton disabled={false} text="Delete tabs" onClick={handleDeleteTabs} />}
+                    {markedTabs.length > 0 && <PurpleBorderButton disabled={false} text="Delete tabs" onClick={handleDeleteTabs} />}
                     {disableEdit === false && <PrimaryButton disabled={false} text="New tab" onClick={handleAddNewTab} />}
                 </div>}
             </div>

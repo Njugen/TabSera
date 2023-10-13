@@ -1,19 +1,27 @@
 import { useState, useEffect } from "react";
 import { iSwitcher } from "../../interfaces/switcher";
 
+/*
+    Switcher, acts as an dynamic toggle component permitting
+    setting state to a boolean or null value
+*/
+
 function Switcher(props: iSwitcher): JSX.Element {
-    
     const [switchOn, setSwitchOn] = useState<boolean | null>(null);
     const { onCallback, label, dark, value } = props;
 
+    // Set the state to either true or false
     function handleSwitch(): void {
         setSwitchOn(switchOn === false ? true : false);
     }
 
     useEffect(() => {
+        // If value passed by the parent is not null, pass
+        // the update switchOn state back to the parent component
         if(value !== null) onCallback({state: switchOn});
     }, [switchOn])
 
+    // Set the props.value to component's state once identified such exists
     useEffect(() => {
         setSwitchOn(props.value);
     }, [props.value]);
