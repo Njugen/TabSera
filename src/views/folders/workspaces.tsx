@@ -308,7 +308,6 @@ function Workspaces(props: any): JSX.Element {
         
         if(markedFoldersId.length > 0) {
             chrome.storage.sync.get("duplication_warning_value", (data) => {
-                console.log("DATA", data, workspaceSettings.markedFoldersId.length);
                 if(data.duplication_warning_value !== -1 && data.duplication_warning_value <= workspaceSettings.markedFoldersId.length) {
                     setShowDuplicationWarning(true);
                 } else {
@@ -328,7 +327,6 @@ function Workspaces(props: any): JSX.Element {
         });
    
         chrome.storage.sync.get("performance_notification_value", (data) => {
-            console.log(data.performance_notification_value, tabsCount);
             setTotalTabsCount(data.performance_notification_value);
             if(data.performance_notification_value !== -1 && data.performance_notification_value <= tabsCount) {
                 setShowPerformanceWarning(true);
@@ -349,7 +347,6 @@ function Workspaces(props: any): JSX.Element {
     }, [showPerformanceWarning]);
 
     function handleLaunchFolder(windows: Array<iWindowItem>): void {
-        console.log("LAUNCH", windows);
         // Now, snapshot current session
         let snapshot: Array<chrome.windows.Window> = [];
 
@@ -362,7 +359,6 @@ function Workspaces(props: any): JSX.Element {
         });
 
         windows.forEach((window: iWindowItem, i) => {
-            console.log("TTTT", folderLaunchType);
             const windowSettings = {
                 focused: i === 0 ? true : false,
                 url: window.tabs.map((tab) => tab.url),
@@ -372,7 +368,6 @@ function Workspaces(props: any): JSX.Element {
         });
 
         chrome.storage.sync.get("close_current_setting", (data) => {
-            console.log("QQQ", data);
             if(data.close_current_setting === true){
                 snapshot.forEach((window) => {
                     if(window.id) chrome.windows.remove(window.id);
@@ -392,7 +387,7 @@ function Workspaces(props: any): JSX.Element {
                 <MessageBox 
                     title="Warning" 
                     text={`You are about to open ${totalTabsCount} or more tabs at once. Opening this many may slow down your browser. Do you want to proceed?`}
-                    primaryButton={{ text: "Yes, open selected folders", callback: () => { console.log(windowsPayload);windowsPayload && handleLaunchFolder(windowsPayload); setShowPerformanceWarning(false)}}}
+                    primaryButton={{ text: "Yes, open selected folders", callback: () => { windowsPayload && handleLaunchFolder(windowsPayload); setShowPerformanceWarning(false)}}}
                     secondaryButton={{ text: "No, do not open", callback: () => { setShowPerformanceWarning(false); setWindowsPayload(null);
                         setFolderLaunchType(null); setShowPerformanceWarning(false);}}}    
                 />

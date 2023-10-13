@@ -2,7 +2,7 @@ import './App.css';
 import "./styles/global_utils.module.scss";
 import styles from "./styles/global_utils.module.scss";
 import Navlink from './components/utils/navlink';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import CollapseIcon from './images/icons/collapse_icon';
 import FolderView from './views/folders/folders';
@@ -16,6 +16,10 @@ function App() {
   const [activeNavLink, setActiveNavLink] = useState<string>("options"); 
   const [sidebarExpanded, setSidebarExpanded] = useState<boolean>(true);
   const { getAll } = chrome.windows;
+
+  useEffect(() => {
+    chrome.storage.sync.get("expanded_sidebar", (data) => setSidebarExpanded(data.expanded_sidebar));
+  }, []);
 
   // Routing Start
 
@@ -41,14 +45,9 @@ function App() {
     rootRef.current.scrollTop = 0;
   }
 
-/*
-  useEffect(() => {
-    //rootRef.current?.addEventListener("scroll", showScrollUpButton);
-    //return () => rootRef.current?.removeEventListener("scroll", showScrollUpButton);
-  }, []);
-*/
   function handleSidebarExpandButton(): void {
     setSidebarExpanded(sidebarExpanded === true ? false : true);
+    chrome.storage.sync.set({"expanded_sidebar": sidebarExpanded === true ? false : true});
   }
 
   const navLinks: Array<JSX.Element> = [

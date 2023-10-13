@@ -7,6 +7,7 @@ import { WarningActionsReducer } from "./reducers/warningActionsReducer";
 import { WorkspaceSettingsReducer } from "./reducers/workspaceSettingsReducer";
 import { HistorySettingsReducer } from "./reducers/historySettingsReducer";
 import { CurrentSessionSettingsReducer } from "./reducers/currentSessionReducer";
+import { MiscReducer } from "./reducers/miscReducer";
 
 const combinedReducers = combineReducers({
     FolderCollectionReducer: FolderCollectionReducer,
@@ -14,7 +15,8 @@ const combinedReducers = combineReducers({
     WarningActionsReducer: WarningActionsReducer,
     WorkspaceSettingsReducer: WorkspaceSettingsReducer,
     HistorySettingsReducer: HistorySettingsReducer,
-    CurrentSessionSettingsReducer: CurrentSessionSettingsReducer
+    CurrentSessionSettingsReducer: CurrentSessionSettingsReducer,
+    MiscReducer: MiscReducer
 });
 
 const middleware = applyMiddleware(thunk);

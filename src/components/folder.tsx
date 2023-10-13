@@ -69,7 +69,7 @@ function Folder(props: iFolder) {
     }
 
     function renderWindows(): Array<JSX.Element>{
-        const result: Array<JSX.Element> = windows.map((window, index) => <WindowItem disableMark={true} disableEdit={true} key={"window-" + index} id={window.id} tabs={window.tabs} />)
+        const result: Array<JSX.Element> = windows.map((window, index) => <WindowItem disableTabMark={true} disableTabEdit={true} key={"window-" + index} id={window.id} tabs={window.tabs} />)
 
         return result;
     }
@@ -88,21 +88,9 @@ function Folder(props: iFolder) {
     }
 
     function handleWindowClick(e: any): void {
-       console.log("LAUNCH OPT", showLaunchOptions);
-        e.stopPropagation();
-/*
-       // if(!e.target.parentElement || !e.target.parentElement.parentElement) return;
-        const targetId = `folder-control-dropdown`;
 
-        const firstParent = e.target.parentElement!.id;
-        //const secondParent = e.target.parentElement.parentElement.id
-        console.log("Launch", showLaunchOptions, slideDown);
-        
-            console.log("blabla", e.target);
-            //setShowLaunchOptions(false);
-            //setSlideDown(true);
-         //   handleShowSubMenu();
-     */
+        e.stopPropagation();
+
         if(showLaunchOptions === true){
             setShowLaunchOptions(false);
             setSlideDown(false);

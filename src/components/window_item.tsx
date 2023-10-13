@@ -8,6 +8,7 @@ import EditableTabItem from "./editable_tab_item";
 import { iTabItem } from "../interfaces/tab_item";
 import { useDispatch, useSelector } from "react-redux";
 import { updateInEditFolder } from "../redux/actions/inEditFolderActions";
+import { setTabInEdits } from "../redux/actions/miscActions";
 
 function WindowItem(props: iWindowItem): JSX.Element {
     const [expanded, setExpanded] = useState<boolean>(true);
@@ -19,6 +20,7 @@ function WindowItem(props: iWindowItem): JSX.Element {
     
     const dispatch = useDispatch();
     const folderData = useSelector((state: any) => state.InEditFolderReducer);
+    const miscData = useSelector((state: any) => state.MiscReducer);
 
     useEffect(() => {
         if(newTab === true) setNewTab(false);
@@ -78,11 +80,20 @@ function WindowItem(props: iWindowItem): JSX.Element {
     }
 
     function handleTabEdit(id: number): void {
+        const { isEditingTabs } = miscData;
+        dispatch(setTabInEdits(isEditingTabs + 1));
+        
         setEditTab(id);
     }
 
     function renderEditTab(windowId: number, url?: string, tabId?: number): JSX.Element {
-        return <EditableTabItem windowId={windowId} id={tabId} preset={url} onStop={() => setEditTab(null)} />
+        const { isEditingTabs } = miscData;
+
+
+        return <EditableTabItem windowId={windowId} id={tabId} preset={url} onStop={() => {
+            dispatch(setTabInEdits(isEditingTabs > 0 ? isEditingTabs - 1 : 0)); 
+            setEditTab(null)}
+        } />
     }
 
     function renderTabs(): Array<JSX.Element> {

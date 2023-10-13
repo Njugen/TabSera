@@ -5,8 +5,9 @@ import * as predef from "../styles/predef";
 import { useEffect, useRef, useState } from "react";
 import randomNumber from "../tools/random_number";
 import { iTabItem } from "../interfaces/tab_item";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateWindowManager } from "../redux/actions/inEditFolderActions";
+import { setTabInEdits } from "../redux/actions/miscActions";
 
 function EditableTabItem(props: iEditableTabItem): JSX.Element {
     const { id, windowId, preset, onStop } = props;
@@ -14,13 +15,14 @@ function EditableTabItem(props: iEditableTabItem): JSX.Element {
     const fieldRef = useRef<HTMLInputElement>(null);
 
     const dispatch = useDispatch();
- 
+    
     function saveToStore(e: any): void {
         const tabId = id ? id : randomNumber();
     
         if(!verifyValue(e.target.value)){
             setErrorMessage("A tab needs to have a valid URL, e.g. https://google.com/...");
         } else {
+
             setErrorMessage(null);
             const payload: iTabItem = {
                 id: tabId,
@@ -36,16 +38,11 @@ function EditableTabItem(props: iEditableTabItem): JSX.Element {
 
     function handleBlur(e: any): void {
 
-            saveToStore(e);
+        saveToStore(e);
       
     }
 
     function handleKeyDown(e: any): void {
-       /*if(verifyValue(e.target.value)){
-            
-        } else {
-            setErrorMessage("A tab needs to have a valid URL, e.g. https://google.com/...");
-        }*/
         if (e.key === 'Enter' || e.keyCode === 13) {
             saveToStore(e);
         }

@@ -7,7 +7,7 @@
         "history",
         "tabs",
         "storage",
-        "incognito"
+        "sidePanel"
     ],
     "action": {
         "default_title": "TabSera",
@@ -20,9 +20,5 @@
     "background": {
         "service_worker": "background.js"
     },
-    "content_scripts": [{
-        "matches": ["https://*.google.com/*"],
-        "js": ["contentScript.js"]
-    }],
     "author": "Thai Nguyen"
 }

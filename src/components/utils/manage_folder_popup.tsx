@@ -33,6 +33,7 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
     const folderData = useSelector((state: any) => state.InEditFolderReducer);
     const folderCollection = useSelector((state: any) => state.FolderCollectionReducer);
     const warningActions = useSelector((state: any) => state.WarningActionsReducer);
+    const miscData = useSelector((state: any) => state.MiscReducer);
 
     useEffect(() => {
         let payload: iFolder | undefined = folder;
@@ -109,11 +110,12 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
             if(data.name.length === 0){
                 updatedFieldState.name = true;
             } 
-
-            if(data.windows && data.windows.length === 0) {
+   
+            if((data.windows && data.windows.length === 0) || miscData.isEditingTabs > 0) {
                 updatedFieldState.windows = true;
             } 
-            
+
+
             setInValidFields({...updatedFieldState});
             
             if(updatedFieldState.name === false && updatedFieldState.windows === false){
@@ -210,15 +212,15 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
                         <FormField label="Description" description="Describe the purpose of this workspace.">
                             <textarea defaultValue={folderData?.desc} className={predef.textarea_full} onBlur={(e: any) => handleChangeField("desc", e.target.value)}></textarea>
                         </FormField>
-                       <FormField label="Launch at startup" description="Automatically open all windows and tabs in this workspace when starting the browser. This will override browser defaults.">
+                       {/*<FormField label="Launch at startup" description="Automatically open all windows and tabs in this workspace when starting the browser. This will override browser defaults.">
                             <Switcher value={folderData?.settings.startup_launch} onCallback={(e: any) => handleChangeField("settings", updateSettings("startup_launch", e.state))} />
-                        </FormField>
-                        <FormField label="Close existing session" description="Close all windows and tabs when launching this folder">
+    </FormField>*/}
+                       {/* <FormField label="Close existing session" description="Close all windows and tabs when launching this folder">
                             <Switcher value={folderData?.settings.close_previous} onCallback={(e: any) => handleChangeField("settings", updateSettings("close_previous", e.state))} />
-                        </FormField>
-                        <FormField label="Incognito" description="Launch this folder in incognito">
+    </FormField>*/}
+                   {/*     <FormField label="Incognito" description="Launch this folder in incognito">
                             <Switcher value={folderData?.settings.launch_incognito} onCallback={(e: any) => handleChangeField("settings", updateSettings("launch_incognito", e.state))} />
-                        </FormField>
+</FormField>*/}
                         <div className={`py-6 flex flex-row items-center`}>
                             <div className="w-full">
                                 <h4 className={`font-semibold text-lg mb-1 ${inValidFields.windows === true && "text-red-500"}`}>Windows and tabs *</h4>
