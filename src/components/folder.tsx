@@ -6,26 +6,23 @@ import OpenedFolderIcon from "../images/icons/opened_folder_icon";
 import "../styles/global_utils.module.scss";
 import WindowItem from "./window_item";
 import { iFolder } from "../interfaces/folder";
-import { useDispatch } from "react-redux";
 import Checkbox from './utils/checkbox';
-import { iWindowItem } from "../interfaces/window_item";
-import MessageBox from "./utils/message_box";
 import DropdownMenu from "./utils/dropdown_menu";
 import { iFieldOption } from "../interfaces/dropdown";
+
+/*
+    Folder containing description, windows and tabs, as well as various folder options
+*/
 
 function Folder(props: iFolder) {
     const contentsRef = useRef<HTMLDivElement>(null);
     const headerRef = useRef<HTMLDivElement>(null)
     const [expanded, setExpanded] = useState<boolean>(false);
-    const [totalTabsCount, setTotalTabsCount] = useState<number>(0);
     const [showLaunchOptions, setShowLaunchOptions] = useState<boolean>(false);
     const [slideDown, setSlideDown] = useState<boolean>(false);
     
-    const subMenuRef = useRef<HTMLUListElement>(null);
-
-    const dispatch = useDispatch();
-
-    function handleShowSubMenu(): void {
+    // Show a list of options for how to launch this folder
+    function handleShowLaunchOptionsMenu(): void {
         if(showLaunchOptions === false){
             setShowLaunchOptions(true);
             setTimeout(() => {
@@ -52,8 +49,9 @@ function Folder(props: iFolder) {
         onMark,
         onDelete,
         onEdit 
-      } = props;
+    } = props;
     
+    // Expand or collapse this folder
     function handleExpandClick(e: any): void {
         if(contentsRef.current === null || headerRef.current === null) return;
   
@@ -65,8 +63,7 @@ function Folder(props: iFolder) {
                 headerRef.current.className = `relative tbf-${type}  hover:bg-tbfColor-lighterpurple2 border border-tbfColor-lighterpurple hover:border-tbfColor-lightpurple bg-tbfColor-lighterpurple3 px-3 h-10 flex items-center rounded-md transition-all ease-in duration-100`;
                 contentsRef.current.className = "max-h-0 overflow-hidden transition-all ease-out duration-[50ms] bg-tbfColor-lighterpurple4 rounded-b-md";
                 setExpanded(false);
-            }
-        
+            }        
     }
 
     function renderWindows(): Array<JSX.Element>{
@@ -75,11 +72,13 @@ function Folder(props: iFolder) {
         return result;
     }
 
+    // Prepare to open a folder: show launch options -> open folder accordingly
     function handleOpen(): void {
         setShowLaunchOptions(true);
-        handleShowSubMenu();
+        handleShowLaunchOptionsMenu();
     }
 
+    // Launch a folder based on selected option
     function handleLaunch(id: number): void {
         let type: string = "";
 
@@ -99,18 +98,19 @@ function Folder(props: iFolder) {
     }
 
     function handleWindowClick(e: any): void {
-
         e.stopPropagation();
 
         if(showLaunchOptions === true){
             setShowLaunchOptions(false);
             setSlideDown(false);
-            handleShowSubMenu();
+            handleShowLaunchOptionsMenu();
         }
 
     }
 
     useEffect(() => {
+        // Listen for clicks in the viewport. If the options list is visible, then hide it once
+        // anything is clicked
         window.addEventListener("click", handleWindowClick);
 
         return () => {
@@ -118,6 +118,8 @@ function Folder(props: iFolder) {
         }
     }, [slideDown])
 
+    // List of all options on how to launch this folder. The id identifies the option, and
+    // actions are performed accordingly.
     const launchOptions: Array<iFieldOption> = [
         {
             id: 0,
@@ -135,7 +137,6 @@ function Folder(props: iFolder) {
 
     return (
         <>
-            
             <div className={`${viewMode === "list" ? "my-4 duration-200" : "my-2 duration-200"} transition-all ease-in w-full rounded-md`}>
                 <div ref={headerRef} className={`relative tbf-${type}  hover:bg-tbfColor-lighterpurple2 border border-tbfColor-lighterpurple hover:border-tbfColor-lightpurple bg-tbfColor-lighterpurple4 px-3 h-10 flex items-center rounded-md transition-all ease-in duration-100`}>
                     <div className="inline-block mr-3">

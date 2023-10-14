@@ -7,7 +7,10 @@ import randomNumber from "../tools/random_number";
 import { iTabItem } from "../interfaces/tab_item";
 import { useDispatch, useSelector } from "react-redux";
 import { updateWindowManager } from "../redux/actions/inEditFolderActions";
-import { setTabInEdits } from "../redux/actions/miscActions";
+
+/*
+    A textfield, which lets the user set/update a url for a tab.
+*/
 
 function EditableTabItem(props: iEditableTabItem): JSX.Element {
     const { id, windowId, preset, onStop } = props;
@@ -16,6 +19,8 @@ function EditableTabItem(props: iEditableTabItem): JSX.Element {
 
     const dispatch = useDispatch();
     
+    // Save the changes to redux once verified.
+    // Show error message, and prevent saving if field is invalid.
     function saveToStore(e: any): void {
         const tabId = id ? id : randomNumber();
     
@@ -36,24 +41,26 @@ function EditableTabItem(props: iEditableTabItem): JSX.Element {
         }
     }
 
+    // Once the user clicks outside the field, then save it.
     function handleBlur(e: any): void {
-
         saveToStore(e);
-      
     }
 
+    // Save the field once the user hits "Enter" on the keyboard
     function handleKeyDown(e: any): void {
         if (e.key === 'Enter' || e.keyCode === 13) {
             saveToStore(e);
         }
     }
 
+    // Verify the textfield value
     function verifyValue(input: string): boolean {
         const regex = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
 
         return regex.test(input);
     }
 
+    // Automatically focus on the textfield once this component has rendered.
     useEffect(() => {
         setTimeout(() => {
             if(fieldRef.current) fieldRef.current.focus();

@@ -10,42 +10,48 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateInEditFolder } from "../redux/actions/inEditFolderActions";
 import { setTabInEdits } from "../redux/actions/miscActions";
 
+/*
+    Window containing tabs and various window related options. Used primarily
+    in window managers within folder settings
+*/
+
 function WindowItem(props: iWindowItem): JSX.Element {
     const [expanded, setExpanded] = useState<boolean>(true);
-    const [viewMode, setViewMode] = useState<string>("list");
     const [newTab, setNewTab] = useState<boolean>(false);
     const [editTab, setEditTab] = useState<number | null>(null);
     const [markedTabs, setMarkedTabs] = useState<Array<number>>([]);
     const { id, tabs, tabsCol, initExpand, disableEdit, disableTabEdit, disableTabMark } = props;
     
     const dispatch = useDispatch();
+
+    // Get information about the folder 
     const folderData = useSelector((state: any) => state.InEditFolderReducer);
     const miscData = useSelector((state: any) => state.MiscReducer);
 
+    // Disable add new tab by setting state
     useEffect(() => {
         if(newTab === true) setNewTab(false);
     }, [folderData]);
 
+    // Expand or collapse a window (show/hide tabs within)
     function handleExpand(): void {
         setExpanded(expanded === true ? false : true);
     }
 
-    function handleChangeViewMode(): void {
-        setViewMode(viewMode === "list" ? "grid" : "list");
-        setExpanded(true);
-    }
-
+    // Delete this window from redux
     function handleDeleteWindow(): void {
         const windows = folderData.windows.filter((target: iWindowItem) => target.id !== id);
 
         dispatch(updateInEditFolder("windows", windows));
     }
 
+    // Activate add new tab feature by setting state
     function handleAddNewTab(): void {
         setNewTab(true);
     }
 
-    function handleMark(tabId: number, checked: boolean): void {
+    // Mark/unmark specific tab in this window
+    function handleMarkTab(tabId: number, checked: boolean): void {
         if(checked === true){
             const findInState = markedTabs.findIndex((target) => target === tabId);
             if(findInState < 0){  
@@ -57,6 +63,7 @@ function WindowItem(props: iWindowItem): JSX.Element {
         }
     }
 
+    // Delete marked tabs
     function handleDeleteTabs(): void {
         const windows = folderData.windows.filter((target: iWindowItem) => target.id === id);
         const targetWindowIndex = folderData.windows.findIndex((target: iWindowItem) => target.id === id);
@@ -86,6 +93,7 @@ function WindowItem(props: iWindowItem): JSX.Element {
         setEditTab(id);
     }
 
+    // Replace a tab with an edit field, enabling user to edit tab URL
     function renderEditTab(windowId: number, url?: string, tabId?: number): JSX.Element {
         const { isEditingTabs } = miscData;
 
@@ -96,23 +104,23 @@ function WindowItem(props: iWindowItem): JSX.Element {
         } />
     }
 
+    // Return a list of tabs based on data from parent component
     function renderTabs(): Array<JSX.Element> {
         let result = [];
         
-        result = tabs.map((tab, i) => {
+        result = tabs.map((tab) => {
             if(editTab === tab.id){
                 return renderEditTab(id, tab.url, editTab);
             } else {
-                return <TabItem marked={false} disableMark={disableTabMark} disableEdit={disableTabEdit} key={tab.id} id={tab.id} label={tab.label} url={tab.url} onMark={handleMark} onEdit={handleTabEdit} />
+                return <TabItem marked={false} disableMark={disableTabMark} disableEdit={disableTabEdit} key={tab.id} id={tab.id} label={tab.label} url={tab.url} onMark={handleMarkTab} onEdit={handleTabEdit} />
             }
             
         })
 
         return result;
     }
-
-
     
+    // Decide whether or not to show an editable tab field within the tab list
     function evaluateNewTabRender(): Array<JSX.Element> {
         if(newTab === true){
             return [...renderTabs(), renderEditTab(id)];
@@ -132,13 +140,12 @@ function WindowItem(props: iWindowItem): JSX.Element {
                     {`Window`}
                 </h3>
                 <div className={`tab-settings`}>
-                    {/*<GenericIconButton icon="grid" size={18} fill="#000" onClick={handleChangeViewMode} />*/}
                     {disableEdit === false && <GenericIconButton icon="trash" size={20} fill="#000" onClick={handleDeleteWindow} />}
                     <GenericIconButton icon={expanded === true ? "collapse" : "expand"} size={20} fill="#000" onClick={handleExpand} />
                 </div>
             </div>
             <div className={`tabs-list mt-3 overflow-hidden ${expanded === true ? "max-h-[2000px] ease-out" : "max-h-0 ease-in"} duration-200 transition-all`}>
-                <div className={`${/*viewMode === "list" ? "mx-auto" : "grid grid-cols-3 gap-x-3 gap-y-0"*/ `grid grid-cols-${tabsCol ? tabsCol : 2} gap-x-3 gap-y-0`}`}>
+                <div className={`grid grid-cols-${tabsCol ? tabsCol : 2} gap-x-3 gap-y-0`}>
                 {tabs.length > 0 ? [...evaluateNewTabRender()] : [renderEditTab(id)]}
                 </div>
                 {tabs.length > 0 && <div className="mt-10 mb-8 flex justify-end">

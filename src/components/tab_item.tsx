@@ -4,18 +4,22 @@ import Checkbox from "./utils/checkbox";
 import { iTabItem } from "../interfaces/tab_item";
 import GenericIconButton from "./utils/generic_icon_button";
 
+/* 
+    Tab component with clickable url and options (close tab, edit tab, mark tab)
+*/
+
 function TabItem(props: iTabItem): JSX.Element {
     const { id, label, url, marked, onMark, onEdit, onClose, disableCloseButton, disableEdit, disableMark } = props;
     
     let address;
     
-    // If the given url is not valid, then put this tab in edit mode
+    // If the given url is not valid, then put this tab in edit mode.
+    // -> Automatically edit a tab once a new window has been created
     try {
         address = new URL(url);
     } catch(e){
         if(onEdit) onEdit(id);
     }   
-
 
     return (<>
         <div className="bg-white border border-tbfColor-middlegrey2 hover:border-tbfColor-lightpurple hover:bg-tbfColor-lighterpurple hover:text-tbf-middlegrey2 transition-all rounded-md ease-in duration-100 tab-item my-2 flex items-center justify-between">
