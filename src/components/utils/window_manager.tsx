@@ -6,6 +6,13 @@ import { useSelector } from "react-redux";
 import randomNumber from "../../tools/random_number";
 import iWindowManager from "../../interfaces/window_manager";
 
+/*
+    Section for managing windows and tabs, primarily used
+    within folder configuration popups
+
+    
+*/
+
 function WindowManager(props: iWindowManager): JSX.Element {
     const [createWindow, setCreateWindow] = useState<boolean>(false);
     const [inCreationId, setIncreationId] = useState<number>(-1);
@@ -13,11 +20,13 @@ function WindowManager(props: iWindowManager): JSX.Element {
     const folderData = useSelector((state: any) => state.InEditFolderReducer);
     const windows: Array<iWindowItem> = [];
 
+    // Add a new window with a random id
     function handleCreateWindow(): void {
         setIncreationId(randomNumber());
         setCreateWindow(true);
     }
 
+    // Once the inEdit reducer changes, stop creating window
     useEffect(() => {
         setIncreationId(-1);
         setCreateWindow(false);
@@ -50,9 +59,7 @@ function WindowManager(props: iWindowManager): JSX.Element {
         }
     }
 
-
-
-    function renderContents(): Array<JSX.Element> {
+    function renderWindows(): Array<JSX.Element> {
         const existingWindows = folderData?.windows;
         const existingWindowsElements: Array<JSX.Element> = existingWindows?.map((item: iWindowItem) => <WindowItem tabsCol={2} disableMark={false} disableEdit={false} key={item.id} id={item.id} tabs={item.tabs} initExpand={item.initExpand} />);
         
@@ -64,7 +71,7 @@ function WindowManager(props: iWindowManager): JSX.Element {
             } else if (windows.length === 0){
                 return [renderNewWindowMessage()];
             } else {
-                return [<>abc</>];
+                return [];
             }
         }
         
@@ -72,7 +79,7 @@ function WindowManager(props: iWindowManager): JSX.Element {
 
     return (
         <div className="my-6 py-6 min-h-[200px] flex flex-col items-center justify-center">
-            { renderContents() }
+            { renderWindows() }
             { renderActionButtons() }            
         </div> 
     ); 
