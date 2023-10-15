@@ -6,9 +6,20 @@ import { iFieldOption } from "../interfaces/dropdown";
 import { useEffect, useState } from 'react';
 import { saveToStorage } from "../services/webex_api/storage";
 
+/*
+    Settings view
+
+    Consists of form fields wrapping input components in vertical order, representing various settings and options 
+    in this plugin. 
+
+    Wrap input, textarea, Dropdown, Switcher or Checkbox components into the formfields to add new
+    features if needed while keeping the intended UI intact. 
+*/
+
 function SettingsView(props: any) {
     const [settings, setSettings] = useState<any>({});
     
+    // Options for performance warnings
     const performanceNotificationOptions: Array<iFieldOption> = [
         { id: 5, label: "5" }, 
         { id: 10, label: "10" }, 
@@ -19,12 +30,7 @@ function SettingsView(props: any) {
         { id: -1, label: "Don't warn me" } 
     ];
 
-    const quickLaunchOptions: Array<iFieldOption> = [
-        { id: 0, label: "Launch a folder normally " }, 
-        { id: 1, label: "Launch a folder as categorized section" }, 
-        { id: 2, label: "Close current session when launching a folder" } 
-    ];
-
+    // Options for duplication warnings
     const duplicationWarningOptions: Array<iFieldOption> = [
         { id: 2, label: "2 folders" }, 
         { id: 3, label: "3 folders" }, 
@@ -38,17 +44,12 @@ function SettingsView(props: any) {
         return result[0] || performanceNotificationOptions[0];
     }
 
-
-    const getPresetQuickLaunch = (): any => {
-        const result = quickLaunchOptions.filter((target) => target.id === settings.quick_launch_value);
-        return result[0] || quickLaunchOptions[0];
-    }
-
     const getPresetDuplicationWarning = (): any => {
         const result = duplicationWarningOptions.filter((target) => target.id === settings.duplication_warning_value);
         return result[0] || duplicationWarningOptions[0];
     }
 
+    // Save data selected in dropdown menu
     const saveSelectedOption = (key: string, value: number): void => {
         saveToStorage("sync", key, value);
         setSettings({
@@ -57,6 +58,7 @@ function SettingsView(props: any) {
         });
     }
 
+    // Save switcher data
     const saveSwitchSetting = (key: string, value: boolean): void => {
         saveToStorage("sync", key, value);
         setSettings({
@@ -65,6 +67,7 @@ function SettingsView(props: any) {
         });
     }
 
+    // Set default values of all fields
     useEffect(() => {
         chrome.storage.sync.get((items: object) => {
             let initialSettings = {settings};
@@ -90,10 +93,7 @@ function SettingsView(props: any) {
                     <div className="w-7/12">
                         <FormField label="Performance notification" description="Warn me if the total amount of tabs exceeds a certain threshold when launching multiple tabs">
                             <Dropdown onCallback={(e) => typeof e.selected === "number" && saveSelectedOption("performance_notification_value", e.selected)} tag="performance-dropdown" preset={getPresetPerformanceNotification()} options={performanceNotificationOptions} />
-                        </FormField>  
-                        {/*<FormField label="Quick launch procedure" description="Select a default procedure when launching a folder">
-                            <Dropdown onCallback={(e) => typeof e.selected === "number" && saveSelectedOption("quick_launch_value", e.selected)} tag="quick-launch-dropdown" preset={getPresetQuickLaunch()} options={quickLaunchOptions} />
-                        </FormField> */}                       
+                        </FormField>                      
                         <FormField label="Duplication warnings" description="Show a warning message before duplicating at least a certain amount of selected folders">
                             <Dropdown onCallback={(e) => typeof e.selected === "number" && saveSelectedOption("duplication_warning_value", e.selected)} tag="duplication-warning-dropdown" preset={getPresetDuplicationWarning()} options={duplicationWarningOptions} />
                         </FormField>

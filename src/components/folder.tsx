@@ -151,9 +151,9 @@ function Folder(props: iFolder) {
                         { 
                         showLaunchOptions === true && <DropdownMenu selected={null} tag={"folder-control-dropdown"} visible={slideDown} onSelect={handleLaunch} options={launchOptions} />
                         }
-                        <FolderControlButton icon="open_browser" active={expanded} onClick={handleOpen/*() => onOpen && onOpen(windows)*/} />
+                        <FolderControlButton icon="open_browser" active={expanded} onClick={handleOpen} />
                         <FolderControlButton icon="settings" active={expanded} onClick={onEdit} />
-                        <FolderControlButton icon="trash" active={expanded} onClick={() => { onDelete!(props); }} />
+                        <FolderControlButton icon="trash" active={expanded} onClick={() => { onDelete && onDelete(props); }} />
                         <FolderControlButton icon="collapse_expand" active={expanded} onClick={handleExpandClick} />
                         <Checkbox checked={marked} onCallback={(e) => onMark!(id)} />
                     </div>

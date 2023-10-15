@@ -326,10 +326,10 @@ function History(props: any): JSX.Element {
                 marked: false,
                 windows: [presetWindow],
             }
-            render = <ManageFolderPopup title="Create workspace" folder={payload} onClose={handlePopupClose}>test</ManageFolderPopup>;
+            render = <ManageFolderPopup title="Create workspace" folder={payload} onClose={handlePopupClose} />;
         } else if(mergeProcess !== null) {
 
-            render = <ManageFolderPopup title={`Merge tabs to ${mergeProcess.name}`} folder={mergeProcess} onClose={handlePopupClose}>test</ManageFolderPopup>;
+            render = <ManageFolderPopup title={`Merge tabs to ${mergeProcess.name}`} folder={mergeProcess} onClose={handlePopupClose} />;
         } else {
             render = <></>;
         }

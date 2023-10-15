@@ -84,7 +84,7 @@ I would appreciate feedback and suggestions on how to improve this plugin. Repor
 Minor updates and improvements will be provided from time to time. There is no definite roadmap or schedule.
 
 # Copyright
-TabSera was created by me (Thai Nguyen) and is a properietary web browser plugin. This plugin may be used for free in private and professional environments (no limits, no obligations, no signups, no paywalls either!). The plugin may not be used as part of commercial products or brands. The repository itself and any modified code derived from it may neither be re-distributed nor monetized.
+TabSera was created by Thai Nguyen and is a properietary web browser plugin. This plugin is free for private and professional use, with no limits nor warranty. The plugin itself and code that derives from it may not be monetized, re-distributed, nor used as part of commercial products/services/brands.
 
 # Contact information
 privat_thai_nguyen@hotmail.com
