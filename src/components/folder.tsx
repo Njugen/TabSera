@@ -135,6 +135,12 @@ function Folder(props: iFolder) {
         }
     ]
 
+    function handleDelete(): () => void {
+        if(onDelete) onDelete(props);
+
+        return () => {};
+    }
+
     return (
         <>
             <div className={`${viewMode === "list" ? "my-4 duration-200" : "my-2 duration-200"} transition-all ease-in w-full rounded-md`}>
@@ -153,7 +159,7 @@ function Folder(props: iFolder) {
                         }
                         <FolderControlButton icon="open_browser" active={expanded} onClick={handleOpen} />
                         <FolderControlButton icon="settings" active={expanded} onClick={onEdit} />
-                        <FolderControlButton icon="trash" active={expanded} onClick={() => { onDelete && onDelete(props); }} />
+                        <FolderControlButton icon="trash" active={expanded} onClick={handleDelete} />
                         <FolderControlButton icon="collapse_expand" active={expanded} onClick={handleExpandClick} />
                         <Checkbox checked={marked} onCallback={(e) => onMark!(id)} />
                     </div>
