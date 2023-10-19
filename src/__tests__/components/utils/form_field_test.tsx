@@ -1,7 +1,6 @@
-import { render, screen, within, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import FormField from "../../../components/utils/form_field";
 import '@testing-library/jest-dom'
-
 
 describe("test <FormField />", () => {
     test("finds label and description, no error nor children", () => {

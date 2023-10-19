@@ -141,6 +141,12 @@ function Folder(props: iFolder) {
         return () => {};
     }
 
+    function handleEdit(e: any): () => void {
+        if(onEdit) onEdit(e);
+
+        return () => {}
+    } 
+
     return (
         <>
             <div className={`${viewMode === "list" ? "my-4 duration-200" : "my-2 duration-200"} transition-all ease-in w-full rounded-md`}>
@@ -158,7 +164,7 @@ function Folder(props: iFolder) {
                         showLaunchOptions === true && <DropdownMenu selected={null} tag={"folder-control-dropdown"} visible={slideDown} onSelect={handleLaunch} options={launchOptions} />
                         }
                         <FolderControlButton icon="open_browser" active={expanded} onClick={handleOpen} />
-                        <FolderControlButton icon="settings" active={expanded} onClick={onEdit} />
+                        <FolderControlButton icon="settings" active={expanded} onClick={handleEdit} />
                         <FolderControlButton icon="trash" active={expanded} onClick={handleDelete} />
                         <FolderControlButton icon="collapse_expand" active={expanded} onClick={handleExpandClick} />
                         <Checkbox checked={marked} onCallback={(e) => onMark!(id)} />

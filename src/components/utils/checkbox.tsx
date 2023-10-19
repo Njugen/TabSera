@@ -10,7 +10,7 @@ import { iCheckbox } from "../../interfaces/checkbox";
 */
 
 function Checkbox(props: iCheckbox): JSX.Element {
-    const { onCallback, label, dark } = props;
+    const { onCallback, label } = props;
     
     // Keep track of wether or not this boxbox has been checked
     const [checked, setChecked] = useState<boolean>(false);
@@ -33,7 +33,7 @@ function Checkbox(props: iCheckbox): JSX.Element {
 
     return (
         <div className={`flex items-center ${label ? "mx-5" : "ml-2 mr-0"}`}>
-            {label && <span data-testid="checkbox-label" className={`inline-block mr-2 text-sm ${dark === true ? "text-white" : "text-black"}`}>{label}</span>}
+            {label && <span data-testid="checkbox-label" className={`inline-block mr-2 text-sm text-black`}>{label}</span>}
             <button onClick={handleChecked} className={`relative border border-tbfColor-middlegrey3 ${checked === true ? "bg-white" : "bg-white"} h-[1.1rem] w-[1.1rem]`}>
                 {checked === true && <div className="absolute top-0 left-0"><CheckedIcon fill="#6D00C2" size={16} /></div>}
             </button>

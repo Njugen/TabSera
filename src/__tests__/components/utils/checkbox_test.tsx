@@ -4,8 +4,6 @@ import Checkbox from "../../../components/utils/checkbox";
 
 const mockFunction = jest.fn();
 
-// mock label and dark parameters: [label, dark]
-
 describe("test <Checkbox />", () => {
     test("renders checked button", () => {
         const labelText = "This is a label";
@@ -46,7 +44,8 @@ describe("test <Checkbox />", () => {
     });
 
     test("toggles when clicked (preset: false)", () => {
-        render(<Checkbox onCallback={mockFunction} checked={false} label={"blablabla"} />);
+        const labelText = "This is a label";
+        render(<Checkbox onCallback={mockFunction} checked={false} label={labelText} />);
 
         const button = screen.getByRole("button");
         let checkMark = within(button).queryByRole("img");
@@ -70,7 +69,8 @@ describe("test <Checkbox />", () => {
     });
 
     test("toggles when clicked (preset: true)", () => {
-        render(<Checkbox onCallback={mockFunction} checked={true} label={"blablabla"} />);
+        const labelText = "This is a label";
+        render(<Checkbox onCallback={mockFunction} checked={true} label={labelText} />);
 
         const button = screen.getByRole("button");
         let checkMark = within(button).queryByRole("img");

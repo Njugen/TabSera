@@ -34,7 +34,7 @@ function FolderControlButton(props: iFolderIconButton): JSX.Element {
         } else if(icon === "collapse_expand"){
             if(active === true){
                 return <CollapseIcon size={28} fill={"#fff"} />;
-            } else if(active === false){
+            } else {
                 return <ExpandIcon size={28} fill={"#000"} />;
             }
         }
