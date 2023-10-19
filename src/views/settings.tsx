@@ -98,16 +98,16 @@ function SettingsView(props: any) {
                             <Dropdown onCallback={(e) => typeof e.selected === "number" && saveSelectedOption("duplication_warning_value", e.selected)} tag="duplication-warning-dropdown" preset={getPresetDuplicationWarning()} options={duplicationWarningOptions} />
                         </FormField>
                         <FormField label="Close at folder launch" description="Close current browser session when launching a folder">
-                            <Switcher value={settings.close_current_setting} onCallback={(e) => e.state !== null && saveSwitchSetting("close_current_setting", e.state)} />
+                            <Switcher value={settings.close_current_setting} onCallback={(e) => e !== null && saveSwitchSetting("close_current_setting", e)} />
                         </FormField>
                         <FormField label="Cancellation warnings" description="Show a warning message before discarding changes made to folders">
-                            <Switcher value={settings.cancellation_warning_setting} onCallback={(e) => e.state !== null && saveSwitchSetting("cancellation_warning_setting", e.state)} />
+                            <Switcher value={settings.cancellation_warning_setting} onCallback={(e) => e !== null && saveSwitchSetting("cancellation_warning_setting", e)} />
                         </FormField>
                         <FormField label="Removal warnings" description="Show a warning message before deleting folders">
-                            <Switcher value={settings.removal_warning_setting} onCallback={(e) => {e.state !== null && saveSwitchSetting("removal_warning_setting", e.state)}} />
+                            <Switcher value={settings.removal_warning_setting} onCallback={(e) => {e !== null && saveSwitchSetting("removal_warning_setting", e)}} />
                         </FormField>
                         <FormField label="Log errors" description="Automatically send error reports to the developer">
-                            <Switcher value={settings.error_log_setting} onCallback={(e) => e.state !== null && saveSwitchSetting("error_log_setting", e.state)} />
+                            <Switcher value={settings.error_log_setting} onCallback={(e) => e !== null && saveSwitchSetting("error_log_setting", e)} />
                         </FormField>
                     </div>
                 </div>
