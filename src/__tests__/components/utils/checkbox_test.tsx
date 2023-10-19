@@ -32,15 +32,16 @@ describe("test <Checkbox />", () => {
     });
 
     test("renders no label", () => {
+        const labelText = "This is a label";
         render(<Checkbox onCallback={mockFunction} checked={false} />);
 
         const button = screen.getByRole("button");
         const checkMark = within(button).queryByRole("img");
-        const text = screen.queryByTestId("checkbox-label");
+        const text = screen.queryByText(labelText);
 
         expect(button).toBeInTheDocument();
         expect(checkMark).toBeNull();
-        expect(text).toBeNull();
+        expect(text).not.toBeInTheDocument();
     });
 
     test("toggles when clicked (preset: false)", () => {

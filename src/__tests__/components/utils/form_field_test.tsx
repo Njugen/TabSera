@@ -18,7 +18,7 @@ describe("test <FormField />", () => {
         expect(heading).toBeInTheDocument();
     });
 
-    test("finds error (true) and child props", () => {
+    test("finds error and child props", () => {
         const testId = "my-child";
         const childElement = <div data-testid={testId}></div>;
         render(<FormField label={"123456"} description={"456789"} error={true}>{childElement}</FormField>);
@@ -30,7 +30,7 @@ describe("test <FormField />", () => {
         expect(err).toBeInTheDocument();
     });
 
-    test("finds error (false) and child props", () => {
+    test("finds no error and child props", () => {
         const testId = "my-child";
         const childElement = <div data-testid={testId}></div>;
         render(<FormField label={"123456"} description={"456789"} error={false}>{childElement}</FormField>);

@@ -20,6 +20,10 @@ import SelectedCheckboxIcon from "../../images/icons/selected_checkbox_icon";
 import DeselectedCheckboxIcon from "../../images/icons/deselected_checkbox_icon";
 import SortIcon from "../../images/icons/sort_icon";
 import CloseLightIcon from "../../images/icons/close_light_icon";
+import ClosedFolderIcon from "../../images/icons/closed_folder_icon";
+import LeftIcon from "../../images/icons/left_icon";
+import OpenedFolderIcon from "../../images/icons/opened_folder_icon";
+import RightIcon from "../../images/icons/right_icon";
 
 /*
     An icon button used for all kind of things, where only an icon is sufficient (no labels)
@@ -78,13 +82,21 @@ function GenericIconButton(props: iGenericIconButton): JSX.Element {
             return <SortIcon size={size} fill={fill} />;
         } else if(icon === "close_light"){ 
             return <CloseLightIcon size={size} fill={fill} />;
+        } else if(icon === "closed_folder"){ 
+            return <ClosedFolderIcon size={size} fill={fill} />;
+        } else if(icon === "left"){ 
+            return <LeftIcon size={size} fill={fill} />;
+        } else if(icon === "opened_folder"){
+            return <OpenedFolderIcon size={size} fill={fill} />;
+        } else if(icon === "right"){
+            return <RightIcon size={size} fill={fill} />;
         } else {
             return <></>;
         }
     } 
 
     return (
-        <button className={`${icon !== "collapse_expand" && "mx-2"} ${icon === "collapse_expand" && "ml-5"} ${styles.opacity_hover_effect}`} onClick={onClick}>
+        <button className={`${styles.opacity_hover_effect}`} onClick={onClick}>
             {renderIcon()}
         </button>
     ); 

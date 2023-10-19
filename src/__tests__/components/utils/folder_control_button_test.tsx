@@ -3,12 +3,12 @@ import FolderControlButton from "../../../components/utils/folder_control_button
 import '@testing-library/jest-dom'
 
 const mockFunction = jest.fn();
-const mockIcons = ["trash", "settings", "open_browser", "collapse_expand"];
+const mockIcons: Array<string> = ["trash", "settings", "open_browser", "collapse_expand"];
 
 describe("test <FolderControlButton />", () => {
     describe("when active", () => {
         test.each(mockIcons)(
-            "click %p icon button", (iconCase) => {
+            "click %p icon button works", (iconCase) => {
                 render(<FolderControlButton icon={iconCase} active={true} onClick={mockFunction} />);
                 const button = screen.getByRole("button");
                 const icon = within(button).getByRole("img");
@@ -19,7 +19,7 @@ describe("test <FolderControlButton />", () => {
             }
         );
 
-        test("click no icon button", () => {
+        test("click button with no icon works", () => {
             render(<FolderControlButton icon="" active={true} onClick={mockFunction} />);
             const button = screen.getByRole("button");
             const icon = within(button).queryByRole("img");
@@ -32,7 +32,7 @@ describe("test <FolderControlButton />", () => {
        
     describe("when not active", () => {
         test.each(mockIcons)(
-            "click %p button", (iconCase) => {
+            "click %p button works", (iconCase) => {
                 render(<FolderControlButton icon={iconCase} active={false} onClick={mockFunction} />);
                 const button = screen.getByRole("button");
                 const icon = within(button).getByRole("img");
@@ -43,7 +43,7 @@ describe("test <FolderControlButton />", () => {
             }
         );
         
-        test("click no icon button", () => {
+        test("click button with no icon works", () => {
             render(<FolderControlButton icon="" active={false} onClick={mockFunction} />);
             const button = screen.getByRole("button");
             const icon = within(button).queryByRole("img");

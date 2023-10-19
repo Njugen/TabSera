@@ -20,10 +20,10 @@ function DropdownMenu(props: iDropdownMenu): JSX.Element {
     }
 
     return (
-        <ul id={`dropdown-tag-${tag}`} className={`z-50 list-none drop-shadow-no_pos overflow-y-auto bg-white absolute max-h-[2000px] mt-2 text-sm w-full text-tbfColor-darkergrey rounded-lg ${visible === false ? "transition-all top-0 ease-out h-0 duration-500" : "transition-all top-12 ease-in duration-100"}`}>
+        <ul id={tag} className={`z-50 list-none drop-shadow-no_pos overflow-y-auto bg-white absolute max-h-[2000px] mt-2 text-sm w-full text-tbfColor-darkergrey rounded-lg ${visible === false ? "transition-all top-0 ease-out h-0 duration-500 hidden" : "block transition-all top-12 ease-in duration-100"}`}>
             { options.map((option, i) => {
                 return (
-                    <li id={`dropdown-tag-${tag}-${i}`} key={`dropdown-tag-${tag}-${i}`}>
+                    <li id={`${tag}-option-${option.id}${selected === option.id ? "-active" : ""}`} key={`${tag}-option-${option.id}${selected === option.id ? "-active" : ""}`}>
                         <button key={option.id} onClick={() => onSelect(option.id)} className={applyClasses(option.id)}>
                             {option.label}
                         </button>
