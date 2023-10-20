@@ -14,7 +14,7 @@ function Dropdown(props: iDropdown): JSX.Element {
 
     // State defining the visibility of the menu
     const [showSubMenuContainer, setShowSubMenuContainer] = useState<boolean>(false);
-
+    const [hack, setHack] = useState<boolean>(false);
     const { tag, preset, options, onCallback } = props;
 
     // Reference to dropdown selector container
@@ -25,7 +25,9 @@ function Dropdown(props: iDropdown): JSX.Element {
     function handleShowSubMenu(): void {
         if(showSubMenuContainer === false){
             setShowSubMenuContainer(true);
+            setHack(false);
         } else {
+            setHack(true);
             setShowSubMenuContainer(false);
         }
     
@@ -43,22 +45,30 @@ function Dropdown(props: iDropdown): JSX.Element {
         );
     }
 
-    // Close the dropdown menu when user clicks outside the selector or the menu itself
-    function handleWindowClick(e: any): void {
-        e.stopPropagation();
-        
-        if(e.target.tagName === "BODY" && showSubMenuContainer === true) handleShowSubMenu();
-
-        if(showSubMenuContainer === false || !e.target.parentElement || !e.target.parentElement.parentElement) return;
-
-        handleShowSubMenu();
-    }
 
     // Get information about the selected option 
     function getSelectedOption(): iFieldOption | null {
         const target = options.find((option) => option.id === selected);
         return target ? target : null;
     }
+
+    function handleWindowClick(e: any): void {
+        e.stopPropagation();
+
+        const selectorTag = (tag + "-selector");
+        if(e.target!.id !== selectorTag && 
+        e.target.parentElement?.id !== selectorTag && 
+        e.target.tagName !== "svg" && 
+        e.target.tagName !== "path") {
+            setHack((prevState) => !prevState);
+        }
+    }
+
+    useEffect(() => {
+        if(hack === true) {
+            setShowSubMenuContainer(false)
+        }
+    }, [hack])   
 
     useEffect(() => {
         // Listen for clicks at all time and determine whether or not the menu should be shown/hidden
@@ -69,13 +79,6 @@ function Dropdown(props: iDropdown): JSX.Element {
         }
     }, []);
 
-    useEffect(() => {
-        window.addEventListener("click", handleWindowClick);
-
-        return () => {
-            window.removeEventListener("click", handleWindowClick);
-        }
-    }, [showSubMenuContainer])
 
     useEffect(() => {
         // Once the selected option id has been changed, send it back to the parent component
@@ -84,7 +87,7 @@ function Dropdown(props: iDropdown): JSX.Element {
 
     return (
         <div ref={dropdownRef} className={`hover:cursor-pointer bg-white relative text-sm w-full text-tbfColor-darkergrey rounded-lg h-10 border transition-all duration-75 ${showSubMenuContainer === true ? " border-tbfColor-lightpurple" : "border-tbfColor-middlegrey4"}`}>
-            <div data-testid={`${tag}-selector`} id={`${tag}-selector`} className="flex items-center justify-between mx-3 h-full" onClick={handleShowSubMenu}>          
+            <div id={`${tag}-selector`} data-testid={`${tag}-selector`} className="flex items-center justify-between mx-3 h-full" onClick={handleShowSubMenu}>          
                 <span className="hover:cursor-pointer">{!getSelectedOption() ? preset.label : getSelectedOption()!.label}</span>
                 {showSubMenuContainer === true ? <CollapseIcon size={28} fill={"#000"} /> : <ExpandIcon size={28} fill={"#000"} />}
             </div>

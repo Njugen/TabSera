@@ -8,7 +8,7 @@ import ConfigIcon from "../../images/icons/config_icon";
   Navigation link, intended to be used in in the sidebar
 
   Each link has its own icon based on path/url. The path/url should point
-  to a path defined by router-dom (defined in ./aop.tsx)
+  to a path defined by router-dom (defined in ./app.tsx)
 
   To add a new icon based on path, change the if-statement within renderIcon()
   E.g.
