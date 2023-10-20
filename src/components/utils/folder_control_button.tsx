@@ -42,7 +42,7 @@ function FolderControlButton(props: iFolderIconButton): JSX.Element {
     }
     
     return (
-        <button className={`${icon !== "collapse_expand" && "mx-2"} ${icon === "collapse_expand" && "ml-3"} ${styles.opacity_hover_effect}`} onClick={onClick}>
+        <button data-testid={`folder-control-button-${icon ? icon : "none"}`} className={`${icon !== "collapse_expand" && "mx-2"} ${icon === "collapse_expand" && "ml-3"} ${styles.opacity_hover_effect}`} onClick={onClick}>
             {renderIcon()}
         </button>
     ); 

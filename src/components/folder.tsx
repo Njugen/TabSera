@@ -161,7 +161,7 @@ function Folder(props: iFolder) {
                     </div>
                     <div className="absolute flex items-center right-2">
                         { 
-                        showLaunchOptions === true && <DropdownMenu selected={null} tag={"folder-control-dropdown"} visible={slideDown} onSelect={handleLaunch} options={launchOptions} />
+                        showLaunchOptions === true && <DropdownMenu selected={null} tag={"folder-control-dropdown"} onSelect={handleLaunch} options={launchOptions} />
                         }
                         <FolderControlButton icon="open_browser" active={expanded} onClick={handleOpen} />
                         <FolderControlButton icon="settings" active={expanded} onClick={handleEdit} />

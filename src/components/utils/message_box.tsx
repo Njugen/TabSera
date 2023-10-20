@@ -25,7 +25,7 @@ function MessageBox(props: iMessageBox): JSX.Element {
 
         if(option === "primary"){
             primaryButton.callback();
-        } else if(option === "secondary"){
+        } else {
             secondaryButton.callback();
         }
     }

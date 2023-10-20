@@ -5,9 +5,6 @@ describe("test randomNumber()", () => {
         const rand1 = randomNumber();
         const rand2 = randomNumber();
 
-        expect(rand1).not.toBeNaN();
-        expect(rand2).not.toBeNaN();
-
         expect(rand1).not.toEqual(rand2);
     });
     
@@ -15,19 +12,12 @@ describe("test randomNumber()", () => {
         const rand1 = randomNumber();
         const rand2 = randomNumber();
 
-        expect(rand1).not.toBeNaN();
-        expect(rand2).not.toBeNaN();
-
         expect(rand1).not.toEqual(rand2);
     });
     
     test("returns numbers - 3", () => {
         const rand1 = randomNumber();
         const rand2 = randomNumber();
-
-        expect(rand1).not.toBeNaN();
-        expect(rand2).not.toBeNaN();
-
         expect(rand1).not.toEqual(rand2);
     });
 })

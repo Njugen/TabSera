@@ -5,6 +5,7 @@ interface iSwitcherSelected {
 interface iSwitcher {
     label?: String,
     value: boolean,
+    id: string,
     onCallback: (e: boolean | null) => void
 }
 

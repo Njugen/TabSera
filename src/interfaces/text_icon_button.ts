@@ -7,7 +7,7 @@ interface iTextIconButton {
         icon: number,
         text: string
     },
-    onClick?: (e: any) => void
+    onClick: (e: any) => void
 }
 
 

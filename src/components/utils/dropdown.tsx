@@ -15,9 +15,6 @@ function Dropdown(props: iDropdown): JSX.Element {
     // State defining the visibility of the menu
     const [showSubMenuContainer, setShowSubMenuContainer] = useState<boolean>(false);
 
-    // Trigger slide down/hide effect in CSS
-    const [slideDown, setSlideDown] = useState<boolean>(false);
-
     const { tag, preset, options, onCallback } = props;
 
     // Reference to dropdown selector container
@@ -28,14 +25,8 @@ function Dropdown(props: iDropdown): JSX.Element {
     function handleShowSubMenu(): void {
         if(showSubMenuContainer === false){
             setShowSubMenuContainer(true);
-            setTimeout(() => {
-                setSlideDown(slideDown === true ? false : true);
-            }, 200);
         } else {
-            setSlideDown(false);
-            setTimeout(() => {
-                setShowSubMenuContainer(false);
-            }, 200);
+            setShowSubMenuContainer(false);
         }
     
     }
@@ -48,22 +39,19 @@ function Dropdown(props: iDropdown): JSX.Element {
     
     function renderDropdownMenu(): JSX.Element {
         return (
-            <DropdownMenu tag={`dropdown-tag-${tag}`} visible={slideDown} options={options} selected={selected} onSelect={handleSelect} />
+            <DropdownMenu tag={`${tag}`} options={options} selected={selected} onSelect={handleSelect} />
         );
     }
 
     // Close the dropdown menu when user clicks outside the selector or the menu itself
     function handleWindowClick(e: any): void {
         e.stopPropagation();
-        if(showSubMenuContainer === false || !e.target.parentElement || !e.target.parentElement.parentElement) return;
         
-        const targetId = `dropdown-tag-${tag}`;
+        if(e.target.tagName === "BODY" && showSubMenuContainer === true) handleShowSubMenu();
 
-        const firstParent = e.target.parentElement!.id;
-        const secondParent = e.target.parentElement.parentElement.id
-        if(e.target.id.includes(targetId) === false && firstParent.includes(targetId) === false && secondParent.includes(targetId) === false){
-            handleShowSubMenu();
-        }
+        if(showSubMenuContainer === false || !e.target.parentElement || !e.target.parentElement.parentElement) return;
+
+        handleShowSubMenu();
     }
 
     // Get information about the selected option 
@@ -96,7 +84,7 @@ function Dropdown(props: iDropdown): JSX.Element {
 
     return (
         <div ref={dropdownRef} className={`hover:cursor-pointer bg-white relative text-sm w-full text-tbfColor-darkergrey rounded-lg h-10 border transition-all duration-75 ${showSubMenuContainer === true ? " border-tbfColor-lightpurple" : "border-tbfColor-middlegrey4"}`}>
-            <div id={`dropdown-tag-${tag}-selector`} className="flex items-center justify-between mx-3 h-full" onClick={handleShowSubMenu}>          
+            <div data-testid={`${tag}-selector`} id={`${tag}-selector`} className="flex items-center justify-between mx-3 h-full" onClick={handleShowSubMenu}>          
                 <span className="hover:cursor-pointer">{!getSelectedOption() ? preset.label : getSelectedOption()!.label}</span>
                 {showSubMenuContainer === true ? <CollapseIcon size={28} fill={"#000"} /> : <ExpandIcon size={28} fill={"#000"} />}
             </div>

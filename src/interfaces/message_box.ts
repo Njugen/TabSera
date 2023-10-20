@@ -1,5 +1,5 @@
 interface iMessageBox {
-    title?: string,
+    title: string,
     text: string,
     primaryButton: {
         text: string,

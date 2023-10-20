@@ -25,48 +25,27 @@ const mockFunction = jest.fn();
 
 
 describe("test <DropdownMenu />", () => {
-    test.each(mockOptions)("list is collapsed (no preset option)", async (arg) => {
-        render(<DropdownMenu tag={mockTag} options={mockOptions} visible={false} selected={null} onSelect={mockFunction} />);
+    test.each(mockOptions)("list works and its featurs works (no preset option)", async (arg) => {
+        render(<DropdownMenu tag={mockTag} options={mockOptions} selected={null} onSelect={mockFunction} />);
 
-        const list = screen.getByRole("list", { hidden: true });
-        expect(list).not.toBeVisible();
-
-        const button = within(list).getByText(arg.label as Matcher, { selector: "button"});
-        expect(button).not.toBeVisible();
-    });
-
-    test.each(mockOptions)("list is collapsed (preset option)", async (arg) => {
-        render(<DropdownMenu tag={mockTag} options={mockOptions} visible={false} selected={mockOptions[0].id} onSelect={mockFunction} />);
-
-        const list = screen.getByRole("list", { hidden: true });
-        expect(list).not.toBeVisible();
+        const list = screen.getByRole("list");
+        expect(list).toBeInTheDocument();
 
         const button = within(list).getByText(arg.label as Matcher, { selector: "button"});
-        expect(button).not.toBeVisible();
-    });
-
-
-    test.each(mockOptions)("list is expanded (no preset option)", async (arg) => {
-        render(<DropdownMenu tag={mockTag} options={mockOptions} visible={true} selected={null} onSelect={mockFunction} />);
-
-        const list = screen.getByRole("list", { hidden: false });
-        expect(list).toBeVisible();
-
-        const button = within(list).getByText(arg.label as Matcher, { selector: "button"});
-        expect(button).toBeVisible();
+        expect(button).toBeInTheDocument();
 
         fireEvent.click(button);
         expect(mockFunction).toHaveBeenCalled();
     });
 
-    test.each(mockOptions)("list is expanded (preset option)", async (arg) => {
-        render(<DropdownMenu tag={mockTag} options={mockOptions} visible={true} selected={mockOptions[0].id} onSelect={mockFunction} />);
+    test.each(mockOptions)("list is collapsed (preset option)", async (arg) => {
+        render(<DropdownMenu tag={mockTag} options={mockOptions} selected={mockOptions[0].id} onSelect={mockFunction} />);
 
-        const list = screen.getByRole("list", { hidden: false });
-        expect(list).toBeVisible();
+        const list = screen.getByRole("list");
+        expect(list).toBeInTheDocument();
 
         const button = within(list).getByText(arg.label as Matcher, { selector: "button"});
-        expect(button).toBeVisible();
+        expect(button).toBeInTheDocument();
 
         fireEvent.click(button);
         expect(mockFunction).toHaveBeenCalled();

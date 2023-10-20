@@ -1,6 +1,6 @@
 interface iFieldOption {
     id: number,
-    label: String
+    label: string
 }
 
 interface iDropdownSelected {
@@ -8,7 +8,7 @@ interface iDropdownSelected {
 }
 
 interface iDropdown {
-    tag: String,
+    tag: string,
     preset: iFieldOption,
     options: Array<iFieldOption>,
     onCallback: (e: iDropdownSelected) => void

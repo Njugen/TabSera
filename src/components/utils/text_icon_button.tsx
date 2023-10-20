@@ -20,6 +20,10 @@ import SelectedCheckboxIcon from "../../images/icons/selected_checkbox_icon";
 import DeselectedCheckboxIcon from "../../images/icons/deselected_checkbox_icon";
 import SortIcon from "../../images/icons/sort_icon";
 import CloseLightIcon from "../../images/icons/close_light_icon";
+import ClosedFolderIcon from "../../images/icons/closed_folder_icon";
+import LeftIcon from "../../images/icons/left_icon";
+import OpenedFolderIcon from "../../images/icons/opened_folder_icon";
+import RightIcon from "../../images/icons/right_icon";
 
 /*
     An icon button with applied labels, used for all kind of things, 
@@ -78,13 +82,21 @@ function TextIconButton(props: iTextIconButton): JSX.Element {
             return <SortIcon size={size.icon} fill={fill} />;
         } else if(icon === "close_light"){
             return <CloseLightIcon size={size.icon} fill={fill} />;
+        } else if(icon === "closed_folder"){ 
+            return <ClosedFolderIcon size={size.icon} fill={fill} />;
+        } else if(icon === "left"){ 
+            return <LeftIcon size={size.icon} fill={fill} />;
+        } else if(icon === "opened_folder"){
+            return <OpenedFolderIcon size={size.icon} fill={fill} />;
+        } else if(icon === "right"){
+            return <RightIcon size={size.icon} fill={fill} />;
         } else {
             return <></>;
         }
     } 
 
     return (
-        <button disabled={disabled} className={`flex mr-6 items-center disabled:opacity-50 ${disabled === false && styles.opacity_hover_effect}`} onClick={onClick}>
+        <button data-testid={`text-icon-button-${icon}`} disabled={disabled} className={`flex mr-6 items-center disabled:opacity-50 ${disabled === false && styles.opacity_hover_effect}`} onClick={onClick}>
             {renderIcon()} 
             <span className={`${size.text} ml-2`}>
                 {text}

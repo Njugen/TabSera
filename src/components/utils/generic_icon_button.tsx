@@ -96,7 +96,7 @@ function GenericIconButton(props: iGenericIconButton): JSX.Element {
     } 
 
     return (
-        <button className={`${styles.opacity_hover_effect}`} onClick={onClick}>
+        <button data-testid={`generic-icon-button-${icon}`} className={`${styles.opacity_hover_effect}`} onClick={onClick}>
             {renderIcon()}
         </button>
     ); 

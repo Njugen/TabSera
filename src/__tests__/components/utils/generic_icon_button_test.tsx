@@ -38,6 +38,21 @@ const mockColors = [
 ]
 
 describe("test <GenericIconButton />", () => {
+    test("Button has no icon if icon does not exist", () => {
+        const mockSize = Math.floor(Math.random() * 31);
+        const mockColorIndex = Math.floor(Math.random() * mockColors.length);         
+        const mockIcon = randomNumber().toString();
+
+        render(<GenericIconButton icon={mockIcon} size={mockSize} fill={mockColors[mockColorIndex]} onClick={mockFunction} />);
+
+        const button = screen.getByTestId(`generic-icon-button-${mockIcon}`);
+        expect(button).toBeInTheDocument();
+        expect(button).toBeEmptyDOMElement();
+
+        fireEvent.click(button);
+        expect(mockFunction).toHaveBeenCalled();
+    });
+
     test.each(mockIcons)(
         "%p icon button renders and works ok", (iconArg) => {
             const mockSize = Math.floor(Math.random() * 31);
@@ -45,7 +60,7 @@ describe("test <GenericIconButton />", () => {
             
             render(<GenericIconButton icon={iconArg} size={mockSize} fill={mockColors[mockColorIndex]} onClick={mockFunction} />);
 
-            const button = screen.getByRole("button");
+            const button = screen.getByTestId(`generic-icon-button-${iconArg}`);
             expect(button).toBeInTheDocument();
 
             const icon = within(button).getByRole("img");
@@ -63,7 +78,7 @@ describe("test <GenericIconButton />", () => {
         const icon = screen.queryByRole("img");
         expect(icon).not.toBeInTheDocument();
 
-        const button = screen.getByRole("button");
+        const button = screen.getByTestId(`generic-icon-button-${iconString}`);
         expect(button).toBeInTheDocument();
 
         fireEvent.click(button);

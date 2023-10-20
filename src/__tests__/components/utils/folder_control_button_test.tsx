@@ -10,7 +10,7 @@ describe("test <FolderControlButton />", () => {
         test.each(mockIcons)(
             "click %p icon button works", (iconCase) => {
                 render(<FolderControlButton icon={iconCase} active={true} onClick={mockFunction} />);
-                const button = screen.getByRole("button");
+                const button = screen.getByTestId(`folder-control-button-${iconCase}`);
                 const icon = within(button).getByRole("img");
                 fireEvent.click(button);
                 
@@ -21,7 +21,7 @@ describe("test <FolderControlButton />", () => {
 
         test("click button with no icon works", () => {
             render(<FolderControlButton icon="" active={true} onClick={mockFunction} />);
-            const button = screen.getByRole("button");
+            const button = screen.getByTestId(`folder-control-button-none`);
             const icon = within(button).queryByRole("img");
             fireEvent.click(button);
             
@@ -34,7 +34,7 @@ describe("test <FolderControlButton />", () => {
         test.each(mockIcons)(
             "click %p button works", (iconCase) => {
                 render(<FolderControlButton icon={iconCase} active={false} onClick={mockFunction} />);
-                const button = screen.getByRole("button");
+                const button = screen.getByTestId(`folder-control-button-${iconCase}`);
                 const icon = within(button).getByRole("img");
                 fireEvent.click(button);
                 
@@ -45,7 +45,7 @@ describe("test <FolderControlButton />", () => {
         
         test("click button with no icon works", () => {
             render(<FolderControlButton icon="" active={false} onClick={mockFunction} />);
-            const button = screen.getByRole("button");
+            const button = screen.getByTestId(`folder-control-button-none`);
             const icon = within(button).queryByRole("img");
             fireEvent.click(button);
             

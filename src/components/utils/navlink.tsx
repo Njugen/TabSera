@@ -31,8 +31,9 @@ function Navlink(props: iNavlink): JSX.Element {
         return <MultipleFoldersIcon size={iconSize} fill={isActive === true ? "rgb(109 0 194)" : "#525252"} />
       } else if(url === "/settings"){
         return <ConfigIcon size={iconSize} fill={isActive === true ? "rgb(109 0 194)" : "#525252"} />
+      } else {
+        return <></>
       }
-      return <></>
     }
 
     return (

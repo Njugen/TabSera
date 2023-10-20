@@ -7,7 +7,7 @@ import iDropdownMenu from "../../interfaces/dropdown_menu";
 */
 
 function DropdownMenu(props: iDropdownMenu): JSX.Element {
-    const { tag, options, visible, onSelect, selected } = props;
+    const { tag, options, onSelect, selected } = props;
 
     function applyClasses(id: number): string {
         if(selected === id){
@@ -20,7 +20,7 @@ function DropdownMenu(props: iDropdownMenu): JSX.Element {
     }
 
     return (
-        <ul id={tag} className={`z-50 list-none drop-shadow-no_pos overflow-y-auto bg-white absolute max-h-[2000px] mt-2 text-sm w-full text-tbfColor-darkergrey rounded-lg ${visible === false ? "transition-all top-0 ease-out h-0 duration-500 hidden" : "block transition-all top-12 ease-in duration-100"}`}>
+        <ul id={tag} className={`z-50 list-none drop-shadow-no_pos overflow-y-auto bg-white absolute max-h-[2000px] mt-2 text-sm w-full text-tbfColor-darkergrey rounded-lg`}>
             { options.map((option, i) => {
                 return (
                     <li id={`${tag}-option-${option.id}${selected === option.id ? "-active" : ""}`} key={`${tag}-option-${option.id}${selected === option.id ? "-active" : ""}`}>

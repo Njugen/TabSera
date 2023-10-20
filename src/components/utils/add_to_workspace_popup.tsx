@@ -25,7 +25,7 @@ function AddToWorkspacePopup(props: iAddToWorkspacePopup): JSX.Element {
     }
 
     return (
-        <div className={`fixed flex ${styles.popup_container} justify-center items-center top-0 left-0 w-full h-screen overflow-y-scroll z-[1000]`}>
+        <div data-testid="add-to-workspace-popup" className={`fixed flex ${styles.popup_container} justify-center items-center top-0 left-0 w-full h-screen overflow-y-scroll z-[1000]`}>
             <div className="pl-8 pr-5 pb-10 pt-6 w-[800px] min-h-[300px] bg-white rounded-lg drop-shadow-2xl leading-7 text-md">
                 <div className="flex justify-center">
                     <h1 className="text-3xl text-tbfColor-darkpurple font-light inline-block">
