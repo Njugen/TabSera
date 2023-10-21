@@ -8,13 +8,13 @@ import { iPopup } from "../../interfaces/popup";
 import styles from "../../styles/global_utils.module.scss";
 import WindowManager from './window_manager';
 import randomNumber from "../../tools/random_number";
-import { useDispatch, useSelector } from "react-redux";
+//import { useDispatch, useSelector } from "react-redux";
 import { initInEditFolder, updateInEditFolder} from "../../redux/actions/inEditFolderActions";
 import { createFolderAction, updateFolderAction } from "../../redux/actions/folderCollectionActions";
 import { iFolder } from "../../interfaces/folder";
 import MessageBox from './message_box';
 import { setShowFolderChangeWarning } from "../../redux/actions/warningActions";
-
+import { useDispatch, useSelector } from "../../redux/mocked_hooks";
 /*
     A popup providing oversight of a folder's settings and available windows/tabs.
     The settings may be changed by the user, which then gets applied to redux storage
