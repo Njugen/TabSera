@@ -3,7 +3,7 @@ import { EDIT_FOLDER, UPDATE_IN_EDIT_FOLDER, CLEAR_IN_EDIT_FOLDER, UPDATE_WINDOW
 
 const inEditFolderState: iFolder | null = null;
 
-function InEditFolderReducer(state = inEditFolderState, action: any){
+function InEditFolderReducer(state = inEditFolderState, action: any) {
     const { type, data } = action;
 
     if(type === EDIT_FOLDER){
@@ -104,5 +104,5 @@ function InEditFolderReducer(state = inEditFolderState, action: any){
 }
 
 export {
-    InEditFolderReducer 
+    InEditFolderReducer
 }

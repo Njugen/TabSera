@@ -68,12 +68,18 @@ function CurrentSessionWindowItem(props: iWindowItem): JSX.Element {
         let result = [];
         
         result = tabs.map((tab, i) => {
+            /*
+            Render an editable tab IF the user chooses to edit a tab.
+            For now, this feature is removed, but might be re-introduced at a later time
+
             if(editTab === tab.id){
+                console.log(editTab, tab.id);
                 return renderEditTab(id, tab.url, editTab);
             } else {
                 return <TabItem marked={false} disableCloseButton={tabs.length > 1 ? false : true} disableMark={true} disableEdit={disableTabEdit} key={tab.id} id={tab.id} label={tab.label} url={tab.url} onMark={handleMark} onEdit={handleTabEdit} onClose={handleCloseTab} />
-            }
+            } */
             
+            return <TabItem marked={false} disableCloseButton={tabs.length > 1 ? false : true} disableMark={true} disableEdit={disableTabEdit} key={tab.id} id={tab.id} label={tab.label} url={tab.url} onMark={handleMark} onEdit={handleTabEdit} onClose={handleCloseTab} />
         })
 
         return result;

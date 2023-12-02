@@ -10,11 +10,15 @@ import WindowManager from './window_manager';
 import randomNumber from "../../tools/random_number";
 //import { useDispatch, useSelector } from "react-redux";
 import { initInEditFolder, updateInEditFolder} from "../../redux/actions/inEditFolderActions";
-import { createFolderAction, updateFolderAction } from "../../redux/actions/folderCollectionActions";
+//import { createFolderAction, updateFolderAction } from "../../redux/actions/state.FolderCollectionReducerActions";
 import { iFolder } from "../../interfaces/folder";
 import MessageBox from './message_box';
-import { setShowFolderChangeWarning } from "../../redux/actions/warningActions";
 import { useDispatch, useSelector } from "../../redux/mocked_hooks";
+import { setShowFolderChangeWarning } from "../../redux/actions/warningActions";
+import { createFolderAction, updateFolderAction } from "../../redux/actions/folderCollectionActions";
+
+//import { useDispatch, useSelector } from "react-redux";
+
 /*
     A popup providing oversight of a folder's settings and available windows/tabs.
     The settings may be changed by the user, which then gets applied to redux storage
@@ -22,6 +26,8 @@ import { useDispatch, useSelector } from "../../redux/mocked_hooks";
     Warning messages may be added using the <Messagebox /> component. New fields can be added
     preferably by using the <FormField /> component. See examples in render() function.
 */
+
+
 
 function ManageFolderPopup(props: iPopup): JSX.Element {
     const { onClose, folder, title } = props;
@@ -40,11 +46,7 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
 
     // Read necessary data from redux. These data are are used in this component
     // for various tasks. Values may be dispatched back to these redux states for use in other multilevel components
-    const folderData = useSelector((state: any) => state.InEditFolderReducer);
-    const folderCollection = useSelector((state: any) => state.FolderCollectionReducer);
-    const warningActions = useSelector((state: any) => state.WarningActionsReducer);
-    const miscData = useSelector((state: any) => state.MiscReducer);
-
+    const state = useSelector((state: any) => state)
 
     useEffect(() => {
         // Information about the folder. If undefined, there are no preset information
@@ -84,10 +86,10 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
     // Check whether or not the set of windows has been modified
     function windowListChanged(): boolean {
         const presetWindows: string = originWindows;
-        const modifiedWindows: string = JSON.stringify(folderData?.windows);
+        const modifiedWindows: string = JSON.stringify(state.InEditFolderReducer?.windows);
 
         if(!modifiedWindows || !presetWindows) return false;
-        if(originWindows !== JSON.stringify(folderData?.windows)){
+        if(originWindows !== JSON.stringify(state.InEditFolderReducer?.windows)){
             return true;
         }
 
@@ -98,15 +100,15 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
         if(windowListChanged() === true){
             setModified(true);
         }
-    }, [folderData]);
+    }, [state.InEditFolderReducer]);
 
     // Handle changes to a field
     // - key: a string to identify the changed field
     // - value: the new value of this field
     function handleChangeField(key: string, value: any){
-        if(!folderData) return;
+        if(!state.InEditFolderReducer) return;
         
-        if(modified === false && JSON.stringify(folderData[key]) !== JSON.stringify(value)) setModified(true);
+        if(modified === false && JSON.stringify(state.InEditFolderReducer[key]) !== JSON.stringify(value)) setModified(true);
 
         // Inform redux about the field change
         dispatch(updateInEditFolder(key, value));
@@ -121,7 +123,7 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
     // whether or not they are valid. If not, mark the affected fields
     // as invalid. Otherwise, send a callback to proceed.
     function validateForm(callback: () => void){
-            const data = folderData;
+            const data = state.InEditFolderReducer;
 
             const updatedFieldState = {
                 name: false,
@@ -131,7 +133,7 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
                 updatedFieldState.name = true;
             } 
    
-            if((data.windows && data.windows.length === 0) || miscData.isEditingTabs > 0) {
+            if((data.windows && data.windows.length === 0) || state.MiscReducer.isEditingTabs > 0) {
                 updatedFieldState.windows = true;
             } 
 
@@ -175,15 +177,15 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
         validateForm(() => {
             if(props.folder){
                 // Find out if process is merge or edit
-                const targetIndex = folderCollection.findIndex((target: any) => target.id === props.folder?.id);
+                const targetIndex = state.FolderCollectionReducer.findIndex((target: any) => target.id === props.folder?.id);
 
                 if(targetIndex === -1){
-                    dispatch(createFolderAction(folderData));
+                    dispatch(createFolderAction(state.InEditFolderReducer));
                 } else {
-                    dispatch(updateFolderAction(folderData));
+                    dispatch(updateFolderAction(state.InEditFolderReducer));
                 }
             } else {
-                dispatch(createFolderAction(folderData));
+                dispatch(createFolderAction(state.InEditFolderReducer));
             }   
 
             handleClose(true);
@@ -198,7 +200,7 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
     }
 
     return (<>
-        {warningActions.showFolderChangeWarning === true && 
+        {state.WarningActionsReducer?.showFolderChangeWarning === true && 
             <MessageBox 
                 title="Warning" 
                 text="You have made changes to this form. Closing it will result in all changes being lost. Do you want to proceed?"
@@ -213,19 +215,17 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
                 <div className={`w-full bg-white min-h-[200px] rounded-lg absolute left-0  ${slideDown === false ? "top-[-200%] ease-out duration-300" : "top-[6rem] ease-in duration-300"}`}>
                 
                     <div id="popup-header" className="pl-8 pr-5 pb-5 pt-6 border-b border-tbfColor-lgrey w-full flex justify-between">
-                        <h1 className="text-3xl text-tbfColor-darkpurple font-light inline-block">
+                        <h1 data-testid="manage-folder-title" className="text-3xl text-tbfColor-darkpurple font-light inline-block">
                             {title}
                         </h1>
-                        <button>
-                            <GenericIconButton icon="close" size={34} fill="rgba(0,0,0,0.2)" onClick={() => handleClose()} />
-                        </button>
+                        <GenericIconButton icon="close" size={34} fill="rgba(0,0,0,0.2)" onClick={() => handleClose()} />
                     </div>
                     <div id="popup-body" className="px-8 pt-6">
                         <FormField label="Name *" error={inValidFields.name} description="Give a name to this workspace. A sensible name may help your workflow when relevant tabs are needed.">
-                            <input type="text" defaultValue={folderData?.name} className={predef.textfield_full} onBlur={(e: any) => handleChangeField("name", e.target.value)} />
+                            <input data-testid="name-field" id="name-field" type="text" defaultValue={state.InEditFolderReducer?.name} className={predef.textfield_full} onBlur={(e: any) => handleChangeField("name", e.target.value)} />
                         </FormField>
                         <FormField label="Description" description="Describe the purpose of this workspace.">
-                            <textarea defaultValue={folderData?.desc} className={predef.textarea_full} onBlur={(e: any) => handleChangeField("desc", e.target.value)}></textarea>
+                            <textarea data-testid="desc-field" id="desc-field" defaultValue={state.InEditFolderReducer?.desc} className={predef.textarea_full} onBlur={(e: any) => handleChangeField("desc", e.target.value)}></textarea>
                         </FormField>
                         <div className={`py-6 flex flex-row items-center`}>
                             <div className="w-full">

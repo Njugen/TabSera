@@ -34,7 +34,7 @@ function WindowManager(props: iWindowManager): JSX.Element {
 
     function renderActionButtons(): JSX.Element {
         return <div className="flex flex-row mt-10">
-            <PrimaryButton disabled={false} text="Import session" onClick={() => {}} />
+           {/* <PrimaryButton disabled={false} text="Import session" onClick={() => {}} />  */}
             <PrimaryButton disabled={false} text="New window" onClick={handleCreateWindow} />            
         </div>
     }
@@ -78,7 +78,7 @@ function WindowManager(props: iWindowManager): JSX.Element {
     }
 
     return (
-        <div className="my-6 py-6 min-h-[200px] flex flex-col items-center justify-center">
+        <div data-testid="window-manager" className="my-6 py-6 min-h-[200px] flex flex-col items-center justify-center">
             { renderWindows() }
             { renderActionButtons() }            
         </div> 
