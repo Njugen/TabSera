@@ -2,8 +2,8 @@ import { render, screen, within, fireEvent, waitFor } from "@testing-library/rea
 import '@testing-library/jest-dom';
 import ManageFolderPopup from "../../../components/utils/manage_folder_popup";
 import { Provider } from "react-redux";
-//import { store } from "../../../redux/reducer";
-import { store } from "../../../tools/testing/reduxStore";
+import { store } from "../../../redux/reducer";
+//import { store } from "../../../tools/testing/reduxStore";
 import { chrome } from 'jest-chrome'
 import { useDispatch, useSelector } from "../../../redux/mocked_hooks"; 
 //import { renderWithProviders } from "../../../tools/testing/renderWithProviders";
@@ -21,6 +21,7 @@ import { WorkspaceSettingsReducer } from "../../../redux/reducers/workspaceSetti
 import { HistorySettingsReducer } from "../../../redux/reducers/historySettingsReducer";
 import { CurrentSessionSettingsReducer } from "../../../redux/reducers/currentSessionReducer";
 import { MiscReducer } from "../../../redux/reducers/miscReducer";
+import { mockStore } from "../../../redux/reducer";
 
 jest.mock("../../../redux/mocked_hooks");
 const mockFunction = jest.fn();
@@ -57,20 +58,21 @@ const mockEditFolderState: iFolder = {
     }]
 };
 
-beforeEach(() => {
-    const state = store;
-    useSelector.mockImplementation(() => state.getState());
-    useDispatch.mockClear();
-    useDispatch.mockImplementation(() => jest.fn);
-})
- 
+
 afterEach(() => {
    jest.clearAllMocks();
 });
 
 describe("Create new workspace", () => {
+    beforeEach(() => {
+        const state = mockStore();
+        useSelector.mockImplementation(() => state.getState());
+        useDispatch.mockClear();
+        useDispatch.mockImplementation(() => state.dispatch);
+    })
+ 
     test(`popup title reads "${mockNewFolderTitle}"`, () => {
-        store.dispatch(initInEditFolder(mockNewFolderState));    
+  
         render(
             <Provider store={store}>
                 <ManageFolderPopup title={mockNewFolderTitle} onClose={mockFunction} />
@@ -82,7 +84,7 @@ describe("Create new workspace", () => {
     });
 
     test("name field works (focus & blur) and value is saved to redux when blurred", () => {
-        store.dispatch(initInEditFolder(mockNewFolderState));    
+ 
         render(
             <Provider store={store}>
                 <ManageFolderPopup title={mockNewFolderTitle} onClose={mockFunction} />
@@ -107,22 +109,19 @@ describe("Create new workspace", () => {
 
         expect(inputField.value).toBe(mockFolderName);
 
-     //   const updatedState = InEditFolderReducer(mockNewFolderState, updateInEditFolder("name", mockFolderName));
-
-     //   expect(updatedState.name).toBe(mockFolderName);
     });
 
     test("description field works (focus & blur) and value is saved to redux when blurred", () => {
-        store.dispatch(initInEditFolder(mockNewFolderState));    
+        
         render(
             <Provider store={store}>
-                <ManageFolderPopup title={mockEditFolderTitle} onClose={mockFunction} />
+                <ManageFolderPopup title={mockNewFolderTitle} onClose={mockFunction} />
             </Provider>
         );
         
         const textareaField: HTMLTextAreaElement = screen.getByTestId("desc-field");
 
-        expect(textareaField.value).toBe(mockNewFolderState.desc);
+        expect(textareaField.value).toBe(mockEditFolderState.desc);
 
         fireEvent.focus(textareaField);
 
@@ -156,11 +155,17 @@ describe("Create new workspace", () => {
 });
 
 describe("Edit workspace", () => {
-
+    beforeEach(() => {
+        const state = mockStore();
+        useSelector.mockImplementation(() => state.getState());
+        useDispatch.mockClear();
+        useDispatch.mockImplementation(() => state.dispatch);
+    })
+    
     test(`popup title reads "${mockEditFolderTitle}"`, () => {
         render(
             <Provider store={store}>
-                <ManageFolderPopup title={mockEditFolderTitle} onClose={mockFunction} />
+                <ManageFolderPopup folder={mockNewFolderState} title={mockEditFolderTitle} onClose={mockFunction} />
             </Provider>
         );
 
@@ -171,10 +176,10 @@ describe("Edit workspace", () => {
     test("name field works (focus & blur) and value is saved to redux when blurred", () => {
         const randomName = Math.floor(Math.random() * 100000000).toString();
 
-        store.dispatch(initInEditFolder(mockEditFolderState));    
+        //store.dispatch(initInEditFolder(mockEditFolderState));    
         render(
             <Provider store={store}>
-                <ManageFolderPopup title={mockEditFolderTitle} onClose={mockFunction} />
+                <ManageFolderPopup folder={mockEditFolderState} title={mockEditFolderTitle} onClose={mockFunction} />
             </Provider>
         );
 
@@ -203,10 +208,10 @@ describe("Edit workspace", () => {
 
         // const store = setupStore();
         
-        store.dispatch(initInEditFolder(mockEditFolderState));    
+       // store.dispatch(initInEditFolder(mockEditFolderState));    
         render(
             <Provider store={store}>
-                <ManageFolderPopup title={mockEditFolderTitle} onClose={mockFunction} />
+                <ManageFolderPopup folder={mockEditFolderState} title={mockEditFolderTitle} onClose={mockFunction} />
             </Provider>
         );
       

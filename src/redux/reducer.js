@@ -22,4 +22,12 @@ const combinedReducers = combineReducers({
 const middleware = applyMiddleware(thunk);
 const store = createStore(combinedReducers, middleware);
 store.subscribe(()=>{});
-export { store }
+
+const mockStore = () => {
+    const middleware = applyMiddleware(thunk);
+    const temp = createStore(combinedReducers, middleware);
+    temp.subscribe(()=>{});
+    return temp;
+}
+
+export { store, mockStore }
