@@ -947,7 +947,7 @@ describe("Test of close and cancelling of folder management popup", () => {
                 }
             });
 
-            fireEvent.blur(inputField);
+            fireEvent.blur(inputField, {});
 
             expect(windowList[targetIndex]).toHaveTextContent(url);
         })

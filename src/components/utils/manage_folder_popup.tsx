@@ -149,7 +149,7 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
 
     // Perform tasks and close this form popup
     function handleClose(skipWarning?: boolean): void {
-        console.log("HANDLE CLOSE 1");
+       // console.log("HANDLE CLOSE 1");
         chrome.storage.sync.get("cancellation_warning_setting", (data) => {
            // console.log("HANDLE CLOSE 2");
            //console.log("cancellation state", data.cancellation_warning_setting);
