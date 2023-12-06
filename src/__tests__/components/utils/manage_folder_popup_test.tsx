@@ -1094,8 +1094,157 @@ describe("Test of close and cancelling of folder management popup", () => {
             expect(mockCloseFunction).toHaveBeenCalled();
         });
     })
-})
+});
 
-/*describe("Validation, saving and field errors", () => {
+describe("Window and tabs setting behaviour", () => {
+    test.each(mockEditFolderState.windows)("Expand/Collapse icon works", (windowData) => {
+        render(
+            <Provider store={store}>
+                <ManageFolderPopup folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
+            </Provider>
+        );
 
-});*/
+        const i = mockEditFolderState.windows.indexOf(windowData);
+      
+        let tabList = screen.getAllByTestId("tab-list");
+            
+        expect(tabList[i]).not.toHaveClass("invisible")
+
+        const collapseButton = screen.getAllByTestId("generic-icon-button-collapse"); 
+        fireEvent.click(collapseButton[i]);
+
+        expect(tabList[i]).toHaveClass("invisible")
+
+        const expandButton = screen.getByTestId("generic-icon-button-expand"); 
+        fireEvent.click(expandButton);
+
+        expect(tabList[i]).not.toHaveClass("invisible")
+    })
+
+    test("Expand/Collapse icon works", () => {
+        render(
+            <Provider store={store}>
+                <ManageFolderPopup folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
+            </Provider>
+        );
+      
+        const window = screen.getAllByTestId("window-item");
+        const trashButton = screen.getAllByTestId("generic-icon-button-trash")
+
+        expect(window[0]).toBeInTheDocument();
+        
+        fireEvent.click(trashButton[0]);
+        expect(window[0]).not.toBeInTheDocument();
+    })
+});
+
+test("Proceeding and declining warning message works", async () => {
+    const randomName = Math.floor(Math.random() * 100).toString();
+    
+    chrome.storage.sync.get.mockImplementation((string, callback) => {
+        callback({
+            cancellation_warning_setting: true
+        });
+
+    })
+    
+    const { rerender } = render(<Provider store={store}>
+        <ManageFolderPopup folder={mockEditFolderState} title={mockEditFolderTitle} onClose={mockCloseFunction} />
+    </Provider>);
+
+    const inputField: HTMLInputElement = screen.getByTestId("name-field");
+    
+    expect(inputField.defaultValue).toBe(mockEditFolderState.name);
+
+    fireEvent.focus(inputField);
+
+    fireEvent.change(inputField, {
+        target: {
+            value: randomName
+        }
+    });
+
+    fireEvent.blur(inputField);
+
+    let xButton = screen.getByTestId("generic-icon-button-close");
+    expect(xButton).toBeVisible();
+
+    fireEvent.click(xButton);
+
+    rerender(<Provider store={store}>
+        <ManageFolderPopup folder={mockEditFolderState} title={mockEditFolderTitle} onClose={mockCloseFunction} />
+    </Provider>);
+
+    let warningMessagePopup = await screen.findByTestId("warning-message-popup");
+    expect(warningMessagePopup).toBeInTheDocument();
+    expect(mockCloseFunction).not.toHaveBeenCalled();
+    
+    const declineButton = screen.getByTestId("decline-cancellation");
+    fireEvent.click(declineButton);
+
+    rerender(<Provider store={store}>
+        <ManageFolderPopup folder={mockEditFolderState} title={mockEditFolderTitle} onClose={mockCloseFunction} />
+    </Provider>);
+
+    expect(mockCloseFunction).not.toHaveBeenCalled();
+    expect(warningMessagePopup).not.toBeInTheDocument();
+
+    rerender(<Provider store={store}>
+        <ManageFolderPopup folder={mockEditFolderState} title={mockEditFolderTitle} onClose={mockCloseFunction} />
+    </Provider>);
+
+    fireEvent.click(xButton);
+
+    rerender(<Provider store={store}>
+        <ManageFolderPopup folder={mockEditFolderState} title={mockEditFolderTitle} onClose={mockCloseFunction} />
+    </Provider>);
+
+    warningMessagePopup = await screen.findByTestId("warning-message-popup");
+
+    expect(warningMessagePopup).toBeInTheDocument();
+    expect(mockCloseFunction).not.toHaveBeenCalled();
+
+    const proceedButton = screen.getByTestId("proceed-cancellation");
+    fireEvent.click(proceedButton);
+
+    jest.runAllTimers();
+
+    expect(warningMessagePopup).not.toBeInTheDocument();
+    expect(mockCloseFunction).toHaveBeenCalled();
+});
+
+
+describe("Validation, saving and field errors", () => {
+    const fields = ["name", "desc"];
+
+    test.each(fields)("Leaving the %s field empty will indicate an error when attempting to save/create a folder", (field) => {
+        render(
+            <Provider store={store}>
+                <ManageFolderPopup folder={mockNewFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
+            </Provider>
+        );
+
+        const inputField: HTMLInputElement = screen.getByTestId(`${field}-field`);
+        fireEvent.focus(inputField);
+
+        fireEvent.change(inputField, {
+            target: {
+                value: ""
+            }
+        });
+
+        fireEvent.blur(inputField);
+
+        const saveButton = screen.getByText("Save");
+        fireEvent.click(saveButton);
+
+        const fieldErrors = screen.getAllByTestId("field-title-error");
+        expect(fieldErrors.length).toBeGreaterThan(0);
+
+        expect(mockCloseFunction).not.toHaveBeenCalled();
+    });
+
+    /*test("Having no windows when attempting to save a folder will indicate an error when attempting to save/create a folder", () => {
+
+    })*/
+});

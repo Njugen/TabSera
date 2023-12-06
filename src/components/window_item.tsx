@@ -144,7 +144,7 @@ function WindowItem(props: iWindowItem): JSX.Element {
                     <GenericIconButton icon={expanded === true ? "collapse" : "expand"} size={20} fill="#000" onClick={handleExpand} />
                 </div>
             </div>
-            <div className={`tabs-list mt-3 overflow-hidden ${expanded === true ? "max-h-[2000px] ease-out" : "max-h-0 ease-in"} duration-200 transition-all`}>
+            <div data-testid={`tab-list`} data-visibility={expanded ? "visible" : "hidden"} className={`tabs-list mt-3 overflow-hidden ${expanded === true ? "max-h-[2000px] ease-out visible" : "max-h-0 ease-in invisible"} duration-200 transition-all`}>
                 <div className={`grid grid-cols-${tabsCol ? tabsCol : 2} gap-x-3 gap-y-0`}>
                 {tabs.length > 0 ? [...evaluateNewTabRender()] : [renderEditTab(id)]}
                 </div>

@@ -38,10 +38,10 @@ function MessageBox(props: iMessageBox): JSX.Element {
                     {text}
                 </p>
               
-                <button onClick={() => handleButtonClick("secondary")} className="hover:opacity-60 transition-all ease-in border-2 border-white bg-tbfColor-darkpurple text-white font-semibold px-3 py-2 mx-2 rounded-md">
+                <button data-testid={"decline-cancellation"} onClick={() => handleButtonClick("secondary")} className="hover:opacity-60 transition-all ease-in border-2 border-white bg-tbfColor-darkpurple text-white font-semibold px-3 py-2 mx-2 rounded-md">
                     { secondaryButton.text }
                 </button>
-                <button onClick={() => handleButtonClick("primary")} className="hover:opacity-60 transition-all ease-in border-2 border-white bg-white text-tbfColor-darkpurple font-semibold px-3 py-2 mx-2 rounded-md">
+                <button data-testid={"proceed-cancellation"} onClick={() => handleButtonClick("primary")} className="hover:opacity-60 transition-all ease-in border-2 border-white bg-white text-tbfColor-darkpurple font-semibold px-3 py-2 mx-2 rounded-md">
                     { primaryButton.text }
                 </button>
             </div>
