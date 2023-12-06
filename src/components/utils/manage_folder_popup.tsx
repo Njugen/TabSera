@@ -149,13 +149,18 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
 
     // Perform tasks and close this form popup
     function handleClose(skipWarning?: boolean): void {
+        console.log("HANDLE CLOSE 1");
         chrome.storage.sync.get("cancellation_warning_setting", (data) => {
+           // console.log("HANDLE CLOSE 2");
+           //console.log("cancellation state", data.cancellation_warning_setting);
+           //console.log("modified", modified);
+           //console.log("warning", skipWarning);
             if((modified === true && skipWarning !== true) && data.cancellation_warning_setting === true){
+                //console.log("DDDDDDDDDD");
                 // Show a warning when a form has been modified AND when settings explicitly permits it.
                 dispatch(setShowFolderChangeWarning(true));
             } else {
                 // Perform tasks and close the popup form.
-
                 setSlideDown(false);
                 
                 dispatch(setShowFolderChangeWarning(false));
@@ -210,7 +215,7 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
         }
         <div ref={popupRef} className={`${styles.popup_container} scroll-smooth overflow-y-scroll flex fixed top-0 left-0 justify-center items-center w-screen z-50 ${slideDown === false ? "transition-all ease-out h-0 duration-200" : "transition-all h-screen ease-in duration-75"}`}>
             
-            <div className="relative bottom-12 h-screen w-[992px]">
+            <div data-testid="manage-folder-popup" className="relative bottom-12 h-screen w-[992px]">
            
                 <div className={`w-full bg-white min-h-[200px] rounded-lg absolute left-0  ${slideDown === false ? "top-[-200%] ease-out duration-300" : "top-[6rem] ease-in duration-300"}`}>
                 

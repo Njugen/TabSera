@@ -43,7 +43,8 @@ function EditableTabItem(props: iEditableTabItem): JSX.Element {
 
     // Once the user clicks outside the field, then save it.
     function handleBlur(e: any): void {
-        saveToStore(e);
+        //console.log("E", e.relatedTarget.tagName !== "BUTTON");
+        if(e.relatedTarget.tagName?.toLowerCase() !== "button") saveToStore(e);
     }
 
     // Save the field once the user hits "Enter" on the keyboard

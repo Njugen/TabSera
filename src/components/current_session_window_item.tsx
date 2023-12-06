@@ -101,7 +101,7 @@ function CurrentSessionWindowItem(props: iWindowItem): JSX.Element {
     },[])
 
     return (
-        <div className="window-item w-full py-1 rounded-md mb-3" id={`window-${id}`}>
+        <div data-testid="window-item" className="window-item w-full py-1 rounded-md mb-3" id={`window-${id}`}>
             <div className="flex justify-between items-center w-full border-b border-tbfColor-darkgrey">
                 <h3 className="text-sm font-semibold ">
                     {`Window`}
