@@ -915,7 +915,106 @@ describe("Test of close and cancelling of folder management popup", () => {
             expect(mockCloseFunction).not.toHaveBeenCalled();
         });
 
-        test("Clicking \"New tab\" in a window will add a working editable field", async () => {
+        test("Clicking \"New window\" adds a new window. Cancellation (no warning) works when editable field is ongoing", () => {
+            chrome.storage.sync.get.mockImplementation((string, callback) => {
+                callback({});
+            })
+            
+            const randomString = Math.floor(Math.random() * 100000000).toString();
+            const url = "https://"+ randomString + ".com";
+
+            const { rerender } = render(
+                <Provider store={store}>
+                    <ManageFolderPopup title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                </Provider>
+            );
+
+            const windowList = screen.queryAllByTestId("window-item");
+            expect(windowList.length).toEqual(0);
+
+            const button = screen.getByText("New window", { selector: "button" });
+            fireEvent.click(button);
+
+            const updatedWindowList = screen.queryAllByTestId("window-item");
+            expect(updatedWindowList.length).toEqual(1);
+
+            const inputField: HTMLInputElement = screen.getByDisplayValue("https://");
+            expect(inputField.value).toBe("https://");
+
+            fireEvent.click(inputField);
+
+            fireEvent.change(inputField, {
+                target: {
+                    value: url
+                }
+            });
+
+            const cancelButton = screen.getByText("Cancel", { selector: "button" });
+            expect(cancelButton).toBeVisible();
+
+            fireEvent.click(cancelButton);
+
+            jest.runAllTimers();
+            expect(mockCloseFunction).toHaveBeenCalled();
+        });
+
+        test("Clicking \"New window\" adds a new window. Cancellation (with warning) works when editable field is ongoing", async () => {
+            chrome.storage.sync.get.mockImplementation((string, callback) => {
+                callback({
+                    cancellation_warning_setting: true
+                });
+            })
+            
+            const randomString = Math.floor(Math.random() * 100000000).toString();
+            const url = "https://"+ randomString + ".com";
+
+            const { rerender } = render(
+                <Provider store={store}>
+                    <ManageFolderPopup title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                </Provider>
+            );
+
+            const windowList = screen.queryAllByTestId("window-item");
+            expect(windowList.length).toEqual(0);
+
+            const button = screen.getByText("New window", { selector: "button" });
+            fireEvent.click(button);
+
+            const updatedWindowList = screen.queryAllByTestId("window-item");
+            expect(updatedWindowList.length).toEqual(1);
+
+            const inputField: HTMLInputElement = screen.getByDisplayValue("https://");
+            expect(inputField.value).toBe("https://");
+
+            fireEvent.click(inputField);
+
+            fireEvent.change(inputField, {
+                target: {
+                    value: url
+                }
+            });
+
+            fireEvent.blur(inputField);
+
+            rerender(<Provider store={store}>
+                <ManageFolderPopup folder={mockEditFolderState}  title={mockNewFolderTitle} onClose={mockCloseFunction} />
+            </Provider>);
+
+            const cancelButton = screen.getByText("Cancel", { selector: "button" });
+            expect(cancelButton).toBeVisible();
+
+            fireEvent.click(cancelButton);
+
+            rerender(<Provider store={store}>
+                <ManageFolderPopup folder={mockEditFolderState}  title={mockNewFolderTitle} onClose={mockCloseFunction} />
+            </Provider>);
+
+            const warningMessagePopup = await screen.findByTestId("warning-message-popup");
+            expect(warningMessagePopup).toBeInTheDocument();
+            expect(mockCloseFunction).not.toHaveBeenCalled();
+        });
+
+        test("Clicking \"New tab\" in a window will add a working editable field. Cancellation works while editing", async () => {
             chrome.storage.sync.get.mockImplementation((string, callback) => {
                 callback({});
             })
@@ -928,7 +1027,6 @@ describe("Test of close and cancelling of folder management popup", () => {
                     <ManageFolderPopup folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
                 </Provider>
             );
-
            
             let windowList = screen.getAllByTestId("window-item");;
             const targetIndex = Math.floor(Math.random() * ((windowList.length-1) - 0));
@@ -947,10 +1045,54 @@ describe("Test of close and cancelling of folder management popup", () => {
                 }
             });
 
-            fireEvent.blur(inputField, {});
+            const cancelButton = screen.getByText("Cancel", { selector: "button" });
+            expect(cancelButton).toBeVisible();
 
-            expect(windowList[targetIndex]).toHaveTextContent(url);
-        })
+            fireEvent.click(cancelButton);
+
+            jest.runAllTimers();
+            expect(mockCloseFunction).toHaveBeenCalled();
+        });
+
+        test("Clicking \"New tab\" in a window will add a working editable field. Cancellation (X button) works while editing", async () => {
+            chrome.storage.sync.get.mockImplementation((string, callback) => {
+                callback({});
+            })
+            
+            const randomString = Math.floor(Math.random() * 100000000).toString();
+            const url = "https://"+ randomString + ".com";
+
+            render(
+                <Provider store={store}>
+                    <ManageFolderPopup folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                </Provider>
+            );
+           
+            let windowList = screen.getAllByTestId("window-item");;
+            const targetIndex = Math.floor(Math.random() * ((windowList.length-1) - 0));
+
+            const button = screen.getAllByText("New tab", { selector: "button" });
+            fireEvent.click(button[targetIndex]);
+
+            const inputField: HTMLInputElement = screen.getByDisplayValue("https://" );
+            expect(inputField.value).toBe("https://");
+
+            fireEvent.click(inputField);
+
+            fireEvent.change(inputField, {
+                target: {
+                    value: url
+                }
+            });
+
+            const xButton = screen.getByTestId("generic-icon-button-close");
+            expect(xButton).toBeVisible();
+
+            fireEvent.click(xButton);
+
+            jest.runAllTimers();
+            expect(mockCloseFunction).toHaveBeenCalled();
+        });
     })
 })
 

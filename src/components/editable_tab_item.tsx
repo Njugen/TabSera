@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import randomNumber from "../tools/random_number";
 import { iTabItem } from "../interfaces/tab_item";
 import { useDispatch, useSelector } from "react-redux";
-import { updateWindowManager } from "../redux/actions/inEditFolderActions";
+import { updateInEditFolder, updateWindowManager } from "../redux/actions/inEditFolderActions";
 
 /*
     A textfield, which lets the user set/update a url for a tab.
