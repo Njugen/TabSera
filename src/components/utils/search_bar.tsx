@@ -67,9 +67,9 @@ function SearchBar(props: any): JSX.Element {
     function handleShowResultsContainer(): void {
         if(showResultsContainer === false){
             setShowResultsContainer(true);
-            setTimeout(() => {
+            
                 setSlideDown(slideDown === true ? false : true);
-            }, 75);
+          
         } else {
             if(searchResultsContainerRef.current){
                 searchResultsContainerRef.current.classList.remove("mt-16");
@@ -77,9 +77,9 @@ function SearchBar(props: any): JSX.Element {
             } 
             document.body.style.overflowY = "auto";
             setSlideDown(false);
-            setTimeout(() => {
+     
                 setShowResultsContainer(false);
-            }, 75);
+      
         }
     
     }
@@ -87,13 +87,15 @@ function SearchBar(props: any): JSX.Element {
     // Identify clicked viewport area and hide/show search results accordingly
     function handleWindowClick(e: any): void {
         e.stopPropagation();
-        if(showResultsContainer === false || !e.target.parentElement || ! e.target.parentElement.parentElement) return;
+        //console.log("e", e.target.parentElement.parentElement);
+        if(showResultsContainer === false || !e.target.parentElement || !e.target.parentElement.parentElement) return;
         
         const searchFieldId = "search-field";
         const searchResultsContainerId = "search-results-area";
 
         if(e.target.id.includes(searchFieldId) === false && 
         e.target.id.includes(searchResultsContainerId) === true){
+            console.log("CALL");
             handleShowResultsContainer();
         }
     }
@@ -138,12 +140,12 @@ function SearchBar(props: any): JSX.Element {
         <>
             <div className="p-3 h-16 top-0 z-50 sticky flex justify-center bg-tbfColor-lighterpurple drop-shadow-md">
                 <div className={`w-7/12 flex items-center relative bg-white z-[501] text-sm h-10 ${slideDown === false ? "opacity-50" : "drop-shadow-md"} focus:opacity-90 border-tbfColor-lightergrey focus:outline-0 focus:outline-tbfColor-lighterpurple4 focus:shadow-md hover:shadow py-5 pr-5 rounded-3xl`}>
-                    <div className="ml-4 mr-2 z-[502]">
+                    <div data-testid="te" className="ml-4 mr-2 z-[502]">
                         <SearchIcon fill={"#5c5c5c"} size={24} />
                     </div>
-                    <input ref={searchFieldRef} id="search-field" defaultValue="Search tabs..." onChange={handleFieldChange} onClick={handleActivateSearch} className={`py-5 h-10 bg-white w-full focus:outline-0`} type="text" />
+                    <input ref={searchFieldRef} data-testid="search-field" id="search-field" defaultValue="Search tabs..." onChange={handleFieldChange} onClick={handleActivateSearch} className={`py-5 h-10 bg-white w-full focus:outline-0`} type="text" />
                 </div>
-                <div id="search-results-area" className={`${styles.popup_container} w-screen h-screen top-0 bg-[rgba-] absolute z-500 ${slideDown === true ? "flex justify-center" : "hidden"}`}>
+                {slideDown === true && <div data-testid="search-results-area" id="search-results-area" className={`${styles.popup_container} w-screen h-screen top-0 bg-[rgba-] absolute z-500 flex justify-center`}>
                     <div ref={searchResultsContainerRef} className={`bg-white p-6 mt-10 transition-all ease-in duration-75 max-h-96 overflow-hidden w-7/12 z-10 rounded-lg drop-shadow-[0_3px_2px_rgba(0,0,0,0.15)]`}>
                         {searchTerm.length > 0 ? <div className="grid grid-cols-2 gap-x-[1.75rem]">   
                            {/* 
@@ -172,7 +174,7 @@ function SearchBar(props: any): JSX.Element {
                             </div>
                         </div>: <p className="text-center">Enter a search term...</p>}
                     </div>
-                </div> 
+                </div> }
             </div>
             
         </>

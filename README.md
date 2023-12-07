@@ -75,7 +75,7 @@ HTML5, CSS3, Javascript/Typescript, React/Redux, JEST, SASS, Webextension API, T
 - Language (FI, SWE, EN)
 - Close duplicate pages
 
-### Extension sidebar (not implemented yet)
+### Upcoming Feature: Extension sidebar
 - Search tabs by title or url
 - Current session's windows and tabs as grid or list
 - View folder contents as a nested list
@@ -90,6 +90,7 @@ HTML5, CSS3, Javascript/Typescript, React/Redux, JEST, SASS, Webextension API, T
 - (Export/Sync/Save To cloud or json file)
 - (Undo close)
 - Close duplicate pages
+
 
 ### Uninstallation
 - Show feedback form

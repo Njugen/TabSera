@@ -1,29 +1,13 @@
-import { render, screen, within, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import '@testing-library/jest-dom';
 import ManageFolderPopup from "../../../components/utils/manage_folder_popup";
 import { Provider } from "react-redux";
 import { store } from "../../../redux/reducer";
-//import { store } from "../../../tools/testing/reduxStore";
 import { chrome } from 'jest-chrome'
 import { useDispatch, useSelector } from "../../../redux/mocked_hooks"; 
-//import { renderWithProviders } from "../../../tools/testing/renderWithProviders";
-import { updateFolderAction } from "../../../redux/actions/folderCollectionActions";
+
 import { iFolder } from "../../../interfaces/folder";
-import { initInEditFolder, updateInEditFolder } from "../../../redux/actions/inEditFolderActions";
-//import { setupStore } from "../../../tools/testing/reduxStore";
-//import { inEditFolderState } from "../../../redux/reducers/inEditFolderReducer";
-import { act } from "react-dom/test-utils";
-import configureStore from 'redux-mock-store';
-import { FolderCollectionReducer } from "../../../redux/reducers/folderCollectionReducer";
-import { InEditFolderReducer } from "../../../redux/reducers/inEditFolderReducer";
-import { WarningActionsReducer } from "../../../redux/reducers/warningActionsReducer";
-import { WorkspaceSettingsReducer } from "../../../redux/reducers/workspaceSettingsReducer";
-import { HistorySettingsReducer } from "../../../redux/reducers/historySettingsReducer";
-import { CurrentSessionSettingsReducer } from "../../../redux/reducers/currentSessionReducer";
-import { MiscReducer } from "../../../redux/reducers/miscReducer";
-import { mockStore } from "../../../redux/reducer";
-import { useEffect, useState as useStateMock } from "react";
-import { setShowFolderChangeWarning } from "../../../redux/actions/warningActions";
+import { initInEditFolder } from "../../../redux/actions/inEditFolderActions";
 
 jest.mock("../../../redux/mocked_hooks");
 jest.setTimeout(10000);
@@ -1121,7 +1105,7 @@ describe("Window and tabs setting behaviour", () => {
         expect(tabList[i]).not.toHaveClass("invisible")
     })
 
-    test("Expand/Collapse icon works", () => {
+    test("Expand/Collapse button works", () => {
         render(
             <Provider store={store}>
                 <ManageFolderPopup folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
@@ -1135,6 +1119,59 @@ describe("Window and tabs setting behaviour", () => {
         
         fireEvent.click(trashButton[0]);
         expect(window[0]).not.toBeInTheDocument();
+    })
+
+    test("Delete button in window section is not visible when no tabs are marked", () => {
+        render(
+            <Provider store={store}>
+                <ManageFolderPopup folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
+            </Provider>
+        );
+
+        const deleteButton = screen.queryByText("Delete tabs", { selector: "button" });
+        expect(deleteButton).not.toBeInTheDocument();
+    });
+
+    test("Delete button is visible when tabs are marked and deletes those when clicked", () => {
+        const tempFolderMock = {...mockEditFolderState};
+        tempFolderMock.windows = [
+            {
+                id: 1,
+                tabs: [{
+                    id: 1,
+                    label: "test tab",
+                    url: "http://localhost:3000",
+                    marked: false
+                },
+                {
+                    id: 2,
+                    label: "test tab 2",
+                    url: "http://localhost:3000",
+                    marked: false
+                }]
+            },
+        ]
+
+        render(
+            <Provider store={store}>
+                <ManageFolderPopup folder={tempFolderMock} title={mockNewFolderTitle} onClose={mockCloseFunction} />
+            </Provider>
+        );
+
+        let tabs = screen.queryAllByTestId("tab-item");
+        const checkboxes = screen.queryAllByTestId("checkbox");
+        
+
+        expect(tabs.length).toBeGreaterThan(0);
+
+        checkboxes.forEach((checkbox) => {
+            fireEvent.click(checkbox);
+        })
+        const deleteButton = screen.queryByText("Delete tabs", { selector: "button" });
+        if(deleteButton) fireEvent.click(deleteButton);
+        
+        tabs = screen.queryAllByTestId("tab-item");
+        expect(tabs.length).toEqual(0);
     })
 });
 
@@ -1212,7 +1249,6 @@ test("Proceeding and declining warning message works", async () => {
     expect(warningMessagePopup).not.toBeInTheDocument();
     expect(mockCloseFunction).toHaveBeenCalled();
 });
-
 
 describe("Validation, saving and field errors", () => {
     const fields = ["name", "desc"];
