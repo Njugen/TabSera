@@ -1173,6 +1173,98 @@ describe("Window and tabs setting behaviour", () => {
         tabs = screen.queryAllByTestId("tab-item");
         expect(tabs.length).toEqual(0);
     })
+
+    test("Tabs url can be edited, updated and error marked if needed (exit by clicking outside textfield)", () => {
+        render(
+            <Provider store={store}>
+                <ManageFolderPopup folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
+            </Provider>
+        );
+
+        let editIcon = screen.getAllByTestId("generic-icon-button-edit");
+        
+        fireEvent.click(editIcon[0]);
+ 
+        let editableTab: HTMLInputElement = screen.getByTestId("editable-tab");
+        expect(editableTab.value).toBe(mockEditFolderState.windows[0].tabs[0].url);
+
+        fireEvent.change(editableTab, {
+                target: {
+                    value: "http://microsoft.com"
+                }
+            }
+        );
+
+        fireEvent.blur(editableTab);
+
+        const tabItem = screen.getAllByTestId("tab-item");
+        expect(tabItem[0]).toHaveTextContent("http://microsoft.com");
+
+        editIcon = screen.getAllByTestId("generic-icon-button-edit");
+        
+        fireEvent.click(editIcon[0]);
+
+        editableTab = screen.getByTestId("editable-tab");
+
+        fireEvent.change(editableTab, {
+                target: {
+                    value: "a"
+                }
+            }
+        );
+
+        fireEvent.blur(editableTab);
+        const fieldError = screen.getByTestId("field-error");
+        expect(fieldError).toBeInTheDocument();
+    });
+
+    test("Tabs url can be edited, updated and error marked if needed (exit by hitting enter/return)", () => {
+        render(
+            <Provider store={store}>
+                <ManageFolderPopup folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
+            </Provider>
+        );
+
+        let editIcon = screen.getAllByTestId("generic-icon-button-edit");
+        
+        fireEvent.click(editIcon[0]);
+ 
+        let editableTab: HTMLInputElement = screen.getByTestId("editable-tab");
+        expect(editableTab.value).toBe(mockEditFolderState.windows[0].tabs[0].url);
+
+        fireEvent.change(editableTab, {
+                target: {
+                    value: "http://ign.com"
+                }
+            }
+        );
+
+        fireEvent.keyDown(editableTab, {
+            key: "Enter"
+        });
+
+        const tabItem = screen.getAllByTestId("tab-item");
+        expect(tabItem[0]).toHaveTextContent("http://ign.com");
+
+        editIcon = screen.getAllByTestId("generic-icon-button-edit");
+        
+        fireEvent.click(editIcon[0]);
+
+        editableTab = screen.getByTestId("editable-tab");
+
+        fireEvent.change(editableTab, {
+                target: {
+                    value: "bcd"
+                }
+            }
+        );
+
+        fireEvent.keyDown(editableTab, {
+            key: "Enter"
+        });
+        const fieldError = screen.getByTestId("field-error");
+        expect(fieldError).toBeInTheDocument();
+    })
 });
 
 test("Proceeding and declining warning message works", async () => {

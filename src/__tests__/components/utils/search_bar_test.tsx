@@ -65,11 +65,11 @@ mockTabs.forEach((tab, i) => {
 const historyTabs: Array<chrome.history.HistoryItem> = [
     { id: "0", title: "Helsingfors universitet" }, 
     { id: "1", title: "Stockholms universitet" },
-    { id: "2", title: "Åbos universitet" }
+    { id: "2", title: "Åbos universitet" },
+    { id: "3", title: "Hufvudstadsbladet" }
 ];
 
-
-beforeAll(() => {
+beforeEach(() => {
     store.dispatch(setUpWindowsAction(mockCurrentSession.windows));
     store.dispatch(setUpTabsAction(historyTabs));
 })
@@ -141,7 +141,7 @@ describe("Search bar", () => {
         });
 
         tabs = screen.queryAllByTestId("tab-item");
-        expect(tabs.length).toEqual(2);
+        expect(tabs.length).toEqual(3);
 
         expect(searchResultsArea).toHaveTextContent("Aftonbladet");
         expect(searchResultsArea).toHaveTextContent("Vasabladet");
@@ -177,5 +177,32 @@ describe("Search bar", () => {
 
         searchResultsArea = screen.queryByTestId("search-results-area");
         expect(searchResultsArea).not.toBeInTheDocument();
+    });
+
+    test("X (close tab) button is visible and works for currently opened tabs.", () => {
+        const { rerender } = render(
+            <Provider store={store}>
+                <SearchBar /> 
+            </Provider>
+        );
+
+        let searchField: HTMLInputElement = screen.getByTestId("search-field");
+        fireEvent.click(searchField);
+
+        let searchResultsArea = screen.getByTestId("search-results-area");
+        expect(searchResultsArea).toBeInTheDocument();
+
+        const searchTerm = "bladet";
+
+        fireEvent.focus(searchField);
+
+        fireEvent.change(searchField, {
+            target: {
+                value: searchTerm
+            }
+        });
+
+       const closeButtons = screen.getAllByTestId("generic-icon-button-close_light");
+       expect(closeButtons.length).toEqual(2);
     });
 });

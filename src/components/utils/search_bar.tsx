@@ -95,7 +95,6 @@ function SearchBar(props: any): JSX.Element {
 
         if(e.target.id.includes(searchFieldId) === false && 
         e.target.id.includes(searchResultsContainerId) === true){
-            console.log("CALL");
             handleShowResultsContainer();
         }
     }
