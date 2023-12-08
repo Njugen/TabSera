@@ -131,6 +131,9 @@ describe("Test current session window item component", () => {
             </Provider>
         );
 
+        const allTabs = screen.queryAllByTestId("tab-item");
+        expect(allTabs.length).toEqual(tabItems.length);
+
         tabs?.forEach((tab) => {
             const title = tab.title || "";
             const target = screen.getByRole("link", {name: title});
@@ -167,19 +170,32 @@ describe("Test current session window item component", () => {
             </Provider>
         );
 
+        let allTabs = screen.queryAllByTestId("tab-item");
+        expect(allTabs.length).toEqual(0);
+
         let expandButton = screen.getByTestId("generic-icon-button-expand");
         expect(expandButton).toBeInTheDocument();
         fireEvent.click(expandButton);
+
+        allTabs = screen.queryAllByTestId("tab-item");
+        expect(allTabs.length).toEqual(tabItems.length);
 
         let collapseButton = screen.getByTestId("generic-icon-button-collapse");
         expect(collapseButton).toBeInTheDocument();
         fireEvent.click(collapseButton);
 
+        allTabs = screen.queryAllByTestId("tab-item");
+        expect(allTabs.length).toEqual(0);
+
         expandButton = screen.getByTestId("generic-icon-button-expand");
         expect(expandButton).toBeInTheDocument();
         fireEvent.click(expandButton);
 
+        allTabs = screen.queryAllByTestId("tab-item");
+        expect(allTabs.length).toEqual(tabItems.length);
+
         collapseButton = screen.getByTestId("generic-icon-button-collapse");
         expect(collapseButton).toBeInTheDocument();
+        
     })
 })

@@ -9,7 +9,7 @@ import { Provider } from "react-redux";
 import iCurrentSessionState from "../../interfaces/states/currentSessionState";
 import { setUpWindowsAction } from "../../redux/actions/currentSessionActions";
 import userEvent from "@testing-library/user-event";
-import iHistoryState from './../../interfaces/states/historyState';
+import iHistoryState from '../../interfaces/states/historyState';
 import { setUpTabsAction } from "../../redux/actions/historySettingsActions";
 import CurrentSessionWindowItem from "../../components/current_session_window_item";
 import { iWindowItem } from "../../interfaces/window_item";

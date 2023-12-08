@@ -96,13 +96,13 @@ HTML5, CSS3, Javascript/Typescript, React/Redux, JEST, SASS, Webextension API, T
 - Show feedback form
 
 # Feedback
-I would appreciate feedback and suggestions on how to improve this plugin. Reports of possible bugs are also welcomed. Please, post an issue or contact me per email: privat_thai_nguyen@hotmail.com
+I would appreciate feedback and suggestions on how to improve this plugin. Reports of possible bugs are also welcome. Please, post an issue or contact me per email: privat_thai_nguyen@hotmail.com
 
 # Updates
 Minor updates and improvements will be provided from time to time. There is no definite roadmap or schedule.
 
 # Copyright
-TabSera was created by Thai Nguyen. This plugin is free for private and professional use, with no limits nor warranty. The plugin itself and code that derives from it may not be monetized, re-distributed on other channels than this repo, nor used as part of commercial products/services/brands.
+TabSera was created by Thai Nguyen. This plugin is free for private and professional use, with no limits nor warranty. The plugin itself and its code may not be monetized, re-distributed on other channels than this repo, nor used as part of commercial products/services/brands.
 
 # Contact information
 privat_thai_nguyen@hotmail.com
