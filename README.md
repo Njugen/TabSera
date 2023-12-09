@@ -1,14 +1,13 @@
-# TabSera - Extensive bookmark and tab management
+# TabSera - Extensive tab management
 
 TabSera gives you a better oversight and improved tab management experience not provided
 by default browser features.
 
-
 ## Installation
 
-- Firefox: -
-- Chrome: Download the extension from Google Web Store
-- Microsoft Edge: -
+- Firefox: No releases as of now
+- Chrome: No releases as of now
+- Microsoft Edge: No releases as of now
 
 ## Development
 
@@ -61,46 +60,24 @@ Run this command after changing existing components, to check if anything gets b
 - Tailwind
 - Webextension API
 
-## Ideas of upcoming features
+## Features
 
 ### Options page
-- Sort folders
-- Sort windows/tabs
-- Search tabs/folders
-- Display number of folders, windows and tabs
-- Current session
-- Create/Edit folders
-- Drag/drop folders
-- Expand/Collapse all
-- Close/Undo close tab(s)
-- Merge folders
-- Save window(s) to JSON or Google Drive
-- Google Drive/Firebase sync
-- Share folders
-- Suspend tabs/windows of a folder when opened
-- Dark theme
-- Language (FI, SWE, EN)
-- Close duplicate pages
+
+Extended oversight and management features can be found in the options page (right click the extension icon to the top right of your browser). This includes creating, merging, sorting and duplicating workspaces.
+
+<img src="./screenshots/main.jpg" width="50%" /><img src="./screenshots/settings.jpg" width="50%" />
+<img src="./screenshots/search.jpg" width="50%" />
 
 ### Upcoming Feature: Extension sidebar
-- Search tabs by title or url
-- Current session's windows and tabs as grid or list
-- View folder contents as a nested list
-- View folder contents in a new view
-- Open folders, windows or tabs
-- Close one or multiple tabs/windows
-- Mark and bookmark tabs
-- Mark and pin tabs (or only current tab???)
-- Create folder from session
-- Sort
-- Expand/Contract folders
-- (Export/Sync/Save To cloud or json file)
-- (Undo close)
-- Close duplicate pages
 
+Tabsera will in the future provide immediate access to existing workspaces. The idea
+is to quickly give the user a simple oversight over saved windows and tabs by
+nesting.
 
-### Uninstallation
-- Show feedback form
+Simple, non-extended, versions of features available in the option page will also be available in the sidebar.
+
+<img src="./screenshots/sidebar-draft.jpg" width="50%" />
 
 # Feedback
 I would appreciate feedback and suggestions on how to improve this plugin. Reports of possible bugs are also welcome. Please, post an issue or contact me per email: privat_thai_nguyen@hotmail.com
@@ -108,8 +85,8 @@ I would appreciate feedback and suggestions on how to improve this plugin. Repor
 # Updates
 Minor updates and improvements will be provided from time to time. There is no definite roadmap or schedule.
 
-# Copyright
-TabSera was created by Thai Nguyen. This plugin is free for private and professional use, with no limits nor warranty. The plugin itself and its code may not be monetized, re-distributed on other channels than this repo, nor used as part of commercial products/services/brands.
+# Copyright &copy;
+TabSera was created by Thai Nguyen. This plugin is free for private and professional use, with no limits nor warranty. The plugin itself and its code may not be monetized, re-distributed, nor used as part of commercial products/services/brands.
 
 # Contact information
-privat_thai_nguyen@hotmail.com
+Email: privat_thai_nguyen@hotmail.com

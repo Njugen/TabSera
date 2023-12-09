@@ -54,15 +54,15 @@ function Folder(props: iFolder) {
     function toggleExpand(init?: string): void {
         function exp(): void {
             if(contentsRef.current === null || headerRef.current === null) return;
-            headerRef.current.className = `relative tbf-${type} bg-tbfColor-lightpurple px-3 h-10 flex items-center rounded-t-md`;
-            contentsRef.current.className = "max-h-[2000px] overflow-hidden bg-tbfColor-lighterpurple4 border border-tbfColor-lightpurple rounded-b-md";
+            headerRef.current.className = `relative tbf-${type} border border-gray-200 bg-white px-3 h-10 flex items-center rounded-t-md`;
+            contentsRef.current.className = "max-h-[2000px] overflow-hidden bg-white border border-gray-200 rounded-b-md border-t-0";
             setExpanded(true);
         }
 
         function col(): void {
             if(contentsRef.current === null || headerRef.current === null) return;
-            headerRef.current.className = `relative tbf-${type} hover:bg-tbfColor-lighterpurple2 border border-tbfColor-lighterpurple hover:border-tbfColor-lightpurple bg-tbfColor-lighterpurple3 px-3 h-10 flex items-center rounded-md`;
-            contentsRef.current.className = "max-h-2000 overflow-hiddenbg-tbfColor-lighterpurple4 rounded-b-md";
+            headerRef.current.className = `relative tbf-${type} border border-gray-200 bg-white px-3 h-10 flex items-center rounded-md`;
+            contentsRef.current.className = "max-h-2000 overflow-hidden rounded-b-md";
             setExpanded(false);
         }
 
@@ -170,12 +170,12 @@ function Folder(props: iFolder) {
     return (
         <>
             <div data-testid={"folder-item"} className={`${viewMode === "list" ? "my-4 duration-200" : "my-2 duration-200"} transition-all ease-in w-full rounded-md`}>
-                <div ref={headerRef} className={`relative tbf-${type}  hover:bg-tbfColor-lighterpurple2 border border-tbfColor-lighterpurple hover:border-tbfColor-lightpurple bg-tbfColor-lighterpurple4 px-3 h-10 flex items-center rounded-md transition-all ease-in duration-100`}>
+                <div ref={headerRef}>
                     <div className="inline-block mr-3">
-                        {expanded === false ? <ClosedFolderIcon size={23} fill={"#000"} /> : <OpenedFolderIcon size={26} fill={"#fff"} />}
+                        {expanded === false ? <ClosedFolderIcon size={23} fill={"#000"} /> : <OpenedFolderIcon size={26} fill={"#000"} />}
                     </div>
                     <div className={`inline-block ${viewMode === "list" ? "w-10/12" : "w-5/12"}`}>
-                        <h2 className={`text-md truncate ${expanded === false ? "text-black" : "text-white"}`}>
+                        <h2 className={`text-md truncate ${expanded === false ? "text-black" : "text-black"}`}>
                             {name}
                         </h2>
                     </div>

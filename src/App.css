@@ -19,9 +19,7 @@
 
 
 body {
-  background: url("./images/global_bg.svg") #fcfcfc no-repeat bottom fixed;
-  overflow-x: hidden;
-  overflow-y: scroll;
+  background: #fff
 }
 
 #root {
@@ -29,3 +27,4 @@ body {
   /*background-size: 100%;*/
   
 }
+

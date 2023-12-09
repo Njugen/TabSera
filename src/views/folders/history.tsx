@@ -339,18 +339,18 @@ function History(props: any): JSX.Element {
 
     function renderHistoryManagement(): JSX.Element {
         return (
-            <div className="flex justify-center bg-white drop-shadow-md min-h-[350px]">
+            <div className="flex justify-center bg-white min-h-[350px]">
                 <div className="pt-6 w-full">
                    
-                    <div className="px-6 w-full mb-6">
+                    <div className="w-full mb-6">
                         {renderOptionsMenu()}
                         
-                        <h2 className="text-2xl mt-10 text-black inline-block">
+                        <h2 className="text-xl mt-10 font-semibold text-black inline-block">
                             Previous tabs
                         </h2>
                     </div>
                     <div className="pb-6">
-                        <div ref={historyListRef} className={`px-6 overflow-y-auto ${viewMode === "list" ? "mx-auto mt-10" : `grid grid-cols-${decideGridCols()} grid-flow-dense gap-x-4 gap-y-0 mt-8`} max-h-[350px]`}>
+                        <div ref={historyListRef} className={`overflow-y-auto ${viewMode === "list" ? "mx-auto mt-10" : `grid grid-cols-${decideGridCols()} grid-flow-dense gap-x-4 gap-y-0 mt-8`} max-h-[350px]`}>
                             {renderTabs()}
                         </div>
                     </div> 
@@ -362,7 +362,7 @@ function History(props: any): JSX.Element {
 
     function renderEmptyMessage(): JSX.Element {
         return (
-            <div className="flex justify-center items-center bg-white px-6 drop-shadow-md min-h-[350px]">
+            <div className="flex justify-center items-center bg-white min-h-[350px]">
                 <p> Your browing history is empty.</p>
             </div>
         );

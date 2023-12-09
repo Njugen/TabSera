@@ -213,7 +213,7 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
                 secondaryButton={{ text: "No, keep editing", callback: () => handleKeepEditing()}}    
             />
         }
-        <div ref={popupRef} className={`${styles.popup_container} scroll-smooth overflow-y-scroll flex fixed top-0 left-0 justify-center items-center w-screen z-50 ${slideDown === false ? "transition-all ease-out h-0 duration-200" : "transition-all h-screen ease-in duration-75"}`}>
+        <div ref={popupRef} className={`${styles.popup_container} scroll-smooth overflow-y-scroll flex fixed top-0 left-0 justify-center items-center w-screen z-[600] ${slideDown === false ? "transition-all ease-out h-0 duration-200" : "transition-all h-screen ease-in duration-75"}`}>
             
             <div data-testid="manage-folder-popup" className="relative bottom-12 h-screen w-[992px]">
            

@@ -371,17 +371,13 @@ function CurrentSession(props: any): JSX.Element {
             {addToWorkSpaceMessage && renderAddTabsMessage()}
             {renderPopup()}
             <div id="currentSession-view" className="mb-12">
-                <div className="mb-6 mx-auto flex justify-between">
-                    <h1 className="text-4xl text-tbfColor-darkpurple font-light inline-block">
+                <div className={"py-6 w-full bg-white min-h-[350px]"}>
+                    <h1 className="text-4xl text-tbfColor-darkpurple mb-6 font-light inline-block">
                         Currently opened windows and tabs
                     </h1>
-                </div>
-               
-                <div className={"py-6 w-full bg-white px-6 drop-shadow-md min-h-[350px]"}>
-                 
-                        <div className="w-full mb-12">
-                            {renderOptionsMenu()}
-                        </div>
+                    <div className="w-full mb-12">
+                        {renderOptionsMenu()}
+                    </div>
                     
                     <div className={""}>
                         

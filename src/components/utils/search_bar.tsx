@@ -72,7 +72,7 @@ function SearchBar(props: any): JSX.Element {
           
         } else {
             if(searchResultsContainerRef.current){
-                searchResultsContainerRef.current.classList.remove("mt-16");
+                searchResultsContainerRef.current.classList.remove("mt-20");
                 searchResultsContainerRef.current.classList.add("mt-10");
             } 
             document.body.style.overflowY = "auto";
@@ -128,24 +128,25 @@ function SearchBar(props: any): JSX.Element {
             setTimeout(() => {
                 if(searchResultsContainerRef.current){
                     searchResultsContainerRef.current.classList.remove("mt-10");
-                    searchResultsContainerRef.current.classList.add("mt-16");
+                    searchResultsContainerRef.current.classList.add("mt-20");
                 }
             }, 50);
-            document.body.style.overflowY = "hidden";
+          //  document.body.style.overflowY = "hidden";
+            document.body.style.overflowX = "hidden";
         }
     }, [slideDown]);
 
     return (
         <>
-            <div className="p-3 h-16 top-0 z-50 sticky flex justify-center bg-tbfColor-lighterpurple drop-shadow-md">
-                <div className={`w-7/12 flex items-center relative bg-white z-[501] text-sm h-10 ${slideDown === false ? "opacity-50" : "drop-shadow-md"} focus:opacity-90 border-tbfColor-lightergrey focus:outline-0 focus:outline-tbfColor-lighterpurple4 focus:shadow-md hover:shadow py-5 pr-5 rounded-3xl`}>
+            <div className="mt-8 flex justify-center bg-white">
+                <div className={`w-7/12 flex items-center relative  z-[501] text-sm h-10 ${slideDown === false ? "opacity-50 bg-gray-300" : "drop-shadow-md bg-white"} focus:opacity-90 border-tbfColor-lightergrey focus:outline-0 focus:outline-tbfColor-lighterpurple4 focus:shadow-md hover:shadow py-5 pr-5 rounded-3xl`}>
                     <div data-testid="te" className="ml-4 mr-2 z-[502]">
                         <SearchIcon fill={"#5c5c5c"} size={24} />
                     </div>
-                    <input ref={searchFieldRef} data-testid="search-field" id="search-field" defaultValue="Search tabs..." onChange={handleFieldChange} onClick={handleActivateSearch} className={`py-5 h-10 bg-white w-full focus:outline-0`} type="text" />
+                    <input ref={searchFieldRef} data-testid="search-field" id="search-field" defaultValue="Search tabs..." onChange={handleFieldChange} onClick={handleActivateSearch} className={`py-5 h-10 ${slideDown === false ? "bg-gray-300" : "bg-white"} w-full focus:outline-0`} type="text" />
                 </div>
-                {slideDown === true && <div data-testid="search-results-area" id="search-results-area" className={`${styles.popup_container} w-screen h-screen top-0 bg-[rgba-] absolute z-500 flex justify-center`}>
-                    <div ref={searchResultsContainerRef} className={`bg-white p-6 mt-10 transition-all ease-in duration-75 max-h-96 overflow-hidden w-7/12 z-10 rounded-lg drop-shadow-[0_3px_2px_rgba(0,0,0,0.15)]`}>
+                {slideDown === true && <div data-testid="search-results-area" id="search-results-area" className={`${styles.popup_container} w-screen h-full top-0 bg-[rgba-] absolute z-500 left-0 flex justify-center`}>
+                    <div ref={searchResultsContainerRef} className={`bg-white p-6 ml-16 mt-10 transition-all ease-in duration-75 max-h-96 overflow-hidden w-7/12 z-10 rounded-lg drop-shadow-[0_3px_2px_rgba(0,0,0,0.15)]`}>
                         {searchTerm.length > 0 ? <div className="grid grid-cols-2 gap-x-[1.75rem]">   
                            {/* 
                             <div className="">

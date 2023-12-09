@@ -26,14 +26,14 @@ function FolderControlButton(props: iFolderIconButton): JSX.Element {
     
     function renderIcon(): JSX.Element {
         if(icon === "trash"){
-            return <TrashIcon size={17} fill={active === false ? "#000" : "#fff"} />;
+            return <TrashIcon size={17} fill={active === false ? "#000" : "#000"} />;
         } else if(icon === "settings"){
-            return <SettingsIcon size={17} fill={active === false ? "#000" : "#fff"} />;
+            return <SettingsIcon size={17} fill={active === false ? "#000" : "#000"} />;
         } else if(icon === "open_browser"){
-            return <OpenBrowserIcon size={17} fill={active === false ? "#000" : "#fff"} />;
+            return <OpenBrowserIcon size={17} fill={active === false ? "#000" : "#000"} />;
         } else if(icon === "collapse_expand"){
             if(active === true){
-                return <CollapseIcon size={28} fill={"#fff"} />;
+                return <CollapseIcon size={28} fill={"#000"} />;
             } else {
                 return <ExpandIcon size={28} fill={"#000"} />;
             }

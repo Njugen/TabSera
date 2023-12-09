@@ -426,13 +426,11 @@ function Workspaces(props: any): JSX.Element {
             }
             {renderFolderManagerPopup()}
             <div id="workspace-section" className="mb-12">
-                <div className="mb-6 mx-auto flex justify-between">
-                    <h1 className="text-4xl text-tbfColor-darkpurple font-light inline-block">
-                        Workspaces
-                    </h1>
-                </div>
-                <div className="flex justify-between bg-white min-h-[350px] px-6 drop-shadow-md">
-                    <div className="pt-6 w-full mb-6">
+                <div className="flex justify-between min-h-[350px]">
+                    <div className="w-full mb-6">
+                        <h1 className="text-4xl text-tbfColor-darkpurple mb-6 font-light inline-block">
+                            Workspaces
+                        </h1>
                         {!hasFolders() && renderMessageBox()}
                         {hasFolders() === true && <div className="">
                             {hasFolders() && renderOptionsMenu()}

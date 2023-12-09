@@ -35,7 +35,7 @@ function App() {
   }
 
   function renderExpandedSidebarNav(): JSX.Element {
-    return <div id="main-menu" className="px-2 mt-4">
+    return <div id="main-menu" className="px-2">
         <Navlink key="folders-nav-link" iconSize={20} label="Dashboard" url="/options" isActive={activeNavLink === "options" ? true : false} onClick={() => setActiveNavLink("options")} />
         <Navlink key="settings-nav-link" iconSize={20} label="Settings" url="/settings" isActive={activeNavLink === "settings" ? true : false} onClick={() => setActiveNavLink("settings")} />
       </div>;
@@ -57,17 +57,19 @@ function App() {
   // Render the plugin's user interface
   function renderUI(view: JSX.Element): JSX.Element {
     return (<>
-            <SearchBar />
+           
             <div className="flex h-full w-full relative">
-                <div id="sidebar" className={`sticky h-[calc(100vh-4.0rem)] top-[4.0rem] left-0 self-start ${styles.sidebar_shadow} ${sidebarExpanded === true ? `${styles.sidebar_animation_expanded}` : `${styles.sidebar_animation_contracted}`} overflow-x-hidden items-end flex flex-col justify-between border-tbfColor-middlegrey bg-white`}>
-                  <div className="w-full px-2 ">
-                    {sidebarExpanded === true ? renderExpandedSidebarNav() : renderCollapsedSidebarNav()}
-                  </div>
-                  <button className={`flex justify-center items-center bottom-0 right-0 float-right h-6 ${sidebarExpanded === true ? "w-full" : "w-full"} bg-tbfColor-middlegrey2 hover:opacity-70 transition-all ease-in`} onClick={handleSidebarExpandButton}>
-                    {sidebarExpanded === true ? <LeftIcon size={20} fill="#828282" /> : <RightIcon size={20} fill="#828282" />}
-                  </button>  
+              <div id="sidebar" className={`drop-shadow-md sticky h-[calc(100vh)] top-0 left-0 self-start ${sidebarExpanded === true ? `${styles.sidebar_animation_expanded}` : `${styles.sidebar_animation_contracted}`} overflow-x-hidden items-end flex flex-col justify-between border-tbfColor-middlegrey bg-white`}>
+                <div className="w-full px-2 ">
+                  {sidebarExpanded === true ? renderExpandedSidebarNav() : renderCollapsedSidebarNav()}
                 </div>
+                <button className={`flex justify-center items-center bottom-0 right-0 float-right h-6 ${sidebarExpanded === true ? "w-full" : "w-full"} bg-tbfColor-middlegrey2 hover:opacity-70 transition-all ease-in`} onClick={handleSidebarExpandButton}>
+                  {sidebarExpanded === true ? <LeftIcon size={20} fill="#828282" /> : <RightIcon size={20} fill="#828282" />}
+                </button>  
+              </div>
+             
               <div ref={rootRef} id="body" className="container">
+                <SearchBar />
                 <div className="mx-16 my-12 pb-[50px]">
                   {view}
                 </div>
@@ -94,7 +96,7 @@ function App() {
 
   return (
     <div className="App">
-        <div id="root" className={`w-screen pb`}>
+        <div id="root" className={`w-full pb`}>
           <RouterProvider router={router} />
       </div>
     </div>

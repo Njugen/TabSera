@@ -84,12 +84,10 @@ function SettingsView(props: any) {
     return (
         <>
             <div id="settings-view">
-                <div className="mb-6 mx-auto flex justify-between">
-                    <h1 className="text-4xl text-tbfColor-darkpurple font-light inline-block">
+                <div className="bg-white min-h-[83.33333333333vh]">
+                    <h1 className="text-4xl text-tbfColor-darkpurple mb-8 font-light inline-block">
                         Settings
                     </h1>
-                </div>
-                <div className="bg-white p-6 drop-shadow-md min-h-[83.33333333333vh]">
                     <div className="w-7/12">
                         <FormField label="Performance notification" description="Warn me if the total amount of tabs exceeds a certain threshold when launching multiple tabs">
                             <Dropdown onCallback={(e) => typeof e.selected === "number" && saveSelectedOption("performance_notification_value", e.selected)} tag="performance-dropdown" preset={getPresetPerformanceNotification()} options={performanceNotificationOptions} />
