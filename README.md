@@ -1,4 +1,4 @@
-# TabSera - Extensive tab management
+# TabSera - Extensive tab management (Pre-Alpha version)
 
 TabSera gives you a better oversight and improved tab management experience not provided
 by default browser features.
