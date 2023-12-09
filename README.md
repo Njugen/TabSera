@@ -14,19 +14,7 @@ by default browser features.
 Before you begin, make sure Node Package Manager (npm) is installed on your computer. The build and testing
 commands depend on this.
 
-1. Clone this repository to a folder on your computer
-2. Open Google Chrome (preferably. Optimization for Firefox and Edge will be done at a later time)
-3. Go to Chrome's menu -> Extensions -> Manage Extension
-4. Turn on Developer mode
-5. Click "Load unpacked"
-6. Head for ***/tabfolders/dist/*** and select it
-7. Voila, the extension is now installed!
-
-- __Open options page:__ Click "Details" in the extension's box. Scroll down and click "Extension options"
-
 ### Commands
-
-Go to /tabfolders.
 
 __Build__
 
@@ -48,6 +36,19 @@ Run unit and integration tests (JEST) and generate coverage results. The tests a
 The coverage is presented in ./coverage/Icov-report/index.html
 
 Run this command after changing existing components, to check if anything gets broken. Add new tests when adding new components or features.
+
+### Install unpacked version in Chrome
+
+1. Clone this repository to a folder on your computer
+2. Open Google Chrome (preferably. Optimization for Firefox and Edge will be done at a later time)
+3. Build the project
+3. Go to Chrome's menu -> Extensions -> Manage Extension
+4. Turn on Developer mode
+5. Click "Load unpacked"
+6. Head for ***/tabfolders/dist/*** and select it
+7. Voila, the extension is now installed in developer mode!
+
+- __Open options page:__ Click "Details" in the extension's box. Scroll down and click "Extension options"
 
 ### Programming and tools
 
