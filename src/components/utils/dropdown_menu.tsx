@@ -20,7 +20,7 @@ function DropdownMenu(props: iDropdownMenu): JSX.Element {
     }
 
     return (
-        <ul id={tag} className={`z-50 list-none drop-shadow-no_pos overflow-y-auto bg-white absolute max-h-[2000px] mt-2 text-sm w-full text-tbfColor-darkergrey rounded-lg`}>
+        <ul id={tag} data-testid={tag} className={`z-50 list-none drop-shadow-no_pos overflow-y-auto bg-white absolute max-h-[2000px] mt-2 text-sm w-full text-tbfColor-darkergrey rounded-lg`}>
             { options.map((option, i) => {
                 return (
                     <li id={`${tag}-option-${option.id}${selected === option.id ? "-active" : ""}`} key={`${tag}-option-${option.id}${selected === option.id ? "-active" : ""}`}>

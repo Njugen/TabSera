@@ -52,7 +52,14 @@ Run this command after changing existing components, to check if anything gets b
 
 ### Programming and tools
 
-HTML5, CSS3, Javascript/Typescript, React/Redux, JEST, SASS, Webextension API, Tailwind
+- HTML5 
+- CSS3/SASS, 
+- Javascript/Typescript, 
+- React
+- Redux
+- JEST
+- Tailwind
+- Webextension API
 
 ## Ideas of upcoming features
 

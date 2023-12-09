@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useLayoutEffect } from "react";
 import ClosedFolderIcon from "../images/icons/closed_folder_icon";
 import Paragraph from "../components/utils/paragraph";
 import FolderControlButton from "./utils/folder_control_button";
@@ -51,20 +51,40 @@ function Folder(props: iFolder) {
         onEdit 
     } = props;
     
+    function toggleExpand(init?: string): void {
+        function exp(): void {
+            if(contentsRef.current === null || headerRef.current === null) return;
+            headerRef.current.className = `relative tbf-${type} bg-tbfColor-lightpurple px-3 h-10 flex items-center rounded-t-md`;
+            contentsRef.current.className = "max-h-[2000px] overflow-hidden bg-tbfColor-lighterpurple4 border border-tbfColor-lightpurple rounded-b-md";
+            setExpanded(true);
+        }
+
+        function col(): void {
+            if(contentsRef.current === null || headerRef.current === null) return;
+            headerRef.current.className = `relative tbf-${type} hover:bg-tbfColor-lighterpurple2 border border-tbfColor-lighterpurple hover:border-tbfColor-lightpurple bg-tbfColor-lighterpurple3 px-3 h-10 flex items-center rounded-md`;
+            contentsRef.current.className = "max-h-2000 overflow-hiddenbg-tbfColor-lighterpurple4 rounded-b-md";
+            setExpanded(false);
+        }
+
+        if(expanded === false){
+            if(init === "expanded" || !init){
+                exp();
+            } else {
+                col();
+            }
+        } else {
+            col()
+        }   
+    }
+
     // Expand or collapse this folder
     function handleExpandClick(e: any): void {
-        if(contentsRef.current === null || headerRef.current === null) return;
-  
-            if(expanded === false){
-                headerRef.current.className = `relative tbf-${type} bg-tbfColor-lightpurple px-3 h-10 flex items-center transition-all ease-in duration-400 rounded-t-md`;
-                contentsRef.current.className = "max-h-[2000px] overflow-hidden transition-all ease-in duration-[50ms] bg-tbfColor-lighterpurple4 border border-tbfColor-lightpurple rounded-b-md";
-                setExpanded(true);
-            } else {
-                headerRef.current.className = `relative tbf-${type}  hover:bg-tbfColor-lighterpurple2 border border-tbfColor-lighterpurple hover:border-tbfColor-lightpurple bg-tbfColor-lighterpurple3 px-3 h-10 flex items-center rounded-md transition-all ease-in duration-100`;
-                contentsRef.current.className = "max-h-0 overflow-hidden transition-all ease-out duration-[50ms] bg-tbfColor-lighterpurple4 rounded-b-md";
-                setExpanded(false);
-            }        
+        toggleExpand();
     }
+
+    useLayoutEffect(() => {
+        toggleExpand(type);
+    }, []);
 
     function renderWindows(): Array<JSX.Element>{
         const result: Array<JSX.Element> = windows.map((window, index) => <WindowItem disableTabMark={true} disableTabEdit={true} key={"window-" + index} id={window.id} tabs={window.tabs} />)
@@ -149,7 +169,7 @@ function Folder(props: iFolder) {
 
     return (
         <>
-            <div className={`${viewMode === "list" ? "my-4 duration-200" : "my-2 duration-200"} transition-all ease-in w-full rounded-md`}>
+            <div data-testid={"folder-item"} className={`${viewMode === "list" ? "my-4 duration-200" : "my-2 duration-200"} transition-all ease-in w-full rounded-md`}>
                 <div ref={headerRef} className={`relative tbf-${type}  hover:bg-tbfColor-lighterpurple2 border border-tbfColor-lighterpurple hover:border-tbfColor-lightpurple bg-tbfColor-lighterpurple4 px-3 h-10 flex items-center rounded-md transition-all ease-in duration-100`}>
                     <div className="inline-block mr-3">
                         {expanded === false ? <ClosedFolderIcon size={23} fill={"#000"} /> : <OpenedFolderIcon size={26} fill={"#fff"} />}
@@ -170,16 +190,18 @@ function Folder(props: iFolder) {
                         <Checkbox checked={marked} onCallback={(e) => onMark!(id)} />
                     </div>
                 </div>
-                <div ref={contentsRef} className="max-h-0 overflow-y-hidden bg-tbfColor-lighterpurple3">
-                    {desc.length > 0 && <div className="px-5 mt-8 flex justify-between items-start">
-                    <div className="inline-block w-fit">
+                <div ref={contentsRef} className="max-h-2000 overflow-y-hidden bg-tbfColor-lighterpurple3">
+                {expanded === true && (
+                    <>{desc.length > 0 && <div className="px-5 mt-8 flex justify-between items-start">
+                    <div data-testid={"description-section"} className="inline-block w-fit">
                             <Paragraph text={desc} />
                         </div>
                     </div>}
                     
                     <div className="px-5 mb-8 mt-8">
                         {[...renderWindows()]}
-                    </div>
+                    </div></>
+                    )}
                 </div>
                 
             </div>

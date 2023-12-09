@@ -3,7 +3,7 @@ import FolderControlButton from "../../../components/utils/folder_control_button
 import '@testing-library/jest-dom'
 
 const mockFunction = jest.fn();
-const mockIcons: Array<string> = ["trash", "settings", "open_browser", "collapse_expand"];
+const mockIcons: Array<string> = ["trash", "settings", "open_browser"];
 
 describe("test <FolderControlButton />", () => {
     describe("when active", () => {
@@ -18,6 +18,26 @@ describe("test <FolderControlButton />", () => {
                 expect(icon).toBeInTheDocument();
             }
         );
+
+        test("clicking collapse button works", () => {
+            render(<FolderControlButton icon={"collapse_expand"} active={true} onClick={mockFunction} />);
+                const button = screen.getByTestId(`folder-control-button-collapse`);
+                const icon = within(button).getByRole("img");
+                fireEvent.click(button);
+                
+                expect(mockFunction).toHaveBeenCalled();
+                expect(icon).toBeInTheDocument();
+        })
+
+        test("clicking expand button works", () => {
+            render(<FolderControlButton icon={"collapse_expand"} active={false} onClick={mockFunction} />);
+                const button = screen.getByTestId(`folder-control-button-expand`);
+                const icon = within(button).getByRole("img");
+                fireEvent.click(button);
+                
+                expect(mockFunction).toHaveBeenCalled();
+                expect(icon).toBeInTheDocument();
+        })
 
         test("click button with no icon works", () => {
             render(<FolderControlButton icon="" active={true} onClick={mockFunction} />);
