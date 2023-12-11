@@ -1,5 +1,9 @@
 # TabSera - Extensive tab management (Pre-Alpha version)
 
+<p align="center">
+    <img src="./dist/brand/brand.png" width="33%" />
+</p>
+
 TabSera gives you a better oversight and improved tab management experience not provided
 by default browser features.
 
@@ -43,23 +47,14 @@ Run this command after changing existing components, to check if anything gets b
 2. Open Google Chrome (preferably. Optimization for Firefox and Edge will be done at a later time)
 3. Build the project
 3. Go to Chrome's menu -> Extensions -> Manage Extension
-4. Turn on Developer mode
-5. Click "Load unpacked"
-6. Head for ***/tabfolders/dist/*** and select it
-7. Voila, the extension is now installed in developer mode!
+4. Turn on Developer mode and click "Load unpacked"
+5. Head for ***/tabfolders/dist/*** and select it
 
 - __Open options page:__ Click "Details" in the extension's box. Scroll down and click "Extension options"
 
 ### Programming and tools
 
-- HTML5 
-- CSS3/SASS, 
-- Javascript/Typescript, 
-- React
-- Redux
-- JEST
-- Tailwind
-- Webextension API
+HTML5, CSS/SASS, Javascript/Typescript, React, Redux, JEST, Tailwind, Webextension API
 
 ## Features
 
@@ -67,8 +62,9 @@ Run this command after changing existing components, to check if anything gets b
 
 Extended oversight and management features can be found in the options page (right click the extension icon to the top right of your browser). This includes creating, merging, sorting and duplicating workspaces.
 
-<img src="./screenshots/main.jpg" width="50%" /><img src="./screenshots/settings.jpg" width="50%" />
-<img src="./screenshots/search.jpg" width="50%" />
+<img src="./screenshots/main.jpg" width="33%" />
+<img src="./screenshots/settings.jpg" width="33%" />
+<img src="./screenshots/search.jpg" width="33%" />
 
 ### Upcoming Feature: Extension sidebar
 
@@ -78,7 +74,7 @@ nesting.
 
 Simple, non-extended, versions of features available in the option page will also be available in the sidebar.
 
-<img src="./screenshots/sidebar-draft.jpg" width="50%" />
+<img src="./screenshots/sidebar-draft.jpg" width="33%%" />
 
 # Feedback
 I would appreciate feedback and suggestions on how to improve this plugin. Reports of possible bugs are also welcome. Please, post an issue or contact me per email: privat_thai_nguyen@hotmail.com

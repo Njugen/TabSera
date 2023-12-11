@@ -8,7 +8,7 @@ import EditableTabItem from "./editable_tab_item";
 import { iTabItem } from "../interfaces/tab_item";
 import { useDispatch, useSelector } from "react-redux";
 import { updateInEditFolder } from "../redux/actions/inEditFolderActions";
-import { setTabInEdits } from "../redux/actions/miscActions";
+import { setCurrentlyEditingTab, setTabInEdits } from "../redux/actions/miscActions";
 
 /*
     Window containing tabs and various window related options. Used primarily
@@ -41,13 +41,18 @@ function WindowItem(props: iWindowItem): JSX.Element {
     // Delete this window from redux
     function handleDeleteWindow(): void {
         const windows = folderData.windows.filter((target: iWindowItem) => target.id !== id);
-
+        dispatch(setCurrentlyEditingTab(false));
         dispatch(updateInEditFolder("windows", windows));
     }
 
     // Activate add new tab feature by setting state
     function handleAddNewTab(): void {
-        setNewTab(true);
+        
+        if(editTab === null && miscData.currentlyEditingTab === false) {
+            dispatch(setCurrentlyEditingTab(true));
+            setNewTab(true);
+            
+        }
     }
 
     // Mark/unmark specific tab in this window
@@ -83,13 +88,17 @@ function WindowItem(props: iWindowItem): JSX.Element {
             
             setMarkedTabs([]);
             dispatch(updateInEditFolder("windows", folderData.windows));
+            dispatch(setCurrentlyEditingTab(false));
         }
     }
 
     function handleTabEdit(id: number): void {
-        const { isEditingTabs } = miscData;
-        dispatch(setTabInEdits(isEditingTabs + 1));
+        const { isEditingTabs, currentlyEditingTab } = miscData;
+        if(currentlyEditingTab === true) return;
+
         
+        dispatch(setTabInEdits(isEditingTabs + 1));
+        dispatch(setCurrentlyEditingTab(true));
         setEditTab(id);
     }
 
@@ -99,8 +108,10 @@ function WindowItem(props: iWindowItem): JSX.Element {
 
 
         return <EditableTabItem windowId={windowId} id={tabId} preset={url} onStop={() => {
-            dispatch(setTabInEdits(isEditingTabs > 0 ? isEditingTabs - 1 : 0)); 
-            setEditTab(null)}
+                dispatch(setTabInEdits(isEditingTabs > 0 ? isEditingTabs - 1 : 0)); 
+                dispatch(setCurrentlyEditingTab(false));
+                setEditTab(null);
+            }
         } />
     }
 
@@ -148,7 +159,7 @@ function WindowItem(props: iWindowItem): JSX.Element {
                 <div className={`grid grid-cols-${tabsCol ? tabsCol : 2} gap-x-3 gap-y-0`}>
                 {tabs.length > 0 ? [...evaluateNewTabRender()] : [renderEditTab(id)]}
                 </div>
-                {tabs.length > 0 && <div className="mt-10 mb-8 flex justify-end">
+                {tabs.length > 0 && disableEdit === false && <div className="mt-10 mb-8 flex justify-end">
                     {markedTabs.length > 0 && <PurpleBorderButton disabled={false} text="Delete tabs" onClick={handleDeleteTabs} />}
                     {disableEdit === false && <PrimaryButton disabled={false} text="New tab" onClick={handleAddNewTab} />}
                 </div>}

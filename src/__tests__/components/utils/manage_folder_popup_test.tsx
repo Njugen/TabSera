@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "../../../redux/mocked_hooks";
 
 import { iFolder } from "../../../interfaces/folder";
 import { initInEditFolder } from "../../../redux/actions/inEditFolderActions";
+import { setCurrentlyEditingTab, setTabInEdits } from "../../../redux/actions/miscActions";
 
 jest.mock("../../../redux/mocked_hooks");
 jest.setTimeout(10000);
@@ -44,6 +45,12 @@ const mockEditFolderState: iFolder = {
                 label: "test tab",
                 url: "http://localhost:3000",
                 marked: false
+            },
+            {
+                id: 4,
+                label: "test tab",
+                url: "http://localhost:3000",
+                marked: false
             }]
         },
         {
@@ -52,6 +59,12 @@ const mockEditFolderState: iFolder = {
                 id: 1,
                 label: "test tab",
                 url: "http://google.com",
+                marked: false
+            },
+            {
+                id: 6,
+                label: "test tab",
+                url: "http://localhost:3000",
                 marked: false
             }]
         },
@@ -77,6 +90,8 @@ beforeEach(() => {
 afterEach(() => {
    jest.clearAllMocks();
    store.dispatch(initInEditFolder({} as iFolder));
+   store.dispatch(setTabInEdits(0));
+   store.dispatch(setCurrentlyEditingTab(false));
 });
 
 describe("Create new workspace", () => {
@@ -1264,6 +1279,46 @@ describe("Window and tabs setting behaviour", () => {
         });
         const fieldError = screen.getByTestId("field-error");
         expect(fieldError).toBeInTheDocument();
+    })
+
+    test("Only one tab may be edited at a time", () => {
+        render(
+            <Provider store={store}>
+                <ManageFolderPopup folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
+            </Provider>
+        );
+
+        let editIcon = screen.getAllByTestId("generic-icon-button-edit");
+        fireEvent.click(editIcon[0]);
+
+        let editableTab = screen.queryAllByTestId("editable-tab");
+        expect(editableTab.length).toEqual(1);
+        expect(editableTab[0]).toBeInTheDocument();
+
+        editIcon = screen.getAllByTestId("generic-icon-button-edit");
+        fireEvent.click(editIcon[0]);
+        
+        editableTab = screen.queryAllByTestId("editable-tab");
+        expect(editableTab.length).toEqual(1);
+        expect(editableTab[0]).toBeInTheDocument();
+    });
+
+    test("Tabs cannot be edited while a new tab is being created", () => {
+        const {rerender} = render(
+            <Provider store={store}>
+                <ManageFolderPopup folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
+            </Provider>
+        );
+
+        const newTabButton = screen.queryAllByText("New tab", { selector: "button" });
+        fireEvent.click(newTabButton[0]);
+
+        let editIcon = screen.getAllByTestId("generic-icon-button-edit");
+        fireEvent.click(editIcon[0]);
+
+        let editableTab = screen.queryAllByTestId("editable-tab");
+        expect(editableTab.length).toEqual(1);
+        expect(editableTab[0]).toBeInTheDocument();
     })
 });
 
