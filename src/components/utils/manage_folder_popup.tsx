@@ -16,6 +16,7 @@ import MessageBox from './message_box';
 import { useDispatch, useSelector } from "../../redux/mocked_hooks";
 import { setShowFolderChangeWarning } from "../../redux/actions/warningActions";
 import { createFolderAction, updateFolderAction } from "../../redux/actions/folderCollectionActions";
+import { setCurrentlyEditingTab } from "../../redux/actions/miscActions";
 
 //import { useDispatch, useSelector } from "react-redux";
 
@@ -167,10 +168,11 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
                 setModified(false)
                 setOriginWindows("");
                 setIsCreate(false);
-                
+
                 setTimeout(() => {
                     // Restore the body's scroll bar
                     document.body.style.overflowY = "scroll";
+                    dispatch(setCurrentlyEditingTab(false));
                     onClose()
                 }, 500);
             }

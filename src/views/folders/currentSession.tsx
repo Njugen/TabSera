@@ -213,7 +213,7 @@ function CurrentSession(props: any): JSX.Element {
 
     function renderContents(): Array<JSX.Element> {
         const existingWindows = currentSessionData?.windows;
-        const existingWindowsElements: Array<JSX.Element> = existingWindows?.map((item: iWindowItem) => <CurrentSessionWindowItem tabsCol={4} disableEdit={currentSessionData.windows.length < 2 ? true : false} disableTabMark={false} disableTabEdit={true} key={`existing-window-${item.id}`} id={item.id} tabs={item.tabs} initExpand={item.initExpand} />);
+        const existingWindowsElements: Array<JSX.Element> = existingWindows?.map((item: iWindowItem) => <CurrentSessionWindowItem tabsCol={4} disableEdit={currentSessionData.windows.length < 2 ? true : false} disableTabMark={false} disableTabEdit={true} key={`existing-window-${item.id}`} id={item.id} tabs={item.tabs} initExpand={true} />);
         
         if (existingWindowsElements?.length > 0){
             return [...existingWindowsElements];
@@ -379,7 +379,7 @@ function CurrentSession(props: any): JSX.Element {
                         {renderOptionsMenu()}
                     </div>
                     
-                    <div className={""}>
+                    <div>
                         
                         {renderContents()}
                         {/*renderActionButtons()*/}

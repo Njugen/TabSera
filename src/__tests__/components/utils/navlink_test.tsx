@@ -6,8 +6,8 @@ import randomNumber from "../../../tools/random_number";
 import { MemoryRouter } from "react-router-dom";
 
 const mockPaths: Array<string> = [
-    "/options",
-    "/settings"
+    "?view=main",
+    "?view=settings"
 ];
 
 const mockFunction = jest.fn();

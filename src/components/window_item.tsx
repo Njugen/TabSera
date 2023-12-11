@@ -43,6 +43,7 @@ function WindowItem(props: iWindowItem): JSX.Element {
         const windows = folderData.windows.filter((target: iWindowItem) => target.id !== id);
         dispatch(setCurrentlyEditingTab(false));
         dispatch(updateInEditFolder("windows", windows));
+        dispatch(setCurrentlyEditingTab(false));
     }
 
     // Activate add new tab feature by setting state
