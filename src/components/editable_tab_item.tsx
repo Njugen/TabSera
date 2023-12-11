@@ -7,6 +7,7 @@ import randomNumber from "../tools/random_number";
 import { iTabItem } from "../interfaces/tab_item";
 import { useDispatch, useSelector } from "react-redux";
 import { updateInEditFolder, updateWindowManager } from "../redux/actions/inEditFolderActions";
+import { setCurrentlyEditingTab } from "../redux/actions/miscActions";
 
 /*
     A textfield, which lets the user set/update a url for a tab.
@@ -35,6 +36,7 @@ function EditableTabItem(props: iEditableTabItem): JSX.Element {
                 marked: e.target.marked
             };
 
+            
             dispatch(updateWindowManager(windowId, payload)); 
             onStop();
         }
@@ -43,7 +45,7 @@ function EditableTabItem(props: iEditableTabItem): JSX.Element {
     // Once the user clicks outside the field, then save it.
     function handleBlur(e: any): void {
         //console.log("E", e.relatedTarget.tagName !== "BUTTON");
-        if(e.relatedTarget?.tagName?.toLowerCase() !== "button") saveToStore(e);
+        saveToStore(e);
     }
 
     // Save the field once the user hits "Enter" on the keyboard

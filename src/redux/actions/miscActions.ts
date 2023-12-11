@@ -1,5 +1,6 @@
 import { 
-    IS_EDITING_TAB
+    IS_EDITING_TAB,
+    CURRENTLY_EDITING_TAB
 } from "../types/miscTypes";
 
 function setTabInEdits(value: number){
@@ -9,6 +10,14 @@ function setTabInEdits(value: number){
     }
 }
 
+function setCurrentlyEditingTab(value: boolean){
+    return {
+        type: CURRENTLY_EDITING_TAB,
+        data: value
+    }
+}
+
 export {
-    setTabInEdits
+    setTabInEdits,
+    setCurrentlyEditingTab
 }

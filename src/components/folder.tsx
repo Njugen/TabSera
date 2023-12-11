@@ -54,14 +54,14 @@ function Folder(props: iFolder) {
     function toggleExpand(init?: string): void {
         function exp(): void {
             if(contentsRef.current === null || headerRef.current === null) return;
-            headerRef.current.className = `relative tbf-${type} border border-gray-200 bg-white px-3 h-10 flex items-center rounded-t-md`;
-            contentsRef.current.className = "max-h-[2000px] overflow-hidden bg-white border border-gray-200 rounded-b-md border-t-0";
+            headerRef.current.className = `relative tbf-${type} border border-gray-300 bg-white px-3 h-10 flex items-center rounded-t-md`;
+            contentsRef.current.className = "max-h-[2000px] overflow-hidden bg-white border border-gray-300 rounded-b-md border-t-0";
             setExpanded(true);
         }
 
         function col(): void {
             if(contentsRef.current === null || headerRef.current === null) return;
-            headerRef.current.className = `relative tbf-${type} border border-gray-200 bg-white px-3 h-10 flex items-center rounded-md`;
+            headerRef.current.className = `relative tbf-${type} border border-gray-300 bg-white px-3 h-10 flex items-center rounded-md`;
             contentsRef.current.className = "max-h-2000 overflow-hidden rounded-b-md";
             setExpanded(false);
         }

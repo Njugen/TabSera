@@ -9,6 +9,10 @@
         "storage",
         "sidePanel"
     ],
+    "icons": {
+        "128": "brand/icon-128.png",
+        "48": "brand/icon-48.png"
+    },
     "action": {
         "default_title": "TabSera",
         "default_popup": "popup.html"
