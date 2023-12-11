@@ -113,6 +113,10 @@ function App() {
       path: "/options.html",
       element: renderView()
     },
+    {
+      path: "/sidepanel.html",
+      element: <p>test</p>
+    },
   ]);
 
   return (

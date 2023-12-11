@@ -81,7 +81,7 @@ I would appreciate feedback and suggestions on how to improve this plugin. Repor
 Minor updates and improvements will be provided from time to time. There is no definite roadmap or schedule.
 
 # Copyright &copy;
-TabSera was created by Thai Nguyen. This plugin is free for private and professional use, with no limits nor warranty. The plugin itself and its code may not be monetized, re-distributed, nor used as part of commercial products/services/brands.
+TabSera was created by Thai Nguyen. This plugin is free for private and professional use, with no limitations nor warranty. The plugin itself and code deriving from it may not be monetized, re-distributed, nor used as part of commercial products/services/brands.
 
 # Contact information
 Email: privat_thai_nguyen@hotmail.com

@@ -175,7 +175,7 @@ function Folder(props: iFolder) {
                         {expanded === false ? <ClosedFolderIcon size={23} fill={"#000"} /> : <OpenedFolderIcon size={26} fill={"#000"} />}
                     </div>
                     <div className={`inline-block ${viewMode === "list" ? "w-10/12" : "w-5/12"}`}>
-                        <h2 className={`text-md truncate ${expanded === false ? "text-black" : "text-black"}`}>
+                        <h2 className={`text-xl truncate ${expanded === false ? "text-black" : "text-black"}`}>
                             {name}
                         </h2>
                     </div>

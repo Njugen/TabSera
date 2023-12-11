@@ -9,13 +9,15 @@
         "storage",
         "sidePanel"
     ],
+    "action": {
+        "default_title": "Open TabSera"
+    },
     "icons": {
         "128": "brand/icon-128.png",
         "48": "brand/icon-48.png"
     },
-    "action": {
-        "default_title": "TabSera",
-        "default_popup": "popup.html"
+    "side_panel": {
+        "default_path": "sidepanel.html"
     },
     "options_ui": {
         "page": "options.html",
