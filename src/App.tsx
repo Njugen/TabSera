@@ -35,9 +35,9 @@ function App() {
   }
 
   function renderExpandedSidebarNav(): JSX.Element {
-    return <div id="main-menu" className="px-2">
-        <Navlink key="folders-nav-link" iconSize={20} label="Dashboard" url="/options" isActive={activeNavLink === "options" ? true : false} onClick={() => setActiveNavLink("options")} />
-        <Navlink key="settings-nav-link" iconSize={20} label="Settings" url="/settings" isActive={activeNavLink === "settings" ? true : false} onClick={() => setActiveNavLink("settings")} />
+    return <div id="main-menu" className="px-2 py-4">
+        <Navlink key="folders-nav-link" iconSize={20} label="Dashboard" url="?view=main" isActive={activeNavLink === "options" ? true : false} onClick={() => setActiveNavLink("options")} />
+        <Navlink key="settings-nav-link" iconSize={20} label="Settings" url="?view=settings" isActive={activeNavLink === "settings" ? true : false} onClick={() => setActiveNavLink("settings")} />
       </div>;
   }
 
@@ -45,10 +45,10 @@ function App() {
     return <div id="main-menu" className="flex flex-col items-center justify-center">
         <div className="mt-1">
           <div className={`my-2 border p-2 rounded-lg ${activeNavLink === "options" ? "border-tbfColor-lightpurple" : "border-tbfColor-middlegrey2"}`}>
-            <Navlink key="folders-nav-link" iconSize={32} url="/options" isActive={activeNavLink === "options" ? true : false} onClick={() => setActiveNavLink("options")} />
+            <Navlink key="folders-nav-link" iconSize={32} url="?view=main" isActive={activeNavLink === "options" ? true : false} onClick={() => setActiveNavLink("options")} />
           </div>
           <div className={`my-2 border p-2 rounded-lg ${activeNavLink === "settings" ? "border-tbfColor-lightpurple" : "border-tbfColor-middlegrey2"}`}>
-            <Navlink key="settings-nav-link" iconSize={32} url="/settings" isActive={activeNavLink === "settings" ? true : false} onClick={() => setActiveNavLink("settings")} />
+            <Navlink key="settings-nav-link" iconSize={32} url="?view=settings" isActive={activeNavLink === "settings" ? true : false} onClick={() => setActiveNavLink("settings")} />
           </div>
         </div>
       </div>;
@@ -79,18 +79,39 @@ function App() {
   };
 
   // Routing. Encapsulate a page component in the renderUI for each path.
+  function renderView(){
+    const url: string = window.location.href;
+    const urlSplit: Array<string> = url.split("?");
+    let result: JSX.Element = <></>;
+
+    if(urlSplit.length === 1){
+      result = renderUI(<FolderView />);
+    } else if(urlSplit.length === 2){
+      const paramSplit: Array<string> =  urlSplit[1].split("=");
+      const key: string = paramSplit[0];
+      const val: string = paramSplit[1]
+      
+      if(key === "view"){
+        if(val === "main"){
+          result = renderUI(<FolderView />);
+        } else if(val === "settings"){
+          result = renderUI(<SettingsView />);
+        } else {
+          result = renderUI(<FolderView />);
+        }
+      } else {
+        result = renderUI(<FolderView />);
+      }
+    }
+
+    return result;
+  }
+  
+  
   const router = createBrowserRouter([
     {
-      path: "/options",
-      element: renderUI(<FolderView />)
-    },
-    {
-      path: "/settings",
-      element: renderUI(<SettingsView />)
-    },  
-    {
       path: "/options.html",
-      element: renderUI(<FolderView />)
+      element: renderView()
     },
   ]);
 

@@ -27,9 +27,9 @@ function Navlink(props: iNavlink): JSX.Element {
     const inActiveLinkStyle: String = "font-normal text-tbfColor-middlegrey3 hover:border-tbfColor-middlegrey3";
 
     function renderIcon(): JSX.Element {
-      if(url === "/options"){
+      if(url === "?view=main"){
         return <MultipleFoldersIcon size={iconSize} fill={isActive === true ? "rgb(109 0 194)" : "#525252"} />
-      } else if(url === "/settings"){
+      } else if(url === "?view=settings"){
         return <ConfigIcon size={iconSize} fill={isActive === true ? "rgb(109 0 194)" : "#525252"} />
       } else {
         return <></>
