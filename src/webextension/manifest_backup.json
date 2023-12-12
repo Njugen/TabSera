@@ -10,7 +10,8 @@
         "sidePanel"
     ],
     "action": {
-        "default_title": "TabSera"
+        "default_title": "TabSera",
+        "default_popup": "popup.html"
     },
     "icons": {
         "128": "brand/icon-128.png",

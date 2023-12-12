@@ -84,7 +84,7 @@ function SettingsView(props: any) {
     return (
         <>
             <div id="settings-view">
-                <div className="bg-white min-h-[83.33333333333vh]">
+                <div className="bg-white  px-16 min-h-[83.33333333333vh]">
                     <h1 className="text-4xl text-tbfColor-darkpurple mb-8 font-light inline-block">
                         Settings
                     </h1>

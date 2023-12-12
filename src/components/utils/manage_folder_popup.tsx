@@ -168,10 +168,8 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
                 setModified(false)
                 setOriginWindows("");
                 setIsCreate(false);
-
+                 document.body.style.overflowY = "scroll";
                 setTimeout(() => {
-                    // Restore the body's scroll bar
-                    document.body.style.overflowY = "scroll";
                     dispatch(setCurrentlyEditingTab(false));
                     onClose()
                 }, 500);

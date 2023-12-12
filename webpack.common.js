@@ -7,7 +7,7 @@ const autoprefixer = require("autoprefixer");
 module.exports = {
     
     entry: {
-        popup: path.resolve("./src/webextension/popup/popup.tsx"),
+        sidepanel: path.resolve("./src/sidepanel.tsx"),
         background: path.resolve("./src/webextension/background/background.ts"),
         contentScript: path.resolve("./src/webextension/contentScript/contentScript.ts"),
         options: path.resolve("./src/index.tsx"),
@@ -40,12 +40,12 @@ module.exports = {
             ]
         }),
         new HtmlPlugin({
-            title: "TabSera Quick Manage",
-            filename: "popup.html",
-            chunks: ["popup"]
+            title: "TabSera Sidepanel",
+            filename: "sidepanel.html",
+            chunks: ["sidepanel"]
         }),
         new HtmlPlugin({
-            title: "TabSera Manage",
+            title: "TabSera - Extensive Tab Manager",
             filename: "options.html",
             chunks: ["options"]
         }),
