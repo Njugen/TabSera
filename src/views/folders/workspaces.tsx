@@ -425,9 +425,9 @@ function Workspaces(props: any): JSX.Element {
                 />
             }
             {renderFolderManagerPopup()}
-            <div id="workspace-section" className="mb-12">
+            <div id="workspace-section" className="mb-12 border-b border-gray-300">
                 <div className="flex justify-between min-h-[350px]">
-                    <div className="w-full mb-6">
+                    <div className="w-full mb-6 px-16 pb-4">
                         <h1 className="text-4xl text-tbfColor-darkpurple mb-6 font-light inline-block">
                             Workspaces
                         </h1>

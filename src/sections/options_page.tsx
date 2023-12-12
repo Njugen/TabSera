@@ -11,7 +11,22 @@ import RightIcon from './../images/icons/right_icon';
 import SearchBar from './../components/utils/search_bar';
 
 function RenderOptionsPage(props: any){
-    const [activeNavLink, setActiveNavLink] = useState<string>("options"); 
+  function presetActiveNavLink(){
+    const url: string = window.location.href;
+    const urlSplit: Array<string> = url.split("?");
+
+    if(urlSplit.length === 2){
+      const paramSplit: Array<string> =  urlSplit[1].split("=");
+      const key: string = paramSplit[0];
+      const val: string = paramSplit[1];
+
+      return val;
+    } else {
+      return "main";
+    }
+  }
+
+  const [activeNavLink, setActiveNavLink] = useState<string>(presetActiveNavLink()); 
   const [sidebarExpanded, setSidebarExpanded] = useState<boolean>(true);
 
   // Check whether or not a setting for sidebar expansion exists in browser storage. If so, set a state.
@@ -29,7 +44,7 @@ function RenderOptionsPage(props: any){
 
   function renderExpandedSidebarNav(): JSX.Element {
     return <div id="main-menu" className="px-2 py-4">
-        <Navlink key="folders-nav-link" iconSize={20} label="Dashboard" url="?view=main" isActive={activeNavLink === "options" ? true : false} onClick={() => setActiveNavLink("options")} />
+        <Navlink key="folders-nav-link" iconSize={20} label="Dashboard" url="?view=main" isActive={activeNavLink === "main" ? true : false} onClick={() => setActiveNavLink("main")} />
         <Navlink key="settings-nav-link" iconSize={20} label="Settings" url="?view=settings" isActive={activeNavLink === "settings" ? true : false} onClick={() => setActiveNavLink("settings")} />
       </div>;
   }
@@ -37,8 +52,8 @@ function RenderOptionsPage(props: any){
   function renderCollapsedSidebarNav(): JSX.Element {
     return <div id="main-menu" className="flex flex-col items-center justify-center">
         <div className="mt-1">
-          <div className={`my-2 border p-2 rounded-lg ${activeNavLink === "options" ? "border-tbfColor-lightpurple" : "border-tbfColor-middlegrey2"}`}>
-            <Navlink key="folders-nav-link" iconSize={32} url="?view=main" isActive={activeNavLink === "options" ? true : false} onClick={() => setActiveNavLink("options")} />
+          <div className={`my-2 border p-2 rounded-lg ${activeNavLink === "main" ? "border-tbfColor-lightpurple" : "border-tbfColor-middlegrey2"}`}>
+            <Navlink key="folders-nav-link" iconSize={32} url="?view=main" isActive={activeNavLink === "main" ? true : false} onClick={() => setActiveNavLink("main")} />
           </div>
           <div className={`my-2 border p-2 rounded-lg ${activeNavLink === "settings" ? "border-tbfColor-lightpurple" : "border-tbfColor-middlegrey2"}`}>
             <Navlink key="settings-nav-link" iconSize={32} url="?view=settings" isActive={activeNavLink === "settings" ? true : false} onClick={() => setActiveNavLink("settings")} />
@@ -63,7 +78,7 @@ function RenderOptionsPage(props: any){
              
               <div ref={rootRef} id="body" className="container">
                 <SearchBar />
-                <div className="mx-16 my-12 pb-[50px]">
+                <div className="my-12 pb-[50px]">
                   {view}
                 </div>
               </div>
@@ -92,11 +107,12 @@ function RenderOptionsPage(props: any){
         } else {
           result = renderUI(<FolderView />);
         }
+        
       } else {
         result = renderUI(<FolderView />);
       }
     }
-
+    
     return result;
   }
 

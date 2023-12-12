@@ -372,8 +372,8 @@ function History(props: any): JSX.Element {
         <>
             {addToWorkSpaceMessage && renderAddTabsMessage()}
             {renderPopup()}
-            <div id="history-view" className="mb-12">
-                <div className="mb-6 mx-auto flex justify-between">
+            <div id="history-view" className="mb-12 px-16">
+                <div className="mb-6 flex justify-between">
                     <h1 className="text-4xl text-tbfColor-darkpurple font-light inline-block">
                         History
                     </h1>
