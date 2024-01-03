@@ -79,19 +79,20 @@ function Dropdown(props: iDropdown): JSX.Element {
         }
     }, []);
 
-
     useEffect(() => {
         // Once the selected option id has been changed, send it back to the parent component
         onCallback({ selected: selected });
     }, [selected]);
 
     return (
-        <div ref={dropdownRef} className={`hover:cursor-pointer bg-white relative text-sm w-full text-tbfColor-darkergrey rounded-lg h-10 border transition-all duration-75 ${showSubMenuContainer === true ? " border-tbfColor-lightpurple" : "border-tbfColor-middlegrey4"}`}>
+        <div ref={dropdownRef} className={`hover:cursor-pointer bg-white relative text-sm w-full text-tbfColor-darkergrey rounded-lg h-[2.75rem] border transition-all duration-75 ${showSubMenuContainer === true ? " border-tbfColor-lightpurple" : "border-tbfColor-middlegrey4"}`}>
             <div id={`${tag}-selector`} data-testid={`${tag}-selector`} className="flex items-center justify-between mx-3 h-full" onClick={handleShowSubMenu}>          
                 <span className="hover:cursor-pointer">{!getSelectedOption() ? preset.label : getSelectedOption()!.label}</span>
                 {showSubMenuContainer === true ? <CollapseIcon size={28} fill={"#000"} /> : <ExpandIcon size={28} fill={"#000"} />}
             </div>
+            <div className={`transition duration-75 ${showSubMenuContainer === true ? "ease-in opacity-100" : "ease-out opacity-0"}`}>
             { showSubMenuContainer === true && renderDropdownMenu()}
+            </div>
         </div>
     ); 
 }

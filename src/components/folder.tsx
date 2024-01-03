@@ -54,14 +54,14 @@ function Folder(props: iFolder) {
     function toggleExpand(init?: string): void {
         function exp(): void {
             if(contentsRef.current === null || headerRef.current === null) return;
-            headerRef.current.className = `relative tbf-${type} bg-white px-3 h-10 flex items-center rounded-t-md`;
+            headerRef.current.className = `relative tbf-${type} bg-white px-4 h-10 py-6 flex items-center rounded-t-md`;
             contentsRef.current.className = "max-h-[2000px] overflow-hidden bg-white rounded-b-md border-t-0";
             setExpanded(true);
         }
 
         function col(): void {
             if(contentsRef.current === null || headerRef.current === null) return;
-            headerRef.current.className = `relative tbf-${type} bg-white px-3 h-10 flex items-center rounded-md`;
+            headerRef.current.className = `relative tbf-${type} bg-white px-4 h-10 py-6 flex items-center rounded-md`;
             contentsRef.current.className = "max-h-2000 overflow-hidden rounded-b-md";
             setExpanded(false);
         }
@@ -169,7 +169,7 @@ function Folder(props: iFolder) {
 
     return (
         <>
-            <div data-testid={"folder-item"} className={`drop-shadow-md ${viewMode === "list" ? "my-4 duration-200" : "my-2 duration-200"} transition-all ease-in w-full rounded-md`}>
+            <div data-testid={"folder-item"} className={`drop-shadow-focus ${viewMode === "list" ? "my-4 duration-75" : "my-2 duration-75"} transition-all ease-in w-full rounded-md`}>
                 <div ref={headerRef}>
                     <div className="inline-block mr-3">
                         {expanded === false ? <ClosedFolderIcon size={23} fill={"#000"} /> : <OpenedFolderIcon size={26} fill={"#000"} />}
@@ -179,7 +179,7 @@ function Folder(props: iFolder) {
                             {name}
                         </h2>
                     </div>
-                    <div className="absolute flex items-center right-2">
+                    <div className="absolute flex items-center right-4">
                         { 
                         showLaunchOptions === true && <DropdownMenu selected={null} tag={"folder-control-dropdown"} onSelect={handleLaunch} options={launchOptions} />
                         }

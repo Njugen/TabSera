@@ -37,7 +37,7 @@ function Navlink(props: iNavlink): JSX.Element {
     }
 
     return (
-        <Link to={url} className={`text-left flex items-center text-lg ${isActive === true ? activeLinkStyle : inActiveLinkStyle} ${styles.opacity_hover_effect} ${label && "py-2"} mx-1 border-color border-tbfColor-lgrey block`} onClick={onClick}>
+        <Link to={url} className={`text-left xl:p-2 2xl:p-3 flex items-center text-lg ${isActive === true ? activeLinkStyle : inActiveLinkStyle} ${styles.opacity_hover_effect} ${label && "py-2"} border-color border-tbfColor-lgrey block`} onClick={onClick}>
           {renderIcon()} {label && <span className="ml-3">{label}</span>}
         </Link>
     ); 

@@ -27,19 +27,14 @@ function RenderOptionsPage(props: any){
   }
 
   const [activeNavLink, setActiveNavLink] = useState<string>(presetActiveNavLink()); 
-  const [sidebarExpanded, setSidebarExpanded] = useState<boolean>(true);
-
-  // Check whether or not a setting for sidebar expansion exists in browser storage. If so, set a state.
-  useEffect(() => {
-    chrome.storage.sync.get("expanded_sidebar", (data) => setSidebarExpanded(data.expanded_sidebar));
-  }, []);
+  const [sidebarExpanded, setSidebarExpanded] = useState<boolean>(localStorage["expanded_sidebar"] === "true" ? true : false);
 
   const rootRef = useRef<HTMLDivElement>(null);
 
   // Expand/collapse sidebar, and save the information in the browser storage
   function handleSidebarExpandButton(): void {
     setSidebarExpanded(sidebarExpanded === true ? false : true);
-    chrome.storage.sync.set({"expanded_sidebar": sidebarExpanded === true ? false : true});
+    localStorage.setItem("expanded_sidebar", localStorage["expanded_sidebar"] === "true" ? "false" : "true");
   }
 
   function renderExpandedSidebarNav(): JSX.Element {
@@ -52,10 +47,10 @@ function RenderOptionsPage(props: any){
   function renderCollapsedSidebarNav(): JSX.Element {
     return <div id="main-menu" className="flex flex-col items-center justify-center">
         <div className="mt-1">
-          <div className={`my-2 border p-2 rounded-lg ${activeNavLink === "main" ? "border-tbfColor-lightpurple" : "border-tbfColor-middlegrey2"}`}>
+          <div className={`my-2 border rounded-lg ${activeNavLink === "main" ? "border-tbfColor-lightpurple" : "border-tbfColor-middlegrey2"}`}>
             <Navlink key="folders-nav-link" iconSize={32} url="?view=main" isActive={activeNavLink === "main" ? true : false} onClick={() => setActiveNavLink("main")} />
           </div>
-          <div className={`my-2 border p-2 rounded-lg ${activeNavLink === "settings" ? "border-tbfColor-lightpurple" : "border-tbfColor-middlegrey2"}`}>
+          <div className={`my-2 border rounded-lg ${activeNavLink === "settings" ? "border-tbfColor-lightpurple" : "border-tbfColor-middlegrey2"}`}>
             <Navlink key="settings-nav-link" iconSize={32} url="?view=settings" isActive={activeNavLink === "settings" ? true : false} onClick={() => setActiveNavLink("settings")} />
           </div>
         </div>
@@ -67,14 +62,15 @@ function RenderOptionsPage(props: any){
     return (<>
            
             <div className="flex h-full w-full relative">
-              <div id="sidebar" className={`drop-shadow-md sticky h-[calc(100vh)] top-0 left-0 self-start ${sidebarExpanded === true ? `${styles.sidebar_animation_expanded}` : `${styles.sidebar_animation_contracted}`} overflow-x-hidden items-end flex flex-col justify-between border-tbfColor-middlegrey bg-white`}>
-                <div className="w-full px-2 ">
-                  {sidebarExpanded === true ? renderExpandedSidebarNav() : renderCollapsedSidebarNav()}
+                <div id="sidebar" className={`drop-shadow-md sticky h-[calc(100vh)] max-w-[220px] top-0 left-0 self-start ${sidebarExpanded === true ? `${styles.sidebar_animation_expanded}` : `${styles.sidebar_animation_contracted}`} overflow-x-hidden items-end flex flex-col justify-between border-tbfColor-middlegrey bg-white`}>
+                  <div className="w-full px-2 ">
+                    {sidebarExpanded === true ? renderExpandedSidebarNav() : renderCollapsedSidebarNav()}
+                  </div>
+                  <button className={`flex justify-center bottom-0 right-0 float-right h-6 ${sidebarExpanded === true ? "w-full" : "w-full"} bg-tbfColor-middlegrey2 hover:opacity-70 transition-all ease-in`} onClick={handleSidebarExpandButton}>
+                    {sidebarExpanded === true ? <LeftIcon size={20} fill="#828282" /> : <RightIcon size={20} fill="#828282" />}
+                  </button>  
                 </div>
-                <button className={`flex justify-center items-center bottom-0 right-0 float-right h-6 ${sidebarExpanded === true ? "w-full" : "w-full"} bg-tbfColor-middlegrey2 hover:opacity-70 transition-all ease-in`} onClick={handleSidebarExpandButton}>
-                  {sidebarExpanded === true ? <LeftIcon size={20} fill="#828282" /> : <RightIcon size={20} fill="#828282" />}
-                </button>  
-              </div>
+         
              
               <div ref={rootRef} id="body" className="container">
                 <SearchBar />
