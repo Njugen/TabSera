@@ -44,19 +44,20 @@
 
 @keyframes sidebar_expanded {
     from {
-        width: 70px;
+       transform: translateX(0px);
     }
     to {
-        width: 220px;
+        transform: translateX(-150px);
     }
 }
 
 @keyframes sidebar_contracted {
     from {
-        width: 220px;
+        transform: translateX(0px);
     }
     to {
-        width: 70px;
+        width: 220px;
+        transform: translateX(0px);
     }
 }
 
@@ -81,14 +82,17 @@
 
 .sidebar_animation_expanded {
     width: 220px;
-   /* animation-name: sidebar_expanded;
-    animation-duration: 200ms;*/
+    animation-name: sidebar_expanded;
+    animation-duration: 400ms;
+    animation-direction: reverse;
 }
 
 
 .sidebar_animation_contracted {
-  /*  animation-name: sidebar_contracted;
-    animation-duration: 200ms;*/
+    width: 70px;
+    animation-name: sidebar_contracted;
+    animation-duration: 50ms;
+    animation-direction: reverse;
 }
 
 .folder_item_animation_contracted {

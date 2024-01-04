@@ -38,7 +38,7 @@ module.exports = {
       dropShadow: {
         contractedFolder: '0 0 2px rgba(0,0,0,0.1)',
         no_pos: '0 8px 5px rgba(0,0,0,0.1)',
-        focus: "0 2px 4px rgba(0, 0, 0, 0.2)"
+        focus: "0 0px 2px rgba(0, 0, 0, 0.1)"
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
