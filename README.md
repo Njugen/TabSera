@@ -1,4 +1,4 @@
-# TabSera - Extensive tab management (Pre-Alpha version)
+# TabSera - Extensive tab management
 
 <div style="text-align: center; margin: 2rem auto">
     <img src="./img/brand/brand.png" width="15%" />
