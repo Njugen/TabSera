@@ -44,7 +44,7 @@
 
 @keyframes sidebar_expanded {
     from {
-       transform: translateX(0px);
+        transform: translateX(0px);
     }
     to {
         transform: translateX(-150px);
@@ -52,13 +52,12 @@
 }
 
 @keyframes sidebar_contracted {
-    from {
+    /*from {
         transform: translateX(0px);
     }
     to {
-        width: 220px;
-        transform: translateX(0px);
-    }
+        transform: translateX(-70px);
+    }*/
 }
 
 @keyframes folder_item_contracted {
