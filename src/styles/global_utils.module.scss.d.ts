@@ -15,6 +15,7 @@ interface CssExports {
   'window_item_animation_expanded': string;
   'scroll_up_button_shadow': string;
   'search_bar_result_container': string;
+  'scroll_style': string;
 }
 export const cssExports: CssExports;
 export default cssExports;

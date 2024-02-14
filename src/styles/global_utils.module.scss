@@ -82,7 +82,7 @@
 .sidebar_animation_expanded {
     width: 220px;
     animation-name: sidebar_expanded;
-    animation-duration: 400ms;
+    animation-duration: 300ms;
     animation-direction: reverse;
 }
 
@@ -141,4 +141,9 @@
 
 .search_bar_result_container {
     box-shadow: 0 0 #000
+}
+
+.scroll_style {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(201, 201, 201) #fff;
 }

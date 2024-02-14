@@ -1,4 +1,4 @@
-import "./../../styles/global_utils.module.scss";
+import styles from "../../styles/global_utils.module.scss";
 import PrimaryButton from '../../components/utils/primary_button';
 import ManageFolderPopup from '../../components/utils/manage_folder_popup';
 import { useEffect, useState, useRef } from "react";
@@ -350,7 +350,7 @@ function History(props: any): JSX.Element {
                         </h2>
                     </div>
                     <div className="pb-6">
-                        <div ref={historyListRef} className={`overflow-y-auto ${viewMode === "list" ? "mx-auto mt-10" : `grid grid-cols-${decideGridCols()} grid-flow-dense gap-x-4 gap-y-0 mt-8`} max-h-[350px]`}>
+                        <div ref={historyListRef} className={`${styles.scroll_style} overflow-y-auto ${viewMode === "list" ? "mx-auto mt-10" : `grid grid-cols-${decideGridCols()} grid-flow-dense gap-x-4 gap-y-0 mt-8 pr-2`} max-h-[350px]`}>
                             {renderTabs()}
                         </div>
                     </div> 
