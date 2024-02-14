@@ -8,7 +8,7 @@ import FolderView from './../views/folders/folders';
 import SettingsView from './../views/settings';
 import LeftIcon from './../images/icons/left_icon';
 import RightIcon from './../images/icons/right_icon';
-import SearchBar from './../components/utils/search_bar';
+import AdvancedSearchBar from '../components/utils/advanced_search_bar';
 
 function RenderOptionsPage(props: any){
   function presetActiveNavLink(){
@@ -73,7 +73,7 @@ function RenderOptionsPage(props: any){
          
              
               <div ref={rootRef} id="body" className="container">
-                <SearchBar />
+                <AdvancedSearchBar />
                 <div className="my-12 pb-[50px]">
                   {view}
                 </div>

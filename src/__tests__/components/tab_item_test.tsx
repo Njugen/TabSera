@@ -4,7 +4,7 @@ import '@testing-library/jest-dom'
 import { store } from "../../redux/reducer";
 import { chrome } from 'jest-chrome'
 import { useDispatch, useSelector } from "../../redux/mocked_hooks"; 
-import SearchBar from "../../components/utils/search_bar";
+import AdvancedSearchBar from "../../components/utils/advanced_search_bar";
 import { Provider } from "react-redux";
 import iCurrentSessionState from "../../interfaces/states/currentSessionState";
 import { setUpWindowsAction } from "../../redux/actions/currentSessionActions";

@@ -15,7 +15,7 @@ import styles from "../../styles/global_utils.module.scss";
     - Sort search results (e.g. asc, desc, etc)
 */
 
-function SearchBar(props: any): JSX.Element {
+function AdvancedSearchBar(props: any): JSX.Element {
     const [showResultsContainer, setShowResultsContainer] = useState<boolean>(false);
     const [slideDown, setSlideDown] = useState<boolean>(false);
     const [searchTerm, setSearchTerm] = useState<string>("");
@@ -181,4 +181,4 @@ function SearchBar(props: any): JSX.Element {
     ); 
 }
 
-export default SearchBar;
+export default AdvancedSearchBar;
