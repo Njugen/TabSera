@@ -87,7 +87,7 @@ function Folder(props: iFolder) {
     }, []);
 
     function renderWindows(): Array<JSX.Element>{
-        const result: Array<JSX.Element> = windows.map((window, index) => <WindowItem disableTabMark={true} disableTabEdit={true} key={"window-" + index} id={window.id} tabs={window.tabs} />)
+        const result: Array<JSX.Element> = windows.map((window, index) => <WindowItem tabsCol={2} disableTabMark={true} disableTabEdit={true} key={"window-" + index} id={window.id} tabs={window.tabs} />)
 
         return result;
     }

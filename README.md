@@ -30,6 +30,8 @@ For now, TabSera is still in development and certain features will be implemente
 - Tab suspension (upcoming)
 - Tab tagging/filtering (upcoming)
 - Nesting windows/tabs/workspaces (for now, only windows and tabs are nested within workspaces)
+- Simplistic sidepanel, for quick overview
+- Options page for extended overview
 
 ## Programming and tools
 
