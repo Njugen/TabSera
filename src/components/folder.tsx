@@ -169,6 +169,12 @@ function Folder(props: iFolder) {
 
     return (
         <>
+            { 
+                showLaunchOptions === true && 
+                <div className={"w-[200px] absolute mt-12 right-20"}>
+                    <DropdownMenu selected={null} tag={"folder-control-dropdown"} onSelect={handleLaunch} options={launchOptions} />
+                </div>
+            }
             <div data-testid={"folder-item"} className={`drop-shadow-focus ${viewMode === "list" ? "my-4 duration-75" : "my-2 duration-75"} transition-all ease-in w-full rounded-md`}>
                 <div ref={headerRef}>
                     <div className="inline-block mr-3">
@@ -180,9 +186,6 @@ function Folder(props: iFolder) {
                         </h2>
                     </div>
                     <div className="absolute flex items-center right-4">
-                        { 
-                            showLaunchOptions === true && <DropdownMenu selected={null} tag={"folder-control-dropdown"} onSelect={handleLaunch} options={launchOptions} />
-                        }
                         {onOpen && <FolderControlButton icon="open_browser" active={expanded} onClick={handleOpen} />}
                         {onEdit && <FolderControlButton icon="settings" active={expanded} onClick={handleEdit} />}
                         {onDelete && <FolderControlButton icon="trash" active={expanded} onClick={handleDelete} />}
