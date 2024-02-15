@@ -47,7 +47,7 @@ function Workspaces(props: any): JSX.Element {
         } 
     }, [folderCollection]);
 
-    // Get folders from browser stirage and store it into redux 
+    // Get folders from browser storage and store it into redux 
     useEffect(() => {
         getFromStorage("local", "folders", (data) => {  
             dispatch(readAllFoldersFromBrowserAction(data.folders));

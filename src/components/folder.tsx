@@ -87,7 +87,7 @@ function Folder(props: iFolder) {
     }, []);
 
     function renderWindows(): Array<JSX.Element>{
-        const result: Array<JSX.Element> = windows.map((window, index) => <WindowItem tabsCol={2} disableTabMark={true} disableTabEdit={true} key={"window-" + index} id={window.id} tabs={window.tabs} />)
+        const result: Array<JSX.Element> = windows.map((window, index) => <WindowItem tabsCol={viewMode === "list" ? 1 : 2} disableTabMark={true} disableTabEdit={true} key={"window-" + index} id={window.id} tabs={window.tabs} />)
 
         return result;
     }
@@ -181,13 +181,13 @@ function Folder(props: iFolder) {
                     </div>
                     <div className="absolute flex items-center right-4">
                         { 
-                        showLaunchOptions === true && <DropdownMenu selected={null} tag={"folder-control-dropdown"} onSelect={handleLaunch} options={launchOptions} />
+                            showLaunchOptions === true && <DropdownMenu selected={null} tag={"folder-control-dropdown"} onSelect={handleLaunch} options={launchOptions} />
                         }
-                        <FolderControlButton icon="open_browser" active={expanded} onClick={handleOpen} />
-                        <FolderControlButton icon="settings" active={expanded} onClick={handleEdit} />
-                        <FolderControlButton icon="trash" active={expanded} onClick={handleDelete} />
+                        {onOpen && <FolderControlButton icon="open_browser" active={expanded} onClick={handleOpen} />}
+                        {onEdit && <FolderControlButton icon="settings" active={expanded} onClick={handleEdit} />}
+                        {onDelete && <FolderControlButton icon="trash" active={expanded} onClick={handleDelete} />}
                         <FolderControlButton icon="collapse_expand" active={expanded} onClick={handleExpandClick} />
-                        <Checkbox checked={marked} onCallback={(e) => onMark!(id)} />
+                        {onMark && <Checkbox checked={marked} onCallback={(e) => onMark!(id)} />}
                     </div>
                 </div>
                 <div ref={contentsRef} className="max-h-2000 overflow-y-hidden bg-tbfColor-lighterpurple3">
