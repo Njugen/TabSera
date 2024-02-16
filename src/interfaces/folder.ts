@@ -9,6 +9,7 @@ interface iFolder {
     type: "expanded" | "collapsed",
     viewMode: "list" | "grid",
     windows: Array<iWindowItem>,
+    index?: number,
     onOpen?: (e: Array<iWindowItem>, type: string) => void,
     onMark?: (e: number) => void,
     onEdit?: (e: number) => void

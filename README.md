@@ -9,13 +9,13 @@ by default browser features.
 
 ## Issue and purpose
 
-Over the years, managing bookmarks in any web browser has always been easy. The problem is, the bookmarks are not immediately shown by the click of a button and require the user to go through annoying sub menus before accessing them. Bookmarks are not categorized conveniently and there is no way to relate one or more bookmarks to another.
+Add your windows and tabs to accessible folders. Launch sets of entertainment, or open your work related
+resources with just one click.
 
-In Chrome, managing bookmarks quickly becomes a chore because there is no nesting. While Firefox has this feature, its interface easily gets bloated with websites that were not bookmarked in the first place. Convenient features available in Chrome does not exist in Firefox, and vice versa. None of the browsers provide filtering by tags nor do they have extensive filtering nor overview. 
+TabSera gives you a simple overview over what's most important to you. It gives you the freedom to mark, arrange,
+and open tabs in any way you like, e.g. new session, categorized session, or incognito.
 
-TabSera was created to improve these aspects, by providing simple overview and by combining features of both Firefox and Chrome. Advanced features are also provided for users who need more tools and/or extended overview.
-
-For now, TabSera is still in development and certain features will be implemented at a later time.
+Simple overview and basic features can be opened with one click. More advanced featuress and extended overview is also available through the option menu.
 
 ## Screenshots
 
@@ -59,6 +59,8 @@ npm run build
 The build will be available in the ./dist folder. This folder can be loaded
 as a unpacked webextension into the browser. This folder is also used when packaging the extension
 for distribution.
+
+NOTE: There is no bundling as of now. That will be added later.
 
 __Test__
 

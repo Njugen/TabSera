@@ -16,11 +16,14 @@ import { iFieldOption } from "../interfaces/dropdown";
 
 function Folder(props: iFolder) {
     const contentsRef = useRef<HTMLDivElement>(null);
-    const headerRef = useRef<HTMLDivElement>(null)
+    const headerRef = useRef<HTMLDivElement>(null);
+    const folderRef = useRef<HTMLDivElement>(null);
     const [expanded, setExpanded] = useState<boolean>(false);
     const [showLaunchOptions, setShowLaunchOptions] = useState<boolean>(false);
     const [slideDown, setSlideDown] = useState<boolean>(false);
     
+    
+
     // Show a list of options for how to launch this folder
     function handleShowLaunchOptionsMenu(): void {
         if(showLaunchOptions === false){
@@ -45,6 +48,7 @@ function Folder(props: iFolder) {
         type,
         viewMode,
         windows,
+        index,
         onOpen,
         onMark,
         onDelete,
@@ -167,17 +171,16 @@ function Folder(props: iFolder) {
         return () => {}
     } 
 
+    useEffect(() => {
+        if(index && folderRef.current) folderRef.current.style.zIndex = index.toString();
+    }, [folderRef])
+
     return (
         <>
-            { 
-                showLaunchOptions === true && 
-                <div className={"w-[200px] absolute mt-12 right-20"}>
-                    <DropdownMenu selected={null} tag={"folder-control-dropdown"} onSelect={handleLaunch} options={launchOptions} />
-                </div>
-            }
-            <div data-testid={"folder-item"} className={`drop-shadow-focus ${viewMode === "list" ? "my-4 duration-75" : "my-2 duration-75"} transition-all ease-in w-full rounded-md`}>
+            
+            <div ref={folderRef} data-testid={"folder-item"} className={`drop-shadow-focus ${viewMode === "list" ? "my-4 duration-75" : "my-2 duration-75"} sticky transition-all ease-in w-full rounded-md`}>
                 <div ref={headerRef}>
-                    <div className="inline-block mr-3">
+                    <div className="inline-block">
                         {expanded === false ? <ClosedFolderIcon size={23} fill={"#000"} /> : <OpenedFolderIcon size={26} fill={"#000"} />}
                     </div>
                     <div className={`inline-block ${viewMode === "list" ? "w-10/12" : "w-5/12"}`}>
@@ -186,6 +189,12 @@ function Folder(props: iFolder) {
                         </h2>
                     </div>
                     <div className="absolute flex items-center right-4">
+                        { 
+                            showLaunchOptions === true && 
+                            <div className={"w-[200px] absolute mt-12 right-10"}>
+                                <DropdownMenu selected={null} tag={"folder-control-dropdown"} onSelect={handleLaunch} options={launchOptions} />
+                            </div>
+                        }
                         {onOpen && <FolderControlButton icon="open_browser" active={expanded} onClick={handleOpen} />}
                         {onEdit && <FolderControlButton icon="settings" active={expanded} onClick={handleEdit} />}
                         {onDelete && <FolderControlButton icon="trash" active={expanded} onClick={handleDelete} />}
