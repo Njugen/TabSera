@@ -242,7 +242,7 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
                             </div>
                         </div>
                     </div>
-                    <div id="popup-footer" className="px-8 py-8 flex sm:justify-center justify-end">
+                    <div id="popup-footer" className="px-8 py-8 flex justify-center">
                         <PurpleBorderButton disabled={false} text="Cancel" onClick={handleClose} />
                         <PrimaryButton disabled={false} text={isCreate === true ? "Create" : "Save"} onClick={handleSave} />
                     </div>

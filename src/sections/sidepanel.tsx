@@ -38,8 +38,8 @@ function RenderSidePanel(props: any): JSX.Element {
                 {renderView()}
             </div>
             <div className="shadow bg-white sticky bottom-0 px-4 py-4 border-t-2 border-t-tbfColor-lightpurple flex justify-around z-50">
-                <Navlink key="folders-nav-link" iconSize={20} label="" url="?view=main" isActive={false} onClick={() => window.open("./options.html?view=main", "_blank")} />
-                <Navlink key="settings-nav-link" iconSize={20} label="" url="?view=settings" isActive={false} onClick={() => window.open("./options.html?view=settings", "_blank")} />
+                <Navlink key="folders-nav-link" iconSize={20} label="Advanced" url="?view=main" isActive={false} onClick={() => window.open("./options.html?view=main", "_blank")} />
+                <Navlink key="settings-nav-link" iconSize={20} label="Settings" url="?view=settings" isActive={false} onClick={() => window.open("./options.html?view=settings", "_blank")} />
             </div>
         </>
     )
