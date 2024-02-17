@@ -215,9 +215,9 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
         }
         <div ref={popupRef} className={`${styles.popup_container} scroll-smooth overflow-y-scroll flex fixed top-0 left-0 justify-center items-center w-screen z-[600] ${slideDown === false ? "transition-all ease-out h-0 duration-200" : "transition-all h-screen ease-in duration-75"}`}>
             
-            <div data-testid="manage-folder-popup" className="relative bottom-12 h-screen w-[992px]">
+            <div data-testid="manage-folder-popup" className="relative top-0 md:bottom-12 h-screen w-[992px]">
            
-                <div className={`w-full bg-white min-h-[200px] rounded-lg absolute left-0  ${slideDown === false ? "top-[-200%] ease-out duration-300" : "top-[6rem] ease-in duration-300"}`}>
+                <div className={`w-full bg-white min-h-[200px] md:rounded-lg absolute left-0  ${slideDown === false ? "top-[-200%] ease-out duration-300" : "top-0 md:top-[6rem] sm:top-0 ease-in duration-300"}`}>
                 
                     <div id="popup-header" className="pl-8 pr-5 pb-5 pt-6 border-b border-tbfColor-lgrey w-full flex justify-between">
                         <h1 data-testid="manage-folder-title" className="text-3xl text-tbfColor-darkpurple font-light inline-block">
@@ -242,7 +242,7 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
                             </div>
                         </div>
                     </div>
-                    <div id="popup-footer" className="px-8 py-8 flex justify-end">
+                    <div id="popup-footer" className="px-8 py-8 flex sm:justify-center justify-end">
                         <PurpleBorderButton disabled={false} text="Cancel" onClick={handleClose} />
                         <PrimaryButton disabled={false} text={isCreate === true ? "Create" : "Save"} onClick={handleSave} />
                     </div>

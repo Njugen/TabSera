@@ -59,14 +59,14 @@ function Folder(props: iFolder) {
         function exp(): void {
             if(contentsRef.current === null || headerRef.current === null) return;
             headerRef.current.className = `relative tbf-${type} bg-white px-4 h-10 py-6 flex items-center rounded-t-md`;
-            contentsRef.current.className = "max-h-[2000px] overflow-hidden bg-white rounded-b-md border-t-0";
+            contentsRef.current.className = "overflow-hidden bg-white rounded-b-md border-t-0";
             setExpanded(true);
         }
 
         function col(): void {
             if(contentsRef.current === null || headerRef.current === null) return;
             headerRef.current.className = `relative tbf-${type} bg-white px-4 h-10 py-6 flex items-center rounded-md`;
-            contentsRef.current.className = "max-h-2000 overflow-hidden rounded-b-md";
+            contentsRef.current.className = "overflow-hidden rounded-b-md";
             setExpanded(false);
         }
 

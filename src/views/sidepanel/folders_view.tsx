@@ -1,19 +1,21 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { iWindowItem } from '../../interfaces/window_item';
 import { useSelector, useDispatch } from "react-redux";
 import { iFolder } from '../../interfaces/folder';
 import Folder from "../../components/folder";
 import { getFromStorage } from '../../services/webex_api/storage';
 import { readAllFoldersFromBrowserAction } from '../../redux/actions/folderCollectionActions';
+import ManageFolderPopup from "../../components/utils/manage_folder_popup";
+import { clearInEditFolder } from "../../redux/actions/inEditFolderActions";
+import { clearMarkedFoldersAction } from "../../redux/actions/workspaceSettingsActions";
 
 function FoldersView(props:any): JSX.Element {
-    const { onNavigate } = props;
-
     const [windowsPayload, setWindowsPayload] = useState<Array<iWindowItem> | null>(null);
     const [folderLaunchType, setFolderLaunchType] = useState<string | null>(null); 
     const [totalTabsCount, setTotalTabsCount] = useState<number>(0);
     const [view, setView] = useState<string>("folders-view");
     const [showPerformanceWarning, setShowPerformanceWarning] = useState<boolean>(false);
+    const [showFolderManager, setShowFolderManager] = useState<boolean>(false);
 
     const dispatch = useDispatch();
     const folderCollection = useSelector((state: any) => state.FolderCollectionReducer);
@@ -110,13 +112,27 @@ function FoldersView(props:any): JSX.Element {
                 />
             );
         })
-        return result.length > 0 ? result : [<>There are no folders at the moment.</>]
+        return result.length > 0 ? result : [<p className="text-center">There are no folders at the moment.</p>]
     } 
+
+    function scrollDown(): void {
+        window.scrollTo({
+            left: 0, 
+            top: document.body.scrollHeight,
+        });
+    }
+
+    function handleCloseFolderManager(): void {
+        dispatch(clearMarkedFoldersAction());
+        dispatch(clearInEditFolder());
+        setShowFolderManager(false);
+    }   
 
     return (
         <>
+            {showFolderManager === true && <ManageFolderPopup title="Create workspace" onClose={handleCloseFolderManager} />}
             <div className="flex justify-center mt-4 mb-6">
-                <button onClick={() => onNavigate("add-folder-view")} className='text-tbfColor-lightpurple hover:text-gray-400 no-underline hover:underline'>Add folder</button>
+                <button onClick={() => setShowFolderManager(true)} className='text-tbfColor-lightpurple hover:text-gray-400 no-underline hover:underline'>Add folder</button>
             </div>
             {renderFolders()}
         </>
