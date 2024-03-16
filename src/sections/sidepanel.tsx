@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import Navlink from '../components/utils/navlink';
 import FoldersView from '../views/sidepanel/folders_view';
 import CurrentSessionView from '../views/sidepanel/current_session_view';
+import HistoryView from '../views/sidepanel/history_view';
 
 function RenderSidePanel(props: any): JSX.Element {
     const [view, setView] = useState<string>("folders-view");
@@ -20,7 +21,7 @@ function RenderSidePanel(props: any): JSX.Element {
         } else if(view === "current-session-view"){
             component = <CurrentSessionView />
         }else if(view === "history-view"){
-            component = <>HISTORY</>
+            component = <HistoryView />
         }
 
         return component;

@@ -56,10 +56,9 @@ function CurrentSessionWindowItem(props: iWindowItem): JSX.Element {
                 </div>
             </div>
             <div className={`tabs-list mt-3 overflow-hidden ${expanded === true ? "max-h-[2000px] ease-out" : "max-h-0 ease-in"} duration-200 transition-all`}>
-                <div className={`${ tabListCSS()}`}>
-                {expanded === true && [...renderTabs()]}
+                <div className={`${tabListCSS()}`}>
+                    {expanded === true && [...renderTabs()]}
                 </div>
-               
             </div>
             
         </div>
