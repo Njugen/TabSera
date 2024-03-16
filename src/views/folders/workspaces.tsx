@@ -102,17 +102,17 @@ function Workspaces(props: any): JSX.Element {
         let render;
 
         if(createFolder === true){
-            render = <ManageFolderPopup title="Create workspace" onClose={handleCloseFolderManager} />;
+            render = <ManageFolderPopup type="slide-in" title="Create workspace" onClose={handleCloseFolderManager} />;
         } else {
 
             if(mergeProcess !== null){
-                return <ManageFolderPopup title={`Create folder by merge`} folder={mergeProcess} onClose={handleCloseFolderManager} />
+                return <ManageFolderPopup type="slide-in" title={`Create folder by merge`} folder={mergeProcess} onClose={handleCloseFolderManager} />
             } else {
                 const targetFolder: Array<iFolder> = folderCollection.filter((item: iFolder) => editFolderId === item.id);
                 const input: iFolder = {...targetFolder[0]};
 
                 if(targetFolder.length > 0){
-                    render = <ManageFolderPopup title={`Edit folder ${targetFolder[0].id}`} folder={input} onClose={handleCloseFolderManager} />;
+                    render = <ManageFolderPopup type="slide-in" title={`Edit folder ${targetFolder[0].id}`} folder={input} onClose={handleCloseFolderManager} />;
                 } else {
                     render = <></>;
                 }

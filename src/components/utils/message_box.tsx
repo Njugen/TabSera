@@ -31,7 +31,7 @@ function MessageBox(props: iMessageBox): JSX.Element {
     }
 
     return (
-        <div data-testid={"warning-message-popup"} className={`fixed top-0 flex ${styles.popup_container} justify-center items-center left-0 w-full h-screen overflow-y-scroll z-[1000]`}>
+        <div data-testid={"warning-message-popup"} className={`fixed top-0 flex ${styles.popup_container_transparent_bg} justify-center items-center left-0 w-full h-screen overflow-y-scroll z-[1000]`}>
             <div className="p-10 w-[500px] bg-tbfColor-darkpurple rounded-lg drop-shadow-2xl text-center leading-7 text-md">
                 {title && <h4 className="text-2xl mb-3 text-white">{title}</h4>}
                 <p className="mb-8 text-white">

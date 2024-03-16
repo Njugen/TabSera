@@ -4,7 +4,8 @@ interface CssExports {
   'input_textfield': string;
   'opacity_hover_effect': string;
   'sidebar_shadow': string;
-  'popup_container': string;
+  'popup_container_default': string;
+  'popup_container_transparent_bg': string;
   'scroll_button_shadow': string;
   'shadow_no_pos': string;
   'sidebar_animation_contracted': string;

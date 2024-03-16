@@ -276,7 +276,8 @@ function History(props: any): JSX.Element {
 
         return (
             <AddToWorkspacePopup 
-                title="Choose where to add the selected tabs"
+                title="Save history"
+                type="slide-in" 
                 dropdownOptions={dropdownOptions}
                 onNewWorkspace={handleAddToNewWorkspace}
                 onExistingWorkspace={handleAddToExistingWorkspace}
@@ -326,10 +327,10 @@ function History(props: any): JSX.Element {
                 marked: false,
                 windows: [presetWindow],
             }
-            render = <ManageFolderPopup title="Create workspace" folder={payload} onClose={handlePopupClose} />;
+            render = <ManageFolderPopup type="slide-in" title="Create workspace" folder={payload} onClose={handlePopupClose} />;
         } else if(mergeProcess !== null) {
 
-            render = <ManageFolderPopup title={`Merge tabs to ${mergeProcess.name}`} folder={mergeProcess} onClose={handlePopupClose} />;
+            render = <ManageFolderPopup type="slide-in" title={`Merge tabs to ${mergeProcess.name}`} folder={mergeProcess} onClose={handlePopupClose} />;
         } else {
             render = <></>;
         }

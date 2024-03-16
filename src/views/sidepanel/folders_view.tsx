@@ -3,11 +3,13 @@ import { iWindowItem } from '../../interfaces/window_item';
 import { useSelector, useDispatch } from "react-redux";
 import { iFolder } from '../../interfaces/folder';
 import Folder from "../../components/folder";
-import { getFromStorage } from '../../services/webex_api/storage';
+import { getFromStorage, saveToStorage } from '../../services/webex_api/storage';
 import { readAllFoldersFromBrowserAction } from '../../redux/actions/folderCollectionActions';
 import ManageFolderPopup from "../../components/utils/manage_folder_popup";
 import { clearInEditFolder } from "../../redux/actions/inEditFolderActions";
 import { clearMarkedFoldersAction } from "../../redux/actions/workspaceSettingsActions";
+import MessageBox from "../../components/utils/message_box";
+import PrimaryButton from "../../components/utils/primary_button";
 
 function FoldersView(props:any): JSX.Element {
     const [windowsPayload, setWindowsPayload] = useState<Array<iWindowItem> | null>(null);
@@ -20,6 +22,12 @@ function FoldersView(props:any): JSX.Element {
     const dispatch = useDispatch();
     const folderCollection = useSelector((state: any) => state.FolderCollectionReducer);
 
+    useEffect(() => {        
+        if(folderCollection.length > 0){
+            saveToStorage("local", "folders", folderCollection);
+        } 
+    }, [folderCollection]);
+
     useEffect(() => {
         
         if(!windowsPayload || !folderLaunchType) return;
@@ -30,12 +38,12 @@ function FoldersView(props:any): JSX.Element {
    
         chrome.storage.sync.get("performance_notification_value", (data) => {
             setTotalTabsCount(data.performance_notification_value);
-            /*if(data.performance_notification_value !== -1 && data.performance_notification_value <= tabsCount) {
+            if(data.performance_notification_value !== -1 && data.performance_notification_value <= tabsCount) {
                 setShowPerformanceWarning(true);
             } else {
                 handleLaunchFolder(windowsPayload);
-            }*/
-            handleLaunchFolder(windowsPayload);
+            }
+            //handleLaunchFolder(windowsPayload);
         });
     }, [folderLaunchType]);
 
@@ -115,13 +123,6 @@ function FoldersView(props:any): JSX.Element {
         return result.length > 0 ? result : [<p className="text-center">There are no folders at the moment.</p>]
     } 
 
-    function scrollDown(): void {
-        window.scrollTo({
-            left: 0, 
-            top: document.body.scrollHeight,
-        });
-    }
-
     function handleCloseFolderManager(): void {
         dispatch(clearMarkedFoldersAction());
         dispatch(clearInEditFolder());
@@ -130,9 +131,18 @@ function FoldersView(props:any): JSX.Element {
 
     return (
         <>
-            {showFolderManager === true && <ManageFolderPopup title="Create workspace" onClose={handleCloseFolderManager} />}
+            {showPerformanceWarning &&
+                <MessageBox 
+                    title="Warning" 
+                    text={`You are about to open ${totalTabsCount} or more tabs at once. Opening this many may slow down your browser. Do you want to proceed?`}
+                    primaryButton={{ text: "Yes, open selected folders", callback: () => { windowsPayload && handleLaunchFolder(windowsPayload); setShowPerformanceWarning(false)}}}
+                    secondaryButton={{ text: "No, do not open", callback: () => { setShowPerformanceWarning(false); setWindowsPayload(null);
+                        setFolderLaunchType(null); setShowPerformanceWarning(false);}}}    
+                />
+            }
+            {showFolderManager === true && <ManageFolderPopup type="popup" title="Create workspace" onClose={handleCloseFolderManager} />}
             <div className="flex justify-center mt-4 mb-6">
-                <button onClick={() => setShowFolderManager(true)} className='text-tbfColor-lightpurple hover:text-gray-400 no-underline hover:underline'>Add folder</button>
+                <PrimaryButton disabled={false} text="Add folder" onClick={() => setShowFolderManager(true)} />
             </div>
             {renderFolders()}
         </>

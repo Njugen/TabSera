@@ -11,7 +11,14 @@
     }
 }
 
-.popup_container {
+.popup_container_default {
+    background: #fff;
+
+    .popup_contents_wrapper {
+    }
+}
+
+.popup_container_transparent_bg {
     background: rgba(0,0,0,0.5);
 
     .popup_contents_wrapper {

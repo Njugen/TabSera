@@ -86,7 +86,6 @@ function CurrentSession(props: any): JSX.Element {
     };
 
    
-
     useEffect(() => {
         getAllWindows();
         chrome.windows.onCreated.addListener(() => {
@@ -213,7 +212,7 @@ function CurrentSession(props: any): JSX.Element {
 
     function renderContents(): Array<JSX.Element> {
         const existingWindows = currentSessionData?.windows;
-        const existingWindowsElements: Array<JSX.Element> = existingWindows?.map((item: iWindowItem) => <CurrentSessionWindowItem tabsCol={4} disableEdit={currentSessionData.windows.length < 2 ? true : false} disableTabMark={false} disableTabEdit={true} key={`existing-window-${item.id}`} id={item.id} tabs={item.tabs} initExpand={true} />);
+        const existingWindowsElements: Array<JSX.Element> = existingWindows?.map((item: iWindowItem, i: number) => <CurrentSessionWindowItem key={`window-item-${i}`} tabsCol={4} disableEdit={currentSessionData.windows.length < 2 ? true : false} disableTabMark={false} disableTabEdit={true} id={item.id} tabs={item.tabs} initExpand={true} />);
         
         if (existingWindowsElements?.length > 0){
             return [...existingWindowsElements];
@@ -244,8 +243,6 @@ function CurrentSession(props: any): JSX.Element {
         ];
 
         function handleAddToNewWorkspace(): void {
-            
-
             setAddToWorkspaceMessage(false);
             setCreateFolder(true);
         }
@@ -306,7 +303,8 @@ function CurrentSession(props: any): JSX.Element {
 
         return (
             <AddToWorkspacePopup 
-                title="Choose where to save the current session"
+                title="Save session"
+                type="slide-in"
                 dropdownOptions={dropdownOptions}
                 onNewWorkspace={handleAddToNewWorkspace}
                 onExistingWorkspace={handleAddToExistingWorkspace}
@@ -355,10 +353,10 @@ function CurrentSession(props: any): JSX.Element {
                 marked: false,
                 windows: [...presetWindows],
             }
-            render = <ManageFolderPopup title="Create workspace" folder={payload} onClose={handlePopupClose} />;
+            render = <ManageFolderPopup type="slide-in" title="Create workspace" folder={payload} onClose={handlePopupClose} />;
         } else if(mergeProcess !== null) {
 
-            render = <ManageFolderPopup title={`Merge tabs to ${mergeProcess.name}`} folder={mergeProcess} onClose={handlePopupClose} />;
+            render = <ManageFolderPopup type="slide-in" title={`Merge tabs to ${mergeProcess.name}`} folder={mergeProcess} onClose={handlePopupClose} />;
         } else {
             render = <></>;
         }

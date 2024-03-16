@@ -32,7 +32,7 @@ import { setCurrentlyEditingTab } from "../../redux/actions/miscActions";
 
 function ManageFolderPopup(props: iPopup): JSX.Element {
     const { onClose, folder, title } = props;
-    const [slideDown, setSlideDown] = useState<boolean>(false);
+    const [show, setShow] = useState<boolean>(false);
     const [isCreate, setIsCreate] = useState<boolean>(false);
     const [modified, setModified] = useState<boolean>(false);
     const [originWindows, setOriginWindows] = useState<string>("");
@@ -54,7 +54,7 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
         let payload: iFolder | undefined = folder;
         
         // Apply slide down effect once this popup is launched
-        setSlideDown(true);
+        setShow(true);
      
         // Payload is undefined, this means this popup is used for creating a new folder.
         // Otherwise, a folder is being edited.
@@ -137,12 +137,11 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
             if((data.windows && data.windows.length === 0) || state.MiscReducer.isEditingTabs > 0) {
                 updatedFieldState.windows = true;
             } 
-
-            setInValidFields({...updatedFieldState});
             
             if(updatedFieldState.name === false && updatedFieldState.windows === false){
                 callback();
             } else {
+                setInValidFields({...updatedFieldState});
                 scrollTop();
             }
      
@@ -162,13 +161,13 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
                 dispatch(setShowFolderChangeWarning(true));
             } else {
                 // Perform tasks and close the popup form.
-                setSlideDown(false);
+                setShow(false);
                 
                 dispatch(setShowFolderChangeWarning(false));
                 setModified(false)
                 setOriginWindows("");
                 setIsCreate(false);
-                 document.body.style.overflowY = "scroll";
+                document.body.style.overflowY = "scroll";
                 setTimeout(() => {
                     dispatch(setCurrentlyEditingTab(false));
                     onClose()
@@ -204,6 +203,34 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
         dispatch(setShowFolderChangeWarning(false))
     }
 
+    // Style the outer layer of this component
+    function outerStyleDirection(): string {
+        const { type } = props;
+        let cssClasses = "";
+
+        if(type === "slide-in"){
+            cssClasses = `${styles.popup_container_transparent_bg} scroll-smooth overflow-y-scroll flex fixed top-0 left-0 justify-center items-center w-screen z-[600] ${show === false ? "h-0" : "h-screen"}`;
+        } else if(type === "popup") {
+            cssClasses = `${styles.popup_container_default} overflow-y-auto flex fixed top-0 left-0 justify-center items-center w-screen z-[600] ${show === false ? "h-0" : "h-screen"}`;
+        }
+
+        return cssClasses;
+    }
+
+    // Style the inner layer of this component (the popup itself)
+    function innerStyleDirection(): string {
+        const { type } = props;
+        let cssClasses = "";
+
+        if(type === "slide-in"){
+            cssClasses = `w-full bg-white min-h-[200px] md:rounded-lg absolute left-0 ${show === false ? "top-[-200%] ease-out duration-300" : "top-0 md:top-[6rem] sm:top-0 ease-in duration-300"}`;
+        } else if(type === "popup"){
+            cssClasses = `w-full bg-white min-h-[200px] md:rounded-lg absolute left-0 ${show === false ? "hidden" : "top-0"}`;
+        }
+
+        return cssClasses;
+    }
+
     return (<>
         {state.WarningActionsReducer?.showFolderChangeWarning === true && 
             <MessageBox 
@@ -213,11 +240,11 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
                 secondaryButton={{ text: "No, keep editing", callback: () => handleKeepEditing()}}    
             />
         }
-        <div ref={popupRef} className={`${styles.popup_container} scroll-smooth overflow-y-scroll flex fixed top-0 left-0 justify-center items-center w-screen z-[600] ${slideDown === false ? "transition-all ease-out h-0 duration-200" : "transition-all h-screen ease-in duration-75"}`}>
+        <div ref={popupRef} className={outerStyleDirection()}>
             
             <div data-testid="manage-folder-popup" className="relative top-0 md:bottom-12 h-screen w-[992px]">
            
-                <div className={`w-full bg-white min-h-[200px] md:rounded-lg absolute left-0  ${slideDown === false ? "top-[-200%] ease-out duration-300" : "top-0 md:top-[6rem] sm:top-0 ease-in duration-300"}`}>
+                <div className={innerStyleDirection()}>
                 
                     <div id="popup-header" className="pl-8 pr-5 pb-5 pt-6 border-b border-tbfColor-lgrey w-full flex justify-between">
                         <h1 data-testid="manage-folder-title" className="text-3xl text-tbfColor-darkpurple font-light inline-block">

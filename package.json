@@ -47,7 +47,7 @@
     "eject": "react-scripts eject",
     "dev": "webpack",
     "watch": "webpack --watch --progress --config webpack.dev.js",
-    "coverage": "react-scripts test --coverage --watchAll --collectCoverageFrom='src/components/**/*.{ts,tsx}' --collectCoverageFrom='src/tools/**/*.{ts,tsx}' --collectCoverageFrom='src/redux/**/*.{ts,tsx}' --collectCoverageFrom='src/views/**/*.{ts,tsx}' --collectCoverageFrom='src/images/**/*.{ts,tsx}'"
+    "test-coverage": "react-scripts test --coverage --watchAll --collectCoverageFrom='src/components/**/*.{ts,tsx}' --collectCoverageFrom='src/tools/**/*.{ts,tsx}' --collectCoverageFrom='src/redux/**/*.{ts,tsx}' --collectCoverageFrom='src/views/**/*.{ts,tsx}' --collectCoverageFrom='src/images/**/*.{ts,tsx}'"
   },
   "eslintConfig": {
     "extends": [

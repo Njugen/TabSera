@@ -145,7 +145,7 @@ function AdvancedSearchBar(props: any): JSX.Element {
                     </div>
                     <input ref={searchFieldRef} data-testid="search-field" id="search-field" defaultValue="Search tabs..." onChange={handleFieldChange} onClick={handleActivateSearch} className={`py-5 h-10 ${slideDown === false ? "bg-gray-300" : "bg-white"} w-full focus:outline-0`} type="text" />
                 </div>
-                {slideDown === true && <div data-testid="search-results-area" id="search-results-area" className={`${styles.popup_container} w-screen h-full top-0 bg-[rgba-] absolute z-500 left-0 flex justify-center`}>
+                {slideDown === true && <div data-testid="search-results-area" id="search-results-area" className={`${styles.popup_container_transparent_bg} w-screen h-full top-0 bg-[rgba-] absolute z-500 left-0 flex justify-center`}>
                     <div ref={searchResultsContainerRef} className={`bg-white p-6 ml-16 mt-10 transition-all ease-in duration-75 max-h-96 overflow-hidden w-7/12 z-10 rounded-lg drop-shadow-[0_3px_2px_rgba(0,0,0,0.15)]`}>
                         {searchTerm.length > 0 ? <div className="grid grid-cols-2 gap-x-[1.75rem]">   
                            {/* 

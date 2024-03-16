@@ -5,36 +5,42 @@ import "./../styles/sidepanel_specific.css";
 import { useState, useEffect } from 'react';
 import Navlink from '../components/utils/navlink';
 import FoldersView from '../views/sidepanel/folders_view';
+import CurrentSessionView from '../views/sidepanel/current_session_view';
 
 function RenderSidePanel(props: any): JSX.Element {
     const [view, setView] = useState<string>("folders-view");
+    
+    let activeNavButtonCSS = "text-tbfColor-lightpurple font-semibold";
+    let inactiveNavButtonCSS = "text-gray-400 hover:text-tbfColor-lighterpurple transition ease-in-out duration-300 font-semibold";
 
     const renderView = (): JSX.Element => {
         let component: JSX.Element = <></>;
         if(view === "folders-view"){
-            component = <FoldersView onNavigate={(target: string) => setView(target)} />
-        } else if(view === "add-folder-view"){
-            component = <></>
+            component = <FoldersView />
+        } else if(view === "current-session-view"){
+            component = <CurrentSessionView />
+        }else if(view === "history-view"){
+            component = <>HISTORY</>
         }
 
         return component;
     }
 
-    const handleChange = (e: any): void => {
+    const handleSearchBarChange = (e: any): void => {
         console.log(e.target.value);
     }
 
     return (
         <>
             <div className={"p-4 border-b border-gray-100 sticky top-0 z-50 bg-white shadow"}>
-                <SimpleSearchBar onChange={handleChange} />
+                <SimpleSearchBar onChange={handleSearchBarChange} />
                 <div className="flex justify-between mt-8">
-                    <button className="text-tbfColor-lightpurple font-semibold">Folders</button>
-                    <button className="text-gray-400 hover:text-tbfColor-lighterpurple transition ease-in-out duration-300 font-semibold">Current tabs</button>
-                    <button className="text-gray-400 hover:text-tbfColor-lighterpurple transition ease-in-out duration-300 font-semibold">History</button>
+                    <button onClick={() => setView("folders-view")} className={view === "folders-view" ? activeNavButtonCSS : inactiveNavButtonCSS}>Folders</button>
+                    <button onClick={() => setView("current-session-view")} className={view === "current-session-view" ? activeNavButtonCSS : inactiveNavButtonCSS}>Current session</button>
+                    <button onClick={() => setView("history-view")} className={view === "history-view" ? activeNavButtonCSS : inactiveNavButtonCSS}>History</button>
                 </div>
             </div>
-            <div className={`overflow-y-auto p-4 pt-2 ${styles.scroll_style} bg-gray-50 min-h-[1000px]`}>
+            <div className={`overflow-y-auto p-4 pt-2 ${styles.scroll_style} bg-white min-h-[1000px]`}>
                 {renderView()}
             </div>
             <div className="shadow bg-white sticky bottom-0 px-4 py-4 border-t-2 border-t-tbfColor-lightpurple flex justify-around z-50">

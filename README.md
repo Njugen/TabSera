@@ -65,7 +65,7 @@ NOTE: There is no bundling as of now. That will be added later.
 __Test__
 
 ```
-npm run coverage
+npm run test-coverage
 ```
 
 Run unit and integration tests (JEST). The tests are available in /src/__tests__. The coverage is presented in ./coverage/Icov-report/index.html
