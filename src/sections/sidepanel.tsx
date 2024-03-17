@@ -7,9 +7,11 @@ import Navlink from '../components/utils/navlink';
 import FoldersView from '../views/sidepanel/folders_view';
 import CurrentSessionView from '../views/sidepanel/current_session_view';
 import HistoryView from '../views/sidepanel/history_view';
+import SearchResultsContainer from '../views/sidepanel/search_results_view';
 
 function RenderSidePanel(props: any): JSX.Element {
     const [view, setView] = useState<string>("folders-view");
+    const [keyword, setKeyword] = useState<string>("");
     
     let activeNavButtonCSS = "text-tbfColor-lightpurple font-semibold";
     let inactiveNavButtonCSS = "text-gray-400 hover:text-tbfColor-lighterpurple transition ease-in-out duration-300 font-semibold";
@@ -24,15 +26,20 @@ function RenderSidePanel(props: any): JSX.Element {
             component = <HistoryView />
         }
 
-        return component;
+        return(
+            <div className={`overflow-y-auto px-2 pt-2 ${styles.scroll_style} bg-white min-h-[1000px]`}> 
+                {component}
+            </div>
+        );
     }
 
     const handleSearchBarChange = (e: any): void => {
-        console.log(e.target.value);
-    }
+        setKeyword(e.target.value);
+    } 
 
     return (
         <>
+            {keyword && <SearchResultsContainer keyword={keyword} onClose={() => setKeyword("")} />}
             <div className={"p-4 border-b border-gray-100 sticky top-0 z-50 bg-white shadow"}>
                 <SimpleSearchBar onChange={handleSearchBarChange} />
                 <div className="flex justify-between mt-8">
@@ -41,9 +48,7 @@ function RenderSidePanel(props: any): JSX.Element {
                     <button onClick={() => setView("history-view")} className={view === "history-view" ? activeNavButtonCSS : inactiveNavButtonCSS}>History</button>
                 </div>
             </div>
-            <div className={`overflow-y-auto p-4 pt-2 ${styles.scroll_style} bg-white min-h-[1000px]`}>
-                {renderView()}
-            </div>
+            {!keyword && renderView()}
             <div className="shadow bg-white sticky bottom-0 px-4 py-4 border-t-2 border-t-tbfColor-lightpurple flex justify-around z-50">
                 <Navlink key="folders-nav-link" iconSize={20} label="Advanced" url="?view=main" isActive={false} onClick={() => window.open("./options.html?view=main", "_blank")} />
                 <Navlink key="settings-nav-link" iconSize={20} label="Settings" url="?view=settings" isActive={false} onClick={() => window.open("./options.html?view=settings", "_blank")} />
