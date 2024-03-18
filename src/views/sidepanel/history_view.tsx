@@ -1,24 +1,29 @@
-import styles from "../../styles/global_utils.module.scss";
-import PrimaryButton from '../../components/utils/primary_button';
-import ManageFolderPopup from '../../components/utils/manage_folder_popup';
-import { useEffect, useState, useRef } from "react";
-import { iFolder } from '../../interfaces/folder';
-import { useDispatch, useSelector } from 'react-redux';
-import { clearInEditFolder  } from '../../redux/actions/inEditFolderActions';
-import TextIconButton from '../../components/utils/text_icon_button';
-import randomNumber from '../../tools/random_number';
+import { useState, useEffect, useRef } from "react";
 import { iWindowItem } from '../../interfaces/window_item';
-import { clearMarkedFoldersAction } from '../../redux/actions/workspaceSettingsActions';
-import Dropdown from '../../components/utils/dropdown';
-import SortIcon from '../../images/icons/sort_icon';
-import TabItem from '../../components/tab_item';
+import { useSelector, useDispatch } from "react-redux";
+import { iFolder } from '../../interfaces/folder';
+import Folder from "../../components/folder";
+import styles from "../../styles/global_utils.module.scss";
+import { getFromStorage, saveToStorage } from '../../services/webex_api/storage';
+import { readAllFoldersFromBrowserAction } from '../../redux/actions/folderCollectionActions';
+import ManageFolderPopup from "../../components/utils/manage_folder_popup";
+import { clearInEditFolder } from "../../redux/actions/inEditFolderActions";
 import { clearMarkedTabsAction, setMarkMultipleTabsAction, setMarkedTabsAction, setTabsSortOrder, setUpTabsAction } from '../../redux/actions/historySettingsActions';
+import { setCurrentTabsSortOrder, setUpWindowsAction } from '../../redux/actions/currentSessionActions';
+import PrimaryButton from "../../components/utils/primary_button";
+import { clearMarkedFoldersAction } from '../../redux/actions/workspaceSettingsActions';
+import randomNumber from '../../tools/random_number';
+import AddToWorkspacePopup from "../../components/utils/add_to_workspace_popup";
 import { iTabItem } from '../../interfaces/tab_item';
 import { iFieldOption } from '../../interfaces/dropdown';
-import AddToWorkspacePopup from '../../components/utils/add_to_workspace_popup';
+import CurrentSessionWindowItem from '../../components/current_session_window_item';
+import TextIconButton from '../../components/utils/text_icon_button';
+import SortIcon from "../../images/icons/sort_icon";
+import Dropdown from "../../components/utils/dropdown";
+import TabItem from "../../components/tab_item";
 
-function History(props: any): JSX.Element {
-    const [viewMode, setViewMode] = useState<string>("grid");
+function HistoryView(props:any): JSX.Element {
+    const [viewMode, setViewMode] = useState<string>("list");
     const [addToWorkSpaceMessage, setAddToWorkspaceMessage] = useState<boolean>(false);
     const [mergeProcess, setMergeProcess] = useState<iFolder | null>(null);
     const [editFolderId, setEditFolderId] = useState<number | null>(null);
@@ -58,7 +63,7 @@ function History(props: any): JSX.Element {
         } else if(e.selected === 3){
             option = "mv";
         }
-        
+
         dispatch(setTabsSortOrder(option));
     }
 
@@ -133,22 +138,22 @@ function History(props: any): JSX.Element {
         const {markedTabs} = tabsData;
         return <>
         
-            <div className="mr-4 inline-flex items-center justify-end w-full">
+            <div className="mr-4 inline-flex items-center justify-between w-full">
                 
-                <div className="flex">
+                <div className="flex w-5/12">
                     <TextIconButton disabled={false} icon={"selected_checkbox"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Mark all" onClick={handleMarkAll} />
                     <TextIconButton disabled={false} icon={"deselected_checkbox"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Unmark all" onClick={handleUnMarkAll} />
                     <TextIconButton disabled={markedTabs.length > 0 ? false : true} icon={"trash"} size={{ icon: 20, text: "text-sm" }}  fill={markedTabs.length > 0 ? "#6D00C2" : "#9f9f9f"} text="Delete from history" onClick={handleDeleteFromHistory} />
                 </div>
-                <div className="flex items-center justify-end">
+                <div className="flex items-center justify-end w-8/12">
                     
                     <TextIconButton disabled={false} icon={viewMode === "list" ? "grid" : "list"} size={{ icon: 20, text: "text-sm" }} fill="#6D00C2" text={viewMode === "list" ? "Grid" : "List"} onClick={handleChangeViewMode} />
-                    <div className="relative w-[175px] mr-4 flex items-center">
-                    
-                       {/* <div className="mr-2">
+                    <div className="relative w-4/12 mr-4 flex items-center">
+   
+                        <div className="mr-2">
                             <SortIcon size={24} fill="#6D00C2" />
                         </div> 
-    <div className="text-sm mr-4">Sort:</div> */}
+                        <div className="text-sm mr-4">Sort:</div> 
                         {
                             renderSortingDropdown()
                         }
@@ -201,7 +206,7 @@ function History(props: any): JSX.Element {
             const collection = tabsData.markedTabs;
            
             const isMarked = collection.find((target: chrome.history.HistoryItem) => parseInt(target.id) === parseInt(item.id));
-    
+
             return <TabItem onMark={handleMark} key={`sorted-tab-${item.id}`} id={parseInt(item.id)} label={item.title || ""} url={item.url || "https://"} disableEdit={true} disableMark={false} marked={isMarked ? true : false} />
         });
 
@@ -277,7 +282,7 @@ function History(props: any): JSX.Element {
         return (
             <AddToWorkspacePopup 
                 title="Save history"
-                type="slide-in" 
+                type="popup" 
                 dropdownOptions={dropdownOptions}
                 onNewWorkspace={handleAddToNewWorkspace}
                 onExistingWorkspace={handleAddToExistingWorkspace}
@@ -327,10 +332,10 @@ function History(props: any): JSX.Element {
                 marked: false,
                 windows: [presetWindow],
             }
-            render = <ManageFolderPopup type="slide-in" title="Create workspace" folder={payload} onClose={handlePopupClose} />;
+            render = <ManageFolderPopup type="popup" title="Create workspace" folder={payload} onClose={handlePopupClose} />;
         } else if(mergeProcess !== null) {
 
-            render = <ManageFolderPopup type="slide-in" title={`Merge tabs to ${mergeProcess.name}`} folder={mergeProcess} onClose={handlePopupClose} />;
+            render = <ManageFolderPopup type="popup" title={`Merge tabs to ${mergeProcess.name}`} folder={mergeProcess} onClose={handlePopupClose} />;
         } else {
             render = <></>;
         }
@@ -340,12 +345,10 @@ function History(props: any): JSX.Element {
 
     function renderHistoryManagement(): JSX.Element {
         return (
-            <div className="flex justify-center min-h-[350px]">
+            <div className="flex justify-center bg-white min-h-[350px]">
                 <div className="w-full">
-                   
-    
                     <div className="pb-6">
-                        <div ref={historyListRef} className={`${styles.scroll_style} overflow-y-auto ${viewMode === "list" ? "mx-auto mt-10" : `grid grid-cols-${decideGridCols()} grid-flow-dense gap-x-3 gap-y-0 mt-8 pr-2`} max-h-[350px]`}>
+                        <div ref={historyListRef} className={`${viewMode === "list" ? "mx-auto" : `grid grid-cols-${decideGridCols()} grid-flow-dense gap-x-4 gap-y-0 mt-8 pr-2`} overflow-y-hidden`}>
                             {renderTabs()}
                         </div>
                     </div> 
@@ -367,25 +370,14 @@ function History(props: any): JSX.Element {
         <>
             {addToWorkSpaceMessage && renderAddTabsMessage()}
             {renderPopup()}
-            <div id="history-view" className="mb-12 pt-10 bg-white shadow">
-                <div className="flex justify-between min-h-[350px]">
-                    <div className="w-full mb-6 px-14 pb-4">
-                        <div className="flex">
-                            <h1 className="text-4xl text-tbfColor-darkpurple font-light inline-block">
-                                History
-                            </h1>
-                            {renderOptionsMenu()}
-                        </div>
-                        <div className="mt-8">                     
-                            {tabsData.tabs.length > 0 ? renderHistoryManagement() : renderEmptyMessage()}
-                        </div>  
-                    </div>
-                </div>
-                
+            <div className="flex justify-center mt-4 mb-6">
+                <PrimaryButton disabled={false} text="Save history" onClick={() => setAddToWorkspaceMessage(true)} />
             </div>
-        </>  
-    );
-
+            <div id="history-view">
+                {tabsData.tabs.length > 0 ? renderHistoryManagement() : renderEmptyMessage()}
+            </div>
+        </>
+    )
 }
 
-export default History
+export default HistoryView;

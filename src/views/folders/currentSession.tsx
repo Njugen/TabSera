@@ -86,7 +86,6 @@ function CurrentSession(props: any): JSX.Element {
     };
 
    
-
     useEffect(() => {
         getAllWindows();
         chrome.windows.onCreated.addListener(() => {
@@ -181,15 +180,15 @@ function CurrentSession(props: any): JSX.Element {
         const markedTabs = [] ;
         return <>
         
-            <div className="mr-4 inline-flex items-center justify-between w-full">
+            <div className="inline-flex items-center justify-end">
                 
-                <div className="flex w-5/12">
+                <div className="flex">
                     {/*<TextIconButton disabled={false} icon={"selected_checkbox"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Mark all tabs" onClick={() => {}} />
                     <TextIconButton disabled={false} icon={"deselected_checkbox"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Unmark all tabs" onClick={() => {}} />
                     <TextIconButton disabled={markedTabs.length > 0 ? false : true} icon={"trash"} size={{ icon: 20, text: "text-sm" }}  fill={markedTabs.length > 0 ? "#6D00C2" : "#9f9f9f"} text="Close tabs" onClick={handleDeleteFromHistory} />
                     */}
                 </div>
-                <div className="flex items-center justify-end w-8/12">
+                <div className="flex items-center justify-end">
                     
                     {/*<TextIconButton disabled={false} icon={viewMode === "list" ? "grid" : "list"} size={{ icon: 20, text: "text-sm" }} fill="#6D00C2" text={viewMode === "list" ? "Grid" : "List"} onClick={handleChangeViewMode} />
                     <div className="relative w-4/12 mr-4 flex items-center">
@@ -213,7 +212,7 @@ function CurrentSession(props: any): JSX.Element {
 
     function renderContents(): Array<JSX.Element> {
         const existingWindows = currentSessionData?.windows;
-        const existingWindowsElements: Array<JSX.Element> = existingWindows?.map((item: iWindowItem) => <CurrentSessionWindowItem tabsCol={4} disableEdit={currentSessionData.windows.length < 2 ? true : false} disableTabMark={false} disableTabEdit={true} key={`existing-window-${item.id}`} id={item.id} tabs={item.tabs} initExpand={true} />);
+        const existingWindowsElements: Array<JSX.Element> = existingWindows?.map((item: iWindowItem, i: number) => <CurrentSessionWindowItem key={`window-item-${i}`} tabsCol={4} disableEdit={currentSessionData.windows.length < 2 ? true : false} disableTabMark={false} disableTabEdit={true} id={item.id} tabs={item.tabs} initExpand={true} />);
         
         if (existingWindowsElements?.length > 0){
             return [...existingWindowsElements];
@@ -244,8 +243,6 @@ function CurrentSession(props: any): JSX.Element {
         ];
 
         function handleAddToNewWorkspace(): void {
-            
-
             setAddToWorkspaceMessage(false);
             setCreateFolder(true);
         }
@@ -306,7 +303,8 @@ function CurrentSession(props: any): JSX.Element {
 
         return (
             <AddToWorkspacePopup 
-                title="Choose where to save the current session"
+                title="Save session"
+                type="slide-in"
                 dropdownOptions={dropdownOptions}
                 onNewWorkspace={handleAddToNewWorkspace}
                 onExistingWorkspace={handleAddToExistingWorkspace}
@@ -355,10 +353,10 @@ function CurrentSession(props: any): JSX.Element {
                 marked: false,
                 windows: [...presetWindows],
             }
-            render = <ManageFolderPopup title="Create workspace" folder={payload} onClose={handlePopupClose} />;
+            render = <ManageFolderPopup type="slide-in" title="Create workspace" folder={payload} onClose={handlePopupClose} />;
         } else if(mergeProcess !== null) {
 
-            render = <ManageFolderPopup title={`Merge tabs to ${mergeProcess.name}`} folder={mergeProcess} onClose={handlePopupClose} />;
+            render = <ManageFolderPopup type="slide-in" title={`Merge tabs to ${mergeProcess.name}`} folder={mergeProcess} onClose={handlePopupClose} />;
         } else {
             render = <></>;
         }
@@ -370,13 +368,13 @@ function CurrentSession(props: any): JSX.Element {
         <>
             {addToWorkSpaceMessage && renderAddTabsMessage()}
             {renderPopup()}
-            <div id="currentSession-view" className="mb-12 border-b border-gray-300">
+            <div id="currentSession-view" className="mb-12 pt-10 bg-white shadow">
                 <div className={"pb-6 w-full bg-white min-h-[350px]"}>
-                    <div className="w-full mb-6 px-16">
-                        <h1 className="text-4xl text-tbfColor-darkpurple mb-6 font-light inline-block">
-                            Currently opened windows and tabs
-                        </h1>
-                        <div className="w-full mb-12">
+                    <div className="w-full mb-6 px-14">
+                        <div className="flex justify-between mb-8">
+                            <h1 className="text-4xl text-tbfColor-darkpurple font-light inline-block">
+                                Current session
+                            </h1>
                             {renderOptionsMenu()}
                         </div>
                         

@@ -4,7 +4,7 @@ import '@testing-library/jest-dom'
 import { store } from "../../../redux/reducer";
 import { chrome } from 'jest-chrome'
 import { useDispatch, useSelector } from "../../../redux/mocked_hooks"; 
-import SearchBar from "../../../components/utils/search_bar";
+import AdvancedSearchBar from "../../../components/utils/advanced_search_bar";
 import { Provider } from "react-redux";
 import iCurrentSessionState from "../../../interfaces/states/currentSessionState";
 import { setUpWindowsAction } from "../../../redux/actions/currentSessionActions";
@@ -82,7 +82,7 @@ describe("Search bar", () => {
     test("There is a preset search term/phrase", () => {
       render(
         <Provider store={store}>
-            <SearchBar /> 
+            <AdvancedSearchBar /> 
         </Provider>
       );
 
@@ -93,7 +93,7 @@ describe("Search bar", () => {
     test("No search results area shown per default", () => {
         render(
           <Provider store={store}>
-              <SearchBar /> 
+              <AdvancedSearchBar /> 
           </Provider>
         );
 
@@ -106,7 +106,7 @@ describe("Search bar", () => {
     test("Search field and search results works. Hides when blurred", () => {
         const { rerender } = render(
             <Provider store={store}>
-                <SearchBar /> 
+                <AdvancedSearchBar /> 
             </Provider>
         );
 
@@ -120,7 +120,7 @@ describe("Search bar", () => {
        
         rerender(
             <Provider store={store}>
-                <SearchBar /> 
+                <AdvancedSearchBar /> 
             </Provider>
         );
 
@@ -182,7 +182,7 @@ describe("Search bar", () => {
     test("X (close tab) button is visible and works for currently opened tabs.", () => {
         const { rerender } = render(
             <Provider store={store}>
-                <SearchBar /> 
+                <AdvancedSearchBar /> 
             </Provider>
         );
 

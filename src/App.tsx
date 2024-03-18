@@ -8,7 +8,7 @@ import FolderView from './views/folders/folders';
 import SettingsView from './views/settings';
 import LeftIcon from './images/icons/left_icon';
 import RightIcon from './images/icons/right_icon';
-import SearchBar from './components/utils/search_bar';
+import AdvancedSearchBar from './components/utils/advanced_search_bar';
 import RenderOptionsPage from './sections/options_page';
 import RenderSidePanel from './sections/sidepanel';
 

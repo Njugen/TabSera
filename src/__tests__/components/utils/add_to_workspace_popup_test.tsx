@@ -31,7 +31,8 @@ describe("extensive test of <AddToWorkspacePopup /> behaviour", () => {
 
         render(
             <AddToWorkspacePopup 
-                title={mockTitle} 
+                title={mockTitle}
+                type="slide-in" 
                 dropdownOptions={mockNoOptions}
                 onNewWorkspace={mockOnNewWorkspace}
                 onExistingWorkspace={mockOnExistingWorkspace}
@@ -66,6 +67,7 @@ describe("extensive test of <AddToWorkspacePopup /> behaviour", () => {
         render(
             <AddToWorkspacePopup 
                 title={mockTitle} 
+                type="slide-in" 
                 dropdownOptions={mockOptions}
                 onNewWorkspace={mockOnNewWorkspace}
                 onExistingWorkspace={mockOnExistingWorkspace}

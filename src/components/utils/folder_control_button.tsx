@@ -5,6 +5,7 @@ import SettingsIcon from "../../images/icons/settings_icon";
 import TrashIcon from "../../images/icons/trash_icon";
 import ExpandIcon from "../../images/icons/expand_icon";
 import CollapseIcon from "../../images/icons/collapse_icon";
+import RotationEffect from "../effects/rotation_effect";
 
 /*
     A button used for various options for a folder. Each button may have different icons using the props.icon variable. Used only in the
@@ -32,12 +33,10 @@ function FolderControlButton(props: iFolderIconButton): JSX.Element {
         } else if(icon === "open_browser"){
             return <OpenBrowserIcon size={17} fill={active === false ? "#000" : "#000"} />;
         } else if(icon === "collapse_expand"){
-            if(active === true){
-                return <CollapseIcon size={28} fill={"#000"} />;
-            } else {
-                return <ExpandIcon size={28} fill={"#000"} />;
-            }
-        }
+            return (<RotationEffect rotated={active}>
+                <CollapseIcon size={28} fill={"#000"} />
+            </RotationEffect>)
+        } 
         return <></>;
     }
 
@@ -46,7 +45,7 @@ function FolderControlButton(props: iFolderIconButton): JSX.Element {
     } 
     
     return (
-        <button data-testid={icon === "collapse_expand" ? colExpDataId() :`folder-control-button-${icon ? icon : "none"}`} className={`${icon !== "collapse_expand" && "mx-2"} ${icon === "collapse_expand" && "ml-3"} ${styles.opacity_hover_effect}`} onClick={onClick}>
+        <button data-testid={icon === "collapse_expand" ? colExpDataId() :`folder-control-button-${icon ? icon : "none"}`} className={`${icon !== "collapse_expand" && "mx-2"} ${styles.opacity_hover_effect}`} onClick={onClick}>
             {renderIcon()}
         </button>
     ); 

@@ -35,6 +35,15 @@ function CurrentSessionWindowItem(props: iWindowItem): JSX.Element {
         return result;
     }
 
+    function tabListCSS(): string {
+        if(tabsCol && tabsCol < 2){
+            return "mx-auto";
+        } else if(tabsCol) {
+            return `grid grid-cols-${tabsCol} gap-x-3 gap-y-0`;
+        } else {
+            return `grid grid-cols-2 gap-x-3 gap-y-0`;
+        }
+    }
 
     return (
         <div data-testid="window-item" className="window-item w-full py-1 rounded-md mb-3" id={`window-${id}`}>
@@ -47,10 +56,9 @@ function CurrentSessionWindowItem(props: iWindowItem): JSX.Element {
                 </div>
             </div>
             <div className={`tabs-list mt-3 overflow-hidden ${expanded === true ? "max-h-[2000px] ease-out" : "max-h-0 ease-in"} duration-200 transition-all`}>
-                <div className={`${/*viewMode === "list" ? "mx-auto" : "grid grid-cols-3 gap-x-3 gap-y-0"*/ `grid grid-cols-${tabsCol ? tabsCol : 2} gap-x-3 gap-y-0`}`}>
-                {expanded === true && [...renderTabs()]}
+                <div className={`${tabListCSS()}`}>
+                    {expanded === true && [...renderTabs()]}
                 </div>
-               
             </div>
             
         </div>

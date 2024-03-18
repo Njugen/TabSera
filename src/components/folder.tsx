@@ -16,11 +16,12 @@ import { iFieldOption } from "../interfaces/dropdown";
 
 function Folder(props: iFolder) {
     const contentsRef = useRef<HTMLDivElement>(null);
-    const headerRef = useRef<HTMLDivElement>(null)
+    const headerRef = useRef<HTMLDivElement>(null);
+    const folderRef = useRef<HTMLDivElement>(null);
     const [expanded, setExpanded] = useState<boolean>(false);
     const [showLaunchOptions, setShowLaunchOptions] = useState<boolean>(false);
     const [slideDown, setSlideDown] = useState<boolean>(false);
-    
+
     // Show a list of options for how to launch this folder
     function handleShowLaunchOptionsMenu(): void {
         if(showLaunchOptions === false){
@@ -45,6 +46,7 @@ function Folder(props: iFolder) {
         type,
         viewMode,
         windows,
+        index,
         onOpen,
         onMark,
         onDelete,
@@ -54,15 +56,15 @@ function Folder(props: iFolder) {
     function toggleExpand(init?: string): void {
         function exp(): void {
             if(contentsRef.current === null || headerRef.current === null) return;
-            headerRef.current.className = `relative tbf-${type} bg-white px-4 h-10 py-6 flex items-center rounded-t-md`;
-            contentsRef.current.className = "max-h-[2000px] overflow-hidden bg-white rounded-b-md border-t-0";
+            headerRef.current.className = `relative border-b border-gray-300 tbf-${type} bg-white px-4 h-10 py-6 flex items-center rounded-t-md`;
+            contentsRef.current.className = "overflow-hidden bg-white rounded-b-md border-t-0";
             setExpanded(true);
         }
 
         function col(): void {
             if(contentsRef.current === null || headerRef.current === null) return;
             headerRef.current.className = `relative tbf-${type} bg-white px-4 h-10 py-6 flex items-center rounded-md`;
-            contentsRef.current.className = "max-h-2000 overflow-hidden rounded-b-md";
+            contentsRef.current.className = "overflow-hidden rounded-b-md";
             setExpanded(false);
         }
 
@@ -87,7 +89,7 @@ function Folder(props: iFolder) {
     }, []);
 
     function renderWindows(): Array<JSX.Element>{
-        const result: Array<JSX.Element> = windows.map((window, index) => <WindowItem disableTabMark={true} disableTabEdit={true} key={"window-" + index} id={window.id} tabs={window.tabs} />)
+        const result: Array<JSX.Element> = windows.map((window, index) => <WindowItem tabsCol={viewMode === "list" ? 1 : 2} disableTabMark={true} disableTabEdit={true} key={"window-" + index} id={window.id} tabs={window.tabs} />)
 
         return result;
     }
@@ -167,11 +169,37 @@ function Folder(props: iFolder) {
         return () => {}
     } 
 
+
+    const renderActionBar = (): JSX.Element => {
+        let result = (
+            <div className="absolute flex items-center right-4">
+                { 
+                    showLaunchOptions === true && 
+                    <div className={"w-[200px] absolute mt-12 right-10"}>
+                        <DropdownMenu selected={null} tag={"folder-control-dropdown"} onSelect={handleLaunch} options={launchOptions} />
+                    </div>
+                }
+                {onOpen && <FolderControlButton icon="open_browser" active={expanded} onClick={handleOpen} />}
+                {onEdit && <FolderControlButton icon="settings" active={expanded} onClick={handleEdit} />}
+                {onDelete && <FolderControlButton icon="trash" active={expanded} onClick={handleDelete} />}
+                <FolderControlButton icon="collapse_expand" active={expanded} onClick={handleExpandClick} />
+                {onMark && <Checkbox checked={marked} onCallback={(e) => onMark!(id)} />}
+            </div>
+        );
+
+        return result;
+    }
+
+    useEffect(() => {
+        if(index && folderRef.current) folderRef.current.style.zIndex = index.toString();
+    }, [folderRef])
+
     return (
         <>
-            <div data-testid={"folder-item"} className={`drop-shadow-focus ${viewMode === "list" ? "my-4 duration-75" : "my-2 duration-75"} transition-all ease-in w-full rounded-md`}>
+            
+            <div ref={folderRef} data-testid={"folder-item"} className={`border border-gray-300 ${viewMode === "list" ? "my-4 duration-75" : "my-4 duration-75"} sticky transition-all ease-in w-full rounded-md`}>
                 <div ref={headerRef}>
-                    <div className="inline-block mr-3">
+                    <div className="inline-block">
                         {expanded === false ? <ClosedFolderIcon size={23} fill={"#000"} /> : <OpenedFolderIcon size={26} fill={"#000"} />}
                     </div>
                     <div className={`inline-block ${viewMode === "list" ? "w-10/12" : "w-5/12"}`}>
@@ -179,16 +207,7 @@ function Folder(props: iFolder) {
                             {name}
                         </h2>
                     </div>
-                    <div className="absolute flex items-center right-4">
-                        { 
-                        showLaunchOptions === true && <DropdownMenu selected={null} tag={"folder-control-dropdown"} onSelect={handleLaunch} options={launchOptions} />
-                        }
-                        <FolderControlButton icon="open_browser" active={expanded} onClick={handleOpen} />
-                        <FolderControlButton icon="settings" active={expanded} onClick={handleEdit} />
-                        <FolderControlButton icon="trash" active={expanded} onClick={handleDelete} />
-                        <FolderControlButton icon="collapse_expand" active={expanded} onClick={handleExpandClick} />
-                        <Checkbox checked={marked} onCallback={(e) => onMark!(id)} />
-                    </div>
+                    {renderActionBar()}
                 </div>
                 <div ref={contentsRef} className="max-h-2000 overflow-y-hidden bg-tbfColor-lighterpurple3">
                 {expanded === true && (

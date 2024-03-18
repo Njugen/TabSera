@@ -47,7 +47,7 @@ function Workspaces(props: any): JSX.Element {
         } 
     }, [folderCollection]);
 
-    // Get folders from browser stirage and store it into redux 
+    // Get folders from browser storage and store it into redux 
     useEffect(() => {
         getFromStorage("local", "folders", (data) => {  
             dispatch(readAllFoldersFromBrowserAction(data.folders));
@@ -102,17 +102,17 @@ function Workspaces(props: any): JSX.Element {
         let render;
 
         if(createFolder === true){
-            render = <ManageFolderPopup title="Create workspace" onClose={handleCloseFolderManager} />;
+            render = <ManageFolderPopup type="slide-in" title="Create workspace" onClose={handleCloseFolderManager} />;
         } else {
 
             if(mergeProcess !== null){
-                return <ManageFolderPopup title={`Create folder by merge`} folder={mergeProcess} onClose={handleCloseFolderManager} />
+                return <ManageFolderPopup type="slide-in" title={`Create folder by merge`} folder={mergeProcess} onClose={handleCloseFolderManager} />
             } else {
                 const targetFolder: Array<iFolder> = folderCollection.filter((item: iFolder) => editFolderId === item.id);
                 const input: iFolder = {...targetFolder[0]};
 
                 if(targetFolder.length > 0){
-                    render = <ManageFolderPopup title={`Edit folder ${targetFolder[0].id}`} folder={input} onClose={handleCloseFolderManager} />;
+                    render = <ManageFolderPopup type="slide-in" title={`Edit folder ${targetFolder[0].id}`} folder={input} onClose={handleCloseFolderManager} />;
                 } else {
                     render = <></>;
                 }
@@ -225,35 +225,59 @@ function Workspaces(props: any): JSX.Element {
             
         }
 
-        result = sortedFolders.map((folder: iFolder, i: number) => {
-            const collection: Array<number> = workspaceSettings.markedFoldersId;
-            return <Folder onDelete={(e) => handleFolderDelete(folder)} marked={collection.find((id) => folder.id === id) ? true : false} onMark={handleMarkFolder} onEdit={() => setEditFolderId(folder.id)} key={folder.id} type={folder.type} id={folder.id} viewMode={workspaceSettings.viewMode} name={folder.name} desc={folder.desc} windows={folder.windows} onOpen={handlePrepareLaunchFolder}/>
-        });
+        const column1: Array<JSX.Element> = [];
+        const column2: Array<JSX.Element> = [];
 
-        return result.length > 0 ? result : [<></>];
+        /*result = sortedFolders.map((folder: iFolder, i: number) => {
+            const collection: Array<number> = workspaceSettings.markedFoldersId;
+            return <Folder onDelete={(e) => handleFolderDelete(folder)} index={sortedFolders.length-i} marked={collection.find((id) => folder.id === id) ? true : false} onMark={handleMarkFolder} onEdit={() => setEditFolderId(folder.id)} key={folder.id} type={folder.type} id={folder.id} viewMode={workspaceSettings.viewMode} name={folder.name} desc={folder.desc} windows={folder.windows} onOpen={handlePrepareLaunchFolder}/>
+        });*/
+
+        for(let i = 0; i < sortedFolders.length; i++){
+            const folder = sortedFolders[i];
+            let result: JSX.Element = <></>;
+            
+            const collection: Array<number> = workspaceSettings.markedFoldersId;
+            result = <Folder onDelete={(e) => handleFolderDelete(folder)} index={sortedFolders.length-i} marked={collection.find((id) => folder.id === id) ? true : false} onMark={handleMarkFolder} onEdit={() => setEditFolderId(folder.id)} key={folder.id} type={folder.type} id={folder.id} viewMode={workspaceSettings.viewMode} name={folder.name} desc={folder.desc} windows={folder.windows} onOpen={handlePrepareLaunchFolder}/>
+            
+            if(i % 2 === 0){   
+                column1.push(result)
+            } else {
+                column2.push(result)
+            }
+        }
+
+        return [<>
+            <div>
+                {column1}
+            </div>
+            <div>
+                {column2}
+            </div>
+        </>];
     }
 
     // Render the action buttons for workspace area
     function renderOptionsMenu(): JSX.Element {
         const { markedFoldersId } = workspaceSettings;
         return <>
-            <div className="mr-4 inline-flex items-center justify-between w-full">
-                <div className="flex w-7/12">
+            <div className="inline-flex items-center justify-end w-full">
+                <div className="flex">
                     <TextIconButton disabled={false} icon={"selected_checkbox"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Mark all" onClick={handleMarkAllFolders} />
                     <TextIconButton disabled={false} icon={"deselected_checkbox"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Unmark all" onClick={handleUnmarkAllFolders} />
                     <TextIconButton disabled={markedFoldersId.length > 0 ? false : true} icon={"folder_duplicate"} size={{ icon: 20, text: "text-sm" }}  fill={markedFoldersId.length > 0 ? "#6D00C2" : "#9f9f9f"} text="Duplicate" onClick={handlePrepareDuplication} />
                     <TextIconButton disabled={markedFoldersId.length >= 2 ? false : true} icon={"merge"} size={{ icon: 20, text: "text-sm" }}  fill={markedFoldersId.length >= 2 ? "#6D00C2" : "#9f9f9f"} text="Merge" onClick={handleMergeFolders} />
                     <TextIconButton disabled={markedFoldersId.length > 0 ? false : true} icon={"trash"} size={{ icon: 20, text: "text-sm" }}  fill={markedFoldersId.length > 0 ? "#6D00C2" : "#9f9f9f"} text="Delete" onClick={handlePrepareMultipleRemovals} />
                 </div>
-                <div className="flex items-center justify-end w-5/12">
+                <div className="flex items-center justify-end">
                     
                     <TextIconButton disabled={false} icon={workspaceSettings.viewMode === "list" ? "grid" : "list"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text={workspaceSettings.viewMode === "list" ? "Grid" : "List"} onClick={handleChangeViewMode} />
-                    <div className="relative w-5/12 mr-4 flex items-center">
+                    <div className="relative w-[175px] mr-4 flex items-center">
                     
-                        <div className="mr-2">
+                        {/*<div className="mr-2">
                             <SortIcon size={24} fill="#6D00C2" />
                         </div> 
-                        <div className="text-sm mr-4">Sort:</div> 
+    <div className="text-sm mr-4">Sort:</div> */}
                         <Dropdown tag="sort-folders" preset={{id: 0, label: "Ascending"}} options={[{id: 0, label: "Ascending"}, {id: 1, label: "Descending"}]} onCallback={handleSortFolders} />
                     </div>
                     <PrimaryButton disabled={false} text="Create workspace" onClick={() => setCreateFolder(true)} />
@@ -425,16 +449,19 @@ function Workspaces(props: any): JSX.Element {
                 />
             }
             {renderFolderManagerPopup()}
-            <div id="workspace-section" className="mb-12 border-b border-gray-300">
+            <div id="workspace-section" className="mb-12 pt-10 bg-white shadow">
                 <div className="flex justify-between min-h-[350px]">
-                    <div className="w-full mb-6 px-16 pb-4">
-                        <h1 className="text-4xl text-tbfColor-darkpurple mb-6 font-light inline-block">
-                            Workspaces
-                        </h1>
+                    <div className="w-full mb-6 px-14 pb-4">
+                        <div className="flex">
+                            <h1 className="text-4xl text-tbfColor-darkpurple font-light inline-block">
+                                Workspaces
+                            </h1>
+                            {hasFolders() && renderOptionsMenu()}
+                        </div>
                         {!hasFolders() && renderMessageBox()}
                         {hasFolders() === true && <div className="">
-                            {hasFolders() && renderOptionsMenu()}
-                            {<div className={`${workspaceSettings.viewMode === "list" ? "mx-auto mt-12" : `grid xl:grid-cols-2 2xl:grid-cols-2 3xl:grid-cols-3 grid-flow-dense gap-x-4 gap-y-0 mt-8`}`}>
+                            
+                            {<div className={`${workspaceSettings.viewMode === "list" ? "mx-auto mt-12" : `grid xl:grid-cols-2 2xl:grid-cols-2 3xl:grid-cols-2 grid-flow-dense gap-x-4 gap-y-0 mt-8`}`}>
                                 {renderFolders()}
                             </div>}
                             
