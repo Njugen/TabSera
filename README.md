@@ -19,7 +19,7 @@ Simple overview and basic features can be opened with one click. More advanced f
 
 ## Screenshots
 
-<img src="./img/main.jpg" width="33%" /> <img src="./img/settings.jpg" width="33%" /> <img src="./img/search.jpg" width="33%" /> <img src="./img/sidebar-draft.jpg" width="33%%" />
+<img src="./img/main.jpg" width="33%" /> <img src="./img/settings.jpg" width="33%" /> <img src="./img/search.jpg" width="33%" /> <img src="./img/sidebar.jpg" width="33%%" />
 
 ## Features
 

@@ -373,7 +373,7 @@ function CurrentSession(props: any): JSX.Element {
                     <div className="w-full mb-6 px-14">
                         <div className="flex justify-between mb-8">
                             <h1 className="text-4xl text-tbfColor-darkpurple font-light inline-block">
-                                Currently opened windows and tabs
+                                Current session
                             </h1>
                             {renderOptionsMenu()}
                         </div>

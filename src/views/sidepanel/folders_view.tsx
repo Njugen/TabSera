@@ -15,7 +15,6 @@ function FoldersView(props:any): JSX.Element {
     const [windowsPayload, setWindowsPayload] = useState<Array<iWindowItem> | null>(null);
     const [folderLaunchType, setFolderLaunchType] = useState<string | null>(null); 
     const [totalTabsCount, setTotalTabsCount] = useState<number>(0);
-    const [view, setView] = useState<string>("folders-view");
     const [showPerformanceWarning, setShowPerformanceWarning] = useState<boolean>(false);
     const [showFolderManager, setShowFolderManager] = useState<boolean>(false);
 
