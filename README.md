@@ -1,4 +1,4 @@
-# TabSera - Browser window and tab manager (Alpha)
+# TabSera - Browser window and tab manager (Beta)
 
 <div style="text-align: center; margin: 2rem auto">
     <img src="./img/brand/brand.png" width="15%" />
