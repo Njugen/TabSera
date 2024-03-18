@@ -21,8 +21,6 @@ function Folder(props: iFolder) {
     const [expanded, setExpanded] = useState<boolean>(false);
     const [showLaunchOptions, setShowLaunchOptions] = useState<boolean>(false);
     const [slideDown, setSlideDown] = useState<boolean>(false);
-    
-    
 
     // Show a list of options for how to launch this folder
     function handleShowLaunchOptionsMenu(): void {
@@ -171,6 +169,31 @@ function Folder(props: iFolder) {
         return () => {}
     } 
 
+
+    const renderActionBar = (): JSX.Element => {
+        let result = (
+            <div className="absolute flex items-center right-4">
+                { 
+                    showLaunchOptions === true && 
+                    <div className={"w-[200px] absolute mt-12 right-10"}>
+                        <DropdownMenu selected={null} tag={"folder-control-dropdown"} onSelect={handleLaunch} options={launchOptions} />
+                    </div>
+                }
+                {onOpen && <FolderControlButton icon="open_browser" active={expanded} onClick={handleOpen} />}
+                {onEdit && <FolderControlButton icon="settings" active={expanded} onClick={handleEdit} />}
+                {onDelete && <FolderControlButton icon="trash" active={expanded} onClick={handleDelete} />}
+                <FolderControlButton icon="collapse_expand" active={expanded} onClick={handleExpandClick} />
+                {onMark && <Checkbox checked={marked} onCallback={(e) => onMark!(id)} />}
+            </div>
+        );
+        
+        if(props.showActions === false){
+            result = <></>
+        }
+
+        return result;
+    }
+
     useEffect(() => {
         if(index && folderRef.current) folderRef.current.style.zIndex = index.toString();
     }, [folderRef])
@@ -188,19 +211,7 @@ function Folder(props: iFolder) {
                             {name}
                         </h2>
                     </div>
-                    <div className="absolute flex items-center right-4">
-                        { 
-                            showLaunchOptions === true && 
-                            <div className={"w-[200px] absolute mt-12 right-10"}>
-                                <DropdownMenu selected={null} tag={"folder-control-dropdown"} onSelect={handleLaunch} options={launchOptions} />
-                            </div>
-                        }
-                        {onOpen && <FolderControlButton icon="open_browser" active={expanded} onClick={handleOpen} />}
-                        {onEdit && <FolderControlButton icon="settings" active={expanded} onClick={handleEdit} />}
-                        {onDelete && <FolderControlButton icon="trash" active={expanded} onClick={handleDelete} />}
-                        <FolderControlButton icon="collapse_expand" active={expanded} onClick={handleExpandClick} />
-                        {onMark && <Checkbox checked={marked} onCallback={(e) => onMark!(id)} />}
-                    </div>
+                    {renderActionBar()}
                 </div>
                 <div ref={contentsRef} className="max-h-2000 overflow-y-hidden bg-tbfColor-lighterpurple3">
                 {expanded === true && (

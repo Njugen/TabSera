@@ -3,6 +3,8 @@ import SearchIcon from "../../images/icons/search_icon";
 import { useSelector } from 'react-redux';
 import TabItem from "../tab_item";
 import styles from "../../styles/global_utils.module.scss";
+import Folder from "../../components/folder";
+import { iFolder } from '../../interfaces/folder';
 
 /*
     Search bar placed at the top of the viewport
@@ -23,6 +25,7 @@ function AdvancedSearchBar(props: any): JSX.Element {
     const searchResultsContainerRef = useRef<HTMLDivElement>(null);
     const searchFieldRef = useRef<HTMLInputElement>(null);
 
+    const folderCollection = useSelector((state: any) => state.FolderCollectionReducer);
     const currentSessionSettings = useSelector((state: any) => state.CurrentSessionSettingsReducer);
     const historySettings = useSelector((state: any) => state.HistorySettingsReducer);
 
@@ -40,6 +43,11 @@ function AdvancedSearchBar(props: any): JSX.Element {
     // Filter previously opened tabs
     function filterHistory(): Array<chrome.history.HistoryItem> {
         const result =  historySettings.tabs.filter((tab: chrome.history.HistoryItem) => tab.title!.toLowerCase().includes(searchTerm.toLowerCase()));
+        return result.slice(0,5);
+    }
+
+    function filterFolders(): Array<iFolder> {
+        const result =  folderCollection.filter((folder: iFolder) => folder.name.toLowerCase().includes(searchTerm.toLowerCase()));
         return result.slice(0,5);
     }
 
@@ -146,7 +154,7 @@ function AdvancedSearchBar(props: any): JSX.Element {
                     <input ref={searchFieldRef} data-testid="search-field" id="search-field" defaultValue="Search tabs..." onChange={handleFieldChange} onClick={handleActivateSearch} className={`py-5 h-10 ${slideDown === false ? "bg-gray-300" : "bg-white"} w-full focus:outline-0`} type="text" />
                 </div>
                 {slideDown === true && <div data-testid="search-results-area" id="search-results-area" className={`${styles.popup_container_transparent_bg} w-screen h-full top-0 bg-[rgba-] absolute z-500 left-0 flex justify-center`}>
-                    <div ref={searchResultsContainerRef} className={`bg-white p-6 ml-16 mt-10 transition-all ease-in duration-75 max-h-96 overflow-hidden w-7/12 z-10 rounded-lg drop-shadow-[0_3px_2px_rgba(0,0,0,0.15)]`}>
+                    <div ref={searchResultsContainerRef} className={`bg-white absolute p-6 ml-16 mt-10 transition-all ease-in duration-75 overflow-hidden w-7/12 z-10 rounded-lg drop-shadow-[0_3px_2px_rgba(0,0,0,0.15)]`}>
                         {searchTerm.length > 0 ? <div className="grid grid-cols-2 gap-x-[1.75rem]">   
                            {/* 
                             <div className="">
@@ -161,16 +169,20 @@ function AdvancedSearchBar(props: any): JSX.Element {
                                 </div>
                             */}
                             <div className="">
+                                <h3 className="uppercase font-bold text-md mb-4 text-tbfColor-darkergrey">Folders</h3>
+                                {filterFolders().map((folder) => <Folder marked={false} id={folder.id!} name={folder.name} viewMode={"list"} type={"collapsed"} desc={folder.desc} windows={folder.windows} />)}
+                            </div>
+                            <div className="">
                                 <h3 className="uppercase font-bold text-md mb-4 text-tbfColor-darkergrey">
                                     Currently opened
                                 </h3>
-                                {filterCurrentTabs().map((tab) => <TabItem marked={false} id={tab.id!} label={tab.title!} url={tab.url!} disableEdit={true} disableMark={true} disableCloseButton={false} onClose={() => handleCloseTab(tab.id!)} />)}
+                                {filterCurrentTabs().map((tab) => <TabItem key={tab.id} marked={false} id={tab.id!} label={tab.title!} url={tab.url!} disableEdit={true} disableMark={true} disableCloseButton={false} onClose={() => handleCloseTab(tab.id!)} />)}
                             </div>
                             <div className="">
                                 <h3 className="uppercase font-bold text-md mb-4 text-tbfColor-darkergrey">
                                     History
                                 </h3>
-                                {filterHistory().map((tab) => <TabItem marked={false} id={parseInt(tab.id)} label={tab.title!} url={tab.url!} disableEdit={true} disableMark={true} disableCloseButton={true} onClose={() => {}} />)}
+                                {filterHistory().map((tab) => <TabItem key={tab.id} marked={false} id={parseInt(tab.id)} label={tab.title!} url={tab.url!} disableEdit={true} disableMark={true} disableCloseButton={true} onClose={() => {}} />)}
                             </div>
                         </div>: <p className="text-center">Enter a search term...</p>}
                     </div>

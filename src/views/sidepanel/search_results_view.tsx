@@ -30,6 +30,7 @@ function SearchResultsContainer(props:any): JSX.Element {
         onClose();
     }
 
+    const folderCollection = useSelector((state: any) => state.FolderCollectionReducer);
     const currentSessionSettings = useSelector((state: any) => state.CurrentSessionSettingsReducer);
     const historySettings = useSelector((state: any) => state.HistorySettingsReducer);
     console.log("CCC", currentSessionSettings);
@@ -50,6 +51,11 @@ function SearchResultsContainer(props:any): JSX.Element {
         return result.slice(0,5);
     }
 
+    function filterFolders(): Array<iFolder> {
+        const result =  folderCollection.filter((folder: iFolder) => folder.name.toLowerCase().includes(keyword.toLowerCase()));
+        return result.slice(0,5);
+    }
+
     // Close a tab
     function handleCloseTab(tabId: number){
         chrome.tabs.remove(tabId);
@@ -66,12 +72,16 @@ function SearchResultsContainer(props:any): JSX.Element {
                     <GenericIconButton icon="close" size={34} fill="rgba(0,0,0,0.2)" onClick={() => handleClose()} />
                 </div>
                 <div className="mt-4">
+                    <h3 className="uppercase font-bold text-md mb-4 text-tbfColor-darkergrey">Folders</h3>
+                    {filterFolders().map((folder) => <Folder marked={false} id={folder.id!} name={folder.name} viewMode={"list"} type={"collapsed"} desc={folder.desc} windows={folder.windows} />)}
+                </div>
+                <div className="mt-4">
                     <h3 className="uppercase font-bold text-md mb-4 text-tbfColor-darkergrey">Currently opened</h3>
-                    {filterCurrentTabs().map((tab) => <TabItem marked={false} id={tab.id!} label={tab.title!} url={tab.url!} disableEdit={true} disableMark={true} disableCloseButton={false} onClose={() => handleCloseTab(tab.id!)} />)}
+                    {filterCurrentTabs().map((tab) => <TabItem marked={false} id={tab.id!} label={tab.title!} url={tab.url!} disableEdit={true} disableMark={true} disableCloseButton={true} onClose={() => handleCloseTab(tab.id!)} />)}
                 </div>
                 <div className="mt-4">
                     <h3 className="uppercase font-bold text-md mb-4 text-tbfColor-darkergrey">History</h3>
-                    {filterHistory().map((tab) => <TabItem marked={false} id={parseInt(tab.id)} label={tab.title!} url={tab.url!} disableEdit={true} disableMark={true} disableCloseButton={true} onClose={() => {}} />)}
+                    {filterHistory().map((tab) => <TabItem marked={false} id={Number(parseInt(tab.id!))} label={tab.title!} url={tab.url!} disableEdit={true} disableMark={true} disableCloseButton={true} onClose={() => handleCloseTab(parseInt(tab.id!))} />)}
                 </div>
             </div>
         </>
