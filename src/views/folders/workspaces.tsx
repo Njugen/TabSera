@@ -225,12 +225,36 @@ function Workspaces(props: any): JSX.Element {
             
         }
 
-        result = sortedFolders.map((folder: iFolder, i: number) => {
+        const column1: Array<JSX.Element> = [];
+        const column2: Array<JSX.Element> = [];
+
+        /*result = sortedFolders.map((folder: iFolder, i: number) => {
             const collection: Array<number> = workspaceSettings.markedFoldersId;
             return <Folder onDelete={(e) => handleFolderDelete(folder)} index={sortedFolders.length-i} marked={collection.find((id) => folder.id === id) ? true : false} onMark={handleMarkFolder} onEdit={() => setEditFolderId(folder.id)} key={folder.id} type={folder.type} id={folder.id} viewMode={workspaceSettings.viewMode} name={folder.name} desc={folder.desc} windows={folder.windows} onOpen={handlePrepareLaunchFolder}/>
-        });
+        });*/
 
-        return result.length > 0 ? result : [<></>];
+        for(let i = 0; i < sortedFolders.length; i++){
+            const folder = sortedFolders[i];
+            let result: JSX.Element = <></>;
+            
+            const collection: Array<number> = workspaceSettings.markedFoldersId;
+            result = <Folder onDelete={(e) => handleFolderDelete(folder)} index={sortedFolders.length-i} marked={collection.find((id) => folder.id === id) ? true : false} onMark={handleMarkFolder} onEdit={() => setEditFolderId(folder.id)} key={folder.id} type={folder.type} id={folder.id} viewMode={workspaceSettings.viewMode} name={folder.name} desc={folder.desc} windows={folder.windows} onOpen={handlePrepareLaunchFolder}/>
+            
+            if(i % 2 === 0){   
+                column1.push(result)
+            } else {
+                column2.push(result)
+            }
+        }
+
+        return [<>
+            <div>
+                {column1}
+            </div>
+            <div>
+                {column2}
+            </div>
+        </>];
     }
 
     // Render the action buttons for workspace area
@@ -434,7 +458,7 @@ function Workspaces(props: any): JSX.Element {
                         {!hasFolders() && renderMessageBox()}
                         {hasFolders() === true && <div className="">
                             {hasFolders() && renderOptionsMenu()}
-                            {<div className={`${workspaceSettings.viewMode === "list" ? "mx-auto mt-12" : `grid xl:grid-cols-2 2xl:grid-cols-2 3xl:grid-cols-3 grid-flow-dense gap-x-4 gap-y-0 mt-8`}`}>
+                            {<div className={`${workspaceSettings.viewMode === "list" ? "mx-auto mt-12" : `grid xl:grid-cols-2 2xl:grid-cols-2 3xl:grid-cols-2 grid-flow-dense gap-x-4 gap-y-0 mt-8`}`}>
                                 {renderFolders()}
                             </div>}
                             

@@ -201,7 +201,7 @@ function Folder(props: iFolder) {
     return (
         <>
             
-            <div ref={folderRef} data-testid={"folder-item"} className={`drop-shadow-focus ${viewMode === "list" ? "my-4 duration-75" : "my-2 duration-75"} sticky transition-all ease-in w-full rounded-md`}>
+            <div ref={folderRef} data-testid={"folder-item"} className={`drop-shadow-focus ${viewMode === "list" ? "my-4 duration-75" : "my-4 duration-75"} sticky transition-all ease-in w-full rounded-md`}>
                 <div ref={headerRef}>
                     <div className="inline-block">
                         {expanded === false ? <ClosedFolderIcon size={23} fill={"#000"} /> : <OpenedFolderIcon size={26} fill={"#000"} />}
