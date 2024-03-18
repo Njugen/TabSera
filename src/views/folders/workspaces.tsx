@@ -261,15 +261,15 @@ function Workspaces(props: any): JSX.Element {
     function renderOptionsMenu(): JSX.Element {
         const { markedFoldersId } = workspaceSettings;
         return <>
-            <div className="mr-4 inline-flex items-center justify-between w-full">
-                <div className="flex w-7/12">
+            <div className="inline-flex items-center justify-end w-full">
+                <div className="flex">
                     <TextIconButton disabled={false} icon={"selected_checkbox"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Mark all" onClick={handleMarkAllFolders} />
                     <TextIconButton disabled={false} icon={"deselected_checkbox"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Unmark all" onClick={handleUnmarkAllFolders} />
                     <TextIconButton disabled={markedFoldersId.length > 0 ? false : true} icon={"folder_duplicate"} size={{ icon: 20, text: "text-sm" }}  fill={markedFoldersId.length > 0 ? "#6D00C2" : "#9f9f9f"} text="Duplicate" onClick={handlePrepareDuplication} />
                     <TextIconButton disabled={markedFoldersId.length >= 2 ? false : true} icon={"merge"} size={{ icon: 20, text: "text-sm" }}  fill={markedFoldersId.length >= 2 ? "#6D00C2" : "#9f9f9f"} text="Merge" onClick={handleMergeFolders} />
                     <TextIconButton disabled={markedFoldersId.length > 0 ? false : true} icon={"trash"} size={{ icon: 20, text: "text-sm" }}  fill={markedFoldersId.length > 0 ? "#6D00C2" : "#9f9f9f"} text="Delete" onClick={handlePrepareMultipleRemovals} />
                 </div>
-                <div className="flex items-center justify-end w-5/12">
+                <div className="flex items-center justify-end">
                     
                     <TextIconButton disabled={false} icon={workspaceSettings.viewMode === "list" ? "grid" : "list"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text={workspaceSettings.viewMode === "list" ? "Grid" : "List"} onClick={handleChangeViewMode} />
                     <div className="relative w-[175px] mr-4 flex items-center">
@@ -449,15 +449,18 @@ function Workspaces(props: any): JSX.Element {
                 />
             }
             {renderFolderManagerPopup()}
-            <div id="workspace-section" className="mb-12 border-b border-gray-300">
+            <div id="workspace-section" className="mb-12 pt-10 bg-white shadow">
                 <div className="flex justify-between min-h-[350px]">
-                    <div className="w-full mb-6 px-16 pb-4">
-                        <h1 className="text-4xl text-tbfColor-darkpurple mb-6 font-light inline-block">
-                            Workspaces
-                        </h1>
+                    <div className="w-full mb-6 px-14 pb-4">
+                        <div className="flex">
+                            <h1 className="text-4xl text-tbfColor-darkpurple font-light inline-block">
+                                Workspaces
+                            </h1>
+                            {hasFolders() && renderOptionsMenu()}
+                        </div>
                         {!hasFolders() && renderMessageBox()}
                         {hasFolders() === true && <div className="">
-                            {hasFolders() && renderOptionsMenu()}
+                            
                             {<div className={`${workspaceSettings.viewMode === "list" ? "mx-auto mt-12" : `grid xl:grid-cols-2 2xl:grid-cols-2 3xl:grid-cols-2 grid-flow-dense gap-x-4 gap-y-0 mt-8`}`}>
                                 {renderFolders()}
                             </div>}

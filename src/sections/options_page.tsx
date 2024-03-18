@@ -46,7 +46,7 @@ function RenderOptionsPage(props: any){
 
   function renderCollapsedSidebarNav(): JSX.Element {
     return <div id="main-menu" className="flex flex-col items-center justify-center">
-        <div className="mt-1">
+        <div className="">
           <div className={`my-2 border rounded-lg ${activeNavLink === "main" ? "border-tbfColor-lightpurple" : "border-tbfColor-middlegrey2"}`}>
             <Navlink key="folders-nav-link" iconSize={32} url="?view=main" isActive={activeNavLink === "main" ? true : false} onClick={() => setActiveNavLink("main")} />
           </div>
@@ -61,7 +61,7 @@ function RenderOptionsPage(props: any){
   function renderUI(view: JSX.Element): JSX.Element {
     return (<>
            
-            <div className="flex h-full w-full relative">
+            <div className="flex h-full w-full relative bg-gray-50">
               <div id="sidebar" className={`drop-shadow-md h-[calc(100vh)] sticky top-0 self-start ${sidebarExpanded === true ? `${styles.sidebar_animation_expanded}` : `${styles.sidebar_animation_contracted}`} overflow-x-hidden items-end flex flex-col justify-between border-tbfColor-middlegrey bg-white`}>
                 <div className="w-full px-2 ">
                   {sidebarExpanded === true ? renderExpandedSidebarNav() : renderCollapsedSidebarNav()}
@@ -72,7 +72,7 @@ function RenderOptionsPage(props: any){
               </div>
          
              
-              <div ref={rootRef} id="body" className="container">
+              <div ref={rootRef} id="body" className="container px-16">
                 <AdvancedSearchBar />
                 <div className="my-12 pb-[50px]">
                   {view}

@@ -25,10 +25,75 @@ import GenericIconButton from "../../components/utils/generic_icon_button";
 
 function SearchResultsContainer(props:any): JSX.Element {
     const { keyword, onClose } = props;
+    const [windowsPayload, setWindowsPayload] = useState<Array<iWindowItem> | null>(null);
+    const [folderLaunchType, setFolderLaunchType] = useState<string | null>(null); 
+    const [totalTabsCount, setTotalTabsCount] = useState<number>(0);
+    const [showPerformanceWarning, setShowPerformanceWarning] = useState<boolean>(false);
+    const [showFolderManager, setShowFolderManager] = useState<boolean>(false);
 
     const handleClose = (): void => {
         onClose();
     }
+
+    function handlePrepareLaunchFolder(windows: Array<iWindowItem>, type: string): void {
+        setWindowsPayload(windows);
+        setFolderLaunchType(type);
+    }
+
+    function handleLaunchFolder(windows: Array<iWindowItem>): void {
+        console.log("BLABLABLA");
+        // Now, prepare a snapshot, where currently opened windows get stored
+        let snapshot: Array<chrome.windows.Window> = [];
+
+        const queryOptions: chrome.windows.QueryOptions = {
+            populate: true,
+            windowTypes: ["normal", "popup"]
+        };
+
+        // Store currently opened windows into the snapshot
+        chrome.windows.getAll(queryOptions, (currentWindows: Array<chrome.windows.Window>) => {
+            snapshot = currentWindows;
+        });
+
+        // Open all windows in this folder
+        windows.forEach((window: iWindowItem, i) => {
+            const windowSettings = {
+                focused: i === 0 ? true : false,
+                url: window.tabs.map((tab) => tab.url),
+                incognito: folderLaunchType === "incognito" ? true : false
+            }
+            chrome.windows.create(windowSettings);
+        });
+
+        // Close current session after launching the folder. Only applies when
+        // set in the Pettings page
+        chrome.storage.sync.get("close_current_setting", (data) => {
+            if(data.close_current_setting === true){
+                snapshot.forEach((window) => {
+                    if(window.id) chrome.windows.remove(window.id);
+                });
+            }
+        });
+    }
+
+    useEffect(() => {
+        
+        if(!windowsPayload || !folderLaunchType) return;
+        let tabsCount = 0;
+        windowsPayload.forEach((window: iWindowItem) => {
+            tabsCount += window.tabs.length;
+        });
+   
+        chrome.storage.sync.get("performance_notification_value", (data) => {
+            setTotalTabsCount(data.performance_notification_value);
+            if(data.performance_notification_value !== -1 && data.performance_notification_value <= tabsCount) {
+                setShowPerformanceWarning(true);
+            } else {
+                handleLaunchFolder(windowsPayload);
+            }
+            //handleLaunchFolder(windowsPayload);
+        });
+    }, [folderLaunchType]);
 
     const folderCollection = useSelector((state: any) => state.FolderCollectionReducer);
     const currentSessionSettings = useSelector((state: any) => state.CurrentSessionSettingsReducer);
@@ -73,7 +138,7 @@ function SearchResultsContainer(props:any): JSX.Element {
                 </div>
                 <div className="mt-4">
                     <h3 className="uppercase font-bold text-md mb-4 text-tbfColor-darkergrey">Folders</h3>
-                    {filterFolders().map((folder) => <Folder marked={false} id={folder.id!} name={folder.name} viewMode={"list"} type={"collapsed"} desc={folder.desc} windows={folder.windows} />)}
+                    {filterFolders().map((folder) => <Folder marked={false} id={folder.id!} name={folder.name} viewMode={"list"} type={"collapsed"} desc={folder.desc} windows={folder.windows} onOpen={handlePrepareLaunchFolder} />)}
                 </div>
                 <div className="mt-4">
                     <h3 className="uppercase font-bold text-md mb-4 text-tbfColor-darkergrey">Currently opened</h3>

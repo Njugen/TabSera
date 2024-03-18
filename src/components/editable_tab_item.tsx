@@ -79,7 +79,7 @@ function EditableTabItem(props: iEditableTabItem): JSX.Element {
                 defaultValue={preset ? preset : "https://"}
                 onBlur={handleBlur}
                 onKeyDown={handleKeyDown}
-                className={`${predef.textfield_full} h-[54px] px-4 w-full text-lg text-tbfColor-darkergrey rounded-lg border border-tbfColor-middlegrey4`} 
+                className={`${predef.textfield_full} h-[46px] px-3 w-full text-lg text-tbfColor-darkergrey rounded-lg border border-tbfColor-middlegrey4`} 
             />
             {errorMessage && <span data-testid="field-error" className="text-semibold text-red-500 text-sm">{errorMessage}</span>} 
         </div>

@@ -10,7 +10,6 @@ interface iFolder {
     viewMode: "list" | "grid",
     windows: Array<iWindowItem>,
     index?: number,
-    showActions?: boolean, 
     onOpen?: (e: Array<iWindowItem>, type: string) => void,
     onMark?: (e: number) => void,
     onEdit?: (e: number) => void

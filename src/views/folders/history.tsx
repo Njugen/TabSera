@@ -133,14 +133,14 @@ function History(props: any): JSX.Element {
         const {markedTabs} = tabsData;
         return <>
         
-            <div className="mr-4 inline-flex items-center justify-between w-full">
+            <div className="mr-4 inline-flex items-center justify-end w-full">
                 
-                <div className="flex w-5/12">
+                <div className="flex">
                     <TextIconButton disabled={false} icon={"selected_checkbox"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Mark all" onClick={handleMarkAll} />
                     <TextIconButton disabled={false} icon={"deselected_checkbox"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Unmark all" onClick={handleUnMarkAll} />
                     <TextIconButton disabled={markedTabs.length > 0 ? false : true} icon={"trash"} size={{ icon: 20, text: "text-sm" }}  fill={markedTabs.length > 0 ? "#6D00C2" : "#9f9f9f"} text="Delete from history" onClick={handleDeleteFromHistory} />
                 </div>
-                <div className="flex items-center justify-end w-8/12">
+                <div className="flex items-center justify-end">
                     
                     <TextIconButton disabled={false} icon={viewMode === "list" ? "grid" : "list"} size={{ icon: 20, text: "text-sm" }} fill="#6D00C2" text={viewMode === "list" ? "Grid" : "List"} onClick={handleChangeViewMode} />
                     <div className="relative w-[175px] mr-4 flex items-center">
@@ -340,18 +340,12 @@ function History(props: any): JSX.Element {
 
     function renderHistoryManagement(): JSX.Element {
         return (
-            <div className="flex justify-center bg-white min-h-[350px]">
-                <div className="pt-6 w-full">
+            <div className="flex justify-center min-h-[350px]">
+                <div className="w-full">
                    
-                    <div className="w-full mb-6">
-                        {renderOptionsMenu()}
-                        
-                        <h2 className="text-xl mt-10 font-semibold text-black inline-block">
-                            Previous tabs
-                        </h2>
-                    </div>
+    
                     <div className="pb-6">
-                        <div ref={historyListRef} className={`${styles.scroll_style} overflow-y-auto ${viewMode === "list" ? "mx-auto mt-10" : `grid grid-cols-${decideGridCols()} grid-flow-dense gap-x-4 gap-y-0 mt-8 pr-2`} max-h-[350px]`}>
+                        <div ref={historyListRef} className={`${styles.scroll_style} overflow-y-auto ${viewMode === "list" ? "mx-auto mt-10" : `grid grid-cols-${decideGridCols()} grid-flow-dense gap-x-3 gap-y-0 mt-8 pr-2`} max-h-[350px]`}>
                             {renderTabs()}
                         </div>
                     </div> 
@@ -373,13 +367,21 @@ function History(props: any): JSX.Element {
         <>
             {addToWorkSpaceMessage && renderAddTabsMessage()}
             {renderPopup()}
-            <div id="history-view" className="mb-12 px-16">
-                <div className="mb-6 flex justify-between">
-                    <h1 className="text-4xl text-tbfColor-darkpurple font-light inline-block">
-                        History
-                    </h1>
+            <div id="history-view" className="mb-12 pt-10 bg-white shadow">
+                <div className="flex justify-between min-h-[350px]">
+                    <div className="w-full mb-6 px-14 pb-4">
+                        <div className="flex">
+                            <h1 className="text-4xl text-tbfColor-darkpurple font-light inline-block">
+                                History
+                            </h1>
+                            {renderOptionsMenu()}
+                        </div>
+                        <div className="mt-8">                     
+                            {tabsData.tabs.length > 0 ? renderHistoryManagement() : renderEmptyMessage()}
+                        </div>  
+                    </div>
                 </div>
-                {tabsData.tabs.length > 0 ? renderHistoryManagement() : renderEmptyMessage()}
+                
             </div>
         </>  
     );
