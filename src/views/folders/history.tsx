@@ -143,12 +143,12 @@ function History(props: any): JSX.Element {
                 <div className="flex items-center justify-end w-8/12">
                     
                     <TextIconButton disabled={false} icon={viewMode === "list" ? "grid" : "list"} size={{ icon: 20, text: "text-sm" }} fill="#6D00C2" text={viewMode === "list" ? "Grid" : "List"} onClick={handleChangeViewMode} />
-                    <div className="relative w-4/12 mr-4 flex items-center">
+                    <div className="relative w-[175px] mr-4 flex items-center">
                     
-                        <div className="mr-2">
+                       {/* <div className="mr-2">
                             <SortIcon size={24} fill="#6D00C2" />
                         </div> 
-                        <div className="text-sm mr-4">Sort:</div> 
+    <div className="text-sm mr-4">Sort:</div> */}
                         {
                             renderSortingDropdown()
                         }
