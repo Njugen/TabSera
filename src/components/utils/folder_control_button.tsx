@@ -3,7 +3,6 @@ import { iFolderIconButton } from "../../interfaces/folder_icon_button";
 import OpenBrowserIcon from "../../images/icons/open_browser_icon";
 import SettingsIcon from "../../images/icons/settings_icon";
 import TrashIcon from "../../images/icons/trash_icon";
-import ExpandIcon from "../../images/icons/expand_icon";
 import CollapseIcon from "../../images/icons/collapse_icon";
 import RotationEffect from "../effects/rotation_effect";
 
@@ -22,10 +21,10 @@ import RotationEffect from "../effects/rotation_effect";
     ...
 */
 
-function FolderControlButton(props: iFolderIconButton): JSX.Element {
+const FolderControlButton = (props: iFolderIconButton): JSX.Element => {
     const { icon, active, onClick } = props;
     
-    function renderIcon(): JSX.Element {
+    const renderIcon = (): JSX.Element => {
         if(icon === "trash"){
             return <TrashIcon size={17} fill={active === false ? "#000" : "#000"} />;
         } else if(icon === "settings"){
@@ -40,7 +39,7 @@ function FolderControlButton(props: iFolderIconButton): JSX.Element {
         return <></>;
     }
 
-    function colExpDataId(): String {
+    const colExpDataId = (): String => {
         return `folder-control-button-${active === true ? "collapse" : "expand"}`;
     } 
     

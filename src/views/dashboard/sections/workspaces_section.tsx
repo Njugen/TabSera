@@ -1,29 +1,35 @@
-import Folder from '../../components/folder'
-import "./../../styles/global_utils.module.scss";
-import PrimaryButton from '../../components/utils/primary_button';
-import ManageFolderPopup from '../../components/utils/manage_folder_popup';
+import Folder from '../../../components/folder'
+import "./../../../styles/global_utils.module.scss";
+import PrimaryButton from '../../../components/utils/primary_button';
+import FolderManager from '../../../components/utils/folder_manager';
 import { useEffect, useState } from "react";
-
-import { iFolder } from '../../interfaces/folder';
+import { iFolder } from '../../../interfaces/folder';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearInEditFolder  } from '../../redux/actions/inEditFolderActions';
-import {  createFolderAction, readAllFoldersFromBrowserAction } from '../../redux/actions/folderCollectionActions';
-import Paragraph from '../../components/utils/paragraph';
-import { deleteFolderAction } from "../../redux/actions/folderCollectionActions";
-import { saveToStorage, getFromStorage } from '../../services/webex_api/storage';
-import MessageBox from '../../components/utils/message_box';
-import TextIconButton from '../../components/utils/text_icon_button';
-import randomNumber from '../../tools/random_number';
-import { iWindowItem } from '../../interfaces/window_item';
-import { changeWorkspacesViewMode, clearMarkedFoldersAction, setFoldersSortOrder, setMarkedFoldersAction, setMarkMultipleFoldersAction } from '../../redux/actions/workspaceSettingsActions';
-import Dropdown from '../../components/utils/dropdown';
-import SortIcon from '../../images/icons/sort_icon';
+import { clearInEditFolder  } from '../../../redux/actions/inEditFolderActions';
+import {  createFolderAction, readAllFoldersFromBrowserAction } from '../../../redux/actions/folderCollectionActions';
+import Paragraph from '../../../components/utils/paragraph';
+import { deleteFolderAction } from "../../../redux/actions/folderCollectionActions";
+import { saveToStorage, getFromStorage } from '../../../services/webex_api/storage';
+import MessageBox from '../../../components/utils/message_box';
+import TextIconButton from '../../../components/utils/text_icon_button';
+import randomNumber from '../../../tools/random_number';
+import { iWindowItem } from '../../../interfaces/window_item';
+import * as workspaceSettingsActions from '../../../redux/actions/workspaceSettingsActions';
+import Dropdown from '../../../components/utils/dropdown';
+
+const { 
+    changeWorkspacesViewMode, 
+    clearMarkedFoldersAction, 
+    setFoldersSortOrder, 
+    setMarkedFoldersAction, 
+    setMarkMultipleFoldersAction 
+} = workspaceSettingsActions;
 
 /*
     Workspace management section listing all available folders/workspaces.
 */
 
-function Workspaces(props: any): JSX.Element {
+const WorkspacesSection = (props: any): JSX.Element => {
     const [editFolderId, setEditFolderId] = useState<number | null>(null);
     const [createFolder, setCreateFolder] = useState<boolean>(false);
     const [removalTarget, setRemovalTarget] = useState<iFolder | null>(null);
@@ -40,12 +46,7 @@ function Workspaces(props: any): JSX.Element {
     const folderCollection = useSelector((state: any) => state.FolderCollectionReducer);
     const workspaceSettings = useSelector((state: any) => state.WorkspaceSettingsReducer);
 
-    // Save/update the folder collection to browser memory once the redux collection has changes
-    useEffect(() => {        
-        if(folderCollection.length > 0){
-            saveToStorage("local", "folders", folderCollection);
-        } 
-    }, [folderCollection]);
+    const colsCount: number = window.innerWidth > 1920 ? 3 : 2;
 
     // Get folders from browser storage and store it into redux 
     useEffect(() => {
@@ -54,8 +55,41 @@ function Workspaces(props: any): JSX.Element {
         })
     }, []);
 
+    // Save/update the folder collection to browser memory once the redux collection has changes
+    useEffect(() => {        
+        if(folderCollection.length > 0){
+            saveToStorage("local", "folders", folderCollection);
+        } 
+    }, [folderCollection]);
+
+    // Prepare to launch a folder: Once folderLaunchType changes, then open all windows and tabs in the specific folder
+    // Warn the user if the number of tabs exceeeds the amount set in Settings page.
+    useEffect(() => {
+        
+        if(!windowsPayload || !folderLaunchType) return;
+        let tabsCount = 0;
+        windowsPayload.forEach((window: iWindowItem) => {
+            tabsCount += window.tabs.length;
+        });
+   
+        chrome.storage.sync.get("performance_notification_value", (data) => {
+            setTotalTabsCount(data.performance_notification_value);
+            if(data.performance_notification_value !== -1 && data.performance_notification_value <= tabsCount) {
+                setShowPerformanceWarning(true);
+            } else {
+                handleLaunchFolder(windowsPayload);
+            }
+        });
+    }, [folderLaunchType]);
+
+    
+    // Close the performance warning if opened.
+    useEffect(() => {
+        if(showPerformanceWarning === false) setWindowsPayload(null);
+    }, [showPerformanceWarning]);
+
     // Delete one or more marked folders
-    function handleDeleteFolders(): void {
+    const handleDeleteFolders = (): void => {
         const { markedFoldersId } = workspaceSettings;
         if(folderCollection && markedFoldersId){
             markedFoldersId.forEach((targetId: number) => {
@@ -72,7 +106,7 @@ function Workspaces(props: any): JSX.Element {
     }
 
     // Duplicate one of more marked folders
-    function handleDuplicateFolders(): void {
+    const handleDuplicateFolders = (): void => {
         const { markedFoldersId } = workspaceSettings;
 
         if(folderCollection && markedFoldersId){
@@ -98,42 +132,40 @@ function Workspaces(props: any): JSX.Element {
     }
 
     // Open a specific folder
-    function renderFolderManagerPopup(): JSX.Element {
+    const renderFolderManagerPopup = (): JSX.Element => {
         let render;
 
         if(createFolder === true){
-            render = <ManageFolderPopup type="slide-in" title="Create workspace" onClose={handleCloseFolderManager} />;
+            render = <FolderManager type="slide-in" title="Create workspace" onClose={handleCloseFolderManager} />;
         } else {
-
             if(mergeProcess !== null){
-                return <ManageFolderPopup type="slide-in" title={`Create folder by merge`} folder={mergeProcess} onClose={handleCloseFolderManager} />
+                return <FolderManager type="slide-in" title={`Create folder by merge`} folder={mergeProcess} onClose={handleCloseFolderManager} />
             } else {
                 const targetFolder: Array<iFolder> = folderCollection.filter((item: iFolder) => editFolderId === item.id);
                 const input: iFolder = {...targetFolder[0]};
 
                 if(targetFolder.length > 0){
-                    render = <ManageFolderPopup type="slide-in" title={`Edit folder ${targetFolder[0].id}`} folder={input} onClose={handleCloseFolderManager} />;
+                    render = <FolderManager type="slide-in" title={`Edit folder ${targetFolder[0].id}`} folder={input} onClose={handleCloseFolderManager} />;
                 } else {
                     render = <></>;
                 }
             }
-            
         }
 
         return render;
     }
 
     // Mark a specific folder
-    function handleMarkFolder(id: number): void{
+    const handleMarkFolder = (id: number): void => {
         dispatch(setMarkedFoldersAction(id));
     }
 
     // Merge selected folders
-    function handleMergeFolders(): void {
+    const handleMergeFolders = (): void => {
         const newId = randomNumber();
         const { markedFoldersId } = workspaceSettings;
 
-        const payload: iFolder = {
+        const folderSpecs: iFolder = {
             id: newId,
             name: "",
             desc: "",
@@ -152,14 +184,13 @@ function Workspaces(props: any): JSX.Element {
                     mergedWindows.push(...folderCollection[markedFolderIndex].windows);
                 }
             });
-            payload.windows = [...mergedWindows];
-            setMergeProcess({...payload});
-       
+            folderSpecs.windows = [...mergedWindows];
+            setMergeProcess({...folderSpecs});
         }
     }
 
     // Close the folder manager
-    function handleCloseFolderManager(): void {
+    const handleCloseFolderManager = (): void => {
         setEditFolderId(null);
         setCreateFolder(false);
         setMergeProcess(null);
@@ -169,40 +200,37 @@ function Workspaces(props: any): JSX.Element {
     }
 
     // Unmark all listed folders
-    function handleUnmarkAllFolders(): void {
+    const handleUnmarkAllFolders = (): void => {
         dispatch(setMarkMultipleFoldersAction([]));
     }
 
     // Mark all listed folders
-    function handleMarkAllFolders(): void {
-            const updatedMarks: Array<number> = [];
+    const handleMarkAllFolders = (): void => {
+        const updatedMarks: Array<number> = [];
 
-            folderCollection.forEach((folder: iFolder) => {
-                updatedMarks.push(folder.id);
-                
-            });
+        folderCollection.forEach((folder: iFolder) => {
+            updatedMarks.push(folder.id);
+            
+        });
 
-            dispatch(setMarkMultipleFoldersAction([...updatedMarks]));
-        
+        dispatch(setMarkMultipleFoldersAction([...updatedMarks]));        
     }
 
     // Toggle between grid and list view
-    function handleChangeViewMode(): void {
+    const handleChangeViewMode = (): void => {
         const { viewMode } = workspaceSettings;
         
         dispatch(changeWorkspacesViewMode(viewMode === "list" ? "grid" : "list"));
     }
 
     // Sort all folders
-    function handleSortFolders(e: any): void{
+    const handleSortFolders = (e: any): void => {
         dispatch(setFoldersSortOrder(e.selected === 0 ? "asc" : "desc"));
     }
 
     // Render the folder list
-    function renderFolders(): Array<JSX.Element> {
-        let result: Array<JSX.Element> = [];
-
-        function condition(a: iFolder, b: iFolder) {
+    const renderFolders = (): Array<JSX.Element> => {
+        const condition = (a: iFolder, b: iFolder): boolean => {
             const { folderSort } = workspaceSettings
             
             const aNameLowerCase = a.name.toLowerCase();
@@ -213,7 +241,7 @@ function Workspaces(props: any): JSX.Element {
 
         const sortedFolders = [...folderCollection].sort((a: any, b: any) => condition(a, b) ? 1 : -1);
 
-        function handleFolderDelete(target: iFolder): void {
+        const handleFolderDelete = (target: iFolder): void => {
             chrome.storage.sync.get("removal_warning_setting", (data) => {
                 if(data.removal_warning_setting === true) {
                     setRemovalTarget(target);
@@ -222,16 +250,14 @@ function Workspaces(props: any): JSX.Element {
                     setRemovalTarget(null);
                 }
             });
-            
         }
 
-        const column1: Array<JSX.Element> = [];
-        const column2: Array<JSX.Element> = [];
-
-        /*result = sortedFolders.map((folder: iFolder, i: number) => {
-            const collection: Array<number> = workspaceSettings.markedFoldersId;
-            return <Folder onDelete={(e) => handleFolderDelete(folder)} index={sortedFolders.length-i} marked={collection.find((id) => folder.id === id) ? true : false} onMark={handleMarkFolder} onEdit={() => setEditFolderId(folder.id)} key={folder.id} type={folder.type} id={folder.id} viewMode={workspaceSettings.viewMode} name={folder.name} desc={folder.desc} windows={folder.windows} onOpen={handlePrepareLaunchFolder}/>
-        });*/
+        // Determine the number of columns to be rendered, based on colsCount
+        let colsList: Array<Array<JSX.Element>> = [];
+        
+        for(let i = 0; i < colsCount; i++){
+            colsList.push([]);
+        }
 
         for(let i = 0; i < sortedFolders.length; i++){
             const folder = sortedFolders[i];
@@ -240,25 +266,22 @@ function Workspaces(props: any): JSX.Element {
             const collection: Array<number> = workspaceSettings.markedFoldersId;
             result = <Folder onDelete={(e) => handleFolderDelete(folder)} index={sortedFolders.length-i} marked={collection.find((id) => folder.id === id) ? true : false} onMark={handleMarkFolder} onEdit={() => setEditFolderId(folder.id)} key={folder.id} type={folder.type} id={folder.id} viewMode={workspaceSettings.viewMode} name={folder.name} desc={folder.desc} windows={folder.windows} onOpen={handlePrepareLaunchFolder}/>
             
-            if(i % 2 === 0){   
-                column1.push(result)
-            } else {
-                column2.push(result)
+            if(i % colsCount === 0){   
+                colsList[0].push(result);
+            } else if(i % colsCount === 1) {
+                colsList[1].push(result);
+            } else if(i % colsCount === 2){
+                colsList[2].push(result);
             }
         }
 
-        return [<>
-            <div>
-                {column1}
-            </div>
-            <div>
-                {column2}
-            </div>
-        </>];
+        const columnsRender: Array<JSX.Element> = colsList.map((col) => <div>{col}</div>);
+
+        return columnsRender;
     }
 
     // Render the action buttons for workspace area
-    function renderOptionsMenu(): JSX.Element {
+    const renderOptionsMenu = (): JSX.Element => {
         const { markedFoldersId } = workspaceSettings;
         return <>
             <div className="inline-flex items-center justify-end w-full">
@@ -269,15 +292,9 @@ function Workspaces(props: any): JSX.Element {
                     <TextIconButton disabled={markedFoldersId.length >= 2 ? false : true} icon={"merge"} size={{ icon: 20, text: "text-sm" }}  fill={markedFoldersId.length >= 2 ? "#6D00C2" : "#9f9f9f"} text="Merge" onClick={handleMergeFolders} />
                     <TextIconButton disabled={markedFoldersId.length > 0 ? false : true} icon={"trash"} size={{ icon: 20, text: "text-sm" }}  fill={markedFoldersId.length > 0 ? "#6D00C2" : "#9f9f9f"} text="Delete" onClick={handlePrepareMultipleRemovals} />
                 </div>
-                <div className="flex items-center justify-end">
-                    
+                <div className="flex items-center justify-end">     
                     <TextIconButton disabled={false} icon={workspaceSettings.viewMode === "list" ? "grid" : "list"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text={workspaceSettings.viewMode === "list" ? "Grid" : "List"} onClick={handleChangeViewMode} />
                     <div className="relative w-[175px] mr-4 flex items-center">
-                    
-                        {/*<div className="mr-2">
-                            <SortIcon size={24} fill="#6D00C2" />
-                        </div> 
-    <div className="text-sm mr-4">Sort:</div> */}
                         <Dropdown tag="sort-folders" preset={{id: 0, label: "Ascending"}} options={[{id: 0, label: "Ascending"}, {id: 1, label: "Descending"}]} onCallback={handleSortFolders} />
                     </div>
                     <PrimaryButton disabled={false} text="Create workspace" onClick={() => setCreateFolder(true)} />
@@ -287,7 +304,7 @@ function Workspaces(props: any): JSX.Element {
     }
 
     // Render a message. Primarily used when no folders are available
-    function renderMessageBox(): JSX.Element {
+    const renderMessageBox = (): JSX.Element => {
         return <>
             <div className="flex flex-col items-center justify-center h-full">
                 <Paragraph text="You currently have no folders available. Please, create a new folder" />
@@ -299,7 +316,7 @@ function Workspaces(props: any): JSX.Element {
     }
 
     // Check whether or not there are folders stored in redux
-    function hasFolders(): boolean {
+    const hasFolders = (): boolean => {
         if(folderCollection && folderCollection.length > 0){
             return true;
         }
@@ -307,7 +324,7 @@ function Workspaces(props: any): JSX.Element {
     }
     
     // Prepare to remove multiple folders. Warn the user if set in Settings page
-    function handlePrepareMultipleRemovals(): void {
+    const handlePrepareMultipleRemovals = (): void => {
         const { markedFoldersId } = workspaceSettings;
         
         if(markedFoldersId.length > 0) {
@@ -322,11 +339,14 @@ function Workspaces(props: any): JSX.Element {
     }
 
     // Prepare to duplicate multiple folders. Warn the user if set in Settings page
-    function handlePrepareDuplication(): void {
+    const handlePrepareDuplication = (): void => {
         const { markedFoldersId } = workspaceSettings;
         
+        // Run if there are more than 0 marked folders
         if(markedFoldersId.length > 0) {
             chrome.storage.sync.get("duplication_warning_value", (data) => {
+
+                // If the duplication warning is set in settings, and the number of marked tabs exceeds the threshold, then warn the user
                 if(data.duplication_warning_value !== -1 && data.duplication_warning_value <= workspaceSettings.markedFoldersId.length) {
                     setShowDuplicationWarning(true);
                 } else {
@@ -337,39 +357,14 @@ function Workspaces(props: any): JSX.Element {
         }
     }
 
-    // Prepare to launch a folder: Once folderLaunchType changes, then open all windows and tabs in the specific folder
-    // Warn the user if the number of tabs exceeeds the amount set in Settings page.
-    useEffect(() => {
-        
-        if(!windowsPayload || !folderLaunchType) return;
-        let tabsCount = 0;
-        windowsPayload.forEach((window: iWindowItem) => {
-            tabsCount += window.tabs.length;
-        });
-   
-        chrome.storage.sync.get("performance_notification_value", (data) => {
-            setTotalTabsCount(data.performance_notification_value);
-            if(data.performance_notification_value !== -1 && data.performance_notification_value <= tabsCount) {
-                setShowPerformanceWarning(true);
-            } else {
-                handleLaunchFolder(windowsPayload);
-            }
-        });
-    }, [folderLaunchType]);
-
     // Prepare to launch a folder by setting windows to be launched, and how to launch the windows/tabs in it.
-    function handlePrepareLaunchFolder(windows: Array<iWindowItem>, type: string): void {
+    const handlePrepareLaunchFolder = (windows: Array<iWindowItem>, type: string): void => {
         setWindowsPayload(windows);
         setFolderLaunchType(type);
     }
 
-    // Close the performance warning if opened.
-    useEffect(() => {
-        if(showPerformanceWarning === false) setWindowsPayload(null);
-    }, [showPerformanceWarning]);
-
     // Launch folder
-    function handleLaunchFolder(windows: Array<iWindowItem>): void {
+    const handleLaunchFolder = (windows: Array<iWindowItem>): void => {
         // Now, prepare a snapshot, where currently opened windows get stored
         let snapshot: Array<chrome.windows.Window> = [];
 
@@ -423,7 +418,6 @@ function Workspaces(props: any): JSX.Element {
             }
 
             {showDuplicationWarning &&
-                
                 <MessageBox 
                     title="Warning" 
                     text={`You are about to duplicate ${workspaceSettings.markedFoldersId.length} or more folders at once. Unnecessary duplications may clutter your dashboard, do you want to proceed?`}
@@ -432,7 +426,6 @@ function Workspaces(props: any): JSX.Element {
                 />
             }
             {removalTarget &&
-                
                 <MessageBox 
                     title="Warning" 
                     text={`You are about to remove the "${removalTarget.name}" workspace and all its contents. This is irreversible, do you want to proceed?`}
@@ -461,7 +454,7 @@ function Workspaces(props: any): JSX.Element {
                         {!hasFolders() && renderMessageBox()}
                         {hasFolders() === true && <div className="">
                             
-                            {<div className={`${workspaceSettings.viewMode === "list" ? "mx-auto mt-12" : `grid xl:grid-cols-2 2xl:grid-cols-2 3xl:grid-cols-2 grid-flow-dense gap-x-4 gap-y-0 mt-8`}`}>
+                            {<div className={`${workspaceSettings.viewMode === "list" ? "mx-auto mt-12" : `grid xl:grid-cols-2 2xl:grid-cols-2 3xl:grid-cols-3 grid-flow-dense gap-x-4 gap-y-0 mt-8`}`}>
                                 {renderFolders()}
                             </div>}
                             
@@ -475,4 +468,4 @@ function Workspaces(props: any): JSX.Element {
 
 }
 
-export default Workspaces
+export default WorkspacesSection

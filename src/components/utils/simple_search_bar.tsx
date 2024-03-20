@@ -1,8 +1,7 @@
-import { useState, useEffect, useRef } from "react";
 import SearchIcon from "../../images/icons/search_icon";
 import iSimpleSearchBar from "../../interfaces/simple_search_bar";
 
-function SimpleSearchBar(props: iSimpleSearchBar): JSX.Element {
+const SimpleSearchBar = (props: iSimpleSearchBar): JSX.Element => {
     const { onChange } = props;
 
     return (

@@ -6,7 +6,7 @@ import Folder from "../../components/folder";
 import styles from "../../styles/global_utils.module.scss";
 import { getFromStorage, saveToStorage } from '../../services/webex_api/storage';
 import { readAllFoldersFromBrowserAction } from '../../redux/actions/folderCollectionActions';
-import ManageFolderPopup from "../../components/utils/manage_folder_popup";
+import FolderManager from "../../components/utils/folder_manager";
 import { clearInEditFolder } from "../../redux/actions/inEditFolderActions";
 import { clearMarkedTabsAction, setMarkMultipleTabsAction, setMarkedTabsAction, setTabsSortOrder, setUpTabsAction } from '../../redux/actions/historySettingsActions';
 import { setCurrentTabsSortOrder, setUpWindowsAction } from '../../redux/actions/currentSessionActions';
@@ -332,10 +332,10 @@ function HistoryView(props:any): JSX.Element {
                 marked: false,
                 windows: [presetWindow],
             }
-            render = <ManageFolderPopup type="popup" title="Create workspace" folder={payload} onClose={handlePopupClose} />;
+            render = <FolderManager type="popup" title="Create workspace" folder={payload} onClose={handlePopupClose} />;
         } else if(mergeProcess !== null) {
 
-            render = <ManageFolderPopup type="popup" title={`Merge tabs to ${mergeProcess.name}`} folder={mergeProcess} onClose={handlePopupClose} />;
+            render = <FolderManager type="popup" title={`Merge tabs to ${mergeProcess.name}`} folder={mergeProcess} onClose={handlePopupClose} />;
         } else {
             render = <></>;
         }

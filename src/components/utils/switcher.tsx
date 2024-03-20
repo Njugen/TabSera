@@ -6,20 +6,20 @@ import { iSwitcher } from "../../interfaces/switcher";
     setting state to a boolean or null value
 */
 
-function Switcher(props: iSwitcher): JSX.Element {
+const Switcher = (props: iSwitcher): JSX.Element => {
     const [switchOn, setSwitchOn] = useState<boolean | null>(null);
     const { onCallback, label, id } = props;
-
-    // Set the state to either true or false
-    function handleSwitch(): void {
-        setSwitchOn(switchOn === false ? true : false);
-        onCallback(switchOn === false ? true : false);
-    }
 
     // Set the props.value to component's state once identified such exists
     useEffect(() => {
         setSwitchOn(props.value);
     }, [props.value]);
+
+    // Set the state to either true or false
+    const handleSwitch = (): void => {
+        setSwitchOn(switchOn === false ? true : false);
+        onCallback(switchOn === false ? true : false);
+    }
 
     return (
         <div className={`flex items-center ${label && "mx-5"}`}>

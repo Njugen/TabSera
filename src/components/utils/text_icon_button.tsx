@@ -40,10 +40,10 @@ import RightIcon from "../../images/icons/right_icon";
 */
 
 
-function TextIconButton(props: iTextIconButton): JSX.Element {
+const TextIconButton = (props: iTextIconButton): JSX.Element => {
     const { icon, text, fill, size, disabled, onClick } = props;
     
-    function renderIcon(): JSX.Element {
+    const renderIcon = (): JSX.Element => {
         if(icon === "trash"){
             return <TrashIcon size={size.icon} fill={fill} />;
         } else if(icon === "settings"){

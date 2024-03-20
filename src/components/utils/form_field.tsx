@@ -8,7 +8,7 @@ import { iFormField } from "../../interfaces/form_field";
 
     If there is an error recorded by the parent component, the label will change to red.
 */
-function FormField(props: iFormField): JSX.Element {
+const FormField = (props: iFormField): JSX.Element => {
     const { label, description, children, error } = props;
     
     return (

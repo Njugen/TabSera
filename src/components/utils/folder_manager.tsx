@@ -8,9 +8,7 @@ import { iPopup } from "../../interfaces/popup";
 import styles from "../../styles/global_utils.module.scss";
 import WindowManager from './window_manager';
 import randomNumber from "../../tools/random_number";
-//import { useDispatch, useSelector } from "react-redux";
 import { initInEditFolder, updateInEditFolder} from "../../redux/actions/inEditFolderActions";
-//import { createFolderAction, updateFolderAction } from "../../redux/actions/state.FolderCollectionReducerActions";
 import { iFolder } from "../../interfaces/folder";
 import MessageBox from './message_box';
 import { useDispatch, useSelector } from "../../redux/mocked_hooks";
@@ -18,7 +16,6 @@ import { setShowFolderChangeWarning } from "../../redux/actions/warningActions";
 import { createFolderAction, updateFolderAction } from "../../redux/actions/folderCollectionActions";
 import { setCurrentlyEditingTab } from "../../redux/actions/miscActions";
 
-//import { useDispatch, useSelector } from "react-redux";
 
 /*
     A popup providing oversight of a folder's settings and available windows/tabs.
@@ -28,9 +25,7 @@ import { setCurrentlyEditingTab } from "../../redux/actions/miscActions";
     preferably by using the <FormField /> component. See examples in render() function.
 */
 
-
-
-function ManageFolderPopup(props: iPopup): JSX.Element {
+const FolderManager = (props: iPopup): JSX.Element => {
     const { onClose, folder, title } = props;
     const [show, setShow] = useState<boolean>(false);
     const [isCreate, setIsCreate] = useState<boolean>(false);
@@ -42,7 +37,6 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
     });
 
     const popupRef = useRef<HTMLDivElement>(null);
-
     const dispatch = useDispatch();
 
     // Read necessary data from redux. These data are are used in this component
@@ -50,6 +44,9 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
     const state = useSelector((state: any) => state)
 
     useEffect(() => {
+        // Hide the sidebar of the body. A sidebar of this component is used instead.
+        document.body.style.overflowY = "hidden";
+
         // Information about the folder. If undefined, there are no preset information
         let payload: iFolder | undefined = folder;
         
@@ -80,12 +77,13 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
     }, []);
 
     useEffect(() => {
-        // Hide the sidebar of the body. A sidebar of this component is used instead.
-        document.body.style.overflowY = "hidden";
-    }, []);
+        if(windowListChanged() === true){
+            setModified(true);
+        }
+    }, [state.InEditFolderReducer]);
 
     // Check whether or not the set of windows has been modified
-    function windowListChanged(): boolean {
+    const windowListChanged = (): boolean => {
         const presetWindows: string = originWindows;
         const modifiedWindows: string = JSON.stringify(state.InEditFolderReducer?.windows);
 
@@ -97,16 +95,10 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
         return false;
     }
 
-    useEffect(() => {
-        if(windowListChanged() === true){
-            setModified(true);
-        }
-    }, [state.InEditFolderReducer]);
-
     // Handle changes to a field
     // - key: a string to identify the changed field
     // - value: the new value of this field
-    function handleChangeField(key: string, value: any){
+    const handleChangeField = (key: string, value: string): void => {
         if(!state.InEditFolderReducer) return;
         
         if(modified === false && JSON.stringify(state.InEditFolderReducer[key]) !== JSON.stringify(value)) setModified(true);
@@ -115,7 +107,7 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
         dispatch(updateInEditFolder(key, value));
     }
 
-    function scrollTop(): void {
+    const scrollTop = (): void => {
         if (popupRef.current === null || popupRef.current?.scrollTop === undefined) return;
         popupRef.current.scrollTop = 0;
     }
@@ -123,51 +115,45 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
     // Read the updated form changes from redux, and determine
     // whether or not they are valid. If not, mark the affected fields
     // as invalid. Otherwise, send a callback to proceed.
-    function validateForm(callback: () => void){
-            const data = state.InEditFolderReducer;
+    const validateForm = (callback: () => void): void => {
+        const data = state.InEditFolderReducer;
 
-            const updatedFieldState = {
-                name: false,
-                windows: false
-            }
-            if(data.name.length === 0){
-                updatedFieldState.name = true;
-            } 
-   
-            if((data.windows && data.windows.length === 0) || state.MiscReducer.isEditingTabs > 0) {
-                updatedFieldState.windows = true;
-            } 
-            
-            if(updatedFieldState.name === false && updatedFieldState.windows === false){
-                callback();
-            } else {
-                setInValidFields({...updatedFieldState});
-                scrollTop();
-            }
-     
+        const updatedFieldState = {
+            name: false,
+            windows: false
+        }
+
+        if(data.name.length === 0){
+            updatedFieldState.name = true;
+        } 
+
+        if((data.windows && data.windows.length === 0) || state.MiscReducer.isEditingTabs > 0) {
+            updatedFieldState.windows = true;
+        } 
+        
+        if(updatedFieldState.name === false && updatedFieldState.windows === false){
+            callback();
+        } else {
+            setInValidFields({...updatedFieldState});
+            scrollTop();
+        }
     }
 
     // Perform tasks and close this form popup
-    function handleClose(skipWarning?: boolean): void {
-       // console.log("HANDLE CLOSE 1");
+    const handleClose = (skipWarning?: boolean): void => {
         chrome.storage.sync.get("cancellation_warning_setting", (data) => {
-           // console.log("HANDLE CLOSE 2");
-           //console.log("cancellation state", data.cancellation_warning_setting);
-           //console.log("modified", modified);
-           //console.log("warning", skipWarning);
             if((modified === true && skipWarning !== true) && data.cancellation_warning_setting === true){
-                //console.log("DDDDDDDDDD");
                 // Show a warning when a form has been modified AND when settings explicitly permits it.
                 dispatch(setShowFolderChangeWarning(true));
             } else {
                 // Perform tasks and close the popup form.
                 setShow(false);
-                
                 dispatch(setShowFolderChangeWarning(false));
                 setModified(false)
                 setOriginWindows("");
                 setIsCreate(false);
                 document.body.style.overflowY = "scroll";
+
                 setTimeout(() => {
                     dispatch(setCurrentlyEditingTab(false));
                     onClose()
@@ -177,7 +163,7 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
     }
 
     // Validate and save the data to redux, then close the popup form.
-    function handleSave(): void {
+    const handleSave = (): void => {
         validateForm(() => {
             if(props.folder){
                 // Find out if process is merge or edit
@@ -198,13 +184,13 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
     }
 
     // Close error/warning messages, but remain in the popup
-    function handleKeepEditing(): void {
+    const handleKeepEditing = (): void => {
         document.body.style.overflowY = "hidden";
         dispatch(setShowFolderChangeWarning(false))
     }
 
     // Style the outer layer of this component
-    function outerStyleDirection(): string {
+    const outerStyleDirection = (): string => {
         const { type } = props;
         let cssClasses = "";
 
@@ -218,7 +204,7 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
     }
 
     // Style the inner layer of this component (the popup itself)
-    function innerStyleDirection(): string {
+    const innerStyleDirection = (): string => {
         const { type } = props;
         let cssClasses = "";
 
@@ -236,16 +222,19 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
             <MessageBox 
                 title="Warning" 
                 text="You have made changes to this form. Closing it will result in all changes being lost. Do you want to proceed?"
-                primaryButton={{ text: "Yes, close this form", callback: () => handleClose(true) }}
-                secondaryButton={{ text: "No, keep editing", callback: () => handleKeepEditing()}}    
+                primaryButton={{ 
+                    text: "Yes, close this form", 
+                    callback: () => handleClose(true) 
+                }}
+                secondaryButton={{ 
+                    text: "No, keep editing", 
+                    callback: () => handleKeepEditing()
+                }}    
             />
         }
-        <div ref={popupRef} className={outerStyleDirection()}>
-            
+        <div ref={popupRef} className={outerStyleDirection()}>   
             <div data-testid="manage-folder-popup" className="relative top-0 md:bottom-12 h-screen w-[992px]">
-           
-                <div className={innerStyleDirection()}>
-                
+                <div className={innerStyleDirection()}>  
                     <div id="popup-header" className="pl-8 pr-5 pb-5 pt-6 border-b border-tbfColor-lgrey w-full flex justify-between">
                         <h1 data-testid="manage-folder-title" className="text-3xl text-tbfColor-darkpurple font-light inline-block">
                             {title}
@@ -280,4 +269,4 @@ function ManageFolderPopup(props: iPopup): JSX.Element {
     ); 
 }
 
-export default ManageFolderPopup;
+export default FolderManager;

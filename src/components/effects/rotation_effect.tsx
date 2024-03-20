@@ -1,6 +1,6 @@
 import iRotationEffect from "../../interfaces/rotation_effect";
 
-function RotationEffect(props: iRotationEffect): JSX.Element {
+const RotationEffect = (props: iRotationEffect): JSX.Element => {
     const { children, rotated, display } = props;
     
     return (

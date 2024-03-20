@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import iMessageBox from './../../interfaces/message_box';
 import styles from "./../../styles/global_utils.module.scss";
 
@@ -9,17 +8,17 @@ import styles from "./../../styles/global_utils.module.scss";
     UI might be modified later to suit other needs...
 */
 
-function MessageBox(props: iMessageBox): JSX.Element {
+const MessageBox = (props: iMessageBox): JSX.Element => {
     const { title, text, primaryButton, secondaryButton } = props;
 
-    useEffect(() => {
-        // Hide body's scrollbar
-        document.body.style.overflowY = "hidden";
-    }, []);
+  
+    // Hide body's scrollbar
+    document.body.style.overflowY = "hidden";
+
 
     // Handle a button click. Perform actions based on the button's purposes
     // ... this should be rewritten/refactored at a later time...
-    function handleButtonClick(option: "primary" | "secondary"): void {
+    const handleButtonClick = (option: "primary" | "secondary"): void => {
         // Restore body's scrollbar
         document.body.style.overflowY = "scroll";
 
