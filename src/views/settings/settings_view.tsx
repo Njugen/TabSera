@@ -16,7 +16,7 @@ import { saveToStorage } from "../../services/webex_api/storage";
     features if needed while keeping the intended UI intact. 
 */
 
-function SettingsView(props: any) {
+const SettingsView = (props: any): JSX.Element => {
     const [settings, setSettings] = useState<any>({});
     
     // Options for performance warnings
