@@ -1,48 +1,29 @@
-import { useState, useEffect, useRef } from "react";
-import { iWindowItem } from '../../interfaces/window_item';
-import { useSelector, useDispatch } from "react-redux";
-import { iFolder } from '../../interfaces/folder';
-import Folder from "../../components/folder";
-import { getFromStorage, saveToStorage } from '../../services/webex_api/storage';
-import { readAllFoldersFromBrowserAction } from '../../redux/actions/folderCollectionActions';
-import FolderManager from "../../components/utils/folder_manager";
-import { clearInEditFolder } from "../../redux/actions/inEditFolderActions";
-import { clearMarkedTabsAction, setMarkMultipleTabsAction, setUpTabsAction } from '../../redux/actions/historySettingsActions';
-import { setCurrentTabsSortOrder, setUpWindowsAction } from '../../redux/actions/currentSessionActions';
-import PrimaryButton from "../../components/utils/primary_button";
-import { clearMarkedFoldersAction } from '../../redux/actions/workspaceSettingsActions';
-import randomNumber from '../../tools/random_number';
-import AddToWorkspacePopup from "../../components/utils/add_to_workspace_popup";
-import { iTabItem } from '../../interfaces/tab_item';
-import { iFieldOption } from '../../interfaces/dropdown';
-import CurrentSessionWindowItem from '../../components/current_session_window_item';
+import "../../../styles/global_utils.module.scss";
+import PrimaryButton from '../../../components/utils/primary_button';
+import FolderManager from '../../../components/utils/folder_manager';
+import { useEffect, useState } from "react";
+import { iFolder } from '../../../interfaces/folder';
+import { useDispatch, useSelector } from 'react-redux';
+import { clearInEditFolder  } from '../../../redux/actions/inEditFolderActions';
+import randomNumber from '../../../tools/random_number';
+import { iWindowItem } from '../../../interfaces/window_item';
+import { clearMarkedFoldersAction } from '../../../redux/actions/workspaceSettingsActions';
+import { clearMarkedTabsAction} from '../../../redux/actions/historySettingsActions';
+import { iTabItem } from '../../../interfaces/tab_item';
+import { iFieldOption } from '../../../interfaces/dropdown';
+import { setUpWindowsAction } from '../../../redux/actions/currentSessionActions';
+import CurrentSessionWindowItem from '../../../components/current_session_window_item';
+import AddToWorkspacePopup from '../../../components/utils/add_to_workspace_popup';
 
-function CurrentSessionView(props:any): JSX.Element {
+const CurrentSessionSection = (props: any): JSX.Element => {
     const [addToWorkSpaceMessage, setAddToWorkspaceMessage] = useState<boolean>(false);
-    const [createFolder, setCreateFolder] = useState<boolean>(false);
     const [mergeProcess, setMergeProcess] = useState<iFolder | null>(null);
-    const [editFolderId, setEditFolderId] = useState<number | null>(null);
+    const [createFolder, setCreateFolder] = useState<boolean>(false);
 
     const folderCollection: Array<iFolder> = useSelector((state: any) => state.FolderCollectionReducer);
-
-    const dispatch = useDispatch();
     const currentSessionData = useSelector((state: any) => state.CurrentSessionSettingsReducer);
 
-    useEffect(() => {        
-        if(folderCollection.length > 0){
-            saveToStorage("local", "folders", folderCollection);
-        } 
-    }, [folderCollection]);
-
-    function getAllWindows(): void {
-        const queryOptions: chrome.windows.QueryOptions = {
-            populate: true,
-            windowTypes: ["normal", "popup"]
-        };
-        chrome.windows.getAll(queryOptions, (windows: Array<chrome.windows.Window>) => {
-            dispatch(setUpWindowsAction(windows));
-        });
-    };
+    const dispatch = useDispatch();
 
     useEffect(() => {
         getAllWindows();
@@ -79,9 +60,18 @@ function CurrentSessionView(props:any): JSX.Element {
         });
     }, []);
 
-    function handlePopupClose(): void {
+    function getAllWindows(): void {
+        const queryOptions: chrome.windows.QueryOptions = {
+            populate: true,
+            windowTypes: ["normal", "popup"]
+        };
+        chrome.windows.getAll(queryOptions, (windows: Array<chrome.windows.Window>) => {
+            dispatch(setUpWindowsAction(windows));
+        });
+    };
 
-        setEditFolderId(null);
+    function handleCloseFolderManager(): void {
+        // Reset and clear out any settings or processes 
         setCreateFolder(false);
         setMergeProcess(null);
 
@@ -90,12 +80,30 @@ function CurrentSessionView(props:any): JSX.Element {
         dispatch(clearInEditFolder());
     }
 
-    function renderEmptyMessage(): JSX.Element {
+    function renderOptionsMenu(): JSX.Element {
         return (
-            <div className={"flex justify-center items-center"}>
-                <p> Your browing history is empty.</p>
-            </div>
-        );
+            <>
+                <div className="inline-flex items-center justify-end">
+                    <div className="flex">
+                   
+                    </div>
+                    <div className="flex items-center justify-end">
+                        <PrimaryButton disabled={false} text="Save this session to workspace" onClick={() => setAddToWorkspaceMessage(true)} />
+                    </div>
+                </div>
+            </>
+        )
+    }
+
+    function renderContents(): Array<JSX.Element> | JSX.Element {
+        const existingWindows = currentSessionData?.windows;
+        const existingWindowsElements: Array<JSX.Element> = existingWindows?.map((item: iWindowItem, i: number) => <CurrentSessionWindowItem key={`window-item-${i}`} tabsCol={4} disableEdit={currentSessionData.windows.length < 2 ? true : false} disableTabMark={false} disableTabEdit={true} id={item.id} tabs={item.tabs} initExpand={true} />);
+        
+        if (existingWindowsElements?.length > 0){
+            return [...existingWindowsElements];
+        } else {
+            return <></>;
+        }
     }
 
     function renderAddTabsMessage(): JSX.Element {
@@ -126,20 +134,6 @@ function CurrentSessionView(props:any): JSX.Element {
          
             if(!targetFolder) return;
             
-            /*const markedTabs: Array<iTabItem> = tabsData.markedTabs.map((tab: chrome.history.HistoryItem) => {
-                return {
-                    id: tab.id,
-                    label: tab.title,
-                    url: tab.url,
-                    disableEdit: false,
-                    disableMark: false,
-                }
-            });
-
-            const presetWindow: iWindowItem = {
-                id: randomNumber(),
-                tabs: markedTabs
-            };*/
             if(currentSessionData.windows){
                 const newWindowItems: Array<iWindowItem> = currentSessionData.windows.map((window: chrome.windows.Window) => {
                     if(window.tabs){
@@ -175,7 +169,7 @@ function CurrentSessionView(props:any): JSX.Element {
         return (
             <AddToWorkspacePopup 
                 title="Save session"
-                type="popup"
+                type="slide-in"
                 dropdownOptions={dropdownOptions}
                 onNewWorkspace={handleAddToNewWorkspace}
                 onExistingWorkspace={handleAddToExistingWorkspace}
@@ -183,18 +177,11 @@ function CurrentSessionView(props:any): JSX.Element {
             />
         );
     }
+    
+    function renderFolderManager(): JSX.Element {
+        let render = <></>;
 
-    function renderPopup(): JSX.Element {
-        let render;
         if(createFolder === true){
-            
-
-
-            /*const presetWindows: iWindowItem = {
-                id: randomNumber(),
-                tabs: markedTabs
-            };*/
-            
             const presetWindows: Array<iWindowItem> = currentSessionData.windows.map((window: chrome.windows.Window) => {
                 if(window.tabs){
                     const tabs: Array<iTabItem> = window.tabs.map((tab: chrome.tabs.Tab) => {
@@ -215,7 +202,7 @@ function CurrentSessionView(props:any): JSX.Element {
                 }
             })
 
-            const payload: iFolder = {
+            const folderSpecs: iFolder = {
                 id: randomNumber(),
                 name: "",
                 desc: "",
@@ -224,40 +211,37 @@ function CurrentSessionView(props:any): JSX.Element {
                 marked: false,
                 windows: [...presetWindows],
             }
-            render = <FolderManager type="popup" title="Create workspace" folder={payload} onClose={handlePopupClose} />;
+            render = <FolderManager type="slide-in" title="Create workspace" folder={folderSpecs} onClose={handleCloseFolderManager} />;
         } else if(mergeProcess !== null) {
-
-            render = <FolderManager type="popup" title={`Merge tabs to ${mergeProcess.name}`} folder={mergeProcess} onClose={handlePopupClose} />;
-        } else {
-            render = <></>;
+            render = <FolderManager type="slide-in" title={`Merge tabs to ${mergeProcess.name}`} folder={mergeProcess} onClose={handleCloseFolderManager} />;
         }
 
         return render;
     }
 
-    function renderWindows(): Array<JSX.Element> {
-        const existingWindows = currentSessionData?.windows;
-        const existingWindowsElements: Array<JSX.Element> = existingWindows?.map((item: iWindowItem, i: number) => <CurrentSessionWindowItem key={`window-item-${i}`} tabsCol={1} disableEdit={currentSessionData.windows.length < 2 ? true : false} disableTabMark={false} disableTabEdit={true} id={item.id} tabs={item.tabs} initExpand={true} />);
-        
-        if (existingWindowsElements?.length > 0){
-            return [...existingWindowsElements];
-        } else {
-            return [renderEmptyMessage()];
-        }
-    }
-
     return (
         <>
             {addToWorkSpaceMessage && renderAddTabsMessage()}
-            {renderPopup()}
-            <div className="flex justify-center mt-4 mb-6">
-                <PrimaryButton disabled={false} text="Save session" onClick={() => setAddToWorkspaceMessage(true)} />
+            {renderFolderManager()}
+            <div id="currentSession-view" className="mb-12 pt-10 bg-white shadow">
+                <div className={"pb-6 w-full bg-white min-h-[350px]"}>
+                    <div className="w-full mb-6 px-14">
+                        <div className="flex justify-between mb-8">
+                            <h1 className="text-4xl text-tbfColor-darkpurple font-light inline-block">
+                                Current session
+                            </h1>
+                            {renderOptionsMenu()}
+                        </div>
+                        <div>
+                            {renderContents()}
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div>
-                {renderWindows()}
-            </div>
-        </>
-    )
+            
+        </>  
+    );
+
 }
 
-export default CurrentSessionView;
+export default CurrentSessionSection

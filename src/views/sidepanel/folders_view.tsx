@@ -5,7 +5,7 @@ import { iFolder } from '../../interfaces/folder';
 import Folder from "../../components/folder";
 import { getFromStorage, saveToStorage } from '../../services/webex_api/storage';
 import { readAllFoldersFromBrowserAction } from '../../redux/actions/folderCollectionActions';
-import ManageFolderPopup from "../../components/utils/manage_folder_popup";
+import FolderManager from "../../components/utils/folder_manager";
 import { clearInEditFolder } from "../../redux/actions/inEditFolderActions";
 import { clearMarkedFoldersAction } from "../../redux/actions/workspaceSettingsActions";
 import MessageBox from "../../components/utils/message_box";
@@ -139,7 +139,7 @@ function FoldersView(props:any): JSX.Element {
                         setFolderLaunchType(null); setShowPerformanceWarning(false);}}}    
                 />
             }
-            {showFolderManager === true && <ManageFolderPopup type="popup" title="Create workspace" onClose={handleCloseFolderManager} />}
+            {showFolderManager === true && <FolderManager type="popup" title="Create workspace" onClose={handleCloseFolderManager} />}
             <div className="flex justify-center mt-4 mb-6">
                 <PrimaryButton disabled={false} text="Add folder" onClick={() => setShowFolderManager(true)} />
             </div>

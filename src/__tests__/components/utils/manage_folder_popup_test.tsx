@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import '@testing-library/jest-dom';
-import ManageFolderPopup from "../../../components/utils/manage_folder_popup";
+import FolderManager from "../../../components/utils/folder_manager";
 import { Provider } from "react-redux";
 import { store } from "../../../redux/reducer";
 import { chrome } from 'jest-chrome'
@@ -98,7 +98,7 @@ describe("Create new workspace", () => {
     test(`popup title reads "${mockNewFolderTitle}"`, () => {
         render(
             <Provider store={store}>
-                <ManageFolderPopup type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                <FolderManager type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
             </Provider>
         );
 
@@ -109,7 +109,7 @@ describe("Create new workspace", () => {
     test("name field works (focus & blur) and value is saved to redux when blurred", () => {
         render(
             <Provider store={store}>
-                <ManageFolderPopup type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                <FolderManager type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
             </Provider>
         );
         
@@ -137,7 +137,7 @@ describe("Create new workspace", () => {
         
         render(
             <Provider store={store}>
-                <ManageFolderPopup type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                <FolderManager type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
             </Provider>
         );
         
@@ -164,7 +164,7 @@ describe("Create new workspace", () => {
     test("window/tab section lists no windows", () => {
         render(
             <Provider store={store}>
-                <ManageFolderPopup type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                <FolderManager type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
             </Provider>
         );
 
@@ -176,7 +176,7 @@ describe("Create new workspace", () => {
     test("window/tab section has a working \"New window\" button", () => {
         render(
             <Provider store={store}>
-                <ManageFolderPopup type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                <FolderManager type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
             </Provider>
         );
 
@@ -189,7 +189,7 @@ describe("Edit workspace", () => {
     test(`popup title reads "${mockEditFolderTitle}"`, () => {
         render(
             <Provider store={store}>
-                <ManageFolderPopup type="slide-in"folder={mockEditFolderState} title={mockEditFolderTitle} onClose={mockCloseFunction} />
+                <FolderManager type="slide-in"folder={mockEditFolderState} title={mockEditFolderTitle} onClose={mockCloseFunction} />
             </Provider>
         );
 
@@ -203,7 +203,7 @@ describe("Edit workspace", () => {
         //store.dispatch(initInEditFolder(mockEditFolderState));    
         render(
             <Provider store={store}>
-                <ManageFolderPopup type="slide-in"folder={mockEditFolderState} title={mockEditFolderTitle} onClose={mockCloseFunction} />
+                <FolderManager type="slide-in"folder={mockEditFolderState} title={mockEditFolderTitle} onClose={mockCloseFunction} />
             </Provider>
         );
 
@@ -234,7 +234,7 @@ describe("Edit workspace", () => {
        // store.dispatch(initInEditFolder(mockEditFolderState));    
         render(
             <Provider store={store}>
-                <ManageFolderPopup type="slide-in"folder={mockEditFolderState} title={mockEditFolderTitle} onClose={mockCloseFunction} />
+                <FolderManager type="slide-in"folder={mockEditFolderState} title={mockEditFolderTitle} onClose={mockCloseFunction} />
             </Provider>
         );
       
@@ -259,7 +259,7 @@ describe("Edit workspace", () => {
     test("window/tab section lists at least one window", async () => {
         render(
             <Provider store={store}>
-                <ManageFolderPopup type="slide-in"folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                <FolderManager type="slide-in"folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
             </Provider>
         );
 
@@ -273,7 +273,7 @@ describe("Edit workspace", () => {
     test("window/tab section has a working \"New window\" button", () => {
         render(
             <Provider store={store}>
-                <ManageFolderPopup type="slide-in"folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                <FolderManager type="slide-in"folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
             </Provider>
         );
 
@@ -290,7 +290,7 @@ describe("Test of close and cancelling of folder management popup", () => {
 
         render(
             <Provider store={store}>
-                <ManageFolderPopup type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                <FolderManager type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
             </Provider>
         );
 
@@ -313,7 +313,7 @@ describe("Test of close and cancelling of folder management popup", () => {
 
         render(
             <Provider store={store}>
-                <ManageFolderPopup type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                <FolderManager type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
             </Provider>
         );
 
@@ -339,7 +339,7 @@ describe("Test of close and cancelling of folder management popup", () => {
 
             const { rerender } = render(
                 <Provider store={store}>
-                    <ManageFolderPopup type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                    <FolderManager type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
                 </Provider>
             );
 
@@ -375,7 +375,7 @@ describe("Test of close and cancelling of folder management popup", () => {
 
             render(
                 <Provider store={store}>
-                    <ManageFolderPopup type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                    <FolderManager type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
                 </Provider>
             );
 
@@ -413,7 +413,7 @@ describe("Test of close and cancelling of folder management popup", () => {
             })
             
             const { rerender } = render(<Provider store={store}>
-                <ManageFolderPopup type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                <FolderManager type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
             </Provider>);
 
             const inputField: HTMLInputElement = screen.getByTestId("name-field");
@@ -436,7 +436,7 @@ describe("Test of close and cancelling of folder management popup", () => {
             fireEvent.click(xButton);
 
             rerender(<Provider store={store}>
-                <ManageFolderPopup type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                <FolderManager type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
             </Provider>);
 
             const warningMessagePopup = await screen.findByTestId("warning-message-popup");
@@ -456,7 +456,7 @@ describe("Test of close and cancelling of folder management popup", () => {
             })
             
             const { rerender } = render(<Provider store={store}>
-                <ManageFolderPopup type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                <FolderManager type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
             </Provider>);
 
             const inputField: HTMLInputElement = screen.getByTestId("name-field");
@@ -479,7 +479,7 @@ describe("Test of close and cancelling of folder management popup", () => {
             fireEvent.click(cancelButton);
 
             rerender(<Provider store={store}>
-                <ManageFolderPopup type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                <FolderManager type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
             </Provider>);
 
             const warningMessagePopup = await screen.findByTestId("warning-message-popup");
@@ -500,7 +500,7 @@ describe("Test of close and cancelling of folder management popup", () => {
 
             const { rerender } = render(
                 <Provider store={store}>
-                    <ManageFolderPopup type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                    <FolderManager type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
                 </Provider>
             );
 
@@ -536,7 +536,7 @@ describe("Test of close and cancelling of folder management popup", () => {
 
             render(
                 <Provider store={store}>
-                    <ManageFolderPopup type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                    <FolderManager type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
                 </Provider>
             );
 
@@ -574,7 +574,7 @@ describe("Test of close and cancelling of folder management popup", () => {
             })
             
             const { rerender } = render(<Provider store={store}>
-                <ManageFolderPopup type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                <FolderManager type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
             </Provider>);
 
             const inputField: HTMLTextAreaElement = screen.getByTestId("desc-field");
@@ -597,7 +597,7 @@ describe("Test of close and cancelling of folder management popup", () => {
             fireEvent.click(xButton);
 
             rerender(<Provider store={store}>
-                <ManageFolderPopup type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                <FolderManager type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
             </Provider>);
 
             const warningMessagePopup = await screen.findByTestId("warning-message-popup");
@@ -617,7 +617,7 @@ describe("Test of close and cancelling of folder management popup", () => {
             })
             
             const { rerender } = render(<Provider store={store}>
-                <ManageFolderPopup type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                <FolderManager type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
             </Provider>);
 
             const inputField: HTMLInputElement = screen.getByTestId("desc-field");
@@ -640,7 +640,7 @@ describe("Test of close and cancelling of folder management popup", () => {
             fireEvent.click(cancelButton);
 
             rerender(<Provider store={store}>
-                <ManageFolderPopup type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                <FolderManager type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
             </Provider>);
 
             const warningMessagePopup = await screen.findByTestId("warning-message-popup");
@@ -655,7 +655,7 @@ describe("Test of close and cancelling of folder management popup", () => {
         test("Window gets removed when trash icon is clicked", () => {
             render(
                 <Provider store={store}>
-                    <ManageFolderPopup type="slide-in"folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                    <FolderManager type="slide-in"folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
                 </Provider>
             );
 
@@ -676,7 +676,7 @@ describe("Test of close and cancelling of folder management popup", () => {
     
             render(
                 <Provider store={store}>
-                    <ManageFolderPopup type="slide-in"folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                    <FolderManager type="slide-in"folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
                 </Provider>
             );
 
@@ -708,7 +708,7 @@ describe("Test of close and cancelling of folder management popup", () => {
     
             const { rerender } = render(
                 <Provider store={store}>
-                    <ManageFolderPopup type="slide-in"folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                    <FolderManager type="slide-in"folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
                 </Provider>
             );
 
@@ -720,7 +720,7 @@ describe("Test of close and cancelling of folder management popup", () => {
             fireEvent.click(trashButton[0]);
 
             rerender(<Provider store={store}>
-                <ManageFolderPopup type="slide-in"folder={mockEditFolderState}  title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                <FolderManager type="slide-in"folder={mockEditFolderState}  title={mockNewFolderTitle} onClose={mockCloseFunction} />
             </Provider>);
 
             const xButton = screen.getByTestId("generic-icon-button-close");
@@ -729,7 +729,7 @@ describe("Test of close and cancelling of folder management popup", () => {
             fireEvent.click(xButton);
             
             rerender(<Provider store={store}>
-                <ManageFolderPopup type="slide-in"folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                <FolderManager type="slide-in"folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
             </Provider>);
 
             const warningMessagePopup = await screen.findByTestId("warning-message-popup");
@@ -744,7 +744,7 @@ describe("Test of close and cancelling of folder management popup", () => {
     
             render(
                 <Provider store={store}>
-                    <ManageFolderPopup type="slide-in"folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                    <FolderManager type="slide-in"folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
                 </Provider>
             );
 
@@ -776,7 +776,7 @@ describe("Test of close and cancelling of folder management popup", () => {
 
             const { rerender } = render(
                 <Provider store={store}>
-                    <ManageFolderPopup type="slide-in"folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                    <FolderManager type="slide-in"folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
                 </Provider>
             );
 
@@ -790,7 +790,7 @@ describe("Test of close and cancelling of folder management popup", () => {
             fireEvent.click(trashButton[0]);
             
             rerender(<Provider store={store}>
-                <ManageFolderPopup type="slide-in"folder={mockEditFolderState}  title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                <FolderManager type="slide-in"folder={mockEditFolderState}  title={mockNewFolderTitle} onClose={mockCloseFunction} />
             </Provider>);
 
             const cancelButton = screen.getByText("Cancel", { selector: "button" });
@@ -799,7 +799,7 @@ describe("Test of close and cancelling of folder management popup", () => {
             fireEvent.click(cancelButton);
 
             rerender(<Provider store={store}>
-                <ManageFolderPopup type="slide-in"folder={mockEditFolderState}  title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                <FolderManager type="slide-in"folder={mockEditFolderState}  title={mockNewFolderTitle} onClose={mockCloseFunction} />
             </Provider>);
 
             const warningMessagePopup = await screen.findByTestId("warning-message-popup");
@@ -817,7 +817,7 @@ describe("Test of close and cancelling of folder management popup", () => {
 
             const { rerender } = render(
                 <Provider store={store}>
-                    <ManageFolderPopup type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                    <FolderManager type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
                 </Provider>
             );
 
@@ -867,7 +867,7 @@ describe("Test of close and cancelling of folder management popup", () => {
 
             const { rerender } = render(
                 <Provider store={store}>
-                    <ManageFolderPopup type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                    <FolderManager type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
                 </Provider>
             );
 
@@ -894,7 +894,7 @@ describe("Test of close and cancelling of folder management popup", () => {
             fireEvent.blur(inputField);
 
             rerender(<Provider store={store}>
-                <ManageFolderPopup type="slide-in"folder={mockEditFolderState}  title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                <FolderManager type="slide-in"folder={mockEditFolderState}  title={mockNewFolderTitle} onClose={mockCloseFunction} />
             </Provider>);
             
             const tab = screen.getByTestId("tab-item");
@@ -906,7 +906,7 @@ describe("Test of close and cancelling of folder management popup", () => {
             fireEvent.click(cancelButton);
 
             rerender(<Provider store={store}>
-                <ManageFolderPopup type="slide-in"folder={mockEditFolderState}  title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                <FolderManager type="slide-in"folder={mockEditFolderState}  title={mockNewFolderTitle} onClose={mockCloseFunction} />
             </Provider>);
 
             const warningMessagePopup = await screen.findByTestId("warning-message-popup");
@@ -924,7 +924,7 @@ describe("Test of close and cancelling of folder management popup", () => {
 
             const { rerender } = render(
                 <Provider store={store}>
-                    <ManageFolderPopup type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                    <FolderManager type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
                 </Provider>
             );
 
@@ -969,7 +969,7 @@ describe("Test of close and cancelling of folder management popup", () => {
 
             const { rerender } = render(
                 <Provider store={store}>
-                    <ManageFolderPopup type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                    <FolderManager type="slide-in"title={mockNewFolderTitle} onClose={mockCloseFunction} />
                 </Provider>
             );
 
@@ -996,7 +996,7 @@ describe("Test of close and cancelling of folder management popup", () => {
             fireEvent.blur(inputField);
 
             rerender(<Provider store={store}>
-                <ManageFolderPopup type="slide-in"folder={mockEditFolderState}  title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                <FolderManager type="slide-in"folder={mockEditFolderState}  title={mockNewFolderTitle} onClose={mockCloseFunction} />
             </Provider>);
 
             const cancelButton = screen.getByText("Cancel", { selector: "button" });
@@ -1005,7 +1005,7 @@ describe("Test of close and cancelling of folder management popup", () => {
             fireEvent.click(cancelButton);
 
             rerender(<Provider store={store}>
-                <ManageFolderPopup type="slide-in"folder={mockEditFolderState}  title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                <FolderManager type="slide-in"folder={mockEditFolderState}  title={mockNewFolderTitle} onClose={mockCloseFunction} />
             </Provider>);
 
             const warningMessagePopup = await screen.findByTestId("warning-message-popup");
@@ -1023,7 +1023,7 @@ describe("Test of close and cancelling of folder management popup", () => {
 
             render(
                 <Provider store={store}>
-                    <ManageFolderPopup type="slide-in"folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                    <FolderManager type="slide-in"folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
                 </Provider>
             );
            
@@ -1063,7 +1063,7 @@ describe("Test of close and cancelling of folder management popup", () => {
 
             render(
                 <Provider store={store}>
-                    <ManageFolderPopup type="slide-in"folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                    <FolderManager type="slide-in"folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
                 </Provider>
             );
            
@@ -1099,7 +1099,7 @@ describe("Window and tabs setting behaviour", () => {
     test.each(mockEditFolderState.windows)("Expand/Collapse icon works", (windowData) => {
         render(
             <Provider store={store}>
-                <ManageFolderPopup type="slide-in"folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                <FolderManager type="slide-in"folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
             </Provider>
         );
 
@@ -1123,7 +1123,7 @@ describe("Window and tabs setting behaviour", () => {
     test("Expand/Collapse button works", () => {
         render(
             <Provider store={store}>
-                <ManageFolderPopup type="slide-in"folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                <FolderManager type="slide-in"folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
             </Provider>
         );
       
@@ -1139,7 +1139,7 @@ describe("Window and tabs setting behaviour", () => {
     test("Delete button in window section is not visible when no tabs are marked", () => {
         render(
             <Provider store={store}>
-                <ManageFolderPopup type="slide-in"folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                <FolderManager type="slide-in"folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
             </Provider>
         );
 
@@ -1169,7 +1169,7 @@ describe("Window and tabs setting behaviour", () => {
 
         render(
             <Provider store={store}>
-                <ManageFolderPopup type="slide-in"folder={tempFolderMock} title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                <FolderManager type="slide-in"folder={tempFolderMock} title={mockNewFolderTitle} onClose={mockCloseFunction} />
             </Provider>
         );
 
@@ -1192,7 +1192,7 @@ describe("Window and tabs setting behaviour", () => {
     test("Tabs url can be edited, updated and error marked if needed (exit by clicking outside textfield)", () => {
         render(
             <Provider store={store}>
-                <ManageFolderPopup type="slide-in"folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                <FolderManager type="slide-in"folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
             </Provider>
         );
 
@@ -1236,7 +1236,7 @@ describe("Window and tabs setting behaviour", () => {
     test("Tabs url can be edited, updated and error marked if needed (exit by hitting enter/return)", () => {
         render(
             <Provider store={store}>
-                <ManageFolderPopup type="slide-in"folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                <FolderManager type="slide-in"folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
             </Provider>
         );
 
@@ -1284,7 +1284,7 @@ describe("Window and tabs setting behaviour", () => {
     test("Only one tab may be edited at a time", () => {
         render(
             <Provider store={store}>
-                <ManageFolderPopup type="slide-in"folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                <FolderManager type="slide-in"folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
             </Provider>
         );
 
@@ -1306,7 +1306,7 @@ describe("Window and tabs setting behaviour", () => {
     test("Tabs cannot be edited while a new tab is being created", () => {
         const {rerender} = render(
             <Provider store={store}>
-                <ManageFolderPopup type="slide-in"folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                <FolderManager type="slide-in"folder={mockEditFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
             </Provider>
         );
 
@@ -1333,7 +1333,7 @@ test("Proceeding and declining warning message works", async () => {
     })
     
     const { rerender } = render(<Provider store={store}>
-        <ManageFolderPopup type="slide-in"folder={mockEditFolderState} title={mockEditFolderTitle} onClose={mockCloseFunction} />
+        <FolderManager type="slide-in"folder={mockEditFolderState} title={mockEditFolderTitle} onClose={mockCloseFunction} />
     </Provider>);
 
     const inputField: HTMLInputElement = screen.getByTestId("name-field");
@@ -1356,7 +1356,7 @@ test("Proceeding and declining warning message works", async () => {
     fireEvent.click(xButton);
 
     rerender(<Provider store={store}>
-        <ManageFolderPopup type="slide-in"folder={mockEditFolderState} title={mockEditFolderTitle} onClose={mockCloseFunction} />
+        <FolderManager type="slide-in"folder={mockEditFolderState} title={mockEditFolderTitle} onClose={mockCloseFunction} />
     </Provider>);
 
     let warningMessagePopup = await screen.findByTestId("warning-message-popup");
@@ -1367,20 +1367,20 @@ test("Proceeding and declining warning message works", async () => {
     fireEvent.click(declineButton);
 
     rerender(<Provider store={store}>
-        <ManageFolderPopup type="slide-in"folder={mockEditFolderState} title={mockEditFolderTitle} onClose={mockCloseFunction} />
+        <FolderManager type="slide-in"folder={mockEditFolderState} title={mockEditFolderTitle} onClose={mockCloseFunction} />
     </Provider>);
 
     expect(mockCloseFunction).not.toHaveBeenCalled();
     expect(warningMessagePopup).not.toBeInTheDocument();
 
     rerender(<Provider store={store}>
-        <ManageFolderPopup type="slide-in"folder={mockEditFolderState} title={mockEditFolderTitle} onClose={mockCloseFunction} />
+        <FolderManager type="slide-in"folder={mockEditFolderState} title={mockEditFolderTitle} onClose={mockCloseFunction} />
     </Provider>);
 
     fireEvent.click(xButton);
 
     rerender(<Provider store={store}>
-        <ManageFolderPopup type="slide-in"folder={mockEditFolderState} title={mockEditFolderTitle} onClose={mockCloseFunction} />
+        <FolderManager type="slide-in"folder={mockEditFolderState} title={mockEditFolderTitle} onClose={mockCloseFunction} />
     </Provider>);
 
     warningMessagePopup = await screen.findByTestId("warning-message-popup");
@@ -1403,7 +1403,7 @@ describe("Validation, saving and field errors", () => {
     test.each(fields)("Leaving the %s field empty will indicate an error when attempting to save/create a folder", (field) => {
         render(
             <Provider store={store}>
-                <ManageFolderPopup type="slide-in"folder={mockNewFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
+                <FolderManager type="slide-in"folder={mockNewFolderState} title={mockNewFolderTitle} onClose={mockCloseFunction} />
             </Provider>
         );
 

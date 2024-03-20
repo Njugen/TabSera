@@ -6,7 +6,7 @@ import Folder from "../../components/folder";
 import styles from "../../styles/global_utils.module.scss";
 import { getFromStorage, saveToStorage } from '../../services/webex_api/storage';
 import { readAllFoldersFromBrowserAction } from '../../redux/actions/folderCollectionActions';
-import ManageFolderPopup from "../../components/utils/manage_folder_popup";
+import FolderManager from "../../components/utils/folder_manager";
 import { clearInEditFolder } from "../../redux/actions/inEditFolderActions";
 import { clearMarkedTabsAction, setMarkMultipleTabsAction, setMarkedTabsAction, setTabsSortOrder, setUpTabsAction } from '../../redux/actions/historySettingsActions';
 import { setCurrentTabsSortOrder, setUpWindowsAction } from '../../redux/actions/currentSessionActions';
@@ -128,7 +128,7 @@ function SearchResultsContainer(props:any): JSX.Element {
 
     return (
         <>
-        {console.log("RERENDER", keyword)}
+            {console.log("RERENDER", keyword)}
             <div className="bg-white absolute top-20 z-[200] px-4 w-full">
                 <div id="popup-header" className="pb-5 border-tbfColor-lgrey w-full flex justify-between">
                     <h1 data-testid="manage-folder-title" className="text-3xl text-tbfColor-darkpurple font-light inline-block">

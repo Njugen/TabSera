@@ -25,7 +25,7 @@ import { setCurrentlyEditingTab } from "../../redux/actions/miscActions";
     preferably by using the <FormField /> component. See examples in render() function.
 */
 
-const ManageFolderPopup = (props: iPopup): JSX.Element => {
+const FolderManager = (props: iPopup): JSX.Element => {
     const { onClose, folder, title } = props;
     const [show, setShow] = useState<boolean>(false);
     const [isCreate, setIsCreate] = useState<boolean>(false);
@@ -269,4 +269,4 @@ const ManageFolderPopup = (props: iPopup): JSX.Element => {
     ); 
 }
 
-export default ManageFolderPopup;
+export default FolderManager;

@@ -4,13 +4,13 @@ import styles from "./styles/global_utils.module.scss";
 import Navlink from './components/utils/navlink';
 import { useRef, useState, useEffect } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import FolderView from './views/folders/folders';
-import SettingsView from './views/settings';
+import SettingsView from './views/settings/settings_view';
 import LeftIcon from './images/icons/left_icon';
 import RightIcon from './images/icons/right_icon';
 import AdvancedSearchBar from './components/utils/advanced_search_bar';
 import RenderOptionsPage from './sections/options_page';
 import RenderSidePanel from './sections/sidepanel';
+import DashboardView from './views/dashboard/dashboard_view';
 
 /*
   This file acts as the very foundation of this plugin's UI. This file

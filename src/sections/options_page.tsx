@@ -3,8 +3,8 @@ import "./../styles/global_utils.module.scss";
 import styles from "./../styles/global_utils.module.scss";
 import Navlink from './../components/utils/navlink';
 import { useRef, useState } from 'react';
-import FolderView from './../views/folders/folders';
-import SettingsView from './../views/settings';
+import DashboardView from './../views/dashboard/dashboard_view';
+import SettingsView from '../views/settings/settings_view';
 import LeftIcon from './../images/icons/left_icon';
 import RightIcon from './../images/icons/right_icon';
 import AdvancedSearchBar from '../components/utils/advanced_search_bar';
@@ -95,7 +95,7 @@ const RenderOptionsPage = (props: any): JSX.Element => {
     let result: JSX.Element = <></>;
 
     if(urlSplit.length === 1){
-      result = renderUI(<FolderView />);
+      result = renderUI(<DashboardView />);
     } else if(urlSplit.length === 2){
       const paramSplit: Array<string> =  urlSplit[1].split("=");
       const key: string = paramSplit[0];
@@ -103,15 +103,15 @@ const RenderOptionsPage = (props: any): JSX.Element => {
       
       if(key === "view"){
         if(val === "main"){
-          result = renderUI(<FolderView />);
+          result = renderUI(<DashboardView />);
         } else if(val === "settings"){
           result = renderUI(<SettingsView />);
         } else {
-          result = renderUI(<FolderView />);
+          result = renderUI(<DashboardView />);
         }
         
       } else {
-        result = renderUI(<FolderView />);
+        result = renderUI(<DashboardView />);
       }
     }
     
