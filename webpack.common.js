@@ -43,7 +43,7 @@ module.exports = {
             title: "Sidepanel",
             filename: "sidepanel.html",
             chunks: ["sidepanel"]
-        }),
+        }), 
         new HtmlPlugin({
             title: "Tab Manager",
             filename: "options.html",
