@@ -40,12 +40,12 @@ module.exports = {
             ]
         }),
         new HtmlPlugin({
-            title: "TabSera Sidepanel",
+            title: "Sidepanel",
             filename: "sidepanel.html",
             chunks: ["sidepanel"]
         }),
         new HtmlPlugin({
-            title: "TabSera - Extensive Tab Manager",
+            title: "Tab Manager",
             filename: "options.html",
             chunks: ["options"]
         }),
