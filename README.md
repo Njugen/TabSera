@@ -1,19 +1,16 @@
-# TabSera - Browser window and tab manager (Beta)
+# Tab Management Browser Plugin (Beta)
 
 <div style="text-align: center; margin: 2rem auto">
     <img src="./img/brand/brand.png" width="15%" />
 </div>
 
-TabSera gives you a better oversight and improved tab management experience not provided
-by default browser features.
+This plugin gives you a better overview and improved tab management experience not provided
+by default browser features.  Mark, arrange, and open tabs in any way you like, e.g. new session, categorized session, or incognito.
 
 ## Issue and purpose
 
 Add your windows and tabs to accessible folders. Launch sets of entertainment, or open your work related
 resources with just one click.
-
-TabSera gives you a simple overview over what's most important to you. It gives you the freedom to mark, arrange,
-and open tabs in any way you like, e.g. new session, categorized session, or incognito.
 
 Simple overview and basic features can be opened with one click. More advanced featuress and extended overview is also available through the option menu.
 
@@ -82,7 +79,7 @@ Run this command after changing existing components, to check if anything relate
 5. Head for ***/tabfolders/dist/*** and select it
 
 - __Open options page:__ Click "Details" in the extension's box. Scroll down and click "Extension options"
-- __Open the sidepanel:__ Click the TabSera icon in your browser's toolbar
+- __Open the sidepanel:__ Click the <img src="./img/brand/brand.png" width="20" height="20" style="margin: 0 4px" /> icon in your browser's toolbar
 
 # Updates
 Minor updates and improvements will be provided from time to time. There is no definite roadmap or schedule.
