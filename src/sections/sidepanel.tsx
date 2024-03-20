@@ -2,7 +2,7 @@ import SimpleSearchBar from '../components/utils/simple_search_bar';
 import '../App.css';
 import styles from "./../styles/global_utils.module.scss";
 import "./../styles/sidepanel_specific.css";
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Navlink from '../components/utils/navlink';
 import FoldersView from '../views/sidepanel/folders_view';
 import CurrentSessionView from '../views/sidepanel/current_session_view';
@@ -18,6 +18,7 @@ function RenderSidePanel(props: any): JSX.Element {
 
     const renderView = (): JSX.Element => {
         let component: JSX.Element = <></>;
+        
         if(view === "folders-view"){
             component = <FoldersView />
         } else if(view === "current-session-view"){

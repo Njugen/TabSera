@@ -14,7 +14,7 @@ import { iFieldOption } from "../interfaces/dropdown";
     Folder containing description, windows and tabs, as well as various folder options
 */
 
-function Folder(props: iFolder) {
+const Folder = (props: iFolder): JSX.Element => {
     const contentsRef = useRef<HTMLDivElement>(null);
     const headerRef = useRef<HTMLDivElement>(null);
     const folderRef = useRef<HTMLDivElement>(null);
@@ -22,8 +22,9 @@ function Folder(props: iFolder) {
     const [showLaunchOptions, setShowLaunchOptions] = useState<boolean>(false);
     const [slideDown, setSlideDown] = useState<boolean>(false);
 
+
     // Show a list of options for how to launch this folder
-    function handleShowLaunchOptionsMenu(): void {
+    const handleShowLaunchOptionsMenu = (): void => {
         if(showLaunchOptions === false){
             setShowLaunchOptions(true);
             setTimeout(() => {
@@ -35,7 +36,6 @@ function Folder(props: iFolder) {
                 setShowLaunchOptions(false);
             }, 200);
         }
-    
     }
 
     const { 
@@ -52,22 +52,44 @@ function Folder(props: iFolder) {
         onDelete,
         onEdit 
     } = props;
+
+    useLayoutEffect(() => {
+        toggleExpand(type);
+    }, []);
+
+    useEffect(() => {
+        // Listen for clicks in the viewport. If the options list is visible, then hide it once
+        // anything is clicked
+        window.addEventListener("click", handleWindowClick);
+
+        return () => {
+            window.removeEventListener("click", handleWindowClick);
+        }
+    }, [slideDown])
+
+    useEffect(() => {
+        if(index && folderRef.current) folderRef.current.style.zIndex = index.toString();
+    }, [folderRef])
     
-    function toggleExpand(init?: string): void {
-        function exp(): void {
-            if(contentsRef.current === null || headerRef.current === null) return;
-            headerRef.current.className = `relative border-b border-gray-300 tbf-${type} bg-white px-4 h-10 py-6 flex items-center rounded-t-md`;
-            contentsRef.current.className = "overflow-hidden bg-white rounded-b-md border-t-0";
-            setExpanded(true);
-        }
+    const exp = (): void => {
+        if(contentsRef.current === null || headerRef.current === null) return;
 
-        function col(): void {
-            if(contentsRef.current === null || headerRef.current === null) return;
-            headerRef.current.className = `relative tbf-${type} bg-white px-4 h-10 py-6 flex items-center rounded-md`;
-            contentsRef.current.className = "overflow-hidden rounded-b-md";
-            setExpanded(false);
-        }
+        headerRef.current.className = `relative border-b border-gray-300 tbf-${type} bg-white px-4 h-10 py-6 flex items-center rounded-t-md`;
+        contentsRef.current.className = "overflow-hidden bg-white rounded-b-md border-t-0";
 
+        setExpanded(true);
+    }
+
+    const col = (): void => {
+        if(contentsRef.current === null || headerRef.current === null) return;
+
+        headerRef.current.className = `relative tbf-${type} bg-white px-4 h-10 py-6 flex items-center rounded-md`;
+        contentsRef.current.className = "overflow-hidden rounded-b-md";
+
+        setExpanded(false);
+    }
+
+    const toggleExpand = (init?: string): void => {
         if(expanded === false){
             if(init === "expanded" || !init){
                 exp();
@@ -80,28 +102,26 @@ function Folder(props: iFolder) {
     }
 
     // Expand or collapse this folder
-    function handleExpandClick(e: any): void {
+    const handleExpandClick = (e: any): void => {
         toggleExpand();
     }
 
-    useLayoutEffect(() => {
-        toggleExpand(type);
-    }, []);
-
-    function renderWindows(): Array<JSX.Element>{
-        const result: Array<JSX.Element> = windows.map((window, index) => <WindowItem tabsCol={viewMode === "list" ? 1 : 2} disableTabMark={true} disableTabEdit={true} key={"window-" + index} id={window.id} tabs={window.tabs} />)
+    const renderWindows = (): Array<JSX.Element> => {
+        const result: Array<JSX.Element> = windows.map((window, index) => 
+            <WindowItem tabsCol={viewMode === "list" ? 1 : 2} disableTabMark={true} disableTabEdit={true} key={"window-" + index} id={window.id} tabs={window.tabs} />
+        );
 
         return result;
     }
 
     // Prepare to open a folder: show launch options -> open folder accordingly
-    function handleOpen(): void {
+    const handleOpen = (): void => {
         setShowLaunchOptions(true);
         handleShowLaunchOptionsMenu();
     }
 
     // Launch a folder based on selected option
-    function handleLaunch(id: number): void {
+    const handleLaunch = (id: number): void => {
         let type: string = "";
 
         if(id === 0){
@@ -115,11 +135,12 @@ function Folder(props: iFolder) {
         if(onOpen) {
             onOpen(windows, type);
         }
+
         setShowLaunchOptions(false);
         setSlideDown(false);
     }
 
-    function handleWindowClick(e: any): void {
+   const handleWindowClick = (e: any): void => {
         e.stopPropagation();
 
         if(showLaunchOptions === true){
@@ -127,18 +148,15 @@ function Folder(props: iFolder) {
             setSlideDown(false);
             handleShowLaunchOptionsMenu();
         }
-
     }
 
-    useEffect(() => {
-        // Listen for clicks in the viewport. If the options list is visible, then hide it once
-        // anything is clicked
-        window.addEventListener("click", handleWindowClick);
+    const handleDelete = (): void => {
+        if(onDelete) onDelete(props);
+    }
 
-        return () => {
-            window.removeEventListener("click", handleWindowClick);
-        }
-    }, [slideDown])
+    function handleEdit(e: any): void {
+        if(onEdit) onEdit(e);
+    } 
 
     // List of all options on how to launch this folder. The id identifies the option, and
     // actions are performed accordingly.
@@ -156,19 +174,6 @@ function Folder(props: iFolder) {
             label: "Open in incognito"
         }
     ]
-
-    function handleDelete(): () => void {
-        if(onDelete) onDelete(props);
-
-        return () => {};
-    }
-
-    function handleEdit(e: any): () => void {
-        if(onEdit) onEdit(e);
-
-        return () => {}
-    } 
-
 
     const renderActionBar = (): JSX.Element => {
         let result = (
@@ -189,10 +194,6 @@ function Folder(props: iFolder) {
 
         return result;
     }
-
-    useEffect(() => {
-        if(index && folderRef.current) folderRef.current.style.zIndex = index.toString();
-    }, [folderRef])
 
     return (
         <>

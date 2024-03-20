@@ -40,6 +40,8 @@ function Workspaces(props: any): JSX.Element {
     const folderCollection = useSelector((state: any) => state.FolderCollectionReducer);
     const workspaceSettings = useSelector((state: any) => state.WorkspaceSettingsReducer);
 
+        const colsCount: number = window.innerWidth > 1920 ? 3 : 2;
+
     // Save/update the folder collection to browser memory once the redux collection has changes
     useEffect(() => {        
         if(folderCollection.length > 0){
@@ -225,14 +227,23 @@ function Workspaces(props: any): JSX.Element {
             
         }
 
+        
         const column1: Array<JSX.Element> = [];
         const column2: Array<JSX.Element> = [];
 
+
+        let colsList: Array<Array<JSX.Element>> = [];
+        
+        for(let i = 0; i < colsCount; i++){
+            colsList.push([]);
+        }
+        
+        
         /*result = sortedFolders.map((folder: iFolder, i: number) => {
             const collection: Array<number> = workspaceSettings.markedFoldersId;
             return <Folder onDelete={(e) => handleFolderDelete(folder)} index={sortedFolders.length-i} marked={collection.find((id) => folder.id === id) ? true : false} onMark={handleMarkFolder} onEdit={() => setEditFolderId(folder.id)} key={folder.id} type={folder.type} id={folder.id} viewMode={workspaceSettings.viewMode} name={folder.name} desc={folder.desc} windows={folder.windows} onOpen={handlePrepareLaunchFolder}/>
         });*/
-
+      
         for(let i = 0; i < sortedFolders.length; i++){
             const folder = sortedFolders[i];
             let result: JSX.Element = <></>;
@@ -240,20 +251,19 @@ function Workspaces(props: any): JSX.Element {
             const collection: Array<number> = workspaceSettings.markedFoldersId;
             result = <Folder onDelete={(e) => handleFolderDelete(folder)} index={sortedFolders.length-i} marked={collection.find((id) => folder.id === id) ? true : false} onMark={handleMarkFolder} onEdit={() => setEditFolderId(folder.id)} key={folder.id} type={folder.type} id={folder.id} viewMode={workspaceSettings.viewMode} name={folder.name} desc={folder.desc} windows={folder.windows} onOpen={handlePrepareLaunchFolder}/>
             
-            if(i % 2 === 0){   
-                column1.push(result)
-            } else {
-                column2.push(result)
+            if(i % colsCount === 0){   
+                colsList[0].push(result);
+            } else if(i % colsCount === 1) {
+                colsList[1].push(result);
+            } else if(i % colsCount === 2){
+                colsList[2].push(result);
             }
         }
 
+        const columnsRender: Array<JSX.Element> = colsList.map((col) => <div>{col}</div>);
+
         return [<>
-            <div>
-                {column1}
-            </div>
-            <div>
-                {column2}
-            </div>
+            {columnsRender}
         </>];
     }
 
@@ -461,7 +471,7 @@ function Workspaces(props: any): JSX.Element {
                         {!hasFolders() && renderMessageBox()}
                         {hasFolders() === true && <div className="">
                             
-                            {<div className={`${workspaceSettings.viewMode === "list" ? "mx-auto mt-12" : `grid xl:grid-cols-2 2xl:grid-cols-2 3xl:grid-cols-2 grid-flow-dense gap-x-4 gap-y-0 mt-8`}`}>
+                            {<div className={`${workspaceSettings.viewMode === "list" ? "mx-auto mt-12" : `grid xl:grid-cols-2 2xl:grid-cols-2 3xl:grid-cols-3 grid-flow-dense gap-x-4 gap-y-0 mt-8`}`}>
                                 {renderFolders()}
                             </div>}
                             

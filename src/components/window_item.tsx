@@ -15,7 +15,7 @@ import { setCurrentlyEditingTab, setTabInEdits } from "../redux/actions/miscActi
     in window managers within folder settings
 */
 
-function WindowItem(props: iWindowItem): JSX.Element {
+const WindowItem = (props: iWindowItem): JSX.Element => {
     const [expanded, setExpanded] = useState<boolean>(true);
     const [newTab, setNewTab] = useState<boolean>(false);
     const [editTab, setEditTab] = useState<number | null>(null);
@@ -34,30 +34,29 @@ function WindowItem(props: iWindowItem): JSX.Element {
     }, [folderData]);
 
     // Expand or collapse a window (show/hide tabs within)
-    function handleExpand(): void {
+    const handleExpand = (): void => {
         setExpanded(expanded === true ? false : true);
     }
 
     // Delete this window from redux
-    function handleDeleteWindow(): void {
+    const handleDeleteWindow = (): void => {
         const windows = folderData.windows.filter((target: iWindowItem) => target.id !== id);
+
         dispatch(setCurrentlyEditingTab(false));
         dispatch(updateInEditFolder("windows", windows));
         dispatch(setCurrentlyEditingTab(false));
     }
 
     // Activate add new tab feature by setting state
-    function handleAddNewTab(): void {
-        
+    const handleAddNewTab = (): void => {
         if(editTab === null && miscData.currentlyEditingTab === false) {
             dispatch(setCurrentlyEditingTab(true));
             setNewTab(true);
-            
         }
     }
 
     // Mark/unmark specific tab in this window
-    function handleMarkTab(tabId: number, checked: boolean): void {
+    const handleMarkTab = (tabId: number, checked: boolean): void => {
         if(checked === true){
             const findInState = markedTabs.findIndex((target) => target === tabId);
             if(findInState < 0){  
@@ -70,12 +69,13 @@ function WindowItem(props: iWindowItem): JSX.Element {
     }
 
     // Delete marked tabs
-    function handleDeleteTabs(): void {
+    const handleDeleteTabs = (): void => {
         const windows = folderData.windows.filter((target: iWindowItem) => target.id === id);
         const targetWindowIndex = folderData.windows.findIndex((target: iWindowItem) => target.id === id);
         const tabs = windows[0]?.tabs;
      
         const newTabCollection: Array<iTabItem> = [];
+
         if(tabs){
             tabs.forEach((tab: iTabItem) => {
                 const markedTabIndex = markedTabs.findIndex((target) => target === tab.id);
@@ -93,20 +93,18 @@ function WindowItem(props: iWindowItem): JSX.Element {
         }
     }
 
-    function handleTabEdit(id: number): void {
+    const handleTabEdit = (id: number): void => {
         const { isEditingTabs, currentlyEditingTab } = miscData;
-        if(currentlyEditingTab === true) return;
 
+        if(currentlyEditingTab === true) return;
         
         dispatch(setTabInEdits(isEditingTabs + 1));
         dispatch(setCurrentlyEditingTab(true));
         setEditTab(id);
     }
 
-    // Replace a tab with an edit field, enabling user to edit tab URL
-    function renderEditTab(windowId: number, url?: string, tabId?: number): JSX.Element {
+    const renderEditTab = (windowId: number, url?: string, tabId?: number): JSX.Element => {
         const { isEditingTabs } = miscData;
-
 
         return <EditableTabItem windowId={windowId} id={tabId} preset={url} onStop={() => {
                 dispatch(setTabInEdits(isEditingTabs > 0 ? isEditingTabs - 1 : 0)); 
@@ -117,7 +115,7 @@ function WindowItem(props: iWindowItem): JSX.Element {
     }
 
     // Return a list of tabs based on data from parent component
-    function renderTabs(): Array<JSX.Element> {
+    const renderTabs = (): Array<JSX.Element> => {
         let result = [];
         
         result = tabs.map((tab) => {
@@ -126,24 +124,19 @@ function WindowItem(props: iWindowItem): JSX.Element {
             } else {
                 return <TabItem marked={false} disableMark={disableTabMark} disableEdit={disableTabEdit} key={tab.id} id={tab.id} label={tab.label} url={tab.url} onMark={handleMarkTab} onEdit={handleTabEdit} />
             }
-            
         })
 
         return result;
     }
     
     // Decide whether or not to show an editable tab field within the tab list
-    function evaluateNewTabRender(): Array<JSX.Element> {
+    const evaluateNewTabRender = (): Array<JSX.Element> => {
         if(newTab === true){
             return [...renderTabs(), renderEditTab(id)];
         } else {
             return [...renderTabs()];
         }
     }
-
-    useEffect(() => {
-
-    }, [window.innerWidth])
 
     return (
         <div data-testid="window-item" className="window-item w-full py-1 rounded-md mb-3" id={`window-${id}`}>

@@ -5,7 +5,7 @@ import { iTextContents } from "../../interfaces/text_contents";
     on needs for a generic paragraph layout.
 */
 
-function Paragraph(props: iTextContents): JSX.Element {
+const Paragraph = (props: iTextContents): JSX.Element => {
     const { text, size, lineheight} = props;
     
     return (

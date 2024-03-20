@@ -1,4 +1,4 @@
-function getAllTabs(){
+const getAllTabs = (): void => {
     
 }
 

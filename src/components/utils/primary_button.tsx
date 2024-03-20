@@ -8,7 +8,7 @@ import { iTextButton } from "../../interfaces/text_button";
     of just being a button intended for one purpose.
 */
 
-function PrimaryButton(props: iTextButton): JSX.Element{
+const PrimaryButton = (props: iTextButton): JSX.Element => {
     const { text, disabled, onClick } = props;
     
     return (

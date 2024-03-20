@@ -13,18 +13,12 @@ import iWindowManager from "../../interfaces/window_manager";
     
 */
 
-function WindowManager(props: iWindowManager): JSX.Element {
+const WindowManager = (props: iWindowManager): JSX.Element => {
     const [createWindow, setCreateWindow] = useState<boolean>(false);
     const [inCreationId, setIncreationId] = useState<number>(-1);
 
     const folderData = useSelector((state: any) => state.InEditFolderReducer);
     const windows: Array<iWindowItem> = [];
-
-    // Add a new window with a random id
-    function handleCreateWindow(): void {
-        setIncreationId(randomNumber());
-        setCreateWindow(true);
-    }
 
     // Once the inEdit reducer changes, stop creating window
     useEffect(() => {
@@ -32,14 +26,21 @@ function WindowManager(props: iWindowManager): JSX.Element {
         setCreateWindow(false);
     }, [folderData]);
 
-    function renderActionButtons(): JSX.Element {
-        return <div className="flex flex-row mt-10">
-           {/* <PrimaryButton disabled={false} text="Import session" onClick={() => {}} />  */}
-            <PrimaryButton disabled={false} text="New window" onClick={handleCreateWindow} />            
-        </div>
+    // Add a new window with a random id
+    const handleCreateWindow = (): void => {
+        setIncreationId(randomNumber());
+        setCreateWindow(true);
     }
 
-    function renderNewWindowMessage(): JSX.Element {
+    const renderActionButtons = (): JSX.Element => {
+        return (
+            <div className="flex flex-row mt-10">
+                <PrimaryButton disabled={false} text="New window" onClick={handleCreateWindow} />            
+            </div>
+        );
+    }
+
+    const renderNewWindowMessage = (): JSX.Element => {
         return <>
             <p className="leading-7 block text-center text-sm">
                 A folder needs to contain at least one window. Please, create a new window or import windows from your current session.
@@ -47,11 +48,14 @@ function WindowManager(props: iWindowManager): JSX.Element {
         </>
     }
 
-    function renderNewWindow(): JSX.Element {
-        const window = folderData?.windows.filter((target: iWindowItem) => {
+    // Add a new window
+    const renderNewWindow = (): JSX.Element => {
+        // Get the current set of windows and return windows that matches inCreationId
+        const window: Array<number> = folderData?.windows.filter((target: iWindowItem) => {
            return target.id === inCreationId
         });
       
+        // If no windows with such id exists, then create a new one with that id
         if(window && window.length === 0){
             return <WindowItem key={"new-window"} tabsCol={2} disableMark={true} disableEdit={false} id={inCreationId} tabs={[]} initExpand={true} />;
         } else {
@@ -59,7 +63,7 @@ function WindowManager(props: iWindowManager): JSX.Element {
         }
     }
 
-    function renderWindows(): Array<JSX.Element> {
+    const renderWindows = (): Array<JSX.Element> => {
         const existingWindows = folderData?.windows;
         const existingWindowsElements: Array<JSX.Element> = existingWindows?.map((item: iWindowItem) => <WindowItem tabsCol={2} disableMark={false} disableEdit={false} key={item.id} id={item.id} tabs={item.tabs} initExpand={item.initExpand} />);
         
@@ -74,7 +78,6 @@ function WindowManager(props: iWindowManager): JSX.Element {
                 return [];
             }
         }
-        
     }
 
     return (
