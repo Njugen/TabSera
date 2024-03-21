@@ -46,7 +46,7 @@ const HistoryView = (props:any): JSX.Element => {
             option = "mv";
         }
 
-        dispatch(setTabsSortOrder(option));
+        dispatch(setTabsSortOrder(e.selected));
     }
 
     const renderSortingDropdown = (): JSX.Element => {

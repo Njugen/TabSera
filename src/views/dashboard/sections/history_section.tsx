@@ -11,14 +11,15 @@ import { iWindowItem } from '../../../interfaces/window_item';
 import { clearMarkedFoldersAction } from '../../../redux/actions/workspaceSettingsActions';
 import Dropdown from '../../../components/utils/dropdown';
 import TabItem from '../../../components/tab_item';
-import { clearMarkedTabsAction, setMarkMultipleTabsAction, setMarkedTabsAction, setTabsSortOrder, setUpTabsAction } from '../../../redux/actions/historySettingsActions';
+import { changeTabsViewMode, clearMarkedTabsAction, setMarkMultipleTabsAction, setMarkedTabsAction, setTabsSortOrder, setUpTabsAction } from '../../../redux/actions/historySettingsActions';
 import { iTabItem } from '../../../interfaces/tab_item';
 import { iDropdownSelected, iFieldOption } from '../../../interfaces/dropdown';
 import AddToWorkspacePopup from '../../../components/utils/add_to_workspace_popup';
 import SectionContainer from "../../../components/utils/section_container";
+import iHistoryState from "../../../interfaces/states/historyState";
+import { getFromStorage, saveToStorage } from "../../../services/webex_api/storage";
 
 const HistorySection = (props: any): JSX.Element => {
-    const [viewMode, setViewMode] = useState<string>("grid");
     const [addToWorkSpaceMessage, setAddToWorkspaceMessage] = useState<boolean>(false);
     const [mergeProcessFolder, setMergeProcessFolder] = useState<iFolderItem | null>(null);
     const [createFolder, setCreateFolder] = useState<boolean>(false);
@@ -39,27 +40,30 @@ const HistorySection = (props: any): JSX.Element => {
         chrome.history.search(query, (items: Array<chrome.history.HistoryItem>) => {
             dispatch(setUpTabsAction(items));
         });
+
+        getFromStorage("sync", "history_sort", (data) => {  
+            dispatch(setTabsSortOrder(data.history_sort));
+        })
+
+        getFromStorage("sync", "history_viewmode", (data) => {  
+            dispatch(changeTabsViewMode(data.history_viewmode));
+        })
     }, []);
 
     // Change tab listing from grid to list, and vice versa
     const handleChangeViewMode = (): void => {
-        setViewMode(viewMode === "list" ? "grid" : "list");
+        const { viewMode } = tabsData;
+        
+        const newStatus = viewMode === "list" ? "grid" : "list"
+        saveToStorage("sync", "history_viewmode", newStatus)
+        dispatch(changeTabsViewMode(newStatus));
     }
 
-    const handleCloseFolderManager = (e: iDropdownSelected): void => {
-        let option = "asc";
+    const handleCloseFolderManager = (e: any): void => {
+        const newStatus = e.selected;
 
-        if(e.selected === 0){
-            option = "asc";
-        } else if(e.selected === 1){
-            option = "desc";
-        } else if(e.selected === 2){
-            option = "lv";
-        } else if(e.selected === 3){
-            option = "mv";
-        }
-        
-        dispatch(setTabsSortOrder(option));
+        saveToStorage("sync", "history_sort", newStatus);
+        dispatch(setTabsSortOrder(newStatus));
     }
 
     const renderSortOptionsDropdown = (): JSX.Element => {
@@ -70,7 +74,9 @@ const HistorySection = (props: any): JSX.Element => {
             {id: 3, label: "Most visited"}
         ];
 
-        return <Dropdown tag="sort-folders" preset={{id: 0, label: "Ascending"}} options={optionsList} onCallback={handleCloseFolderManager} />
+        const presetOption = optionsList.filter((option: iFieldOption) => option.id === tabsData.tabSortOptionId);
+        
+        return <Dropdown tag="sort-folders" preset={presetOption[0]} options={optionsList} onCallback={handleCloseFolderManager} />
     }
 
     // Mark/unmark a tab by its id
@@ -154,7 +160,7 @@ const HistorySection = (props: any): JSX.Element => {
                     </div>
                     <div className="flex items-center justify-end">
                         
-                        <TextIconButton disabled={false} icon={viewMode === "list" ? "grid" : "list"} size={{ icon: 20, text: "text-sm" }} fill="#6D00C2" text={viewMode === "list" ? "Grid" : "List"} onClick={handleChangeViewMode} />
+                        <TextIconButton disabled={false} icon={tabsData.viewMode === "list" ? "grid" : "list"} size={{ icon: 20, text: "text-sm" }} fill="#6D00C2" text={tabsData.viewMode === "list" ? "Grid" : "List"} onClick={handleChangeViewMode} />
                         <div className="relative w-[175px] mr-4 flex items-center">
                             {renderSortOptionsDropdown()}
                         </div>
@@ -167,7 +173,7 @@ const HistorySection = (props: any): JSX.Element => {
     }
 
     const renderTabs = (): Array<JSX.Element> => {
-        const { tabsSort, tabs } = tabsData;
+        const { tabSortOptionId, tabs } = tabsData;
         let sortedTabs: Array<chrome.history.HistoryItem> = tabs;
         
         const titleCondition = (a: chrome.history.HistoryItem, b: chrome.history.HistoryItem): boolean => {
@@ -177,14 +183,14 @@ const HistorySection = (props: any): JSX.Element => {
             const aTitleLowerCase = a.title.toLowerCase();
             const bTitleToLowerCase = b.title.toLowerCase();
 
-            return tabsSort === "asc" ? (aTitleLowerCase > bTitleToLowerCase) : (bTitleToLowerCase > aTitleLowerCase);
+            return tabSortOptionId === 0 ? (aTitleLowerCase > bTitleToLowerCase) : (bTitleToLowerCase > aTitleLowerCase);
         }
 
-        if(tabsSort === "asc" || tabsSort === "desc"){
+        if(tabSortOptionId === 0 || tabSortOptionId === 1){
             sortedTabs = [...tabs].sort((a: any, b: any) => titleCondition(a, b) ? 1 : -1);
-        } else if(tabsSort === "lv"){
+        } else if(tabSortOptionId === 2){
             sortedTabs = [...tabs].sort((a: any, b: any) => a.lastVisitTime - b.lastVisitTime);
-        } else if(tabsSort === "mv"){
+        } else if(tabSortOptionId === 3){
             sortedTabs = [...tabs].sort((a: any, b: any) => a.visitCount - b.visitCount);
         }
 
@@ -328,7 +334,7 @@ const HistorySection = (props: any): JSX.Element => {
             <div className="flex justify-center min-h-[350px]">
                 <div className="w-full">
                     <div className="pb-6">
-                        <div ref={historyListRef} className={`${styles.scroll_style} overflow-y-auto ${viewMode === "list" ? "mx-auto mt-10" : `grid grid-cols-${decideGridCols()} grid-flow-dense gap-x-3 gap-y-0 mt-8 pr-2`} max-h-[350px]`}>
+                        <div ref={historyListRef} className={`${styles.scroll_style} overflow-y-auto ${tabsData.viewMode === "list" ? "mx-auto mt-10" : `grid grid-cols-${decideGridCols()} grid-flow-dense gap-x-3 gap-y-0 mt-8 pr-2`} max-h-[350px]`}>
                             {renderTabs()}
                         </div>
                     </div> 

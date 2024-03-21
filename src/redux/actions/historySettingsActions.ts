@@ -38,7 +38,7 @@ function clearMarkedTabsAction(){
     }
 }
 
-function setTabsSortOrder(input: string){
+function setTabsSortOrder(input: number){
     return {
         type: SET_TABS_SORT_ORDER,
         data: input

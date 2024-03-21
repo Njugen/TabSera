@@ -320,7 +320,7 @@ const WorkspacesSection = (props: any): JSX.Element => {
                 {id: 1, label: "Descending"},
             ];
 
-            const presetOption = optionsList.filter((option) => option.id === workspaceSettings.folderSortOptionId);
+            const presetOption = optionsList.filter((option: iFieldOption) => option.id === workspaceSettings.folderSortOptionId);
     
             return <Dropdown tag="sort-folders" preset={presetOption[0]} options={optionsList} onCallback={handleSortFolders} />
         }

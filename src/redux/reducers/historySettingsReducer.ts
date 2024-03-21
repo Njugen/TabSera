@@ -12,7 +12,7 @@ import {
 const historySettingsState: iHistoryState = {
     tabs: [],
     markedTabs: [],
-    tabsSort: "asc",
+    tabSortOptionId: 0,
     viewMode: "grid"
 }
 
@@ -53,7 +53,7 @@ function HistorySettingsReducer(state = historySettingsState, action: any) {
 
         return {
             ...state,
-            tabsSort: data
+            tabSortOptionId: data
         }
     } else if(type === CHANGE_TABS_VIEWMODE){
         return {
