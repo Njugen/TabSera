@@ -2,7 +2,8 @@ import { useState } from "react";
 import GenericIconButton from "./utils/generic_icon_button";
 import TabItem from "./tab_item";
 import { iWindowItem} from "../interfaces/window_item";
-import { useDispatch, useSelector } from "react-redux";
+import CollapseIcon from "../images/icons/collapse_icon";
+import ExpandIcon from "../images/icons/expand_icon";
 
 const CurrentSessionWindowItem = (props: iWindowItem): JSX.Element => {
     const [expanded, setExpanded] = useState<boolean>(props.initExpand || false);
@@ -48,6 +49,22 @@ const CurrentSessionWindowItem = (props: iWindowItem): JSX.Element => {
         }
     }
 
+    const expandCollapseButton = (): JSX.Element => {
+        let icon: JSX.Element;
+
+        if(expanded === true){
+            icon = <CollapseIcon size={20} fill="#000" />
+        } else {
+            icon = <ExpandIcon size={20} fill="#000" />
+        }
+
+        return (
+            <GenericIconButton icon={expanded === true ? "collapse" : "expand"} onClick={handleExpand}>
+                {icon}
+            </GenericIconButton>
+        );
+    }
+
     return (
         <div data-testid="window-item" className="window-item w-full py-1 rounded-md mb-3" id={`window-${id}`}>
             <div className="flex justify-between items-center w-full border-b border-tbfColor-darkgrey">
@@ -55,7 +72,7 @@ const CurrentSessionWindowItem = (props: iWindowItem): JSX.Element => {
                     Window
                 </h3>
                 <div className={`tab-settings`}>
-                    <GenericIconButton icon={expanded === true ? "collapse" : "expand"} size={20} fill="#000" onClick={handleExpand} />
+                    {expandCollapseButton()}
                 </div>
             </div>
             <div className={`tabs-list mt-3 overflow-hidden ${expanded === true ? "max-h-[2000px] ease-out" : "max-h-0 ease-in"} duration-200 transition-all`}>

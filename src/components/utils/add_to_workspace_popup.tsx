@@ -3,6 +3,7 @@ import styles from "../../styles/global_utils.module.scss";
 import Dropdown from "./dropdown";
 import iAddToWorkspacePopup from './../../interfaces/add_to_workspace_popup';
 import GenericIconButton from "./generic_icon_button";
+import CloseIcon from '../../images/icons/close_icon';
 
 /*
     Popup where the user may choose where to add
@@ -59,7 +60,9 @@ const AddToWorkspacePopup = (props: iAddToWorkspacePopup): JSX.Element => {
                     <h1 data-testid="manage-folder-title" className="text-3xl text-tbfColor-darkpurple font-light inline-block">
                         {title}
                     </h1>
-                    <GenericIconButton icon="close" size={34} fill="rgba(0,0,0,0.2)" onClick={handleCancel} />
+                    <GenericIconButton icon="close" onClick={handleCancel}>
+                        <CloseIcon size={34} fill="rgba(0,0,0,0.2)" />
+                    </GenericIconButton>
                 </div>
                 <div className="flex flex-col items-center pb-6">
                     {

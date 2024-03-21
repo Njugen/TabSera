@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "../../redux/mocked_hooks";
 import { setShowFolderChangeWarning } from "../../redux/actions/warningActions";
 import { createFolderAction, updateFolderAction } from "../../redux/actions/folderCollectionActions";
 import { setCurrentlyEditingTab } from "../../redux/actions/miscActions";
+import CloseIcon from "../../images/icons/close_icon";
 
 
 /*
@@ -232,6 +233,7 @@ const FolderManager = (props: iPopup): JSX.Element => {
                 }}    
             />
         }
+       
         <div ref={popupRef} className={outerStyleDirection()}>   
             <div data-testid="manage-folder-popup" className="relative top-0 md:bottom-12 h-screen w-[992px]">
                 <div className={innerStyleDirection()}>  
@@ -239,7 +241,9 @@ const FolderManager = (props: iPopup): JSX.Element => {
                         <h1 data-testid="manage-folder-title" className="text-3xl text-tbfColor-darkpurple font-light inline-block">
                             {title}
                         </h1>
-                        <GenericIconButton icon="close" size={34} fill="rgba(0,0,0,0.2)" onClick={() => handleClose()} />
+                        <GenericIconButton icon="close" onClick={handleClose}>
+                            <CloseIcon size={34} fill="rgba(0,0,0,0.2)" />
+                        </GenericIconButton>
                     </div>
                     <div id="popup-body" className="px-8 pt-6">
                         <FormField label="Name *" error={inValidFields.name} description="Give a name to this workspace. A sensible name may help your workflow when relevant tabs are needed.">
