@@ -302,7 +302,7 @@ const WorkspacesSection = (props: any): JSX.Element => {
 
         if(markedFoldersId.length > 0){
             markSpecs = {
-                label: "Unmark all",
+                label: "Mark all",
                 icon: "selected_checkbox",
                 handle: handleUnmarkAllFolders
             }
