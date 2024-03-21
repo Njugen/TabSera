@@ -20,7 +20,7 @@ const WindowItem = (props: iWindowItem): JSX.Element => {
     const [newTab, setNewTab] = useState<boolean>(false);
     const [editTab, setEditTab] = useState<number | null>(null);
     const [markedTabs, setMarkedTabs] = useState<Array<number>>([]);
-    const { id, tabs, tabsCol, initExpand, disableEdit, disableTabEdit, disableTabMark } = props;
+    const { id, tabs, tabsCol, disableEdit, disableTabEdit, disableTabMark } = props;
     
     const dispatch = useDispatch();
 

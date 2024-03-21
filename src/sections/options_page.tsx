@@ -8,8 +8,9 @@ import SettingsView from '../views/settings/settings_view';
 import LeftIcon from './../images/icons/left_icon';
 import RightIcon from './../images/icons/right_icon';
 import AdvancedSearchBar from '../components/utils/advanced_search_bar';
+import iOptionsPage from '../interfaces/options_page';
 
-const RenderOptionsPage = (props: any): JSX.Element => {
+const RenderOptionsPage = (props: iOptionsPage): JSX.Element => {
   
   // Determine what navigation link (sidebar links) to mark as preset
   const presetActiveNavLink = (): string => {

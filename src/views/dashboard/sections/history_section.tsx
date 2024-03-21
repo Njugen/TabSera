@@ -2,7 +2,7 @@ import styles from "../../../styles/global_utils.module.scss";
 import PrimaryButton from '../../../components/utils/primary_button';
 import FolderManager from '../../../components/utils/folder_manager';
 import { useEffect, useState, useRef } from "react";
-import { iFolder } from '../../../interfaces/folder';
+import { iFolderItem } from '../../../interfaces/folder_item';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearInEditFolder  } from '../../../redux/actions/inEditFolderActions';
 import TextIconButton from '../../../components/utils/text_icon_button';
@@ -15,15 +15,16 @@ import { clearMarkedTabsAction, setMarkMultipleTabsAction, setMarkedTabsAction, 
 import { iTabItem } from '../../../interfaces/tab_item';
 import { iDropdownSelected, iFieldOption } from '../../../interfaces/dropdown';
 import AddToWorkspacePopup from '../../../components/utils/add_to_workspace_popup';
+import SectionContainer from "../../../components/utils/section_container";
 
 const HistorySection = (props: any): JSX.Element => {
     const [viewMode, setViewMode] = useState<string>("grid");
     const [addToWorkSpaceMessage, setAddToWorkspaceMessage] = useState<boolean>(false);
-    const [mergeProcessFolder, setMergeProcessFolder] = useState<iFolder | null>(null);
+    const [mergeProcessFolder, setMergeProcessFolder] = useState<iFolderItem | null>(null);
     const [createFolder, setCreateFolder] = useState<boolean>(false);
 
     const tabsData = useSelector((state: any) => state.HistorySettingsReducer);
-    const folderCollection: Array<iFolder> = useSelector((state: any) => state.FolderCollectionReducer);
+    const folderCollection: Array<iFolderItem> = useSelector((state: any) => state.FolderCollectionReducer);
 
     const historyListRef = useRef<HTMLDivElement>(null);
 
@@ -94,7 +95,6 @@ const HistorySection = (props: any): JSX.Element => {
         }
     }
 
-
     const handleMarkAllTabs = (): void => {
         const tabs: Array<chrome.history.HistoryItem> = tabsData.tabs as Array<chrome.history.HistoryItem>;
         dispatch(setMarkMultipleTabsAction(tabs));
@@ -129,13 +129,27 @@ const HistorySection = (props: any): JSX.Element => {
 
     const renderOptionsMenu = (): JSX.Element => {
         const { markedTabs } = tabsData;
+        let specs: any;
+
+        if(markedTabs.length > 0){
+            specs = {
+                label: "Unmark all",
+                icon: "deselected_checkbox",
+                handle: handleUnMarkAll
+            }
+        } else {
+            specs = {
+                label: "Mark all",
+                icon: "selected_checkbox",
+                handle: handleMarkAllTabs
+            }
+        }
 
         return (
             <>
                 <div className="mr-4 inline-flex items-center justify-end w-full">
                     <div className="flex">
-                        <TextIconButton disabled={false} icon={"selected_checkbox"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Mark all" onClick={handleMarkAllTabs} />
-                        <TextIconButton disabled={false} icon={"deselected_checkbox"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Unmark all" onClick={handleUnMarkAll} />
+                        <TextIconButton disabled={false} icon={specs.icon} size={{ icon: 20, text: "text-sm" }} fill="#6D00C2" text={specs.label} onClick={specs.handle} />
                         <TextIconButton disabled={markedTabs.length > 0 ? false : true} icon={"trash"} size={{ icon: 20, text: "text-sm" }}  fill={markedTabs.length > 0 ? "#6D00C2" : "#9f9f9f"} text="Delete from history" onClick={handleDeleteFromHistory} />
                     </div>
                     <div className="flex items-center justify-end">
@@ -198,7 +212,7 @@ const HistorySection = (props: any): JSX.Element => {
     };
 
     const renderAddTabsMessage = (): JSX.Element => {
-        const currentFolders: Array<iFolder> = folderCollection;
+        const currentFolders: Array<iFolderItem> = folderCollection;
 
         const options: Array<iFieldOption> = currentFolders.map((folder) => {
             return { id: folder.id, label: folder.name }
@@ -221,7 +235,7 @@ const HistorySection = (props: any): JSX.Element => {
             if(e.selected === -1) return;
 
             const targetFolderId = e.selected;
-            const targetFolder: iFolder | undefined = folderCollection.find((folder: iFolder) => folder.id === targetFolderId);
+            const targetFolder: iFolderItem | undefined = folderCollection.find((folder: iFolderItem) => folder.id === targetFolderId);
          
             if(!targetFolder) return;
             
@@ -240,7 +254,7 @@ const HistorySection = (props: any): JSX.Element => {
                 tabs: markedTabs
             };
 
-            const updatedFolder: iFolder = {...targetFolder};
+            const updatedFolder: iFolderItem = {...targetFolder};
             updatedFolder.windows = [...updatedFolder.windows, presetWindow];
 
             if(targetFolder){
@@ -290,7 +304,7 @@ const HistorySection = (props: any): JSX.Element => {
                 tabs: markedTabs
             };
             
-            const folderSpecs: iFolder = {
+            const folderSpecs: iFolderItem = {
                 id: randomNumber(),
                 name: "",
                 desc: "",
@@ -332,25 +346,11 @@ const HistorySection = (props: any): JSX.Element => {
     }
 
     return (
-        <>
-            {addToWorkSpaceMessage && renderAddTabsMessage()}
-            {renderFolderManager()}
-            <div id="history-view" className="mb-12 pt-10 bg-white shadow">
-                <div className="flex justify-between min-h-[350px]">
-                    <div className="w-full mb-6 px-14 pb-4">
-                        <div className="flex">
-                            <h1 className="text-4xl text-tbfColor-darkpurple font-light inline-block">
-                                History
-                            </h1>
-                            {renderOptionsMenu()}
-                        </div>
-                        <div className="mt-8">                     
-                            {tabsData.tabs.length > 0 ? renderContentSection() : renderEmptyMessage()}
-                        </div>  
-                    </div>
-                </div>
-            </div>
-        </>  
+        <SectionContainer id="history-view" title="History" options={renderOptionsMenu}>
+            <div className="mt-8">                     
+                {tabsData.tabs.length > 0 ? renderContentSection() : renderEmptyMessage()}
+            </div>  
+        </SectionContainer>
     );
 
 }

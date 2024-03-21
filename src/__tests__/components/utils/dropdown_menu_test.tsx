@@ -1,10 +1,7 @@
-//import { render, screen, within, fireEvent } from "@testing-library/react";
-import React from 'react';
 import '@testing-library/jest-dom';
 import DropdownMenu from "../../../components/utils/dropdown_menu";
 import { iFieldOption } from "../../../interfaces/dropdown";
 import { render, screen, within, fireEvent, Matcher } from "../../../tools/css_enhanced_render";
-import userEvent from '@testing-library/user-event'
 
 const mockTag: string = "my-lovely-dropdown-menu";
 const mockOptions: Array<iFieldOption> = [

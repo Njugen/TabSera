@@ -6,7 +6,7 @@ import { store } from "../../../redux/reducer";
 import { chrome } from 'jest-chrome'
 import { useDispatch, useSelector } from "../../../redux/mocked_hooks"; 
 
-import { iFolder } from "../../../interfaces/folder";
+import { iFolderItem } from "../../../interfaces/folder_item";
 import { initInEditFolder } from "../../../redux/actions/inEditFolderActions";
 import { setCurrentlyEditingTab, setTabInEdits } from "../../../redux/actions/miscActions";
 
@@ -20,7 +20,7 @@ const mockEditFolderTitle = "This is a edit folder popup";
 const mockDescription = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer elementum, orci in pharetra euismod, mauris quam imperdiet eros, ut sodales magna metus et felis. Etiam ornare varius nisi, ultricies pulvinar tortor blandit ac. Proin cursus hendrerit ligula, dapibus imperdiet neque mollis et.";
 const mockFolderName = "Studies and research";
 
-const mockNewFolderState: iFolder = {
+const mockNewFolderState: iFolderItem = {
     id: 0,
     name: "",
     desc: "",
@@ -30,7 +30,7 @@ const mockNewFolderState: iFolder = {
     windows: []
 };
 
-const mockEditFolderState: iFolder = {
+const mockEditFolderState: iFolderItem = {
     id: 1,
     name: "Dragonball Z",
     desc: "This is a folder with links to Dragonball related pages",
@@ -89,7 +89,7 @@ beforeEach(() => {
 
 afterEach(() => {
    jest.clearAllMocks();
-   store.dispatch(initInEditFolder({} as iFolder));
+   store.dispatch(initInEditFolder({} as iFolderItem));
    store.dispatch(setTabInEdits(0));
    store.dispatch(setCurrentlyEditingTab(false));
 });

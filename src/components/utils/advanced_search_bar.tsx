@@ -3,11 +3,16 @@ import SearchIcon from "../../images/icons/search_icon";
 import { useSelector } from 'react-redux';
 import TabItem from "../tab_item";
 import styles from "../../styles/global_utils.module.scss";
-import Folder from "../../components/folder";
-import { iFolder } from '../../interfaces/folder';
+import FolderItem from "../folder_item";
+import { iFolderItem } from '../../interfaces/folder_item';
 import { iWindowItem } from '../../interfaces/window_item';
 import MessageBox from "./message_box";
 import iAdvancedSearchBar from "../../interfaces/advanced_search_bar";
+import { 
+    filterSessionTabsByString, 
+    filterHistoryTabsByString, 
+    filterFoldersByString 
+} from "../../common/search_filters";
 
 /*
     Search bar placed at the top of the viewport
@@ -97,33 +102,12 @@ const AdvancedSearchBar = (props: iAdvancedSearchBar): JSX.Element => {
         });
     }, [folderLaunchType]);
 
-    const filterCurrentSession = (): Array<chrome.tabs.Tab> =>  {
-        let collection: Array<chrome.tabs.Tab> = [];
-
-        currentSessionSettings.windows.forEach((window: chrome.windows.Window) => {
-            collection = collection.concat(window.tabs!);
-        });
-
-        const result: Array<chrome.tabs.Tab> = collection.filter((tab: chrome.tabs.Tab) => tab.title && tab.title.toLowerCase().includes(keyword.toLowerCase()));
-        return result.slice(0,5);
-    }
-
-    const filterHistory = (): Array<chrome.history.HistoryItem> =>  {
-        const result =  historySettings.tabs.filter((tab: chrome.history.HistoryItem) => tab.title!.toLowerCase().includes(keyword.toLowerCase()));
-        return result.slice(0,5);
-    }
-
-    const filterFolders = (): Array<iFolder> => {
-        const result =  folderCollection.filter((folder: iFolder) => folder.name.toLowerCase().includes(keyword.toLowerCase()));
-        return result.slice(0,5);
-    }
 
     // Show search results by sliding in the results area
     const handleShowResultsContainer = (): void => {
         if(showResultsContainer === false){
             setShowResultsContainer(true);
-            
-                setSlideDown(slideDown === true ? false : true);
+            setSlideDown(slideDown === true ? false : true);
           
         } else {
             if(searchResultsContainerRef.current){
@@ -132,9 +116,7 @@ const AdvancedSearchBar = (props: iAdvancedSearchBar): JSX.Element => {
             } 
             document.body.style.overflowY = "auto";
             setSlideDown(false);
-     
-                setShowResultsContainer(false);
-      
+            setShowResultsContainer(false);
         }
     }
 
@@ -166,7 +148,6 @@ const AdvancedSearchBar = (props: iAdvancedSearchBar): JSX.Element => {
     const handleCloseTab = (tabId: number): void => {
         chrome.tabs.remove(tabId);
     }
-
 
     const  handlePrepareLaunchFolder = (windows: Array<iWindowItem>, type: string): void => {
         setWindowsPayload(windows);
@@ -215,17 +196,23 @@ const AdvancedSearchBar = (props: iAdvancedSearchBar): JSX.Element => {
 
     // Render all filtered folders
     const renderFolders = (): Array<JSX.Element> => {
-        return filterFolders().map((folder: iFolder) => <Folder marked={false} id={folder.id!} name={folder.name} viewMode={"list"} type={"collapsed"} desc={folder.desc} windows={folder.windows} onOpen={handlePrepareLaunchFolder} />);
+        const folders = filterFoldersByString(folderCollection, keyword);
+
+        return folders.map((folder: iFolderItem) => <FolderItem marked={false} id={folder.id!} name={folder.name} viewMode={"list"} type={"collapsed"} desc={folder.desc} windows={folder.windows} onOpen={handlePrepareLaunchFolder} />);
     }
 
     // Render all filtered session tabs
     const renderSessionTabs = (): Array<JSX.Element> => {
-        return filterCurrentSession().map((tab) => <TabItem key={tab.id} marked={false} id={tab.id!} label={tab.title!} url={tab.url!} disableEdit={true} disableMark={true} disableCloseButton={false} onClose={() => handleCloseTab(tab.id!)} />)
+        const tabs = filterSessionTabsByString(currentSessionSettings, keyword);
+
+        return tabs.map((tab) => <TabItem key={tab.id} marked={false} id={tab.id!} label={tab.title!} url={tab.url!} disableEdit={true} disableMark={true} disableCloseButton={false} onClose={() => handleCloseTab(tab.id!)} />)
     }
 
     // Render all filtered history tabs
     const renderHistoryTabs = (): Array<JSX.Element> => {
-        return filterHistory().map((tab) => <TabItem key={tab.id} marked={false} id={parseInt(tab.id)} label={tab.title!} url={tab.url!} disableEdit={true} disableMark={true} disableCloseButton={true} onClose={() => {}} />);
+        const tabs = filterHistoryTabsByString(historySettings, keyword);
+
+        return tabs.map((tab) => <TabItem key={tab.id} marked={false} id={parseInt(tab.id)} label={tab.title!} url={tab.url!} disableEdit={true} disableMark={true} disableCloseButton={true} onClose={() => {}} />);
     }
 
     const renderSearchResults = (): JSX.Element => {

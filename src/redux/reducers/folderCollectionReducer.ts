@@ -1,9 +1,9 @@
-import { iFolder } from "../../interfaces/folder";
+import { iFolderItem } from "../../interfaces/folder_item";
 import { CREATE_FOLDER, READ_FOLDER, READ_ALL_FOLDERS, UPDATE_FOLDER, DELETE_FOLDER, SET_UP_FOLDERS, READ_ALL_FOLDERS_FROM_BROWSER } from "../types/folderCollectionTypes";
 
 import { saveToStorage } from "../../services/webex_api/storage";
 
-const folderCollectionState: Array<iFolder> = [];
+const folderCollectionState: Array<iFolderItem> = [];
 
 function FolderCollectionReducer(state = folderCollectionState, action: any) {
     const { type, data } = action;

@@ -1,7 +1,7 @@
 import { render, screen, within, fireEvent } from "@testing-library/react";
 import '@testing-library/jest-dom'
 import Dropdown from "../../../components/utils/dropdown";
-import { iFieldOption, iDropdown, iDropdownSelected } from "../../../interfaces/dropdown";
+import { iFieldOption, iDropdownSelected } from "../../../interfaces/dropdown";
 import randomNumber from "../../../tools/random_number";
 
 const mockOptions: Array<iFieldOption> = [

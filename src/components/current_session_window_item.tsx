@@ -6,10 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 const CurrentSessionWindowItem = (props: iWindowItem): JSX.Element => {
     const [expanded, setExpanded] = useState<boolean>(props.initExpand || false);
-    const { id, tabs, tabsCol, initExpand, disableEdit, disableTabEdit} = props;
-    
-    const dispatch = useDispatch();
-    const currentSessionData = useSelector((state: any) => state.CurrentSessionSettingsReducer);
+    const { id, tabs, tabsCol, disableTabEdit} = props;
 
     const handleExpand = (): void =>  {
         setExpanded(expanded === true ? false : true);

@@ -1,6 +1,5 @@
 import { render, screen, within, fireEvent } from "@testing-library/react";
 import '@testing-library/jest-dom'
-import GenericIconButton from "../../../components/utils/generic_icon_button";
 import randomNumber from "../../../tools/random_number";
 import TextIconButton from "../../../components/utils/text_icon_button";
 

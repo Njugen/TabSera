@@ -1,7 +1,7 @@
 import { iWindowItem
  } from "./window_item";
  
-interface iFolder {
+interface iFolderItem {
     id: number,
     name: string,
     desc: string,
@@ -13,8 +13,8 @@ interface iFolder {
     onOpen?: (e: Array<iWindowItem>, type: string) => void,
     onMark?: (e: number) => void,
     onEdit?: (e: number) => void
-    onDelete?: (e: iFolder) => void
+    onDelete?: (e: iFolderItem) => void
 }
 
 
-export { iFolder };
+export { iFolderItem };

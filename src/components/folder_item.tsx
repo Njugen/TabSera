@@ -1,11 +1,11 @@
 import { useRef, useState, useEffect, useLayoutEffect } from "react";
 import ClosedFolderIcon from "../images/icons/closed_folder_icon";
-import Paragraph from "../components/utils/paragraph";
+import Paragraph from "./utils/paragraph";
 import FolderControlButton from "./utils/folder_control_button";
 import OpenedFolderIcon from "../images/icons/opened_folder_icon";
 import "../styles/global_utils.module.scss";
 import WindowItem from "./window_item";
-import { iFolder } from "../interfaces/folder";
+import { iFolderItem } from "../interfaces/folder_item";
 import Checkbox from './utils/checkbox';
 import DropdownMenu from "./utils/dropdown_menu";
 import { iFieldOption } from "../interfaces/dropdown";
@@ -14,7 +14,7 @@ import { iFieldOption } from "../interfaces/dropdown";
     Folder containing description, windows and tabs, as well as various folder options
 */
 
-const Folder = (props: iFolder): JSX.Element => {
+const FolderItem = (props: iFolderItem): JSX.Element => {
     const contentsRef = useRef<HTMLDivElement>(null);
     const headerRef = useRef<HTMLDivElement>(null);
     const folderRef = useRef<HTMLDivElement>(null);
@@ -74,7 +74,7 @@ const Folder = (props: iFolder): JSX.Element => {
     const exp = (): void => {
         if(contentsRef.current === null || headerRef.current === null) return;
 
-        headerRef.current.className = `relative border-b border-gray-300 tbf-${type} bg-white px-4 h-10 py-6 flex items-center rounded-t-md`;
+        headerRef.current.className = `relative border-b tbf-${type} bg-white px-4 h-10 py-6 flex items-center rounded-t-md`;
         contentsRef.current.className = "overflow-hidden bg-white rounded-b-md border-t-0";
 
         setExpanded(true);
@@ -197,8 +197,7 @@ const Folder = (props: iFolder): JSX.Element => {
 
     return (
         <>
-            
-            <div ref={folderRef} data-testid={"folder-item"} className={`border border-gray-300 ${viewMode === "list" ? "my-4 duration-75" : "my-4 duration-75"} sticky transition-all ease-in w-full rounded-md`}>
+            <div ref={folderRef} data-testid={"folder-item"} className={`shadow-[0_0px_3px_1px_rgba(0,0,0,0.125)] ${viewMode === "list" ? "my-4 duration-75" : "my-4 duration-75"} sticky transition-all ease-in w-full rounded-md`}>
                 <div ref={headerRef}>
                     <div className="inline-block">
                         {expanded === false ? <ClosedFolderIcon size={23} fill={"#000"} /> : <OpenedFolderIcon size={26} fill={"#000"} />}
@@ -229,4 +228,4 @@ const Folder = (props: iFolder): JSX.Element => {
     );
 }
 
-export default Folder;
+export default FolderItem;
