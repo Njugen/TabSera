@@ -6,6 +6,7 @@ import { iFieldOption } from "../../interfaces/dropdown";
 import { useEffect, useState } from 'react';
 import { saveToStorage } from "../../services/webex_api/storage";
 import SectionContainer from "../../components/utils/section_container";
+import iView from "../../interfaces/view";
 
 /*
     Settings view
@@ -17,7 +18,7 @@ import SectionContainer from "../../components/utils/section_container";
     features if needed while keeping the intended UI intact. 
 */
 
-const SettingsView = (props: any): JSX.Element => {
+const SettingsView = (props: iView): JSX.Element => {
     const [settings, setSettings] = useState<any>({});
     
     // Options for performance warnings

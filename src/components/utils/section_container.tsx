@@ -1,4 +1,4 @@
-import iSectionContainer from './../../interfaces/section_container';
+import iSectionContainer from '../../interfaces/section_container';
 
 const SectionContainer = (props: iSectionContainer): JSX.Element => {
     const { id, title, options, children } = props;

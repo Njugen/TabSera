@@ -8,8 +8,9 @@ import FoldersView from '../views/sidepanel/folders_view';
 import CurrentSessionView from '../views/sidepanel/current_session_view';
 import HistoryView from '../views/sidepanel/history_view';
 import SearchResultsContainer from '../views/sidepanel/search_results_view';
+import iRenderSidePanel from '../interfaces/render_sidepanel';
 
-function RenderSidePanel(props: any): JSX.Element {
+function RenderSidePanel(props: iRenderSidePanel): JSX.Element {
     const [view, setView] = useState<string>("folders-view");
     const [keyword, setKeyword] = useState<string>("");
     
