@@ -11,7 +11,7 @@ import { clearMarkedFoldersAction } from "../../redux/actions/workspaceSettingsA
 import MessageBox from "../../components/utils/message_box";
 import PrimaryButton from "../../components/utils/primary_button";
 
-function FoldersView(props:any): JSX.Element {
+const FoldersView = (props:any): JSX.Element => {
     const [windowsPayload, setWindowsPayload] = useState<Array<iWindowItem> | null>(null);
     const [folderLaunchType, setFolderLaunchType] = useState<string | null>(null); 
     const [totalTabsCount, setTotalTabsCount] = useState<number>(0);
@@ -53,12 +53,12 @@ function FoldersView(props:any): JSX.Element {
     }, []);
 
 
-    function handlePrepareLaunchFolder(windows: Array<iWindowItem>, type: string): void {
+    const handlePrepareLaunchFolder = (windows: Array<iWindowItem>, type: string): void => {
         setWindowsPayload(windows);
         setFolderLaunchType(type);
     }
 
-    function handleLaunchFolder(windows: Array<iWindowItem>): void {
+    const handleLaunchFolder = (windows: Array<iWindowItem>): void => {
         // Now, prepare a snapshot, where currently opened windows get stored
         let snapshot: Array<chrome.windows.Window> = [];
 
@@ -121,7 +121,7 @@ function FoldersView(props:any): JSX.Element {
         return result.length > 0 ? result : [<p className="text-center">There are no folders at the moment.</p>]
     } 
 
-    function handleCloseFolderManager(): void {
+    const handleCloseFolderManager = (): void => {
         dispatch(clearMarkedFoldersAction());
         dispatch(clearInEditFolder());
         setShowFolderManager(false);

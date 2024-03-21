@@ -15,7 +15,7 @@ import { iTabItem } from '../../interfaces/tab_item';
 import { iFieldOption } from '../../interfaces/dropdown';
 import CurrentSessionWindowItem from '../../components/current_session_window_item';
 
-function CurrentSessionView(props:any): JSX.Element {
+const CurrentSessionView = (props:any): JSX.Element => {
     const [addToWorkSpaceMessage, setAddToWorkspaceMessage] = useState<boolean>(false);
     const [createFolder, setCreateFolder] = useState<boolean>(false);
     const [mergeProcess, setMergeProcess] = useState<iFolderItem | null>(null);
@@ -31,16 +31,6 @@ function CurrentSessionView(props:any): JSX.Element {
             saveToStorage("local", "folders", folderCollection);
         } 
     }, [folderCollection]);
-
-    function getAllWindows(): void {
-        const queryOptions: chrome.windows.QueryOptions = {
-            populate: true,
-            windowTypes: ["normal", "popup"]
-        };
-        chrome.windows.getAll(queryOptions, (windows: Array<chrome.windows.Window>) => {
-            dispatch(setUpWindowsAction(windows));
-        });
-    };
 
     useEffect(() => {
         getAllWindows();
@@ -77,8 +67,17 @@ function CurrentSessionView(props:any): JSX.Element {
         });
     }, []);
 
-    function handlePopupClose(): void {
+    const getAllWindows = (): void => {
+        const queryOptions: chrome.windows.QueryOptions = {
+            populate: true,
+            windowTypes: ["normal", "popup"]
+        };
+        chrome.windows.getAll(queryOptions, (windows: Array<chrome.windows.Window>) => {
+            dispatch(setUpWindowsAction(windows));
+        });
+    };
 
+    const handlePopupClose = (): void => {
         setEditFolderId(null);
         setCreateFolder(false);
         setMergeProcess(null);
@@ -88,7 +87,7 @@ function CurrentSessionView(props:any): JSX.Element {
         dispatch(clearInEditFolder());
     }
 
-    function renderEmptyMessage(): JSX.Element {
+    const renderEmptyMessage = (): JSX.Element => {
         return (
             <div className={"flex justify-center items-center"}>
                 <p> Your browing history is empty.</p>
@@ -96,7 +95,51 @@ function CurrentSessionView(props:any): JSX.Element {
         );
     }
 
-    function renderAddTabsMessage(): JSX.Element {
+    const handleAddToNewWorkspace = (): void => {
+        setAddToWorkspaceMessage(false);
+        setCreateFolder(true);
+    }
+
+    const handleAddToExistingWorkspace = (e: any): void => {
+        if(e.selected === -1) return;
+
+        const targetFolderId = e.selected;
+        const targetFolder: iFolderItem | undefined = folderCollection.find((folder: iFolderItem) => folder.id === targetFolderId);
+     
+        if(!targetFolder) return;
+
+        if(currentSessionData.windows){
+            const newWindowItems: Array<iWindowItem> = currentSessionData.windows.map((window: chrome.windows.Window) => {
+                if(window.tabs){
+                    const tabs: Array<iTabItem> = window.tabs.map((tab: chrome.tabs.Tab) => {
+                        return {
+                            id: tab.id || randomNumber(),
+                            label: tab.title || "",
+                            url: tab.url || "",
+                            marked: false,
+                            disableEdit: false,
+                            disableMark: false,
+                        }
+                    })
+
+                    return {
+                        id: randomNumber(),
+                        tabs: tabs
+                    }
+                }
+            })
+
+            const updatedFolder: iFolderItem = {...targetFolder};
+            updatedFolder.windows = [...updatedFolder.windows,  ...newWindowItems];
+
+            if(targetFolder){
+                setAddToWorkspaceMessage(false);
+                setMergeProcess(updatedFolder);
+            }
+        } 
+    }
+
+    const renderAddTabsMessage = (): JSX.Element => {
         const currentFolders: Array<iFolderItem> = folderCollection;
 
         const options: Array<iFieldOption> = currentFolders.map((folder) => {
@@ -111,65 +154,6 @@ function CurrentSessionView(props:any): JSX.Element {
             ...options
         ];
 
-        function handleAddToNewWorkspace(): void {
-            setAddToWorkspaceMessage(false);
-            setCreateFolder(true);
-        }
-
-        function handleAddToExistingWorkspace(e: any): void {
-            if(e.selected === -1) return;
-
-            const targetFolderId = e.selected;
-            const targetFolder: iFolderItem | undefined = folderCollection.find((folder: iFolderItem) => folder.id === targetFolderId);
-         
-            if(!targetFolder) return;
-            
-            /*const markedTabs: Array<iTabItem> = tabsData.markedTabs.map((tab: chrome.history.HistoryItem) => {
-                return {
-                    id: tab.id,
-                    label: tab.title,
-                    url: tab.url,
-                    disableEdit: false,
-                    disableMark: false,
-                }
-            });
-
-            const presetWindow: iWindowItem = {
-                id: randomNumber(),
-                tabs: markedTabs
-            };*/
-            if(currentSessionData.windows){
-                const newWindowItems: Array<iWindowItem> = currentSessionData.windows.map((window: chrome.windows.Window) => {
-                    if(window.tabs){
-                        const tabs: Array<iTabItem> = window.tabs.map((tab: chrome.tabs.Tab) => {
-                            return {
-                                id: tab.id || randomNumber(),
-                                label: tab.title || "",
-                                url: tab.url || "",
-                                marked: false,
-                                disableEdit: false,
-                                disableMark: false,
-                            }
-                        })
-
-                        return {
-                            id: randomNumber(),
-                            tabs: tabs
-                        }
-                    }
-                })
-
-                const updatedFolder: iFolderItem = {...targetFolder};
-                updatedFolder.windows = [...updatedFolder.windows,  ...newWindowItems];
-
-                if(targetFolder){
-                    setAddToWorkspaceMessage(false);
-                    setMergeProcess(updatedFolder);
-                }
-            }
-            
-        }
-
         return (
             <AddToWorkspacePopup 
                 title="Save session"
@@ -182,7 +166,7 @@ function CurrentSessionView(props:any): JSX.Element {
         );
     }
 
-    function renderPopup(): JSX.Element {
+    const renderPopup = (): JSX.Element => {
         let render;
         if(createFolder === true){
             const presetWindows: Array<iWindowItem> = currentSessionData.windows.map((window: chrome.windows.Window) => {
@@ -205,7 +189,7 @@ function CurrentSessionView(props:any): JSX.Element {
                 }
             })
 
-            const payload: iFolderItem = {
+            const folderSpecs: iFolderItem = {
                 id: randomNumber(),
                 name: "",
                 desc: "",
@@ -214,7 +198,7 @@ function CurrentSessionView(props:any): JSX.Element {
                 marked: false,
                 windows: [...presetWindows],
             }
-            render = <FolderManager type="popup" title="Create workspace" folder={payload} onClose={handlePopupClose} />;
+            render = <FolderManager type="popup" title="Create workspace" folder={folderSpecs} onClose={handlePopupClose} />;
         } else if(mergeProcess !== null) {
 
             render = <FolderManager type="popup" title={`Merge tabs to ${mergeProcess.name}`} folder={mergeProcess} onClose={handlePopupClose} />;
@@ -225,7 +209,7 @@ function CurrentSessionView(props:any): JSX.Element {
         return render;
     }
 
-    function renderWindows(): Array<JSX.Element> {
+    const renderWindows = (): Array<JSX.Element> => {
         const existingWindows = currentSessionData?.windows;
         const existingWindowsElements: Array<JSX.Element> = existingWindows?.map((item: iWindowItem, i: number) => <CurrentSessionWindowItem key={`window-item-${i}`} tabsCol={1} disableEdit={currentSessionData.windows.length < 2 ? true : false} disableTabMark={false} disableTabEdit={true} id={item.id} tabs={item.tabs} initExpand={true} />);
         

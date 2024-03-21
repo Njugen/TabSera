@@ -23,12 +23,12 @@ function SearchResultsContainer(props:any): JSX.Element {
         onClose();
     }
 
-    function handlePrepareLaunchFolder(windows: Array<iWindowItem>, type: string): void {
+    const handlePrepareLaunchFolder = (windows: Array<iWindowItem>, type: string): void => {
         setWindowsPayload(windows);
         setFolderLaunchType(type);
     }
 
-    function handleLaunchFolder(windows: Array<iWindowItem>): void {
+    const handleLaunchFolder = (windows: Array<iWindowItem>): void => {
         // Now, prepare a snapshot, where currently opened windows get stored
         let snapshot: Array<chrome.windows.Window> = [];
 
@@ -108,7 +108,7 @@ function SearchResultsContainer(props:any): JSX.Element {
     }
 
     // Close a tab
-    function handleCloseTab(tabId: number){
+    const handleCloseTab = (tabId: number) => {
         chrome.tabs.remove(tabId);
     }
 
