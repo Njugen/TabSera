@@ -352,11 +352,15 @@ const HistorySection = (props: any): JSX.Element => {
     }
 
     return (
-        <SectionContainer id="history-view" title="History" options={renderOptionsMenu}>
-            <div className="mt-8">                     
-                {tabsData.tabs.length > 0 ? renderContentSection() : renderEmptyMessage()}
-            </div>  
-        </SectionContainer>
+        <>
+            {addToWorkSpaceMessage && renderAddTabsMessage()}
+            {renderFolderManager()}
+            <SectionContainer id="history-view" title="History" options={renderOptionsMenu}>
+                <div className="mt-8">                     
+                    {tabsData.tabs.length > 0 ? renderContentSection() : renderEmptyMessage()}
+                </div>  
+            </SectionContainer>
+        </>
     );
 
 }
