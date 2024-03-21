@@ -246,7 +246,7 @@ const HistoryView = (props:any): JSX.Element => {
     }
 
 
-    const renderPopup = (): JSX.Element => {
+    const renderFolderManager = (): JSX.Element => {
         let render;
         if(createFolder === true){
             const markedTabs: Array<iTabItem> = tabsData.markedTabs.map((tab: chrome.history.HistoryItem) => {
@@ -264,7 +264,7 @@ const HistoryView = (props:any): JSX.Element => {
                 tabs: markedTabs
             };
             
-            const payload: iFolderItem = {
+            const folderSpecs: iFolderItem = {
                 id: randomNumber(),
                 name: "",
                 desc: "",
@@ -273,7 +273,7 @@ const HistoryView = (props:any): JSX.Element => {
                 marked: false,
                 windows: [presetWindow],
             }
-            render = <FolderManager type="popup" title="Create workspace" folder={payload} onClose={handlePopupClose} />;
+            render = <FolderManager type="popup" title="Create workspace" folder={folderSpecs} onClose={handlePopupClose} />;
         } else if(mergeProcess !== null) {
 
             render = <FolderManager type="popup" title={`Merge tabs to ${mergeProcess.name}`} folder={mergeProcess} onClose={handlePopupClose} />;
@@ -310,7 +310,7 @@ const HistoryView = (props:any): JSX.Element => {
     return (
         <>
             {addToWorkSpaceMessage && renderAddTabsMessage()}
-            {renderPopup()}
+            {renderFolderManager()}
             <div className="flex justify-center mt-4 mb-6">
                 <PrimaryButton disabled={false} text="Save history" onClick={() => setAddToWorkspaceMessage(true)} />
             </div>

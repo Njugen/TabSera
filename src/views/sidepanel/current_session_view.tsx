@@ -166,7 +166,7 @@ const CurrentSessionView = (props:any): JSX.Element => {
         );
     }
 
-    const renderPopup = (): JSX.Element => {
+    const renderFolderManager = (): JSX.Element => {
         let render;
         if(createFolder === true){
             const presetWindows: Array<iWindowItem> = currentSessionData.windows.map((window: chrome.windows.Window) => {
@@ -223,7 +223,7 @@ const CurrentSessionView = (props:any): JSX.Element => {
     return (
         <>
             {addToWorkSpaceMessage && renderAddTabsMessage()}
-            {renderPopup()}
+            {renderFolderManager()}
             <div className="flex justify-center mt-4 mb-6">
                 <PrimaryButton disabled={false} text="Save session" onClick={() => setAddToWorkspaceMessage(true)} />
             </div>
