@@ -5,6 +5,11 @@ import { iFolderItem } from '../../interfaces/folder_item';
 import FolderItem from "../../components/folder_item";
 import TabItem from "../../components/tab_item";
 import GenericIconButton from "../../components/utils/generic_icon_button";
+import { 
+    filterSessionTabsByString, 
+    filterHistoryTabsByString, 
+    filterFoldersByString 
+} from "../../common/search_filters";
 
 function SearchResultsContainer(props:any): JSX.Element {
     const { keyword, onClose } = props;
@@ -24,7 +29,6 @@ function SearchResultsContainer(props:any): JSX.Element {
     }
 
     function handleLaunchFolder(windows: Array<iWindowItem>): void {
-        console.log("BLABLABLA");
         // Now, prepare a snapshot, where currently opened windows get stored
         let snapshot: Array<chrome.windows.Window> = [];
 
@@ -81,27 +85,26 @@ function SearchResultsContainer(props:any): JSX.Element {
     const folderCollection = useSelector((state: any) => state.FolderCollectionReducer);
     const currentSessionSettings = useSelector((state: any) => state.CurrentSessionSettingsReducer);
     const historySettings = useSelector((state: any) => state.HistorySettingsReducer);
-    console.log("CCC", currentSessionSettings);
-    // Filter currently opened tabs
-    function filterCurrentTabs(): Array<chrome.tabs.Tab> {
-        let collection: Array<chrome.tabs.Tab> = [];
-        currentSessionSettings.windows.forEach((window: chrome.windows.Window) => {
-            collection = collection.concat(window.tabs!);
-        });
 
-        const result: Array<chrome.tabs.Tab> = collection.filter((tab: chrome.tabs.Tab) => tab.title && tab.title.toLowerCase().includes(keyword.toLowerCase()));
-        return result.slice(0,5);
+    // Render all filtered folders
+    const renderFolders = (): Array<JSX.Element> => {
+        const folders = filterFoldersByString(folderCollection, keyword);
+
+        return folders.map((folder: iFolderItem) => <FolderItem marked={false} id={folder.id!} name={folder.name} viewMode={"list"} type={"collapsed"} desc={folder.desc} windows={folder.windows} onOpen={handlePrepareLaunchFolder} />);
     }
 
-    // Filter previously opened tabs
-    function filterHistory(): Array<chrome.history.HistoryItem> {
-        const result =  historySettings.tabs.filter((tab: chrome.history.HistoryItem) => tab.title!.toLowerCase().includes(keyword.toLowerCase()));
-        return result.slice(0,5);
+    // Render all filtered session tabs
+    const renderSessionTabs = (): Array<JSX.Element> => {
+        const tabs = filterSessionTabsByString(currentSessionSettings, keyword);
+
+        return tabs.map((tab) => <TabItem key={tab.id} marked={false} id={tab.id!} label={tab.title!} url={tab.url!} disableEdit={true} disableMark={true} disableCloseButton={false} onClose={() => handleCloseTab(tab.id!)} />)
     }
 
-    function filterFolders(): Array<iFolderItem> {
-        const result =  folderCollection.filter((folder: iFolderItem) => folder.name.toLowerCase().includes(keyword.toLowerCase()));
-        return result.slice(0,5);
+    // Render all filtered history tabs
+    const renderHistoryTabs = (): Array<JSX.Element> => {
+        const tabs = filterHistoryTabsByString(historySettings, keyword);
+
+        return tabs.map((tab) => <TabItem key={tab.id} marked={false} id={parseInt(tab.id)} label={tab.title!} url={tab.url!} disableEdit={true} disableMark={true} disableCloseButton={true} onClose={() => {}} />);
     }
 
     // Close a tab
@@ -111,7 +114,6 @@ function SearchResultsContainer(props:any): JSX.Element {
 
     return (
         <>
-            {console.log("RERENDER", keyword)}
             <div className="bg-white absolute top-20 z-[200] px-4 w-full">
                 <div id="popup-header" className="pb-5 border-tbfColor-lgrey w-full flex justify-between">
                     <h1 data-testid="manage-folder-title" className="text-3xl text-tbfColor-darkpurple font-light inline-block">
@@ -121,15 +123,15 @@ function SearchResultsContainer(props:any): JSX.Element {
                 </div>
                 <div className="mt-4">
                     <h3 className="uppercase font-bold text-md mb-4 text-tbfColor-darkergrey">Folders</h3>
-                    {filterFolders().map((folder) => <FolderItem marked={false} id={folder.id!} name={folder.name} viewMode={"list"} type={"collapsed"} desc={folder.desc} windows={folder.windows} onOpen={handlePrepareLaunchFolder} />)}
+                    {renderFolders()}
                 </div>
                 <div className="mt-4">
                     <h3 className="uppercase font-bold text-md mb-4 text-tbfColor-darkergrey">Currently opened</h3>
-                    {filterCurrentTabs().map((tab) => <TabItem marked={false} id={tab.id!} label={tab.title!} url={tab.url!} disableEdit={true} disableMark={true} disableCloseButton={true} onClose={() => handleCloseTab(tab.id!)} />)}
+                    {renderSessionTabs()}
                 </div>
                 <div className="mt-4">
                     <h3 className="uppercase font-bold text-md mb-4 text-tbfColor-darkergrey">History</h3>
-                    {filterHistory().map((tab) => <TabItem marked={false} id={Number(parseInt(tab.id!))} label={tab.title!} url={tab.url!} disableEdit={true} disableMark={true} disableCloseButton={true} onClose={() => handleCloseTab(parseInt(tab.id!))} />)}
+                    {renderHistoryTabs()}
                 </div>
             </div>
         </>

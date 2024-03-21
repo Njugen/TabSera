@@ -59,7 +59,6 @@ function FoldersView(props:any): JSX.Element {
     }
 
     function handleLaunchFolder(windows: Array<iWindowItem>): void {
-        console.log("BLABLABLA");
         // Now, prepare a snapshot, where currently opened windows get stored
         let snapshot: Array<chrome.windows.Window> = [];
 
