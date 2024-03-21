@@ -15,6 +15,7 @@ import { clearMarkedTabsAction, setMarkMultipleTabsAction, setMarkedTabsAction, 
 import { iTabItem } from '../../../interfaces/tab_item';
 import { iDropdownSelected, iFieldOption } from '../../../interfaces/dropdown';
 import AddToWorkspacePopup from '../../../components/utils/add_to_workspace_popup';
+import SectionContainer from "../../../components/utils/section_container";
 
 const HistorySection = (props: any): JSX.Element => {
     const [viewMode, setViewMode] = useState<string>("grid");
@@ -332,25 +333,11 @@ const HistorySection = (props: any): JSX.Element => {
     }
 
     return (
-        <>
-            {addToWorkSpaceMessage && renderAddTabsMessage()}
-            {renderFolderManager()}
-            <div id="history-view" className="mb-12 pt-10 bg-white shadow">
-                <div className="flex justify-between min-h-[350px]">
-                    <div className="w-full mb-6 px-14 pb-4">
-                        <div className="flex">
-                            <h1 className="text-4xl text-tbfColor-darkpurple font-light inline-block">
-                                History
-                            </h1>
-                            {renderOptionsMenu()}
-                        </div>
-                        <div className="mt-8">                     
-                            {tabsData.tabs.length > 0 ? renderContentSection() : renderEmptyMessage()}
-                        </div>  
-                    </div>
-                </div>
-            </div>
-        </>  
+        <SectionContainer id="history-view" title="History" options={renderOptionsMenu}>
+            <div className="mt-8">                     
+                {tabsData.tabs.length > 0 ? renderContentSection() : renderEmptyMessage()}
+            </div>  
+        </SectionContainer>
     );
 
 }

@@ -14,6 +14,7 @@ import { iFieldOption } from '../../../interfaces/dropdown';
 import { setUpWindowsAction } from '../../../redux/actions/currentSessionActions';
 import CurrentSessionWindowItem from '../../../components/current_session_window_item';
 import AddToWorkspacePopup from '../../../components/utils/add_to_workspace_popup';
+import SectionContainer from "../../../components/utils/section_container";
 
 const CurrentSessionSection = (props: any): JSX.Element => {
     const [addToWorkSpaceMessage, setAddToWorkspaceMessage] = useState<boolean>(false);
@@ -223,22 +224,9 @@ const CurrentSessionSection = (props: any): JSX.Element => {
         <>
             {addToWorkSpaceMessage && renderAddTabsMessage()}
             {renderFolderManager()}
-            <div id="currentSession-view" className="mb-12 pt-10 bg-white shadow">
-                <div className={"pb-6 w-full bg-white min-h-[350px]"}>
-                    <div className="w-full mb-6 px-14">
-                        <div className="flex justify-between mb-8">
-                            <h1 className="text-4xl text-tbfColor-darkpurple font-light inline-block">
-                                Current session
-                            </h1>
-                            {renderOptionsMenu()}
-                        </div>
-                        <div>
-                            {renderContents()}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
+            <SectionContainer id="currentSession-view" title="Current session" options={renderOptionsMenu}>
+                {renderContents()}
+            </SectionContainer>
         </>  
     );
 

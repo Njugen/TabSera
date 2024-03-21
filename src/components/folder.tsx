@@ -74,7 +74,7 @@ const Folder = (props: iFolder): JSX.Element => {
     const exp = (): void => {
         if(contentsRef.current === null || headerRef.current === null) return;
 
-        headerRef.current.className = `relative border-b border-gray-300 tbf-${type} bg-white px-4 h-10 py-6 flex items-center rounded-t-md`;
+        headerRef.current.className = `relative border-b tbf-${type} bg-white px-4 h-10 py-6 flex items-center rounded-t-md`;
         contentsRef.current.className = "overflow-hidden bg-white rounded-b-md border-t-0";
 
         setExpanded(true);
@@ -197,8 +197,7 @@ const Folder = (props: iFolder): JSX.Element => {
 
     return (
         <>
-            
-            <div ref={folderRef} data-testid={"folder-item"} className={`border border-gray-300 ${viewMode === "list" ? "my-4 duration-75" : "my-4 duration-75"} sticky transition-all ease-in w-full rounded-md`}>
+            <div ref={folderRef} data-testid={"folder-item"} className={`shadow-[0_0px_3px_1px_rgba(0,0,0,0.125)] ${viewMode === "list" ? "my-4 duration-75" : "my-4 duration-75"} sticky transition-all ease-in w-full rounded-md`}>
                 <div ref={headerRef}>
                     <div className="inline-block">
                         {expanded === false ? <ClosedFolderIcon size={23} fill={"#000"} /> : <OpenedFolderIcon size={26} fill={"#000"} />}

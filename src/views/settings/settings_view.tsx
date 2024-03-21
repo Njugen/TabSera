@@ -5,6 +5,7 @@ import Switcher from '../../components/utils/switcher';
 import { iFieldOption } from "../../interfaces/dropdown";
 import { useEffect, useState } from 'react';
 import { saveToStorage } from "../../services/webex_api/storage";
+import SectionContainer from "../../components/utils/section_container";
 
 /*
     Settings view
@@ -82,35 +83,28 @@ const SettingsView = (props: any): JSX.Element => {
     }, []);
 
     return (
-        <>
-            <div id="settings-view" className="mb-12 py-10 bg-white shadow">
-                <div className="bg-white  px-16 min-h-[83.33333333333vh]">
-                    <h1 className="text-4xl text-tbfColor-darkpurple mb-8 font-light inline-block">
-                        Settings
-                    </h1>
-                    <div className="w-7/12">
-                        <FormField label="Performance notification" description="Warn me if the total amount of tabs exceeds a certain threshold when launching multiple tabs">
-                            <Dropdown onCallback={(e) => typeof e.selected === "number" && saveSelectedOption("performance_notification_value", e.selected)} tag="performance-dropdown" preset={getPresetPerformanceNotification()} options={performanceNotificationOptions} />
-                        </FormField>                      
-                        <FormField label="Duplication warnings" description="Show a warning message before duplicating at least a certain amount of selected folders">
-                            <Dropdown onCallback={(e) => typeof e.selected === "number" && saveSelectedOption("duplication_warning_value", e.selected)} tag="duplication-warning-dropdown" preset={getPresetDuplicationWarning()} options={duplicationWarningOptions} />
-                        </FormField>
-                        <FormField label="Close at folder launch" description="Close current browser session when launching a folder">
-                            <Switcher id="close_current_setting" value={settings.close_current_setting} onCallback={(e) => e !== null && saveSwitchSetting("close_current_setting", e)} />
-                        </FormField>
-                        <FormField label="Cancellation warnings" description="Show a warning message before discarding changes made to folders">
-                            <Switcher id="cancellation_warning_setting" value={settings.cancellation_warning_setting} onCallback={(e) => e !== null && saveSwitchSetting("cancellation_warning_setting", e)} />
-                        </FormField>
-                        <FormField label="Removal warnings" description="Show a warning message before deleting folders">
-                            <Switcher id="removal_warning_setting" value={settings.removal_warning_setting} onCallback={(e) => {e !== null && saveSwitchSetting("removal_warning_setting", e)}} />
-                        </FormField>
-                        <FormField label="Log errors" description="Automatically send error reports to the developer">
-                            <Switcher id="error_log_setting" value={settings.error_log_setting} onCallback={(e) => e !== null && saveSwitchSetting("error_log_setting", e)} />
-                        </FormField>
-                    </div>
-                </div>
+        <SectionContainer id="settings-view" title="Settings"> 
+            <div className="w-7/12">
+                <FormField label="Performance notification" description="Warn me if the total amount of tabs exceeds a certain threshold when launching multiple tabs">
+                    <Dropdown onCallback={(e) => typeof e.selected === "number" && saveSelectedOption("performance_notification_value", e.selected)} tag="performance-dropdown" preset={getPresetPerformanceNotification()} options={performanceNotificationOptions} />
+                </FormField>                      
+                <FormField label="Duplication warnings" description="Show a warning message before duplicating at least a certain amount of selected folders">
+                    <Dropdown onCallback={(e) => typeof e.selected === "number" && saveSelectedOption("duplication_warning_value", e.selected)} tag="duplication-warning-dropdown" preset={getPresetDuplicationWarning()} options={duplicationWarningOptions} />
+                </FormField>
+                <FormField label="Close at folder launch" description="Close current browser session when launching a folder">
+                    <Switcher id="close_current_setting" value={settings.close_current_setting} onCallback={(e) => e !== null && saveSwitchSetting("close_current_setting", e)} />
+                </FormField>
+                <FormField label="Cancellation warnings" description="Show a warning message before discarding changes made to folders">
+                    <Switcher id="cancellation_warning_setting" value={settings.cancellation_warning_setting} onCallback={(e) => e !== null && saveSwitchSetting("cancellation_warning_setting", e)} />
+                </FormField>
+                <FormField label="Removal warnings" description="Show a warning message before deleting folders">
+                    <Switcher id="removal_warning_setting" value={settings.removal_warning_setting} onCallback={(e) => {e !== null && saveSwitchSetting("removal_warning_setting", e)}} />
+                </FormField>
+                <FormField label="Log errors" description="Automatically send error reports to the developer">
+                    <Switcher id="error_log_setting" value={settings.error_log_setting} onCallback={(e) => e !== null && saveSwitchSetting("error_log_setting", e)} />
+                </FormField>
             </div>
-        </>
+        </SectionContainer>
     );
 }
 
