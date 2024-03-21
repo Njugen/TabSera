@@ -1,5 +1,10 @@
 import iSectionContainer from '../../interfaces/section_container';
 
+/*
+    A white wrapper serving as either main section (contents page wrapper), or part section
+    of a view.
+*/
+
 const SectionContainer = (props: iSectionContainer): JSX.Element => {
     const { id, title, options, children } = props;
 

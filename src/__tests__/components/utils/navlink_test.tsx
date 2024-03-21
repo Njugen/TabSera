@@ -1,6 +1,5 @@
 import { render, screen, within, fireEvent } from "@testing-library/react";
 import '@testing-library/jest-dom'
-import Checkbox from "../../../components/utils/checkbox";
 import Navlink from "../../../components/utils/navlink";
 import randomNumber from "../../../tools/random_number";
 import { MemoryRouter } from "react-router-dom";

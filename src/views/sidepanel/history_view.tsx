@@ -1,22 +1,16 @@
 import { useState, useEffect, useRef } from "react";
 import { iWindowItem } from '../../interfaces/window_item';
 import { useSelector, useDispatch } from "react-redux";
-import { iFolder } from '../../interfaces/folder';
-import Folder from "../../components/folder";
-import styles from "../../styles/global_utils.module.scss";
-import { getFromStorage, saveToStorage } from '../../services/webex_api/storage';
-import { readAllFoldersFromBrowserAction } from '../../redux/actions/folderCollectionActions';
+import { iFolderItem } from '../../interfaces/folder_item';
 import FolderManager from "../../components/utils/folder_manager";
 import { clearInEditFolder } from "../../redux/actions/inEditFolderActions";
 import { clearMarkedTabsAction, setMarkMultipleTabsAction, setMarkedTabsAction, setTabsSortOrder, setUpTabsAction } from '../../redux/actions/historySettingsActions';
-import { setCurrentTabsSortOrder, setUpWindowsAction } from '../../redux/actions/currentSessionActions';
 import PrimaryButton from "../../components/utils/primary_button";
 import { clearMarkedFoldersAction } from '../../redux/actions/workspaceSettingsActions';
 import randomNumber from '../../tools/random_number';
 import AddToWorkspacePopup from "../../components/utils/add_to_workspace_popup";
 import { iTabItem } from '../../interfaces/tab_item';
 import { iFieldOption } from '../../interfaces/dropdown';
-import CurrentSessionWindowItem from '../../components/current_session_window_item';
 import TextIconButton from '../../components/utils/text_icon_button';
 import SortIcon from "../../images/icons/sort_icon";
 import Dropdown from "../../components/utils/dropdown";
@@ -25,7 +19,7 @@ import TabItem from "../../components/tab_item";
 function HistoryView(props:any): JSX.Element {
     const [viewMode, setViewMode] = useState<string>("list");
     const [addToWorkSpaceMessage, setAddToWorkspaceMessage] = useState<boolean>(false);
-    const [mergeProcess, setMergeProcess] = useState<iFolder | null>(null);
+    const [mergeProcess, setMergeProcess] = useState<iFolderItem | null>(null);
     const [editFolderId, setEditFolderId] = useState<number | null>(null);
     const [createFolder, setCreateFolder] = useState<boolean>(false);
 
@@ -33,7 +27,7 @@ function HistoryView(props:any): JSX.Element {
 
     const dispatch = useDispatch();
     const tabsData = useSelector((state: any) => state.HistorySettingsReducer);
-    const folderCollection: Array<iFolder> = useSelector((state: any) => state.FolderCollectionReducer);
+    const folderCollection: Array<iFolderItem> = useSelector((state: any) => state.FolderCollectionReducer);
 
     /*
     function loadMoreTabs(): void {
@@ -226,7 +220,7 @@ function HistoryView(props:any): JSX.Element {
     };
 
     function renderAddTabsMessage(): JSX.Element {
-        const currentFolders: Array<iFolder> = folderCollection;
+        const currentFolders: Array<iFolderItem> = folderCollection;
 
         const options: Array<iFieldOption> = currentFolders.map((folder) => {
             return { id: folder.id, label: folder.name }
@@ -251,7 +245,7 @@ function HistoryView(props:any): JSX.Element {
             if(e.selected === -1) return;
 
             const targetFolderId = e.selected;
-            const targetFolder: iFolder | undefined = folderCollection.find((folder: iFolder) => folder.id === targetFolderId);
+            const targetFolder: iFolderItem | undefined = folderCollection.find((folder: iFolderItem) => folder.id === targetFolderId);
          
             if(!targetFolder) return;
             
@@ -270,7 +264,7 @@ function HistoryView(props:any): JSX.Element {
                 tabs: markedTabs
             };
 
-            const updatedFolder: iFolder = {...targetFolder};
+            const updatedFolder: iFolderItem = {...targetFolder};
             updatedFolder.windows = [...updatedFolder.windows, presetWindow];
 
             if(targetFolder){
@@ -323,7 +317,7 @@ function HistoryView(props:any): JSX.Element {
                 tabs: markedTabs
             };
             
-            const payload: iFolder = {
+            const payload: iFolderItem = {
                 id: randomNumber(),
                 name: "",
                 desc: "",

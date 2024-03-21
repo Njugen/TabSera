@@ -1,4 +1,4 @@
-import { iFolder } from "../../interfaces/folder";
+import { iFolderItem } from "../../interfaces/folder_item";
 import { 
     SET_UP_WINDOWS,
     SET_MARKED_CURRENT_WINDOWS_ID,

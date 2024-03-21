@@ -1,14 +1,12 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { iWindowItem } from '../../interfaces/window_item';
 import { useSelector, useDispatch } from "react-redux";
-import { iFolder } from '../../interfaces/folder';
-import Folder from "../../components/folder";
-import { getFromStorage, saveToStorage } from '../../services/webex_api/storage';
-import { readAllFoldersFromBrowserAction } from '../../redux/actions/folderCollectionActions';
+import { iFolderItem } from '../../interfaces/folder_item';
+import { saveToStorage } from '../../services/webex_api/storage';
 import FolderManager from "../../components/utils/folder_manager";
 import { clearInEditFolder } from "../../redux/actions/inEditFolderActions";
-import { clearMarkedTabsAction, setMarkMultipleTabsAction, setUpTabsAction } from '../../redux/actions/historySettingsActions';
-import { setCurrentTabsSortOrder, setUpWindowsAction } from '../../redux/actions/currentSessionActions';
+import { clearMarkedTabsAction } from '../../redux/actions/historySettingsActions';
+import { setUpWindowsAction } from '../../redux/actions/currentSessionActions';
 import PrimaryButton from "../../components/utils/primary_button";
 import { clearMarkedFoldersAction } from '../../redux/actions/workspaceSettingsActions';
 import randomNumber from '../../tools/random_number';
@@ -20,10 +18,10 @@ import CurrentSessionWindowItem from '../../components/current_session_window_it
 function CurrentSessionView(props:any): JSX.Element {
     const [addToWorkSpaceMessage, setAddToWorkspaceMessage] = useState<boolean>(false);
     const [createFolder, setCreateFolder] = useState<boolean>(false);
-    const [mergeProcess, setMergeProcess] = useState<iFolder | null>(null);
+    const [mergeProcess, setMergeProcess] = useState<iFolderItem | null>(null);
     const [editFolderId, setEditFolderId] = useState<number | null>(null);
 
-    const folderCollection: Array<iFolder> = useSelector((state: any) => state.FolderCollectionReducer);
+    const folderCollection: Array<iFolderItem> = useSelector((state: any) => state.FolderCollectionReducer);
 
     const dispatch = useDispatch();
     const currentSessionData = useSelector((state: any) => state.CurrentSessionSettingsReducer);
@@ -99,7 +97,7 @@ function CurrentSessionView(props:any): JSX.Element {
     }
 
     function renderAddTabsMessage(): JSX.Element {
-        const currentFolders: Array<iFolder> = folderCollection;
+        const currentFolders: Array<iFolderItem> = folderCollection;
 
         const options: Array<iFieldOption> = currentFolders.map((folder) => {
             return { id: folder.id, label: folder.name }
@@ -122,7 +120,7 @@ function CurrentSessionView(props:any): JSX.Element {
             if(e.selected === -1) return;
 
             const targetFolderId = e.selected;
-            const targetFolder: iFolder | undefined = folderCollection.find((folder: iFolder) => folder.id === targetFolderId);
+            const targetFolder: iFolderItem | undefined = folderCollection.find((folder: iFolderItem) => folder.id === targetFolderId);
          
             if(!targetFolder) return;
             
@@ -161,7 +159,7 @@ function CurrentSessionView(props:any): JSX.Element {
                     }
                 })
 
-                const updatedFolder: iFolder = {...targetFolder};
+                const updatedFolder: iFolderItem = {...targetFolder};
                 updatedFolder.windows = [...updatedFolder.windows,  ...newWindowItems];
 
                 if(targetFolder){
@@ -187,14 +185,6 @@ function CurrentSessionView(props:any): JSX.Element {
     function renderPopup(): JSX.Element {
         let render;
         if(createFolder === true){
-            
-
-
-            /*const presetWindows: iWindowItem = {
-                id: randomNumber(),
-                tabs: markedTabs
-            };*/
-            
             const presetWindows: Array<iWindowItem> = currentSessionData.windows.map((window: chrome.windows.Window) => {
                 if(window.tabs){
                     const tabs: Array<iTabItem> = window.tabs.map((tab: chrome.tabs.Tab) => {
@@ -215,7 +205,7 @@ function CurrentSessionView(props:any): JSX.Element {
                 }
             })
 
-            const payload: iFolder = {
+            const payload: iFolderItem = {
                 id: randomNumber(),
                 name: "",
                 desc: "",

@@ -1,4 +1,4 @@
-import { iFolder } from "../../interfaces/folder";
+import { iFolderItem } from "../../interfaces/folder_item";
 import { iTabItem } from "../../interfaces/tab_item";
 
 import { 
@@ -9,7 +9,7 @@ import {
 } from "../types/inEditFoldersTypes";
 
     
-function initInEditFolder(folder: iFolder) {
+function initInEditFolder(folder: iFolderItem) {
     return {
         type: EDIT_FOLDER,
         data: folder

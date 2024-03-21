@@ -1,18 +1,9 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
-import FormField from "../../components/utils/form_field";
 import '@testing-library/jest-dom'
 import { store } from "../../redux/reducer";
-import { chrome } from 'jest-chrome'
-import { useDispatch, useSelector } from "../../redux/mocked_hooks"; 
-import AdvancedSearchBar from "../../components/utils/advanced_search_bar";
 import { Provider } from "react-redux";
-import iCurrentSessionState from "../../interfaces/states/currentSessionState";
-import { setUpWindowsAction } from "../../redux/actions/currentSessionActions";
-import userEvent from "@testing-library/user-event";
-import iHistoryState from './../../interfaces/states/historyState';
-import { setUpTabsAction } from "../../redux/actions/historySettingsActions";
-import { iFolder } from "../../interfaces/folder";
-import Folder from "../../components/folder";
+import { iFolderItem } from "../../interfaces/folder_item";
+import FolderItem from "../../components/folder_item";
 
 jest.mock("../../redux/mocked_hooks");
 jest.useFakeTimers();
@@ -37,7 +28,7 @@ const windowsSettings1 = {
     disableTabEdit: true
 }
 
-const mockFolder: iFolder = {
+const mockFolder: iFolderItem = {
     id: 0,
     name: rand().toString(),
     desc: rand().toString(),
@@ -87,7 +78,7 @@ describe("Test a folder", () => {
         
         render(
             <Provider store={store}>
-                <Folder
+                <FolderItem
                     id={id}
                     name={name}
                     desc={desc}
@@ -135,7 +126,7 @@ describe("Test a folder", () => {
         
         render(
             <Provider store={store}>
-                <Folder
+                <FolderItem
                     id={id}
                     name={name}
                     desc={desc}
@@ -165,7 +156,7 @@ describe("Test a folder", () => {
         
         render(
             <Provider store={store}>
-                <Folder
+                <FolderItem
                     id={id}
                     name={name}
                     desc={desc}
@@ -216,7 +207,7 @@ describe("Test a folder", () => {
         
         render(
             <Provider store={store}>
-                <Folder
+                <FolderItem
                     id={id}
                     name={name}
                     desc={desc}
@@ -239,7 +230,7 @@ describe("Test a folder", () => {
         
         render(
             <Provider store={store}>
-                <Folder
+                <FolderItem
                     id={id}
                     name={name}
                     desc={desc}
@@ -262,7 +253,7 @@ describe("Test a folder", () => {
         
         render(
             <Provider store={store}>
-                <Folder
+                <FolderItem
                     id={id}
                     name={name}
                     desc={desc}
@@ -297,7 +288,7 @@ describe("Test a folder", () => {
         
         render(
             <Provider store={store}>
-                <Folder
+                <FolderItem
                     id={id}
                     name={name}
                     desc={desc}

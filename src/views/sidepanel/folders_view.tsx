@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { iWindowItem } from '../../interfaces/window_item';
 import { useSelector, useDispatch } from "react-redux";
-import { iFolder } from '../../interfaces/folder';
-import Folder from "../../components/folder";
+import { iFolderItem } from '../../interfaces/folder_item';
+import FolderItem from "../../components/folder_item";
 import { getFromStorage, saveToStorage } from '../../services/webex_api/storage';
 import { readAllFoldersFromBrowserAction } from '../../redux/actions/folderCollectionActions';
 import FolderManager from "../../components/utils/folder_manager";
@@ -100,9 +100,9 @@ function FoldersView(props:any): JSX.Element {
     }
 
     const renderFolders = (): Array<JSX.Element> => {
-        const result = folderCollection.map((folder: iFolder, i: number) => {
+        const result = folderCollection.map((folder: iFolderItem, i: number) => {
             return (
-                <Folder 
+                <FolderItem 
                     //onDelete={(e) => handleFolderDelete(folder)} 
                     marked={false} 
                     //onMark={handleMarkFolder} 

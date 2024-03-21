@@ -2,7 +2,7 @@ import "../../../styles/global_utils.module.scss";
 import PrimaryButton from '../../../components/utils/primary_button';
 import FolderManager from '../../../components/utils/folder_manager';
 import { useEffect, useState } from "react";
-import { iFolder } from '../../../interfaces/folder';
+import { iFolderItem } from '../../../interfaces/folder_item';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearInEditFolder  } from '../../../redux/actions/inEditFolderActions';
 import randomNumber from '../../../tools/random_number';
@@ -18,10 +18,10 @@ import SectionContainer from "../../../components/utils/section_container";
 
 const CurrentSessionSection = (props: any): JSX.Element => {
     const [addToWorkSpaceMessage, setAddToWorkspaceMessage] = useState<boolean>(false);
-    const [mergeProcess, setMergeProcess] = useState<iFolder | null>(null);
+    const [mergeProcess, setMergeProcess] = useState<iFolderItem | null>(null);
     const [createFolder, setCreateFolder] = useState<boolean>(false);
 
-    const folderCollection: Array<iFolder> = useSelector((state: any) => state.FolderCollectionReducer);
+    const folderCollection: Array<iFolderItem> = useSelector((state: any) => state.FolderCollectionReducer);
     const currentSessionData = useSelector((state: any) => state.CurrentSessionSettingsReducer);
 
     const dispatch = useDispatch();
@@ -108,7 +108,7 @@ const CurrentSessionSection = (props: any): JSX.Element => {
     }
 
     function renderAddTabsMessage(): JSX.Element {
-        const currentFolders: Array<iFolder> = folderCollection;
+        const currentFolders: Array<iFolderItem> = folderCollection;
 
         const options: Array<iFieldOption> = currentFolders.map((folder) => {
             return { id: folder.id, label: folder.name }
@@ -131,7 +131,7 @@ const CurrentSessionSection = (props: any): JSX.Element => {
             if(e.selected === -1) return;
 
             const targetFolderId = e.selected;
-            const targetFolder: iFolder | undefined = folderCollection.find((folder: iFolder) => folder.id === targetFolderId);
+            const targetFolder: iFolderItem | undefined = folderCollection.find((folder: iFolderItem) => folder.id === targetFolderId);
          
             if(!targetFolder) return;
             
@@ -156,7 +156,7 @@ const CurrentSessionSection = (props: any): JSX.Element => {
                     }
                 })
 
-                const updatedFolder: iFolder = {...targetFolder};
+                const updatedFolder: iFolderItem = {...targetFolder};
                 updatedFolder.windows = [...updatedFolder.windows,  ...newWindowItems];
 
                 if(targetFolder){
@@ -203,7 +203,7 @@ const CurrentSessionSection = (props: any): JSX.Element => {
                 }
             })
 
-            const folderSpecs: iFolder = {
+            const folderSpecs: iFolderItem = {
                 id: randomNumber(),
                 name: "",
                 desc: "",

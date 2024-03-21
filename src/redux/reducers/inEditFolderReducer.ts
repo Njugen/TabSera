@@ -1,7 +1,8 @@
-import { iFolder } from "../../interfaces/folder";
+import { iFolderItem } from "../../interfaces/folder_item";
+import { iTabItem } from "../../interfaces/tab_item";
 import { EDIT_FOLDER, UPDATE_IN_EDIT_FOLDER, CLEAR_IN_EDIT_FOLDER, UPDATE_WINDOW_MANAGER } from "../types/inEditFoldersTypes";
 
-const inEditFolderState: iFolder | null = null;
+const inEditFolderState: iFolderItem | null = null;
 
 function InEditFolderReducer(state = inEditFolderState, action: any) {
     const { type, data } = action;
@@ -65,7 +66,7 @@ function InEditFolderReducer(state = inEditFolderState, action: any) {
                     const tabs = windowResult[0].tabs;
                     
                     // Check whether or not a tab already exists. If it exists, then replace it with the new payload
-                    const tabIndex: number = stateClone.windows[targetIndex].tabs.findIndex((tab) => tab.id === payload.id);
+                    const tabIndex: number = stateClone.windows[targetIndex].tabs.findIndex((tab: iTabItem) => tab.id === payload.id);
                     
 
                     stateClone = {

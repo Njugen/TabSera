@@ -1,11 +1,11 @@
 import { useRef, useState, useEffect, useLayoutEffect } from "react";
 import ClosedFolderIcon from "../images/icons/closed_folder_icon";
-import Paragraph from "../components/utils/paragraph";
+import Paragraph from "./utils/paragraph";
 import FolderControlButton from "./utils/folder_control_button";
 import OpenedFolderIcon from "../images/icons/opened_folder_icon";
 import "../styles/global_utils.module.scss";
 import WindowItem from "./window_item";
-import { iFolder } from "../interfaces/folder";
+import { iFolderItem } from "../interfaces/folder_item";
 import Checkbox from './utils/checkbox';
 import DropdownMenu from "./utils/dropdown_menu";
 import { iFieldOption } from "../interfaces/dropdown";
@@ -14,7 +14,7 @@ import { iFieldOption } from "../interfaces/dropdown";
     Folder containing description, windows and tabs, as well as various folder options
 */
 
-const Folder = (props: iFolder): JSX.Element => {
+const FolderItem = (props: iFolderItem): JSX.Element => {
     const contentsRef = useRef<HTMLDivElement>(null);
     const headerRef = useRef<HTMLDivElement>(null);
     const folderRef = useRef<HTMLDivElement>(null);
@@ -228,4 +228,4 @@ const Folder = (props: iFolder): JSX.Element => {
     );
 }
 
-export default Folder;
+export default FolderItem;

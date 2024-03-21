@@ -1,9 +1,9 @@
-import Folder from '../../../components/folder'
+import FolderItem from '../../../components/folder_item'
 import "./../../../styles/global_utils.module.scss";
 import PrimaryButton from '../../../components/utils/primary_button';
 import FolderManager from '../../../components/utils/folder_manager';
 import { useEffect, useState } from "react";
-import { iFolder } from '../../../interfaces/folder';
+import { iFolderItem } from '../../../interfaces/folder_item';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearInEditFolder  } from '../../../redux/actions/inEditFolderActions';
 import {  createFolderAction, readAllFoldersFromBrowserAction } from '../../../redux/actions/folderCollectionActions';
@@ -33,10 +33,10 @@ const {
 const WorkspacesSection = (props: any): JSX.Element => {
     const [editFolderId, setEditFolderId] = useState<number | null>(null);
     const [createFolder, setCreateFolder] = useState<boolean>(false);
-    const [removalTarget, setRemovalTarget] = useState<iFolder | null>(null);
+    const [removalTarget, setRemovalTarget] = useState<iFolderItem | null>(null);
     const [showDeleteWarning, setShowDeleteWarning] = useState<boolean>(false);
     const [showDuplicationWarning, setShowDuplicationWarning] = useState<boolean>(false);
-    const [mergeProcess, setMergeProcess] = useState<iFolder | null>(null);
+    const [mergeProcess, setMergeProcess] = useState<iFolderItem | null>(null);
     const [showPerformanceWarning, setShowPerformanceWarning] = useState<boolean>(false);
     const [totalTabsCount, setTotalTabsCount] = useState<number>(0);
     const [windowsPayload, setWindowsPayload] = useState<Array<iWindowItem> | null>(null);
@@ -94,7 +94,7 @@ const WorkspacesSection = (props: any): JSX.Element => {
         const { markedFoldersId } = workspaceSettings;
         if(folderCollection && markedFoldersId){
             markedFoldersId.forEach((targetId: number) => {
-                const markedFolderIndex = folderCollection.findIndex((folder: iFolder) => targetId === folder.id);
+                const markedFolderIndex = folderCollection.findIndex((folder: iFolderItem) => targetId === folder.id);
 
                 if(markedFolderIndex > -1){
                     dispatch(deleteFolderAction(folderCollection[markedFolderIndex].id));
@@ -112,10 +112,10 @@ const WorkspacesSection = (props: any): JSX.Element => {
 
         if(folderCollection && markedFoldersId){
             markedFoldersId.forEach((targetId: number) => {
-                const markedFolderIndex = folderCollection.findIndex((folder: iFolder) => targetId === folder.id);
+                const markedFolderIndex = folderCollection.findIndex((folder: iFolderItem) => targetId === folder.id);
 
                 if(markedFolderIndex > -1){
-                    const newFolder: iFolder = {...folderCollection[markedFolderIndex]};
+                    const newFolder: iFolderItem = {...folderCollection[markedFolderIndex]};
 
                     newFolder.id = randomNumber();
                     newFolder.windows.forEach((window) => {
@@ -142,8 +142,8 @@ const WorkspacesSection = (props: any): JSX.Element => {
             if(mergeProcess !== null){
                 return <FolderManager type="slide-in" title={`Create folder by merge`} folder={mergeProcess} onClose={handleCloseFolderManager} />
             } else {
-                const targetFolder: Array<iFolder> = folderCollection.filter((item: iFolder) => editFolderId === item.id);
-                const input: iFolder = {...targetFolder[0]};
+                const targetFolder: Array<iFolderItem> = folderCollection.filter((item: iFolderItem) => editFolderId === item.id);
+                const input: iFolderItem = {...targetFolder[0]};
 
                 if(targetFolder.length > 0){
                     render = <FolderManager type="slide-in" title={`Edit folder ${targetFolder[0].id}`} folder={input} onClose={handleCloseFolderManager} />;
@@ -166,7 +166,7 @@ const WorkspacesSection = (props: any): JSX.Element => {
         const newId = randomNumber();
         const { markedFoldersId } = workspaceSettings;
 
-        const folderSpecs: iFolder = {
+        const folderSpecs: iFolderItem = {
             id: newId,
             name: "",
             desc: "",
@@ -179,7 +179,7 @@ const WorkspacesSection = (props: any): JSX.Element => {
         if(folderCollection && markedFoldersId){
             const mergedWindows: Array<iWindowItem> = [];
             markedFoldersId.forEach((targetId: number) => {
-                const markedFolderIndex = folderCollection.findIndex((folder: iFolder) => targetId === folder.id);
+                const markedFolderIndex = folderCollection.findIndex((folder: iFolderItem) => targetId === folder.id);
 
                 if(markedFolderIndex > -1){
                     mergedWindows.push(...folderCollection[markedFolderIndex].windows);
@@ -209,7 +209,7 @@ const WorkspacesSection = (props: any): JSX.Element => {
     const handleMarkAllFolders = (): void => {
         const updatedMarks: Array<number> = [];
 
-        folderCollection.forEach((folder: iFolder) => {
+        folderCollection.forEach((folder: iFolderItem) => {
             updatedMarks.push(folder.id);
             
         });
@@ -231,7 +231,7 @@ const WorkspacesSection = (props: any): JSX.Element => {
 
     // Render the folder list
     const renderFolders = (): Array<JSX.Element> => {
-        const condition = (a: iFolder, b: iFolder): boolean => {
+        const condition = (a: iFolderItem, b: iFolderItem): boolean => {
             const { folderSort } = workspaceSettings
             
             const aNameLowerCase = a.name.toLowerCase();
@@ -242,7 +242,7 @@ const WorkspacesSection = (props: any): JSX.Element => {
 
         const sortedFolders = [...folderCollection].sort((a: any, b: any) => condition(a, b) ? 1 : -1);
 
-        const handleFolderDelete = (target: iFolder): void => {
+        const handleFolderDelete = (target: iFolderItem): void => {
             chrome.storage.sync.get("removal_warning_setting", (data) => {
                 if(data.removal_warning_setting === true) {
                     setRemovalTarget(target);
@@ -265,7 +265,7 @@ const WorkspacesSection = (props: any): JSX.Element => {
             let result: JSX.Element = <></>;
             
             const collection: Array<number> = workspaceSettings.markedFoldersId;
-            result = <Folder onDelete={(e) => handleFolderDelete(folder)} index={sortedFolders.length-i} marked={collection.find((id) => folder.id === id) ? true : false} onMark={handleMarkFolder} onEdit={() => setEditFolderId(folder.id)} key={folder.id} type={folder.type} id={folder.id} viewMode={workspaceSettings.viewMode} name={folder.name} desc={folder.desc} windows={folder.windows} onOpen={handlePrepareLaunchFolder}/>
+            result = <FolderItem onDelete={(e) => handleFolderDelete(folder)} index={sortedFolders.length-i} marked={collection.find((id) => folder.id === id) ? true : false} onMark={handleMarkFolder} onEdit={() => setEditFolderId(folder.id)} key={folder.id} type={folder.type} id={folder.id} viewMode={workspaceSettings.viewMode} name={folder.name} desc={folder.desc} windows={folder.windows} onOpen={handlePrepareLaunchFolder}/>
             
             if(i % colsCount === 0){   
                 colsList[0].push(result);
@@ -284,14 +284,28 @@ const WorkspacesSection = (props: any): JSX.Element => {
     // Render the action buttons for workspace area
     const renderOptionsMenu = (): JSX.Element => {
         const { markedFoldersId } = workspaceSettings;
-        
+        let markSpecs: any;
+
+        if(markedFoldersId.length > 0){
+            markSpecs = {
+                label: "Unmark all",
+                icon: "deselected_checkbox",
+                handle: handleUnmarkAllFolders
+            }
+        } else {
+            markSpecs = {
+                label: "Mark all",
+                icon: "selected_checkbox",
+                handle: handleMarkAllFolders
+            }
+        }
+
         if(hasFolders()){
             return (
                 <>
                     <div className="inline-flex items-center justify-end w-full">
                         <div className="flex">
-                            <TextIconButton disabled={false} icon={"selected_checkbox"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Mark all" onClick={handleMarkAllFolders} />
-                            <TextIconButton disabled={false} icon={"deselected_checkbox"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text="Unmark all" onClick={handleUnmarkAllFolders} />
+                            <TextIconButton disabled={false} icon={markSpecs.icon} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text={markSpecs.label} onClick={markSpecs.handle} />
                             <TextIconButton disabled={markedFoldersId.length > 0 ? false : true} icon={"folder_duplicate"} size={{ icon: 20, text: "text-sm" }}  fill={markedFoldersId.length > 0 ? "#6D00C2" : "#9f9f9f"} text="Duplicate" onClick={handlePrepareDuplication} />
                             <TextIconButton disabled={markedFoldersId.length >= 2 ? false : true} icon={"merge"} size={{ icon: 20, text: "text-sm" }}  fill={markedFoldersId.length >= 2 ? "#6D00C2" : "#9f9f9f"} text="Merge" onClick={handleMergeFolders} />
                             <TextIconButton disabled={markedFoldersId.length > 0 ? false : true} icon={"trash"} size={{ icon: 20, text: "text-sm" }}  fill={markedFoldersId.length > 0 ? "#6D00C2" : "#9f9f9f"} text="Delete" onClick={handlePrepareMultipleRemovals} />
@@ -314,7 +328,7 @@ const WorkspacesSection = (props: any): JSX.Element => {
     // Render a message. Primarily used when no folders are available
     const renderMessageBox = (): JSX.Element => {
         return <>
-            <div className="flex flex-col items-center justify-center h-full">
+            <div className="flex flex-col items-center justify-center h-[50%]">
                 <Paragraph text="You currently have no folders available. Please, create a new folder" />
                 <div className="mt-8">
                     <PrimaryButton disabled={false} text="Create workspace" onClick={() => setCreateFolder(true)} />

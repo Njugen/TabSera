@@ -1,4 +1,4 @@
-import { iFolder } from "../../interfaces/folder";
+import { iFolderItem } from "../../interfaces/folder_item";
 
 import { 
     CREATE_FOLDER, 
@@ -10,7 +10,7 @@ import {
 
 
 
-function createFolderAction(folder: iFolder){
+function createFolderAction(folder: iFolderItem){
     return {
         type: CREATE_FOLDER,
         data: folder
@@ -24,7 +24,7 @@ function readFolderAction(id: number){
     }
 }
 
-function updateFolderAction(folder: iFolder){
+function updateFolderAction(folder: iFolderItem){
     return {
         type: UPDATE_FOLDER,
         data: folder
@@ -38,7 +38,7 @@ function deleteFolderAction(id: number){
     }
 }
 
-function setUpFoldersAction(folder: Array<iFolder>){
+function setUpFoldersAction(folder: Array<iFolderItem>){
     return {
         type: SET_UP_FOLDERS,
         data: folder

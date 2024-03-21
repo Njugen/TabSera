@@ -3,8 +3,8 @@ import SearchIcon from "../../images/icons/search_icon";
 import { useSelector } from 'react-redux';
 import TabItem from "../tab_item";
 import styles from "../../styles/global_utils.module.scss";
-import Folder from "../../components/folder";
-import { iFolder } from '../../interfaces/folder';
+import FolderItem from "../folder_item";
+import { iFolderItem } from '../../interfaces/folder_item';
 import { iWindowItem } from '../../interfaces/window_item';
 import MessageBox from "./message_box";
 import iAdvancedSearchBar from "../../interfaces/advanced_search_bar";
@@ -113,8 +113,8 @@ const AdvancedSearchBar = (props: iAdvancedSearchBar): JSX.Element => {
         return result.slice(0,5);
     }
 
-    const filterFolders = (): Array<iFolder> => {
-        const result =  folderCollection.filter((folder: iFolder) => folder.name.toLowerCase().includes(keyword.toLowerCase()));
+    const filterFolders = (): Array<iFolderItem> => {
+        const result =  folderCollection.filter((folder: iFolderItem) => folder.name.toLowerCase().includes(keyword.toLowerCase()));
         return result.slice(0,5);
     }
 
@@ -215,7 +215,7 @@ const AdvancedSearchBar = (props: iAdvancedSearchBar): JSX.Element => {
 
     // Render all filtered folders
     const renderFolders = (): Array<JSX.Element> => {
-        return filterFolders().map((folder: iFolder) => <Folder marked={false} id={folder.id!} name={folder.name} viewMode={"list"} type={"collapsed"} desc={folder.desc} windows={folder.windows} onOpen={handlePrepareLaunchFolder} />);
+        return filterFolders().map((folder: iFolderItem) => <FolderItem marked={false} id={folder.id!} name={folder.name} viewMode={"list"} type={"collapsed"} desc={folder.desc} windows={folder.windows} onOpen={handlePrepareLaunchFolder} />);
     }
 
     // Render all filtered session tabs

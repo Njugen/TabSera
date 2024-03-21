@@ -9,7 +9,7 @@ import styles from "../../styles/global_utils.module.scss";
 import WindowManager from './window_manager';
 import randomNumber from "../../tools/random_number";
 import { initInEditFolder, updateInEditFolder} from "../../redux/actions/inEditFolderActions";
-import { iFolder } from "../../interfaces/folder";
+import { iFolderItem } from "../../interfaces/folder_item";
 import MessageBox from './message_box';
 import { useDispatch, useSelector } from "../../redux/mocked_hooks";
 import { setShowFolderChangeWarning } from "../../redux/actions/warningActions";
@@ -48,7 +48,7 @@ const FolderManager = (props: iPopup): JSX.Element => {
         document.body.style.overflowY = "hidden";
 
         // Information about the folder. If undefined, there are no preset information
-        let payload: iFolder | undefined = folder;
+        let payload: iFolderItem | undefined = folder;
         
         // Apply slide down effect once this popup is launched
         setShow(true);

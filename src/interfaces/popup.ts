@@ -1,9 +1,9 @@
-import { iFolder } from "./folder"
+import { iFolderItem } from "./folder_item"
 
 interface iPopup {
     title: String,
     type: "slide-in" | "popup"
-    folder?: iFolder,
+    folder?: iFolderItem,
     onClose: () => void
 }
 
