@@ -85,7 +85,7 @@ const Dropdown = (props: iDropdown): JSX.Element => {
 
     useEffect(() => {
         // Once the selected option id has been changed, send it back to the parent component
-        onCallback({ selected: selected });
+        if(selected !== null) onCallback({ selected: selected });
     }, [selected]);
 
     return (

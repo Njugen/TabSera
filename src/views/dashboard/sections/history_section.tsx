@@ -134,13 +134,13 @@ const HistorySection = (props: any): JSX.Element => {
         if(markedTabs.length > 0){
             specs = {
                 label: "Unmark all",
-                icon: "deselected_checkbox",
+                icon: "selected_checkbox",
                 handle: handleUnMarkAll
             }
         } else {
             specs = {
                 label: "Mark all",
-                icon: "selected_checkbox",
+                icon: "deselected_checkbox",
                 handle: handleMarkAllTabs
             }
         }

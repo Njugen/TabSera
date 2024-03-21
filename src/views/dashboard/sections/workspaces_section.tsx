@@ -4,6 +4,7 @@ import PrimaryButton from '../../../components/utils/primary_button';
 import FolderManager from '../../../components/utils/folder_manager';
 import { useEffect, useState } from "react";
 import { iFolderItem } from '../../../interfaces/folder_item';
+import { iFieldOption } from '../../../interfaces/dropdown';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearInEditFolder  } from '../../../redux/actions/inEditFolderActions';
 import {  createFolderAction, readAllFoldersFromBrowserAction } from '../../../redux/actions/folderCollectionActions';
@@ -53,6 +54,14 @@ const WorkspacesSection = (props: any): JSX.Element => {
     useEffect(() => {
         getFromStorage("local", "folders", (data) => {  
             dispatch(readAllFoldersFromBrowserAction(data.folders));
+        })
+
+        getFromStorage("sync", "workspace_sort", (data) => {  
+            dispatch(setFoldersSortOrder(data.workspace_sort));
+        })
+
+        getFromStorage("sync", "workspace_viewmode", (data) => {  
+            dispatch(changeWorkspacesViewMode(data.workspace_viewmode));
         })
     }, []);
 
@@ -221,23 +230,28 @@ const WorkspacesSection = (props: any): JSX.Element => {
     const handleChangeViewMode = (): void => {
         const { viewMode } = workspaceSettings;
         
-        dispatch(changeWorkspacesViewMode(viewMode === "list" ? "grid" : "list"));
+        const newStatus = viewMode === "list" ? "grid" : "list"
+        saveToStorage("sync", "workspace_viewmode", newStatus)
+        dispatch(changeWorkspacesViewMode(newStatus));
     }
 
     // Sort all folders
     const handleSortFolders = (e: any): void => {
-        dispatch(setFoldersSortOrder(e.selected === 0 ? "asc" : "desc"));
+        const newStatus = e.selected;
+
+        saveToStorage("sync", "workspace_sort", newStatus);
+        dispatch(setFoldersSortOrder(newStatus));
     }
 
     // Render the folder list
     const renderFolders = (): Array<JSX.Element> => {
         const condition = (a: iFolderItem, b: iFolderItem): boolean => {
-            const { folderSort } = workspaceSettings
+            const { folderSortOptionId } = workspaceSettings
             
             const aNameLowerCase = a.name.toLowerCase();
             const bNameToLowerCase = b.name.toLowerCase();
 
-            return folderSort === "asc" ? (aNameLowerCase > bNameToLowerCase) : (bNameToLowerCase > aNameLowerCase);
+            return folderSortOptionId === 0 ? (aNameLowerCase > bNameToLowerCase) : (bNameToLowerCase > aNameLowerCase);
         }
 
         const sortedFolders = [...folderCollection].sort((a: any, b: any) => condition(a, b) ? 1 : -1);
@@ -289,15 +303,26 @@ const WorkspacesSection = (props: any): JSX.Element => {
         if(markedFoldersId.length > 0){
             markSpecs = {
                 label: "Unmark all",
-                icon: "deselected_checkbox",
+                icon: "selected_checkbox",
                 handle: handleUnmarkAllFolders
             }
         } else {
             markSpecs = {
                 label: "Mark all",
-                icon: "selected_checkbox",
+                icon: "deselected_checkbox",
                 handle: handleMarkAllFolders
             }
+        }
+        
+        const renderSortOptionsDropdown = (): JSX.Element => {
+            const optionsList: Array<iFieldOption> = [
+                {id: 0, label: "Ascending"},
+                {id: 1, label: "Descending"},
+            ];
+
+            const presetOption = optionsList.filter((option) => option.id === workspaceSettings.folderSortOptionId);
+    
+            return <Dropdown tag="sort-folders" preset={presetOption[0]} options={optionsList} onCallback={handleSortFolders} />
         }
 
         if(hasFolders()){
@@ -313,7 +338,7 @@ const WorkspacesSection = (props: any): JSX.Element => {
                         <div className="flex items-center justify-end">     
                             <TextIconButton disabled={false} icon={workspaceSettings.viewMode === "list" ? "grid" : "list"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text={workspaceSettings.viewMode === "list" ? "Grid" : "List"} onClick={handleChangeViewMode} />
                             <div className="relative w-[175px] mr-4 flex items-center">
-                                <Dropdown tag="sort-folders" preset={{id: 0, label: "Ascending"}} options={[{id: 0, label: "Ascending"}, {id: 1, label: "Descending"}]} onCallback={handleSortFolders} />
+                                {renderSortOptionsDropdown()}
                             </div>
                             <PrimaryButton disabled={false} text="Create workspace" onClick={() => setCreateFolder(true)} />
                         </div>
