@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import GenericIconButton from './generic_icon_button';
 import PrimaryButton from './primary_button';
-import PurpleBorderButton from "./purpleBorderButton";
+import PurpleBorderButton from "./purple_border_button";
 import FormField from "./form_field";
 import * as predef from "../../styles/predef";
 import { iPopup } from "../../interfaces/popup";
