@@ -28,7 +28,7 @@ const CurrentSessionView = (props:any): JSX.Element => {
 
     useEffect(() => {        
         if(folderCollection.length > 0){
-            saveToStorage("local", "folders", folderCollection);
+            saveToStorage("sync", "folders", folderCollection);
         } 
     }, [folderCollection]);
 

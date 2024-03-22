@@ -194,25 +194,41 @@ const AdvancedSearchBar = (props: iAdvancedSearchBar): JSX.Element => {
         setShowPerformanceWarning(false);
     }
 
+    const noResultsMessage = (): JSX.Element => {
+        return (<p className="text-center p-2">There are no results in this section</p>);
+    }
+
     // Render all filtered folders
-    const renderFolders = (): Array<JSX.Element> => {
+    const renderFolders = (): Array<JSX.Element> | JSX.Element => {
         const folders = filterFoldersByString(folderCollection, keyword);
 
-        return folders.map((folder: iFolderItem) => <FolderItem marked={false} id={folder.id!} name={folder.name} viewMode={"list"} type={"collapsed"} desc={folder.desc} windows={folder.windows} onOpen={handlePrepareLaunchFolder} />);
+        if(folders.length > 0){
+            return folders.map((folder: iFolderItem) => <FolderItem marked={false} id={folder.id!} name={folder.name} viewMode={"list"} type={"collapsed"} desc={folder.desc} windows={folder.windows} onOpen={handlePrepareLaunchFolder} />);
+        } else {
+            return noResultsMessage();
+        }  
     }
 
     // Render all filtered session tabs
-    const renderSessionTabs = (): Array<JSX.Element> => {
+    const renderSessionTabs = (): Array<JSX.Element> | JSX.Element => {
         const tabs = filterSessionTabsByString(currentSessionSettings, keyword);
 
-        return tabs.map((tab) => <TabItem key={tab.id} marked={false} id={tab.id!} label={tab.title!} url={tab.url!} disableEdit={true} disableMark={true} disableCloseButton={false} onClose={() => handleCloseTab(tab.id!)} />)
+        if(tabs.length > 0){
+            return tabs.map((tab) => <TabItem key={tab.id} marked={false} id={tab.id!} label={tab.title!} url={tab.url!} disableEdit={true} disableMark={true} disableCloseButton={false} onClose={() => handleCloseTab(tab.id!)} />)
+        } else {
+            return noResultsMessage();
+        } 
     }
 
     // Render all filtered history tabs
-    const renderHistoryTabs = (): Array<JSX.Element> => {
+    const renderHistoryTabs = (): Array<JSX.Element> | JSX.Element => {
         const tabs = filterHistoryTabsByString(historySettings, keyword);
 
-        return tabs.map((tab) => <TabItem key={tab.id} marked={false} id={parseInt(tab.id)} label={tab.title!} url={tab.url!} disableEdit={true} disableMark={true} disableCloseButton={true} onClose={() => {}} />);
+        if(tabs.length > 0){
+            return tabs.map((tab) => <TabItem key={tab.id} marked={false} id={parseInt(tab.id)} label={tab.title!} url={tab.url!} disableEdit={true} disableMark={true} disableCloseButton={true} onClose={() => {}} />);
+        } else {
+            return noResultsMessage();
+        } 
     }
 
     const renderSearchResults = (): JSX.Element => {
@@ -222,20 +238,25 @@ const AdvancedSearchBar = (props: iAdvancedSearchBar): JSX.Element => {
             results = (
                 <div className="grid grid-cols-2 gap-x-[1.75rem]">   
                     <div className="">
-                        <h3 className="uppercase font-bold text-md mb-4 text-tbfColor-darkergrey">Folders</h3>
-                        {renderFolders()}
+                        <div className="mb-6">
+                            <h3 className="uppercase font-bold text-md mb-4 text-tbfColor-darkergrey">
+                                Folders
+                            </h3>
+                            {renderFolders()}
+                        </div>
+
+                        <div className="">
+                            <h3 className="uppercase font-bold text-md mb-4 text-tbfColor-darkergrey">
+                                History
+                            </h3>
+                            {renderHistoryTabs()}
+                        </div>
                     </div>
                     <div className="">
                         <h3 className="uppercase font-bold text-md mb-4 text-tbfColor-darkergrey">
                             Currently opened
                         </h3>
                         {renderSessionTabs()}
-                    </div>
-                    <div className="mt-4">
-                        <h3 className="uppercase font-bold text-md mb-4 text-tbfColor-darkergrey">
-                            History
-                        </h3>
-                        {renderHistoryTabs()}
                     </div>
                 </div>
             );

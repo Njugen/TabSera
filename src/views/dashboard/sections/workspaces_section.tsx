@@ -52,7 +52,7 @@ const WorkspacesSection = (props: any): JSX.Element => {
 
     // Get folders from browser storage and store it into redux 
     useEffect(() => {
-        getFromStorage("local", "folders", (data) => {  
+        getFromStorage("sync", "folders", (data) => {  
             dispatch(readAllFoldersFromBrowserAction(data.folders));
         })
 
@@ -68,7 +68,7 @@ const WorkspacesSection = (props: any): JSX.Element => {
     // Save/update the folder collection to browser memory once the redux collection has changes
     useEffect(() => {        
         if(folderCollection.length > 0){
-            saveToStorage("local", "folders", folderCollection);
+            saveToStorage("sync", "folders", folderCollection);
         } 
     }, [folderCollection]);
 
@@ -279,7 +279,22 @@ const WorkspacesSection = (props: any): JSX.Element => {
             let result: JSX.Element = <></>;
             
             const collection: Array<number> = workspaceSettings.markedFoldersId;
-            result = <FolderItem onDelete={(e) => handleFolderDelete(folder)} index={sortedFolders.length-i} marked={collection.find((id) => folder.id === id) ? true : false} onMark={handleMarkFolder} onEdit={() => setEditFolderId(folder.id)} key={folder.id} type={folder.type} id={folder.id} viewMode={workspaceSettings.viewMode} name={folder.name} desc={folder.desc} windows={folder.windows} onOpen={handlePrepareLaunchFolder}/>
+            result = (
+                <FolderItem 
+                onDelete={(e) => handleFolderDelete(folder)} 
+                index={sortedFolders.length-i} 
+                marked={collection.find((id) => folder.id === id) ? true : false} 
+                onMark={handleMarkFolder} 
+                onEdit={() => setEditFolderId(folder.id)} 
+                key={folder.id} 
+                type={folder.type} 
+                id={folder.id} 
+                viewMode={workspaceSettings.viewMode} 
+                name={folder.name} 
+                desc={folder.desc} 
+                windows={folder.windows} 
+                onOpen={handlePrepareLaunchFolder}/>
+            )
             
             if(i % colsCount === 0){   
                 colsList[0].push(result);

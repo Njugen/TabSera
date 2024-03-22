@@ -41,7 +41,7 @@ function FolderCollectionReducer(state = folderCollectionState, action: any) {
     } else if(type === DELETE_FOLDER){
         const updatedFolders = state.filter((target) => target.id !== data)
 
-        if(updatedFolders.length === 0) saveToStorage("local", "folders", []);
+        if(updatedFolders.length === 0) saveToStorage("sync", "folders", []);
 
         return [
             ...updatedFolders

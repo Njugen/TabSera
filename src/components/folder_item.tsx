@@ -9,6 +9,9 @@ import { iFolderItem } from "../interfaces/folder_item";
 import Checkbox from './utils/checkbox';
 import DropdownMenu from "./utils/dropdown_menu";
 import { iFieldOption } from "../interfaces/dropdown";
+import { useSelector } from "react-redux";
+import iWorkspaceState from "../interfaces/states/workspaceState";
+import { getFromStorage, saveToStorage } from "../services/webex_api/storage";
 
 /*
     Folder containing description, windows and tabs, as well as various folder options
@@ -22,6 +25,7 @@ const FolderItem = (props: iFolderItem): JSX.Element => {
     const [showLaunchOptions, setShowLaunchOptions] = useState<boolean>(false);
     const [slideDown, setSlideDown] = useState<boolean>(false);
 
+    const workspaceSettings: iWorkspaceState = useSelector((state: any) => state.WorkspaceSettingsReducer);
 
     // Show a list of options for how to launch this folder
     const handleShowLaunchOptionsMenu = (): void => {
@@ -85,7 +89,6 @@ const FolderItem = (props: iFolderItem): JSX.Element => {
 
         headerRef.current.className = `relative tbf-${type} bg-white px-4 h-10 py-6 flex items-center rounded-md`;
         contentsRef.current.className = "overflow-hidden rounded-b-md";
-
         setExpanded(false);
     }
 
@@ -108,7 +111,7 @@ const FolderItem = (props: iFolderItem): JSX.Element => {
 
     const renderWindows = (): Array<JSX.Element> => {
         const result: Array<JSX.Element> = windows.map((window, index) => 
-            <WindowItem tabsCol={viewMode === "list" ? 1 : 2} disableTabMark={true} disableTabEdit={true} key={"window-" + index} id={window.id} tabs={window.tabs} />
+            <WindowItem tabsCol={workspaceSettings.viewMode === "list" ? 4 : 2} disableTabMark={true} disableTabEdit={true} key={"window-" + index} id={window.id} tabs={window.tabs} />
         );
 
         return result;

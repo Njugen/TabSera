@@ -23,7 +23,7 @@ const FoldersView = (props:any): JSX.Element => {
 
     useEffect(() => {        
         if(folderCollection.length > 0){
-            saveToStorage("local", "folders", folderCollection);
+            saveToStorage("sync", "folders", folderCollection);
         } 
     }, [folderCollection]);
 
@@ -47,7 +47,7 @@ const FoldersView = (props:any): JSX.Element => {
     }, [folderLaunchType]);
 
     useEffect(() => {
-        getFromStorage("local", "folders", (data) => {  
+        getFromStorage("sync", "folders", (data) => {  
             dispatch(readAllFoldersFromBrowserAction(data.folders));
         })
     }, []);
