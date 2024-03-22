@@ -68,7 +68,7 @@ const RenderOptionsPage = (props: iOptionsPage): JSX.Element => {
     return (
       <>       
         <div className="flex h-full w-full relative bg-gray-50">
-          <div id="sidebar" className={`drop-shadow-md h-[calc(100vh)] sticky top-0 self-start ${sidebarExpanded === true ? `${styles.sidebar_animation_expanded}` : `${styles.sidebar_animation_contracted}`} overflow-x-hidden items-end flex flex-col justify-between border-tbfColor-middlegrey bg-white`}>
+          <div id="sidebar" className={`drop-shadow-md h-[calc(100vh)] sticky top-0 self-start ${sidebarExpanded === true ? `${styles.sidebar_animation_expanded}` : `${styles.sidebar_animation_contracted}`} items-end flex flex-col justify-between border-tbfColor-middlegrey bg-white`}>
             <div className="w-full px-2 ">
               {sidebarExpanded === true ? renderExpandedSidebarNav() : renderCollapsedSidebarNav()}
             </div>

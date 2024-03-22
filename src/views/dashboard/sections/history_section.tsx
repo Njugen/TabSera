@@ -334,7 +334,7 @@ const HistorySection = (props: any): JSX.Element => {
             <div className="flex justify-center min-h-[350px]">
                 <div className="w-full">
                     <div className="pb-6">
-                        <div ref={historyListRef} className={`${styles.scroll_style} overflow-y-auto ${tabsData.viewMode === "list" ? "mx-auto mt-10" : `grid grid-cols-${decideGridCols()} grid-flow-dense gap-x-3 gap-y-0 mt-8 pr-2`} max-h-[350px]`}>
+                        <div ref={historyListRef} className={`${styles.scroll_style} overflow-y-auto ${tabsData.viewMode === "list" ? "mx-auto mt-10" : `grid xl:grid-cols-3 2xl:grid-cols-4 grid-flow-dense gap-x-3 gap-y-0 mt-6 pr-2`} max-h-[350px]`}>
                             {renderTabs()}
                         </div>
                     </div> 
