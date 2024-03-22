@@ -53,10 +53,10 @@ describe("extensive test of <AddToWorkspacePopup /> behaviour", () => {
         expect(mockOnNewWorkspace).toHaveBeenCalled();
 
         // Click cancel
-        const cancelButton = screen.getByText("Cancel");
-        expect(cancelButton).toBeInTheDocument();
+        const closeButton = screen.getByTestId("generic-icon-button-close");
+        expect(closeButton).toBeInTheDocument();
         
-        fireEvent.click(cancelButton);
+        fireEvent.click(closeButton);
         expect(document.body.style.overflowY).toBe("scroll");
         expect(mockOnCancel).toHaveBeenCalled();
     });
@@ -167,11 +167,11 @@ describe("extensive test of <AddToWorkspacePopup /> behaviour", () => {
         fireEvent.click(newWorkSpaceButton);
         expect(mockOnNewWorkspace).toHaveBeenCalled();
 
-        // Click cancel
-        const cancelButton = screen.getByText("Cancel");
-        expect(cancelButton).toBeInTheDocument();
+        // Click Close Button
+        const closeButton = screen.getByTestId("generic-icon-button-close");
+        expect(closeButton).toBeInTheDocument();
         
-        fireEvent.click(cancelButton);
+        fireEvent.click(closeButton);
         expect(document.body.style.overflowY).toBe("scroll");
         expect(mockOnCancel).toHaveBeenCalled();
     });

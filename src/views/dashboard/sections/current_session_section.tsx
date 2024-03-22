@@ -98,7 +98,19 @@ const CurrentSessionSection = (props: any): JSX.Element => {
 
     function renderContents(): Array<JSX.Element> | JSX.Element {
         const existingWindows = currentSessionData?.windows;
-        const existingWindowsElements: Array<JSX.Element> = existingWindows?.map((item: iWindowItem, i: number) => <CurrentSessionWindowItem key={`window-item-${i}`} tabsCol={4} disableEdit={currentSessionData.windows.length < 2 ? true : false} disableTabMark={false} disableTabEdit={true} id={item.id} tabs={item.tabs} initExpand={true} />);
+        const existingWindowsElements: Array<JSX.Element> = existingWindows?.map((item: iWindowItem, i: number) => {
+            return (
+                <CurrentSessionWindowItem 
+                key={`window-item-${i}`} 
+                tabsCol={4} 
+                disableEdit={currentSessionData.windows.length < 2 ? true : false} 
+                disableTabMark={false} 
+                disableTabEdit={true} id={item.id} 
+                tabs={item.tabs} 
+                initExpand={true} 
+                />
+            );
+        });
         
         if (existingWindowsElements?.length > 0){
             return [...existingWindowsElements];

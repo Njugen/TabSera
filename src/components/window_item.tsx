@@ -125,7 +125,7 @@ const WindowItem = (props: iWindowItem): JSX.Element => {
             if(editTab === tab.id){
                 return renderEditTab(id, tab.url, editTab);
             } else {
-                return <TabItem marked={false} disableMark={disableTabMark} disableEdit={disableTabEdit} key={tab.id} id={tab.id} label={tab.label} url={tab.url} onMark={handleMarkTab} onEdit={handleTabEdit} />
+                return <TabItem marked={false} disableMark={disableTabMark} disableEdit={disableTabEdit} key={`window-${id}-tab-${tab.id}`} id={tab.id} label={tab.label} url={tab.url} onMark={handleMarkTab} onEdit={handleTabEdit} />
             }
         })
 

@@ -26,7 +26,7 @@ describe("test <GenericIconButton />", () => {
 
         const button = screen.getByTestId(`generic-icon-button-${mockIcon}`);
         expect(button).toBeInTheDocument();
-        expect(button).toBeEmptyDOMElement();
+        expect(button).not.toBeEmptyDOMElement();
 
         fireEvent.click(button);
         expect(mockFunction).toHaveBeenCalled();

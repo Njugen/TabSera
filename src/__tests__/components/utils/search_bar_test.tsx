@@ -40,6 +40,7 @@ mockTabs.forEach((tab, i) => {
     const temp = mockCurrentSession.windows[0].tabs as Array<any>;
 
     temp.push({
+        id: i,
         index: i,
         title: tab.title,
         url: tab.url,

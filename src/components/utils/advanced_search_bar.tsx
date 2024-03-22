@@ -203,7 +203,7 @@ const AdvancedSearchBar = (props: iAdvancedSearchBar): JSX.Element => {
         const folders = filterFoldersByString(folderCollection, keyword);
 
         if(folders.length > 0){
-            return folders.map((folder: iFolderItem) => <FolderItem marked={false} id={folder.id!} name={folder.name} viewMode={"list"} type={"collapsed"} desc={folder.desc} windows={folder.windows} onOpen={handlePrepareLaunchFolder} />);
+            return folders.map((folder: iFolderItem) => <FolderItem key={`folder-sr-key-${folder.id}`} marked={false} id={folder.id!} name={folder.name} viewMode={"list"} type={"collapsed"} desc={folder.desc} windows={folder.windows} onOpen={handlePrepareLaunchFolder} />);
         } else {
             return noResultsMessage();
         }  
@@ -212,9 +212,9 @@ const AdvancedSearchBar = (props: iAdvancedSearchBar): JSX.Element => {
     // Render all filtered session tabs
     const renderSessionTabs = (): Array<JSX.Element> | JSX.Element => {
         const tabs = filterSessionTabsByString(currentSessionSettings, keyword);
-
+        
         if(tabs.length > 0){
-            return tabs.map((tab) => <TabItem key={tab.id} marked={false} id={tab.id!} label={tab.title!} url={tab.url!} disableEdit={true} disableMark={true} disableCloseButton={false} onClose={() => handleCloseTab(tab.id!)} />)
+            return tabs.map((tab) => <TabItem key={`tab-session-sr-key-${tab.id}`} marked={false} id={tab.id!} label={tab.title!} url={tab.url!} disableEdit={true} disableMark={true} disableCloseButton={false} onClose={() => handleCloseTab(tab.id!)} />)
         } else {
             return noResultsMessage();
         } 
@@ -225,7 +225,7 @@ const AdvancedSearchBar = (props: iAdvancedSearchBar): JSX.Element => {
         const tabs = filterHistoryTabsByString(historySettings, keyword);
 
         if(tabs.length > 0){
-            return tabs.map((tab) => <TabItem key={tab.id} marked={false} id={parseInt(tab.id)} label={tab.title!} url={tab.url!} disableEdit={true} disableMark={true} disableCloseButton={true} onClose={() => {}} />);
+            return tabs.map((tab) => <TabItem key={`tab-history-sr-key-${tab.id}`} marked={false} id={parseInt(tab.id)} label={tab.title!} url={tab.url!} disableEdit={true} disableMark={true} disableCloseButton={true} onClose={() => {}} />);
         } else {
             return noResultsMessage();
         } 
@@ -245,7 +245,7 @@ const AdvancedSearchBar = (props: iAdvancedSearchBar): JSX.Element => {
                             {renderFolders()}
                         </div>
 
-                        <div className="">
+                        <div>
                             <h3 className="uppercase font-bold text-md mb-4 text-tbfColor-darkergrey">
                                 History
                             </h3>

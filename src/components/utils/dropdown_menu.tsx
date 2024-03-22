@@ -25,7 +25,7 @@ const DropdownMenu = (props: iDropdownMenu): JSX.Element => {
             return `${tag}-option-${id}-active`;
         }
         
-        return "";
+        return `${tag}-option-${id}`;
     }
 
     // Build a list of <li> representing options

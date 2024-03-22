@@ -73,7 +73,59 @@ const mockFolder: iFolderItem = {
 
 
 describe("Test a folder", () => {
-    test("Folder shows information/buttons based on the mock", () => {
+    test("Folder behaves ok with handlers", () => {
+        const { id, name, desc, marked, type, viewMode, windows } = mockFolder;
+        
+        render(
+            <Provider store={store}>
+                <FolderItem
+                    id={id}
+                    name={name}
+                    desc={desc}
+                    marked={marked}
+                    type={"expanded"}
+                    viewMode={viewMode}
+                    windows={windows}
+                    onOpen={mockOnOpen}
+                    onEdit={mockOnEdit}
+                    onDelete={mockOnDelete}
+                    onMark={mockOnMark}
+                />
+            </Provider>
+        );
+
+        const folderItem = screen.getByTestId("folder-item");
+        expect(folderItem).toBeInTheDocument();
+
+        const folderTitle = screen.getByRole("heading", { level: 2 });
+        expect(folderTitle).toHaveTextContent(name);
+
+        const folderDesc = screen.queryByTestId("description-section");
+        expect(folderDesc).toBeInTheDocument();
+        
+        const checkBox = screen.queryByTestId("checkbox");
+        const checkedIcon = screen.queryByTestId("checked");
+        expect(checkBox).toBeInTheDocument();
+        expect(checkedIcon).not.toBeInTheDocument();
+
+        const windowItems = screen.queryAllByTestId("window-item");
+        expect(windowItems.length).toEqual(2);
+
+        const tabItems = screen.queryAllByTestId("tab-item");
+        expect(tabItems.length).toEqual(3);
+
+        const launchFolderButton = screen.queryByTestId("folder-control-button-open_browser");
+        const settingsButton = screen.queryByTestId("folder-control-button-settings");
+        const trashButton = screen.queryByTestId("folder-control-button-trash");
+        const collapseButton = screen.queryByTestId("folder-control-button-collapse");
+
+        expect(launchFolderButton).toBeInTheDocument();
+        expect(settingsButton).toBeInTheDocument();
+        expect(trashButton).toBeInTheDocument();
+        expect(collapseButton).toBeInTheDocument();
+    });
+
+    test("Folder behaves ok without handlers", () => {
         const { id, name, desc, marked, type, viewMode, windows } = mockFolder;
         
         render(
@@ -99,9 +151,9 @@ describe("Test a folder", () => {
         const folderDesc = screen.queryByTestId("description-section");
         expect(folderDesc).toBeInTheDocument();
         
-        const checkBox = screen.getByTestId("checkbox");
+        const checkBox = screen.queryByTestId("checkbox");
         const checkedIcon = screen.queryByTestId("checked");
-        expect(checkBox).toBeInTheDocument();
+        expect(checkBox).not.toBeInTheDocument();
         expect(checkedIcon).not.toBeInTheDocument();
 
         const windowItems = screen.queryAllByTestId("window-item");
@@ -110,14 +162,14 @@ describe("Test a folder", () => {
         const tabItems = screen.queryAllByTestId("tab-item");
         expect(tabItems.length).toEqual(3);
 
-        const launchFolderButton = screen.getByTestId("folder-control-button-open_browser");
-        const settingsButton = screen.getByTestId("folder-control-button-settings");
-        const trashButton = screen.getByTestId("folder-control-button-trash");
-        const collapseButton = screen.getByTestId("folder-control-button-collapse");
+        const launchFolderButton = screen.queryByTestId("folder-control-button-open_browser");
+        const settingsButton = screen.queryByTestId("folder-control-button-settings");
+        const trashButton = screen.queryByTestId("folder-control-button-trash");
+        const collapseButton = screen.queryByTestId("folder-control-button-collapse");
 
-        expect(launchFolderButton).toBeInTheDocument();
-        expect(settingsButton).toBeInTheDocument();
-        expect(trashButton).toBeInTheDocument();
+        expect(launchFolderButton).not.toBeInTheDocument();
+        expect(settingsButton).not.toBeInTheDocument();
+        expect(trashButton).not.toBeInTheDocument();
         expect(collapseButton).toBeInTheDocument();
     });
 
