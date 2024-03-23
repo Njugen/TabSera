@@ -1,8 +1,8 @@
-# Tab Management Browser Plugin (Beta)
+# Tab Management Browser Plugin (Release Candidate 1)
 
-<div style="text-align: center; margin: 2rem auto">
+<p align="center" style="padding-top: 10px; padding-bottom: 10px">
     <img src="./img/brand/brand.png" width="15%" />
-</div>
+</p>
 
 This plugin gives you a better overview and improved tab management experience not provided
 by default browser features. Mark, arrange, and open tabs in any way you like, e.g. new session, categorized session, or incognito.
