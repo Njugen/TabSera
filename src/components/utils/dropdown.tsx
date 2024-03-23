@@ -52,9 +52,9 @@ const Dropdown = (props: iDropdown): JSX.Element => {
 
 
     // Get information about the selected option 
-    const getSelectedOption = (): iFieldOption | null => {
+    const getSelectedOption = (): iFieldOption => {
         const target = options.find((option) => option.id === selected);
-        return target ? target : null;
+        return target ? target : preset;
     }
 
     const handleWindowClick = (e: any): void => {

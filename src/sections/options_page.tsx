@@ -2,13 +2,17 @@ import './../App.css';
 import "./../styles/global_utils.module.scss";
 import styles from "./../styles/global_utils.module.scss";
 import Navlink from './../components/utils/navlink';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import DashboardView from './../views/dashboard/dashboard_view';
 import SettingsView from '../views/settings/settings_view';
 import LeftIcon from './../images/icons/left_icon';
 import RightIcon from './../images/icons/right_icon';
 import AdvancedSearchBar from '../components/utils/advanced_search_bar';
 import iOptionsPage from '../interfaces/options_page';
+import { useDispatch, useSelector } from 'react-redux';
+import { getFromStorage } from '../services/webex_api/storage';
+import { readAllFoldersFromBrowserAction, setUpFoldersAction } from '../redux/actions/folderCollectionActions';
+import { setUpTabsAction } from '../redux/actions/historySettingsActions';
 
 const RenderOptionsPage = (props: iOptionsPage): JSX.Element => {
   
@@ -32,6 +36,48 @@ const RenderOptionsPage = (props: iOptionsPage): JSX.Element => {
   const [sidebarExpanded, setSidebarExpanded] = useState<boolean>(localStorage["expanded_sidebar"] === "true" ? true : false);
 
   const rootRef = useRef<HTMLDivElement>(null);
+
+  const dispatch = useDispatch();
+
+  const searchHistory = () => {
+    const query = {
+        text: "",
+        maxResults: 25
+    }
+    chrome.history.search(query, (items: Array<chrome.history.HistoryItem>) => {
+        dispatch(setUpTabsAction(items));
+    });
+  }
+
+
+  const storageListener = (changes: any, areaName: string): void => {
+    if(areaName === "sync"){
+        if(changes.folders){
+          dispatch(readAllFoldersFromBrowserAction(changes.folders.newValue));
+        }
+    }
+  };
+
+  const historyRemovedListener = (result: chrome.history.RemovedResult): void => {
+    searchHistory();
+  }
+
+  const historyVisitedListener = (result: chrome.history.HistoryItem): void => {
+    searchHistory();
+  }
+
+  useEffect(() => {
+    // Listen for changes in browser storage
+    chrome.storage.onChanged.addListener(storageListener);
+    chrome.history.onVisitRemoved.addListener(historyRemovedListener);
+    chrome.history.onVisited.addListener(historyVisitedListener);
+
+    return () => {
+      chrome.storage.onChanged.removeListener(storageListener);
+      chrome.history.onVisitRemoved.addListener(historyRemovedListener);
+      chrome.history.onVisited.addListener(historyVisitedListener);
+    }
+  }, []);
 
   // Expand/collapse sidebar, and save the information in the browser storage
   const handleSidebarExpandButton = (): void => {

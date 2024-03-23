@@ -9,7 +9,7 @@ function FolderCollectionReducer(state = folderCollectionState, action: any) {
     const { type, data } = action;
 
     if(type === SET_UP_FOLDERS){
-        return [ data]
+        return [data]
     } else if(type === CREATE_FOLDER){
         const updatedFolders = [ ...state, data ];
    

@@ -14,6 +14,8 @@ import AddToWorkspacePopup from "../../components/utils/add_to_workspace_popup";
 import { iTabItem } from '../../interfaces/tab_item';
 import { iFieldOption } from '../../interfaces/dropdown';
 import CurrentSessionWindowItem from '../../components/current_session_window_item';
+import SaveIcon from './../../images/icons/save_icon';
+import CircleButton from './../../components/utils/circle_button';
 
 const CurrentSessionView = (props:any): JSX.Element => {
     const [addToWorkSpaceMessage, setAddToWorkspaceMessage] = useState<boolean>(false);
@@ -224,8 +226,14 @@ const CurrentSessionView = (props:any): JSX.Element => {
         <>
             {addToWorkSpaceMessage && renderAddTabsMessage()}
             {renderFolderManager()}
-            <div className="flex justify-center mt-4 mb-6">
-                <PrimaryButton disabled={false} text="Save session" onClick={() => setAddToWorkspaceMessage(true)} />
+            <div className="flex justify-end mx-2 mt-4 mb-6">
+                <CircleButton 
+                    disabled={false} 
+                    bgCSSClass="bg-tbfColor-lightpurple" 
+                    onClick={() => setAddToWorkspaceMessage(true)}
+                >
+                    <SaveIcon size={20} fill={"#fff"} />
+                </CircleButton>
             </div>
             <div>
                 {renderWindows()}

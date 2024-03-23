@@ -76,7 +76,7 @@ const HistorySection = (props: any): JSX.Element => {
 
         const presetOption = optionsList.filter((option: iFieldOption) => option.id === tabsData.tabSortOptionId);
         
-        return <Dropdown tag="sort-folders" preset={presetOption[0]} options={optionsList} onCallback={handleCloseFolderManager} />
+        return <Dropdown tag="sort-folders" preset={presetOption[0] || optionsList[0]} options={optionsList} onCallback={handleCloseFolderManager} />
     }
 
     // Mark/unmark a tab by its id

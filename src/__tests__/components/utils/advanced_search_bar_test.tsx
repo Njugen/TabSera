@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import iCurrentSessionState from "../../../interfaces/states/currentSessionState";
 import { setUpWindowsAction } from "../../../redux/actions/currentSessionActions";
 import { setUpTabsAction } from "../../../redux/actions/historySettingsActions";
+import { iTabItem } from "../../../interfaces/tab_item";
 
 
 jest.mock("../../../redux/mocked_hooks");
@@ -37,25 +38,27 @@ const mockTabs = [
 ];
 
 mockTabs.forEach((tab, i) => {
-    const temp = mockCurrentSession.windows[0].tabs as Array<any>;
+    const temp: Array<chrome.tabs.Tab> | undefined = mockCurrentSession.windows[0].tabs;
 
-    temp.push({
-        id: i,
-        index: i,
-        title: tab.title,
-        url: tab.url,
-        pinned: false,
-        highlighted: false,
-        active: false,
-        incognito: false,
-        windowId: 1,
-        selected: false,
-        discarded: false,
-        autoDiscardable: false,
-        groupId: 0
-    });
-    
-    mockCurrentSession.windows[0].tabs = temp as Array<chrome.tabs.Tab>;
+    if(temp){
+        temp.push({
+            id: i,
+            index: i,
+            title: tab.title,
+            url: tab.url,
+            pinned: false,
+            highlighted: false,
+            active: false,
+            incognito: false,
+            windowId: 1,
+            selected: false,
+            discarded: false,
+            autoDiscardable: false,
+            groupId: 0
+        });
+        
+        mockCurrentSession.windows[0].tabs = temp as Array<chrome.tabs.Tab>;
+    }
 })
 
 const historyTabs: Array<chrome.history.HistoryItem> = [

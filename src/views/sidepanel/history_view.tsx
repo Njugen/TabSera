@@ -15,6 +15,10 @@ import TextIconButton from '../../components/utils/text_icon_button';
 import SortIcon from "../../images/icons/sort_icon";
 import Dropdown from "../../components/utils/dropdown";
 import TabItem from "../../components/tab_item";
+import CircleButton from './../../components/utils/circle_button';
+import SaveIcon from './../../images/icons/save_icon';
+import TrashIcon from './../../images/icons/trash_icon';
+import OpenBrowserIcon from "../../images/icons/open_browser_icon";
 
 const HistoryView = (props:any): JSX.Element => {
     const [viewMode, setViewMode] = useState<string>("list");
@@ -114,15 +118,34 @@ const HistoryView = (props:any): JSX.Element => {
         })
     }
 
-    useEffect(() => {
+    const searchHistory = () => {
         const query = {
             text: "",
             maxResults: 25
         }
-
         chrome.history.search(query, (items: Array<chrome.history.HistoryItem>) => {
             dispatch(setUpTabsAction(items));
         });
+    }
+
+    const historyRemovedListener = (result: chrome.history.RemovedResult): void => {
+        searchHistory();
+    }
+
+    const historyVisitedListener = (result: chrome.history.HistoryItem): void => {
+        searchHistory();
+    }
+
+    useEffect(() => {
+        searchHistory();
+
+        chrome.history.onVisitRemoved.addListener(historyRemovedListener);
+        chrome.history.onVisited.addListener(historyVisitedListener);
+
+        return () => {
+            chrome.history.onVisitRemoved.addListener(historyRemovedListener);
+            chrome.history.onVisited.addListener(historyVisitedListener);
+        }
     }, []);
 
     const renderTabs = (): Array<JSX.Element> => {
@@ -311,8 +334,30 @@ const HistoryView = (props:any): JSX.Element => {
         <>
             {addToWorkSpaceMessage && renderAddTabsMessage()}
             {renderFolderManager()}
-            <div className="flex justify-center mt-4 mb-6">
-                <PrimaryButton disabled={false} text="Save history" onClick={() => setAddToWorkspaceMessage(true)} />
+            <div className="flex justify-end mx-2 mt-4 mb-4">
+                <CircleButton 
+                    disabled={tabsData.markedTabs.length > 0 ? false : true} 
+                    bgCSSClass="bg-tbfColor-lightpurple" 
+                    onClick={() => handleOpenSelected()}
+                >
+                    <OpenBrowserIcon size={20} fill={"#fff"} />
+                </CircleButton>
+
+                <CircleButton 
+                    disabled={tabsData.markedTabs.length > 0 ? false : true} 
+                    bgCSSClass="bg-tbfColor-lightpurple" 
+                    onClick={() => setAddToWorkspaceMessage(true)}
+                >
+                    <SaveIcon size={20} fill={"#fff"} />
+                </CircleButton>
+
+                <CircleButton 
+                    disabled={tabsData.markedTabs.length > 0 ? false : true} 
+                    bgCSSClass="bg-tbfColor-lightpurple" 
+                    onClick={() => handleDeleteFromHistory()}
+                >
+                    <TrashIcon size={20} fill={"#fff"} />
+                </CircleButton>
             </div>
             <div id="history-view">
                 {tabsData.tabs.length > 0 ? renderHistoryManagement() : renderEmptyMessage()}
