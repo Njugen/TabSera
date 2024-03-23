@@ -19,6 +19,7 @@ import CircleButton from './../../components/utils/circle_button';
 import SaveIcon from './../../images/icons/save_icon';
 import TrashIcon from './../../images/icons/trash_icon';
 import OpenBrowserIcon from "../../images/icons/open_browser_icon";
+import { saveToStorage } from "../../services/webex_api/storage";
 
 const HistoryView = (props:any): JSX.Element => {
     const [viewMode, setViewMode] = useState<string>("list");
@@ -32,6 +33,12 @@ const HistoryView = (props:any): JSX.Element => {
     const dispatch = useDispatch();
     const tabsData = useSelector((state: any) => state.HistorySettingsReducer);
     const folderCollection: Array<iFolderItem> = useSelector((state: any) => state.FolderCollectionReducer);
+
+    useEffect(() => {        
+        if(folderCollection.length > 0){
+            saveToStorage("sync", "folders", folderCollection);
+        } 
+    }, [folderCollection]);
 
     const handleChangeViewMode = (): void => {
         setViewMode(viewMode === "list" ? "grid" : "list");

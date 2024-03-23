@@ -51,6 +51,7 @@ const RenderOptionsPage = (props: iOptionsPage): JSX.Element => {
 
 
   const storageListener = (changes: any, areaName: string): void => {
+    console.log(changes);
     if(areaName === "sync"){
         if(changes.folders){
           dispatch(readAllFoldersFromBrowserAction(changes.folders.newValue));

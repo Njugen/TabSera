@@ -16,6 +16,7 @@ import { setShowFolderChangeWarning } from "../../redux/actions/warningActions";
 import { createFolderAction, updateFolderAction } from "../../redux/actions/folderCollectionActions";
 import { setCurrentlyEditingTab } from "../../redux/actions/miscActions";
 import CloseIcon from "../../images/icons/close_icon";
+import { saveToStorage } from "../../services/webex_api/storage";
 
 
 /*
@@ -177,10 +178,11 @@ const FolderManager = (props: iPopup): JSX.Element => {
                 } else {
                     dispatch(updateFolderAction(state.InEditFolderReducer));
                 }
+                
             } else {
                 dispatch(createFolderAction(state.InEditFolderReducer));
             }   
-
+      
             handleClose(true);
         });
        
