@@ -89,7 +89,11 @@ const CurrentSessionSection = (props: any): JSX.Element => {
                    
                     </div>
                     <div className="flex items-center justify-end">
-                        <PrimaryButton disabled={false} text="Save this session to workspace" onClick={() => setAddToWorkspaceMessage(true)} />
+                        <PrimaryButton 
+                            disabled={false} 
+                            text="Save this session to workspace" 
+                            onClick={() => setAddToWorkspaceMessage(true)} 
+                        />
                     </div>
                 </div>
             </>
@@ -101,13 +105,13 @@ const CurrentSessionSection = (props: any): JSX.Element => {
         const existingWindowsElements: Array<JSX.Element> = existingWindows?.map((item: iWindowItem, i: number) => {
             return (
                 <CurrentSessionWindowItem 
-                key={`window-item-${i}`} 
-                tabsCol={4} 
-                disableEdit={currentSessionData.windows.length < 2 ? true : false} 
-                disableTabMark={false} 
-                disableTabEdit={true} id={item.id} 
-                tabs={item.tabs} 
-                initExpand={true} 
+                    key={`window-item-${i}`} 
+                    tabsCol={4} 
+                    disableEdit={currentSessionData.windows.length < 2 ? true : false} 
+                    disableTabMark={false} 
+                    disableTabEdit={true} id={item.id} 
+                    tabs={item.tabs} 
+                    initExpand={true} 
                 />
             );
         });

@@ -249,10 +249,23 @@ const FolderManager = (props: iPopup): JSX.Element => {
                     </div>
                     <div id="popup-body" className="px-8 pt-6">
                         <FormField label="Name *" error={inValidFields.name} description="Give a name to this workspace. A sensible name may help your workflow when relevant tabs are needed.">
-                            <input data-testid="name-field" id="name-field" type="text" defaultValue={state.InEditFolderReducer?.name} className={predef.textfield_full} onBlur={(e: any) => handleChangeField("name", e.target.value)} />
+                            <input 
+                                data-testid="name-field" 
+                                id="name-field" 
+                                type="text" 
+                                defaultValue={state.InEditFolderReducer?.name} 
+                                className={predef.textfield_full} 
+                                onBlur={(e: any) => handleChangeField("name", e.target.value)} 
+                            />
                         </FormField>
                         <FormField label="Description" description="Describe the purpose of this workspace.">
-                            <textarea data-testid="desc-field" id="desc-field" defaultValue={state.InEditFolderReducer?.desc} className={predef.textarea_full} onBlur={(e: any) => handleChangeField("desc", e.target.value)}></textarea>
+                            <textarea 
+                                data-testid="desc-field" 
+                                id="desc-field" 
+                                defaultValue={state.InEditFolderReducer?.desc} 
+                                className={predef.textarea_full} 
+                                onBlur={(e: any) => handleChangeField("desc", e.target.value)}
+                            ></textarea>
                         </FormField>
                         <div className={`py-6 flex flex-row items-center`}>
                             <div className="w-full">

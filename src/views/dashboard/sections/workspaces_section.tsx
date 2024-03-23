@@ -345,13 +345,44 @@ const WorkspacesSection = (props: any): JSX.Element => {
                 <>
                     <div className="inline-flex items-center justify-end w-full">
                         <div className="flex">
-                            <TextIconButton disabled={false} icon={markSpecs.icon} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text={markSpecs.label} onClick={markSpecs.handle} />
-                            <TextIconButton disabled={markedFoldersId.length > 0 ? false : true} icon={"folder_duplicate"} size={{ icon: 20, text: "text-sm" }}  fill={markedFoldersId.length > 0 ? "#6D00C2" : "#9f9f9f"} text="Duplicate" onClick={handlePrepareDuplication} />
-                            <TextIconButton disabled={markedFoldersId.length >= 2 ? false : true} icon={"merge"} size={{ icon: 20, text: "text-sm" }}  fill={markedFoldersId.length >= 2 ? "#6D00C2" : "#9f9f9f"} text="Merge" onClick={handleMergeFolders} />
-                            <TextIconButton disabled={markedFoldersId.length > 0 ? false : true} icon={"trash"} size={{ icon: 20, text: "text-sm" }}  fill={markedFoldersId.length > 0 ? "#6D00C2" : "#9f9f9f"} text="Delete" onClick={handlePrepareMultipleRemovals} />
+                            <TextIconButton 
+                                disabled={false} 
+                                icon={markSpecs.icon} 
+                                size={{ icon: 20, text: "text-sm" }} 
+                                fill="#6D00C2" text={markSpecs.label} 
+                                onClick={markSpecs.handle} 
+                            />
+                            <TextIconButton 
+                                disabled={markedFoldersId.length > 0 ? false : true} 
+                                icon={"folder_duplicate"} size={{ icon: 20, text: "text-sm" }} 
+                                fill={markedFoldersId.length > 0 ? "#6D00C2" : "#9f9f9f"} 
+                                text="Duplicate" 
+                                onClick={handlePrepareDuplication} 
+                            />
+                            <TextIconButton 
+                                disabled={markedFoldersId.length >= 2 ? false : true} 
+                                icon={"merge"} 
+                                size={{ icon: 20, text: "text-sm" }}
+                                fill={markedFoldersId.length >= 2 ? "#6D00C2" : "#9f9f9f"} 
+                                text="Merge" onClick={handleMergeFolders} 
+                            />
+                            <TextIconButton 
+                                disabled={markedFoldersId.length > 0 ? false : true} 
+                                icon={"trash"} 
+                                size={{ icon: 20, text: "text-sm" }} 
+                                fill={markedFoldersId.length > 0 ? "#6D00C2" : "#9f9f9f"} 
+                                text="Delete" 
+                                onClick={handlePrepareMultipleRemovals} 
+                            />
                         </div>
                         <div className="flex items-center justify-end">     
-                            <TextIconButton disabled={false} icon={workspaceSettings.viewMode === "list" ? "grid" : "list"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text={workspaceSettings.viewMode === "list" ? "Grid" : "List"} onClick={handleChangeViewMode} />
+                            <TextIconButton 
+                                disabled={false} 
+                                icon={workspaceSettings.viewMode === "list" ? "grid" : "list"} 
+                                size={{ icon: 20, text: "text-sm" }} 
+                                fill="#6D00C2" text={workspaceSettings.viewMode === "list" ? "Grid" : "List"} 
+                                onClick={handleChangeViewMode} 
+                            />
                             <div className="relative w-[175px] mr-4 flex items-center">
                                 {renderSortOptionsDropdown()}
                             </div>

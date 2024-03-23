@@ -212,7 +212,11 @@ const FolderItem = (props: iFolderItem): JSX.Element => {
 
     return (
         <>
-            <div ref={folderRef} data-testid={"folder-item"} className={`shadow-[0_0px_3px_1px_rgba(0,0,0,0.125)] ${viewMode === "list" ? "my-4 duration-75" : "my-4 duration-75"} sticky transition-all ease-in w-full rounded-md`}>
+            <div 
+                ref={folderRef} 
+                data-testid={"folder-item"} 
+                className={`shadow-[0_0px_3px_1px_rgba(0,0,0,0.125)] ${viewMode === "list" ? "my-4 duration-75" : "my-4 duration-75"} sticky transition-all ease-in w-full rounded-md`}
+            >
                 <div ref={headerRef}>
                     <div className="inline-block">
                         {expanded === false ? <ClosedFolderIcon size={23} fill={"#000"} /> : <OpenedFolderIcon size={26} fill={"#000"} />}
