@@ -1,7 +1,7 @@
 interface iHistoryState {
     tabs: Array<chrome.history.HistoryItem>
     markedTabs: Array<chrome.history.HistoryItem>
-    tabsSort: string,
+    tabSortOptionId: number,
     viewMode: "list" | "grid",
 }
 

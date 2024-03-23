@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import GenericIconButton from "./utils/generic_icon_button";
 import PrimaryButton from "./utils/primary_button";
-import PurpleBorderButton from "./utils/purpleBorderButton";
+import PurpleBorderButton from "./utils/purple_border_button";
 import TabItem from "./tab_item";
 import { iWindowItem} from "../interfaces/window_item";
 import EditableTabItem from "./editable_tab_item";
@@ -9,6 +9,9 @@ import { iTabItem } from "../interfaces/tab_item";
 import { useDispatch, useSelector } from "react-redux";
 import { updateInEditFolder } from "../redux/actions/inEditFolderActions";
 import { setCurrentlyEditingTab, setTabInEdits } from "../redux/actions/miscActions";
+import TrashIcon from "../images/icons/trash_icon";
+import CollapseIcon from "../images/icons/collapse_icon";
+import ExpandIcon from "../images/icons/expand_icon";
 
 /*
     Window containing tabs and various window related options. Used primarily
@@ -122,7 +125,7 @@ const WindowItem = (props: iWindowItem): JSX.Element => {
             if(editTab === tab.id){
                 return renderEditTab(id, tab.url, editTab);
             } else {
-                return <TabItem marked={false} disableMark={disableTabMark} disableEdit={disableTabEdit} key={tab.id} id={tab.id} label={tab.label} url={tab.url} onMark={handleMarkTab} onEdit={handleTabEdit} />
+                return <TabItem marked={false} disableMark={disableTabMark} disableEdit={disableTabEdit} key={`window-${id}-tab-${tab.id}`} id={tab.id} label={tab.label} url={tab.url} onMark={handleMarkTab} onEdit={handleTabEdit} />
             }
         })
 
@@ -138,6 +141,30 @@ const WindowItem = (props: iWindowItem): JSX.Element => {
         }
     }
 
+    const trashButton = () => {
+        return (
+            <GenericIconButton icon="trash" onClick={handleDeleteWindow}>
+                 <TrashIcon fill="#000" size={20} />
+            </GenericIconButton>
+        )
+    }
+
+    const expandCollapseButton = (): JSX.Element => {
+        let icon: JSX.Element;
+
+        if(expanded === true){
+            icon = <CollapseIcon size={20} fill="#000" />
+        } else {
+            icon = <ExpandIcon size={20} fill="#000" />
+        }
+
+        return (
+            <GenericIconButton icon={expanded === true ? "collapse" : "expand"} onClick={handleExpand}>
+                {icon}
+            </GenericIconButton>
+        );
+    }
+
     return (
         <div data-testid="window-item" className="window-item w-full py-1 rounded-md mb-3" id={`window-${id}`}>
             <div className="flex justify-between items-center w-full border-b border-tbfColor-darkgrey">
@@ -145,8 +172,8 @@ const WindowItem = (props: iWindowItem): JSX.Element => {
                     {`Window`}
                 </h3>
                 <div className={`tab-settings`}>
-                    {disableEdit === false && <GenericIconButton icon="trash" size={20} fill="#000" onClick={handleDeleteWindow} />}
-                    <GenericIconButton icon={expanded === true ? "collapse" : "expand"} size={20} fill="#000" onClick={handleExpand} />
+                    {disableEdit === false && trashButton()}
+                    {expandCollapseButton()}
                 </div>
             </div>
             <div data-testid={`tab-list`} data-visibility={expanded ? "visible" : "hidden"} className={`tabs-list mt-3 overflow-hidden ${expanded === true ? "max-h-[2000px] ease-out visible" : "max-h-0 ease-in invisible"} duration-200 transition-all`}>

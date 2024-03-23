@@ -10,6 +10,7 @@ import {
     filterHistoryTabsByString, 
     filterFoldersByString 
 } from "../../common/search_filters";
+import CloseIcon from "../../images/icons/close_icon";
 
 function SearchResultsContainer(props:any): JSX.Element {
     const { keyword, onClose } = props;
@@ -119,7 +120,9 @@ function SearchResultsContainer(props:any): JSX.Element {
                     <h1 data-testid="manage-folder-title" className="text-3xl text-tbfColor-darkpurple font-light inline-block">
                         Search Results
                     </h1>
-                    <GenericIconButton icon="close" size={34} fill="rgba(0,0,0,0.2)" onClick={() => handleClose()} />
+                    <GenericIconButton icon="close" onClick={handleClose}>
+                        <CloseIcon size={34} fill="rgba(0,0,0,0.2)" />
+                    </GenericIconButton>
                 </div>
                 <div className="mt-4">
                     <h3 className="uppercase font-bold text-md mb-4 text-tbfColor-darkergrey">Folders</h3>

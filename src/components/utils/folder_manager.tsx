@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import GenericIconButton from './generic_icon_button';
 import PrimaryButton from './primary_button';
-import PurpleBorderButton from "./purpleBorderButton";
+import PurpleBorderButton from "./purple_border_button";
 import FormField from "./form_field";
 import * as predef from "../../styles/predef";
 import { iPopup } from "../../interfaces/popup";
@@ -15,6 +15,8 @@ import { useDispatch, useSelector } from "../../redux/mocked_hooks";
 import { setShowFolderChangeWarning } from "../../redux/actions/warningActions";
 import { createFolderAction, updateFolderAction } from "../../redux/actions/folderCollectionActions";
 import { setCurrentlyEditingTab } from "../../redux/actions/miscActions";
+import CloseIcon from "../../images/icons/close_icon";
+import { saveToStorage } from "../../services/webex_api/storage";
 
 
 /*
@@ -36,6 +38,8 @@ const FolderManager = (props: iPopup): JSX.Element => {
         windows: false
     });
 
+    const { popup_container_transparent_bg, popup_container_default } = styles;
+
     const popupRef = useRef<HTMLDivElement>(null);
     const dispatch = useDispatch();
 
@@ -48,16 +52,16 @@ const FolderManager = (props: iPopup): JSX.Element => {
         document.body.style.overflowY = "hidden";
 
         // Information about the folder. If undefined, there are no preset information
-        let payload: iFolderItem | undefined = folder;
+        let folderSpecs: iFolderItem | undefined = folder;
         
         // Apply slide down effect once this popup is launched
         setShow(true);
      
-        // Payload is undefined, this means this popup is used for creating a new folder.
+        // folderSpecs is undefined, this means this popup is used for creating a new folder.
         // Otherwise, a folder is being edited.
-        if(!payload){
+        if(!folderSpecs){
             const randId = randomNumber();
-            payload = {
+            folderSpecs = {
                 id: randId,
                 name: "",
                 desc: "",
@@ -70,10 +74,10 @@ const FolderManager = (props: iPopup): JSX.Element => {
         }
 
         // Track the preset windows of this payload. Used to track new/removed windows
-        setOriginWindows(JSON.stringify(payload.windows));
+        setOriginWindows(JSON.stringify(folderSpecs.windows));
 
         // Tell redux this popup is active and a create/edit process is ongoing.
-        dispatch(initInEditFolder(payload));
+        dispatch(initInEditFolder(folderSpecs));
     }, []);
 
     useEffect(() => {
@@ -174,10 +178,11 @@ const FolderManager = (props: iPopup): JSX.Element => {
                 } else {
                     dispatch(updateFolderAction(state.InEditFolderReducer));
                 }
+                
             } else {
                 dispatch(createFolderAction(state.InEditFolderReducer));
             }   
-
+      
             handleClose(true);
         });
        
@@ -195,9 +200,9 @@ const FolderManager = (props: iPopup): JSX.Element => {
         let cssClasses = "";
 
         if(type === "slide-in"){
-            cssClasses = `${styles.popup_container_transparent_bg} scroll-smooth overflow-y-scroll flex fixed top-0 left-0 justify-center items-center w-screen z-[600] ${show === false ? "h-0" : "h-screen"}`;
+            cssClasses = `${popup_container_transparent_bg} scroll-smooth overflow-y-scroll flex fixed top-0 left-0 justify-center items-center w-screen z-[600] ${show === false ? "h-0" : "h-screen"}`;
         } else if(type === "popup") {
-            cssClasses = `${styles.popup_container_default} overflow-y-auto flex fixed top-0 left-0 justify-center items-center w-screen z-[600] ${show === false ? "h-0" : "h-screen"}`;
+            cssClasses = `${popup_container_default} overflow-y-auto flex fixed top-0 left-0 justify-center items-center w-screen z-[600] ${show === false ? "h-0" : "h-screen"}`;
         }
 
         return cssClasses;
@@ -232,6 +237,7 @@ const FolderManager = (props: iPopup): JSX.Element => {
                 }}    
             />
         }
+       
         <div ref={popupRef} className={outerStyleDirection()}>   
             <div data-testid="manage-folder-popup" className="relative top-0 md:bottom-12 h-screen w-[992px]">
                 <div className={innerStyleDirection()}>  
@@ -239,14 +245,29 @@ const FolderManager = (props: iPopup): JSX.Element => {
                         <h1 data-testid="manage-folder-title" className="text-3xl text-tbfColor-darkpurple font-light inline-block">
                             {title}
                         </h1>
-                        <GenericIconButton icon="close" size={34} fill="rgba(0,0,0,0.2)" onClick={() => handleClose()} />
+                        <GenericIconButton icon="close" onClick={handleClose}>
+                            <CloseIcon size={34} fill="rgba(0,0,0,0.2)" />
+                        </GenericIconButton>
                     </div>
                     <div id="popup-body" className="px-8 pt-6">
                         <FormField label="Name *" error={inValidFields.name} description="Give a name to this workspace. A sensible name may help your workflow when relevant tabs are needed.">
-                            <input data-testid="name-field" id="name-field" type="text" defaultValue={state.InEditFolderReducer?.name} className={predef.textfield_full} onBlur={(e: any) => handleChangeField("name", e.target.value)} />
+                            <input 
+                                data-testid="name-field" 
+                                id="name-field" 
+                                type="text" 
+                                defaultValue={state.InEditFolderReducer?.name} 
+                                className={predef.textfield_full} 
+                                onBlur={(e: any) => handleChangeField("name", e.target.value)} 
+                            />
                         </FormField>
                         <FormField label="Description" description="Describe the purpose of this workspace.">
-                            <textarea data-testid="desc-field" id="desc-field" defaultValue={state.InEditFolderReducer?.desc} className={predef.textarea_full} onBlur={(e: any) => handleChangeField("desc", e.target.value)}></textarea>
+                            <textarea 
+                                data-testid="desc-field" 
+                                id="desc-field" 
+                                defaultValue={state.InEditFolderReducer?.desc} 
+                                className={predef.textarea_full} 
+                                onBlur={(e: any) => handleChangeField("desc", e.target.value)}
+                            ></textarea>
                         </FormField>
                         <div className={`py-6 flex flex-row items-center`}>
                             <div className="w-full">

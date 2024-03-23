@@ -3,6 +3,8 @@ import "./../styles/global_utils.module.scss";
 import Checkbox from "./utils/checkbox";
 import { iTabItem } from "../interfaces/tab_item";
 import GenericIconButton from "./utils/generic_icon_button";
+import PenIcon from "../images/icons/pen_icon";
+import CloseLightIcon from "../images/icons/close_light_icon";
 
 /* 
     Tab component with clickable url and options (close tab, edit tab, mark tab)
@@ -40,6 +42,23 @@ const TabItem = (props: iTabItem): JSX.Element => {
         return <></>
     }
 
+
+    const editButton = (): JSX.Element => {
+        return (
+            <GenericIconButton icon="edit" onClick={() => onEdit && onEdit(id)}>
+                <PenIcon size={24} fill={"#000"} />
+            </GenericIconButton>
+        )
+    }
+
+    const closeButton = (): JSX.Element => {
+        return (
+            <GenericIconButton icon="close_light" onClick={() => onClose && onClose(id)}>
+                <CloseLightIcon size={20} fill={"#000"} />
+            </GenericIconButton>
+        )
+    }
+
     return (
         <>
             <div data-testid="tab-item" className="bg-gray-100 border px-2 border-gray-100 hover:border-tbfColor-lightpurple hover:bg-tbfColor-lighterpurple hover:text-tbf-middlegrey2 transition-all ease-in duration-100 tab-item my-2 flex items-center justify-between">
@@ -49,13 +68,9 @@ const TabItem = (props: iTabItem): JSX.Element => {
                 </a>
             
                 <div className="tab-item-settings px-2 py-2 flex flex-row">
-                    {!disableEdit &&
-                        <GenericIconButton icon="edit" size={24} fill={"#000"} onClick={() => onEdit && onEdit(id)} />
-                    }
-                    {!disableMark &&
-                        <Checkbox checked={marked} onCallback={(e) => onMark && onMark(id, e.state)} />
-                    }
-                    {disableCloseButton === false && <GenericIconButton icon="close_light" size={20} fill={"#000"} onClick={() => onClose && onClose(id)} />}
+                    {!disableEdit && editButton()}
+                    {!disableMark && <Checkbox checked={marked} onCallback={(e) => onMark && onMark(id, e.state)} />}
+                    {disableCloseButton === false && closeButton()}
                 </div>
             </div>
         </>

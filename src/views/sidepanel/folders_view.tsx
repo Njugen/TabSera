@@ -4,26 +4,52 @@ import { useSelector, useDispatch } from "react-redux";
 import { iFolderItem } from '../../interfaces/folder_item';
 import FolderItem from "../../components/folder_item";
 import { getFromStorage, saveToStorage } from '../../services/webex_api/storage';
-import { readAllFoldersFromBrowserAction } from '../../redux/actions/folderCollectionActions';
+import { deleteFolderAction, readAllFoldersFromBrowserAction } from '../../redux/actions/folderCollectionActions';
 import FolderManager from "../../components/utils/folder_manager";
 import { clearInEditFolder } from "../../redux/actions/inEditFolderActions";
 import { clearMarkedFoldersAction } from "../../redux/actions/workspaceSettingsActions";
 import MessageBox from "../../components/utils/message_box";
 import PrimaryButton from "../../components/utils/primary_button";
+import iFoldersView from "../../interfaces/folders_view";
+import styles from "./../../styles/global_utils.module.scss";
+import NewFolderIcon from "../../images/icons/new_folder_icon";
+import CircleButton from "../../components/utils/circle_button";
 
-const FoldersView = (props:any): JSX.Element => {
+const FoldersView = (props: iFoldersView): JSX.Element => {
+    const [editFolderId, setEditFolderId] = useState<number | null>(null);
     const [windowsPayload, setWindowsPayload] = useState<Array<iWindowItem> | null>(null);
     const [folderLaunchType, setFolderLaunchType] = useState<string | null>(null); 
     const [totalTabsCount, setTotalTabsCount] = useState<number>(0);
     const [showPerformanceWarning, setShowPerformanceWarning] = useState<boolean>(false);
-    const [showFolderManager, setShowFolderManager] = useState<boolean>(false);
+    const [removalTarget, setRemovalTarget] = useState<iFolderItem | null>(null);
+    const [createFolder, setCreateFolder] = useState<boolean>(false);
 
     const dispatch = useDispatch();
     const folderCollection = useSelector((state: any) => state.FolderCollectionReducer);
 
+    const storageListener = (changes: any, areaName: string): void => {
+        if(areaName === "sync"){
+            if(changes.folders){
+              dispatch(readAllFoldersFromBrowserAction(changes.folders.newValue));
+            }
+        }
+    };
+
+    useEffect(() => {
+        getFromStorage("sync", "folders", (data) => {  
+            dispatch(readAllFoldersFromBrowserAction(data.folders));
+        })
+
+        chrome.storage.onChanged.addListener(storageListener);
+
+        return () => {
+            chrome.storage.onChanged.removeListener(storageListener);
+          }
+    }, []);
+
     useEffect(() => {        
         if(folderCollection.length > 0){
-            saveToStorage("local", "folders", folderCollection);
+            saveToStorage("sync", "folders", folderCollection);
         } 
     }, [folderCollection]);
 
@@ -42,15 +68,8 @@ const FoldersView = (props:any): JSX.Element => {
             } else {
                 handleLaunchFolder(windowsPayload);
             }
-            //handleLaunchFolder(windowsPayload);
         });
     }, [folderLaunchType]);
-
-    useEffect(() => {
-        getFromStorage("local", "folders", (data) => {  
-            dispatch(readAllFoldersFromBrowserAction(data.folders));
-        })
-    }, []);
 
 
     const handlePrepareLaunchFolder = (windows: Array<iWindowItem>, type: string): void => {
@@ -97,15 +116,46 @@ const FoldersView = (props:any): JSX.Element => {
         setFolderLaunchType(null);
         setShowPerformanceWarning(false);
     }
+    
+    // Open a specific folder
+    const renderFolderManagerPopup = (): JSX.Element => {
+        let render;
+
+        if(createFolder === true){
+            render = <FolderManager type="slide-in" title="Create workspace" onClose={handleCloseFolderManager} />;
+        } else {
+            const targetFolder: Array<iFolderItem> = folderCollection.filter((item: iFolderItem) => editFolderId === item.id);
+            const input: iFolderItem = {...targetFolder[0]};
+
+            if(targetFolder.length > 0){
+                render = <FolderManager type="slide-in" title={`Edit folder ${targetFolder[0].id}`} folder={input} onClose={handleCloseFolderManager} />;
+            } else {
+                render = <></>;
+            } 
+        }
+
+        return render;
+    }
 
     const renderFolders = (): Array<JSX.Element> => {
+        const handleFolderDelete = (target: iFolderItem): void => {
+            chrome.storage.sync.get("removal_warning_setting", (data) => {
+                if(data.removal_warning_setting === true) {
+                    setRemovalTarget(target);
+                } else {
+                    dispatch(deleteFolderAction(target.id)); 
+                    setRemovalTarget(null);
+                }
+            });
+        }
+
         const result = folderCollection.map((folder: iFolderItem, i: number) => {
             return (
                 <FolderItem 
-                    //onDelete={(e) => handleFolderDelete(folder)} 
+                    onDelete={(e) => handleFolderDelete(folder)} 
                     marked={false} 
                     //onMark={handleMarkFolder} 
-                    //onEdit={() => setEditFolderId(folder.id)} 
+                    onEdit={() => setEditFolderId(folder.id)} 
                     index={folderCollection.length-i}
                     key={folder.id} 
                     type={folder.type} 
@@ -124,7 +174,9 @@ const FoldersView = (props:any): JSX.Element => {
     const handleCloseFolderManager = (): void => {
         dispatch(clearMarkedFoldersAction());
         dispatch(clearInEditFolder());
-        setShowFolderManager(false);
+        
+        setEditFolderId(null);
+        setCreateFolder(false);
     }   
 
     return (
@@ -138,9 +190,24 @@ const FoldersView = (props:any): JSX.Element => {
                         setFolderLaunchType(null); setShowPerformanceWarning(false);}}}    
                 />
             }
-            {showFolderManager === true && <FolderManager type="popup" title="Create workspace" onClose={handleCloseFolderManager} />}
-            <div className="flex justify-center mt-4 mb-6">
-                <PrimaryButton disabled={false} text="Add folder" onClick={() => setShowFolderManager(true)} />
+            {removalTarget &&
+                <MessageBox 
+                    title="Warning" 
+                    text={`You are about to remove the "${removalTarget.name}" workspace and all its contents. This is irreversible, do you want to proceed?`}
+                    primaryButton={{ text: "Yes, remove this folder", callback: () => { dispatch(deleteFolderAction(removalTarget.id)); setRemovalTarget(null)}}}
+                    secondaryButton={{ text: "No, don't remove", callback: () => setRemovalTarget(null)}}    
+                />
+            }
+          
+            {renderFolderManagerPopup()}
+            <div className="flex justify-end mx-2 mt-4 mb-6">
+                <CircleButton 
+                    disabled={false} 
+                    bgCSSClass="bg-tbfColor-lightpurple" 
+                    onClick={() => setCreateFolder(true)}
+                >
+                    <NewFolderIcon size={20} fill={"#fff"} />
+                </CircleButton>
             </div>
             {renderFolders()}
         </>

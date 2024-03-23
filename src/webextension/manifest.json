@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "name": "TabSera",
+    "name": "Tab Management Browser Plugin",
     "version": "0.0.1",
     "description": "Providing great overview and simple tools for efficient tab management.",
     "permissions": [
@@ -10,7 +10,7 @@
         "sidePanel"
     ],
     "action": {
-        "default_title": "TabSera"
+        "default_title": "Tab Management Browser Plugin"
     },
     "icons": {
         "128": "brand/icon-128.png",

@@ -37,14 +37,14 @@ const EditableTabItem = (props: iEditableTabItem): JSX.Element => {
             setErrorMessage("A tab needs to have a valid URL, e.g. https://google.com/...");
         } else {
             setErrorMessage(null);
-            const payload: iTabItem = {
+            const tab: iTabItem = {
                 id: tabId,
                 label: e.target.value,
                 url: e.target.value,
                 marked: e.target.marked
             };
             
-            dispatch(updateWindowManager(windowId, payload)); 
+            dispatch(updateWindowManager(windowId, tab)); 
             onStop();
         }
     }

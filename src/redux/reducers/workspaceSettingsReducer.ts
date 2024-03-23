@@ -10,7 +10,7 @@ import {
 
 const workspaceSettingsState: iWorkspaceState = {
     markedFoldersId: [],
-    folderSort: "asc",
+    folderSortOptionId: 0,
     viewMode: "grid"
 }
 
@@ -44,7 +44,7 @@ function WorkspaceSettingsReducer(state = workspaceSettingsState, action: any) {
     } else if(type === SET_WORKSPACES_SORT_ORDER){
         return {
             ...state,
-            folderSort: data
+            folderSortOptionId: data
         }
     } else if(type === CHANGE_WORKSPACES_VIEWMODE){
         return {

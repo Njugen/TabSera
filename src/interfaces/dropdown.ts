@@ -1,6 +1,12 @@
 interface iFieldOption {
     id: number,
-    label: string
+    label: string,
+}
+
+interface iSettingFieldOption {
+    id: number,
+    value: string | number
+    label: string,
 }
 
 interface iDropdownSelected {
@@ -14,4 +20,4 @@ interface iDropdown {
     onCallback: (e: iDropdownSelected) => void
 }
 
-export { iFieldOption, iDropdownSelected, iDropdown }
+export { iFieldOption, iSettingFieldOption, iDropdownSelected, iDropdown }

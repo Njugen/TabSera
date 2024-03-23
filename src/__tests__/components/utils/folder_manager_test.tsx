@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "../../../redux/mocked_hooks";
 import { iFolderItem } from "../../../interfaces/folder_item";
 import { initInEditFolder } from "../../../redux/actions/inEditFolderActions";
 import { setCurrentlyEditingTab, setTabInEdits } from "../../../redux/actions/miscActions";
+import { act } from "react-dom/test-utils";
 
 jest.mock("../../../redux/mocked_hooks");
 jest.setTimeout(10000);
@@ -299,7 +300,7 @@ describe("Test of close and cancelling of folder management popup", () => {
 
         fireEvent.click(xButton);
         
-        jest.runAllTimers();
+        act(() => jest.runAllTimers());
         
         expect(mockCloseFunction).toHaveBeenCalled();
         done();
@@ -322,7 +323,7 @@ describe("Test of close and cancelling of folder management popup", () => {
 
         fireEvent.click(cancelButton);
         
-        jest.runAllTimers();
+        act(() => jest.runAllTimers());
         
         expect(mockCloseFunction).toHaveBeenCalled();
         done();
@@ -692,7 +693,7 @@ describe("Test of close and cancelling of folder management popup", () => {
 
             fireEvent.click(xButton);
             
-            jest.runAllTimers();
+            act(() => jest.runAllTimers());
             
             expect(mockCloseFunction).toHaveBeenCalled();
             done();
@@ -760,7 +761,7 @@ describe("Test of close and cancelling of folder management popup", () => {
 
             fireEvent.click(cancelButton);
             
-            jest.runAllTimers();
+            act(() => jest.runAllTimers());
             
             expect(mockCloseFunction).toHaveBeenCalled();
             done();
@@ -851,7 +852,7 @@ describe("Test of close and cancelling of folder management popup", () => {
 
             fireEvent.click(cancelButton);
 
-            jest.runAllTimers();
+            act(() => jest.runAllTimers());
             expect(mockCloseFunction).toHaveBeenCalled();
         });
 
@@ -953,7 +954,7 @@ describe("Test of close and cancelling of folder management popup", () => {
 
             fireEvent.click(cancelButton);
 
-            jest.runAllTimers();
+            act(() => jest.runAllTimers());
             expect(mockCloseFunction).toHaveBeenCalled();
         });
 
@@ -1049,7 +1050,7 @@ describe("Test of close and cancelling of folder management popup", () => {
 
             fireEvent.click(cancelButton);
 
-            jest.runAllTimers();
+            act(() => jest.runAllTimers());
             expect(mockCloseFunction).toHaveBeenCalled();
         });
 
@@ -1089,7 +1090,7 @@ describe("Test of close and cancelling of folder management popup", () => {
 
             fireEvent.click(xButton);
 
-            jest.runAllTimers();
+            act(() => jest.runAllTimers());
             expect(mockCloseFunction).toHaveBeenCalled();
         });
     })
@@ -1391,7 +1392,7 @@ test("Proceeding and declining warning message works", async () => {
     const proceedButton = screen.getByTestId("proceed-cancellation");
     fireEvent.click(proceedButton);
 
-    jest.runAllTimers();
+    act(() => jest.runAllTimers());
 
     expect(warningMessagePopup).not.toBeInTheDocument();
     expect(mockCloseFunction).toHaveBeenCalled();

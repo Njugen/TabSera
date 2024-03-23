@@ -41,15 +41,20 @@ const Dropdown = (props: iDropdown): JSX.Element => {
     
     const renderDropdownMenu = (): JSX.Element => {
         return (
-            <DropdownMenu tag={`${tag}`} options={options} selected={selected} onSelect={handleSelect} />
+            <DropdownMenu 
+                tag={`${tag}`} 
+                options={options} 
+                selected={selected} 
+                onSelect={handleSelect} 
+            />
         );
     }
 
 
     // Get information about the selected option 
-    const getSelectedOption = (): iFieldOption | null => {
+    const getSelectedOption = (): iFieldOption => {
         const target = options.find((option) => option.id === selected);
-        return target ? target : null;
+        return target ? target : preset;
     }
 
     const handleWindowClick = (e: any): void => {
@@ -85,11 +90,13 @@ const Dropdown = (props: iDropdown): JSX.Element => {
 
     useEffect(() => {
         // Once the selected option id has been changed, send it back to the parent component
-        onCallback({ selected: selected });
+        if(selected !== null) onCallback({ selected: selected });
     }, [selected]);
 
+    const dropdownBorderCSS = (showSubMenuContainer === true ? " border-tbfColor-lightpurple" : "border-tbfColor-middlegrey4");
+
     return (
-        <div ref={dropdownRef} className={`hover:cursor-pointer bg-white relative text-sm w-full text-tbfColor-darkergrey rounded-lg h-[2.75rem] border transition-all duration-75 ${showSubMenuContainer === true ? " border-tbfColor-lightpurple" : "border-tbfColor-middlegrey4"}`}>
+        <div ref={dropdownRef} className={`hover:cursor-pointer bg-white relative text-sm w-full text-tbfColor-darkergrey rounded-lg h-[2.75rem] border transition-all duration-75 ${dropdownBorderCSS}`}>
             <div id={`${tag}-selector`} data-testid={`${tag}-selector`} className="flex items-center justify-between mx-3 h-full" onClick={handleShowSubMenu}>          
                 <span className="hover:cursor-pointer">
                     { !getSelectedOption() ? preset.label : getSelectedOption()!.label }

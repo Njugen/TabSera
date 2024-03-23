@@ -1,6 +1,6 @@
 interface iWorkspaceState {
     markedFoldersId: Array<number>
-    folderSort: string,
+    folderSortOptionId: number,
     viewMode: "list" | "grid",
 }
 

@@ -3,11 +3,17 @@ import styles from "../../styles/global_utils.module.scss";
 import Dropdown from "./dropdown";
 import iAddToWorkspacePopup from './../../interfaces/add_to_workspace_popup';
 import GenericIconButton from "./generic_icon_button";
+import CloseIcon from '../../images/icons/close_icon';
 
 /*
     Popup where the user may choose where to add
     selected tabs (either to a new or existing workspace)
 */
+
+const { 
+    popup_container_transparent_bg,
+    popup_container_default
+} = styles;
 
 const AddToWorkspacePopup = (props: iAddToWorkspacePopup): JSX.Element => {
     const { 
@@ -33,9 +39,9 @@ const AddToWorkspacePopup = (props: iAddToWorkspacePopup): JSX.Element => {
         let cssClasses = "";
 
         if(type === "slide-in"){
-            cssClasses = `fixed flex ${styles.popup_container_transparent_bg} justify-center items-center top-0 left-0 w-full h-screen z-[1000]`;
+            cssClasses = `fixed flex ${popup_container_transparent_bg} justify-center items-center top-0 left-0 w-full h-screen z-[1000]`;
         } else if(type === "popup"){
-            cssClasses = `fixed flex ${styles.popup_container_default} justify-center top-0 left-0 w-screen h-screen z-[1000]`;
+            cssClasses = `fixed flex ${popup_container_default} justify-center top-0 left-0 w-screen h-screen z-[1000]`;
         }
 
         return cssClasses;
@@ -47,7 +53,12 @@ const AddToWorkspacePopup = (props: iAddToWorkspacePopup): JSX.Element => {
                 <p className="text-lg text-black inline-block mb-4 font-semibold">
                     To an existing workspace
                 </p>
-                <Dropdown tag="select-workspace-dropdown" preset={dropdownOptions[0]} options={dropdownOptions} onCallback={onExistingWorkspace} />
+                <Dropdown 
+                    tag="select-workspace-dropdown" 
+                    preset={dropdownOptions[0]} 
+                    options={dropdownOptions} 
+                    onCallback={onExistingWorkspace} 
+                />
             </div>
         );
     } 
@@ -59,7 +70,9 @@ const AddToWorkspacePopup = (props: iAddToWorkspacePopup): JSX.Element => {
                     <h1 data-testid="manage-folder-title" className="text-3xl text-tbfColor-darkpurple font-light inline-block">
                         {title}
                     </h1>
-                    <GenericIconButton icon="close" size={34} fill="rgba(0,0,0,0.2)" onClick={handleCancel} />
+                    <GenericIconButton icon="close" onClick={handleCancel}>
+                        <CloseIcon size={34} fill="rgba(0,0,0,0.2)" />
+                    </GenericIconButton>
                 </div>
                 <div className="flex flex-col items-center pb-6">
                     {

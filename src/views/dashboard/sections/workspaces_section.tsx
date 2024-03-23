@@ -4,6 +4,7 @@ import PrimaryButton from '../../../components/utils/primary_button';
 import FolderManager from '../../../components/utils/folder_manager';
 import { useEffect, useState } from "react";
 import { iFolderItem } from '../../../interfaces/folder_item';
+import { iFieldOption } from '../../../interfaces/dropdown';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearInEditFolder  } from '../../../redux/actions/inEditFolderActions';
 import {  createFolderAction, readAllFoldersFromBrowserAction } from '../../../redux/actions/folderCollectionActions';
@@ -51,15 +52,23 @@ const WorkspacesSection = (props: any): JSX.Element => {
 
     // Get folders from browser storage and store it into redux 
     useEffect(() => {
-        getFromStorage("local", "folders", (data) => {  
+        getFromStorage("sync", "folders", (data) => {  
             dispatch(readAllFoldersFromBrowserAction(data.folders));
+        })
+
+        getFromStorage("sync", "workspace_sort", (data) => {  
+            dispatch(setFoldersSortOrder(data.workspace_sort));
+        })
+
+        getFromStorage("sync", "workspace_viewmode", (data) => {  
+            dispatch(changeWorkspacesViewMode(data.workspace_viewmode));
         })
     }, []);
 
     // Save/update the folder collection to browser memory once the redux collection has changes
     useEffect(() => {        
         if(folderCollection.length > 0){
-            saveToStorage("local", "folders", folderCollection);
+            saveToStorage("sync", "folders", folderCollection);
         } 
     }, [folderCollection]);
 
@@ -221,23 +230,28 @@ const WorkspacesSection = (props: any): JSX.Element => {
     const handleChangeViewMode = (): void => {
         const { viewMode } = workspaceSettings;
         
-        dispatch(changeWorkspacesViewMode(viewMode === "list" ? "grid" : "list"));
+        const newStatus = viewMode === "list" ? "grid" : "list"
+        saveToStorage("sync", "workspace_viewmode", newStatus)
+        dispatch(changeWorkspacesViewMode(newStatus));
     }
 
     // Sort all folders
     const handleSortFolders = (e: any): void => {
-        dispatch(setFoldersSortOrder(e.selected === 0 ? "asc" : "desc"));
+        const newStatus = e.selected;
+
+        saveToStorage("sync", "workspace_sort", newStatus);
+        dispatch(setFoldersSortOrder(newStatus));
     }
 
     // Render the folder list
     const renderFolders = (): Array<JSX.Element> => {
         const condition = (a: iFolderItem, b: iFolderItem): boolean => {
-            const { folderSort } = workspaceSettings
+            const { folderSortOptionId } = workspaceSettings
             
             const aNameLowerCase = a.name.toLowerCase();
             const bNameToLowerCase = b.name.toLowerCase();
 
-            return folderSort === "asc" ? (aNameLowerCase > bNameToLowerCase) : (bNameToLowerCase > aNameLowerCase);
+            return folderSortOptionId === 0 ? (aNameLowerCase > bNameToLowerCase) : (bNameToLowerCase > aNameLowerCase);
         }
 
         const sortedFolders = [...folderCollection].sort((a: any, b: any) => condition(a, b) ? 1 : -1);
@@ -265,7 +279,22 @@ const WorkspacesSection = (props: any): JSX.Element => {
             let result: JSX.Element = <></>;
             
             const collection: Array<number> = workspaceSettings.markedFoldersId;
-            result = <FolderItem onDelete={(e) => handleFolderDelete(folder)} index={sortedFolders.length-i} marked={collection.find((id) => folder.id === id) ? true : false} onMark={handleMarkFolder} onEdit={() => setEditFolderId(folder.id)} key={folder.id} type={folder.type} id={folder.id} viewMode={workspaceSettings.viewMode} name={folder.name} desc={folder.desc} windows={folder.windows} onOpen={handlePrepareLaunchFolder}/>
+            result = (
+                <FolderItem 
+                onDelete={(e) => handleFolderDelete(folder)} 
+                index={sortedFolders.length-i} 
+                marked={collection.find((id) => folder.id === id) ? true : false} 
+                onMark={handleMarkFolder} 
+                onEdit={() => setEditFolderId(folder.id)} 
+                key={folder.id} 
+                type={folder.type} 
+                id={folder.id} 
+                viewMode={workspaceSettings.viewMode} 
+                name={folder.name} 
+                desc={folder.desc} 
+                windows={folder.windows} 
+                onOpen={handlePrepareLaunchFolder}/>
+            )
             
             if(i % colsCount === 0){   
                 colsList[0].push(result);
@@ -288,16 +317,27 @@ const WorkspacesSection = (props: any): JSX.Element => {
 
         if(markedFoldersId.length > 0){
             markSpecs = {
-                label: "Unmark all",
-                icon: "deselected_checkbox",
+                label: "Mark all",
+                icon: "selected_checkbox",
                 handle: handleUnmarkAllFolders
             }
         } else {
             markSpecs = {
                 label: "Mark all",
-                icon: "selected_checkbox",
+                icon: "deselected_checkbox",
                 handle: handleMarkAllFolders
             }
+        }
+        
+        const renderSortOptionsDropdown = (): JSX.Element => {
+            const optionsList: Array<iFieldOption> = [
+                {id: 0, label: "Ascending"},
+                {id: 1, label: "Descending"},
+            ];
+
+            const presetOption = optionsList.filter((option: iFieldOption) => option.id === workspaceSettings.folderSortOptionId);
+    
+            return <Dropdown tag="sort-folders" preset={presetOption[0] || optionsList[0]} options={optionsList} onCallback={handleSortFolders} />
         }
 
         if(hasFolders()){
@@ -305,15 +345,46 @@ const WorkspacesSection = (props: any): JSX.Element => {
                 <>
                     <div className="inline-flex items-center justify-end w-full">
                         <div className="flex">
-                            <TextIconButton disabled={false} icon={markSpecs.icon} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text={markSpecs.label} onClick={markSpecs.handle} />
-                            <TextIconButton disabled={markedFoldersId.length > 0 ? false : true} icon={"folder_duplicate"} size={{ icon: 20, text: "text-sm" }}  fill={markedFoldersId.length > 0 ? "#6D00C2" : "#9f9f9f"} text="Duplicate" onClick={handlePrepareDuplication} />
-                            <TextIconButton disabled={markedFoldersId.length >= 2 ? false : true} icon={"merge"} size={{ icon: 20, text: "text-sm" }}  fill={markedFoldersId.length >= 2 ? "#6D00C2" : "#9f9f9f"} text="Merge" onClick={handleMergeFolders} />
-                            <TextIconButton disabled={markedFoldersId.length > 0 ? false : true} icon={"trash"} size={{ icon: 20, text: "text-sm" }}  fill={markedFoldersId.length > 0 ? "#6D00C2" : "#9f9f9f"} text="Delete" onClick={handlePrepareMultipleRemovals} />
+                            <TextIconButton 
+                                disabled={false} 
+                                icon={markSpecs.icon} 
+                                size={{ icon: 20, text: "text-sm" }} 
+                                fill="#6D00C2" text={markSpecs.label} 
+                                onClick={markSpecs.handle} 
+                            />
+                            <TextIconButton 
+                                disabled={markedFoldersId.length > 0 ? false : true} 
+                                icon={"folder_duplicate"} size={{ icon: 20, text: "text-sm" }} 
+                                fill={markedFoldersId.length > 0 ? "#6D00C2" : "#9f9f9f"} 
+                                text="Duplicate" 
+                                onClick={handlePrepareDuplication} 
+                            />
+                            <TextIconButton 
+                                disabled={markedFoldersId.length >= 2 ? false : true} 
+                                icon={"merge"} 
+                                size={{ icon: 20, text: "text-sm" }}
+                                fill={markedFoldersId.length >= 2 ? "#6D00C2" : "#9f9f9f"} 
+                                text="Merge" onClick={handleMergeFolders} 
+                            />
+                            <TextIconButton 
+                                disabled={markedFoldersId.length > 0 ? false : true} 
+                                icon={"trash"} 
+                                size={{ icon: 20, text: "text-sm" }} 
+                                fill={markedFoldersId.length > 0 ? "#6D00C2" : "#9f9f9f"} 
+                                text="Delete" 
+                                onClick={handlePrepareMultipleRemovals} 
+                            />
                         </div>
                         <div className="flex items-center justify-end">     
-                            <TextIconButton disabled={false} icon={workspaceSettings.viewMode === "list" ? "grid" : "list"} size={{ icon: 20, text: "text-sm" }}  fill="#6D00C2" text={workspaceSettings.viewMode === "list" ? "Grid" : "List"} onClick={handleChangeViewMode} />
+                            <TextIconButton 
+                                disabled={false} 
+                                icon={workspaceSettings.viewMode === "list" ? "grid" : "list"} 
+                                size={{ icon: 20, text: "text-sm" }} 
+                                fill="#6D00C2" text={workspaceSettings.viewMode === "list" ? "Grid" : "List"} 
+                                onClick={handleChangeViewMode} 
+                            />
                             <div className="relative w-[175px] mr-4 flex items-center">
-                                <Dropdown tag="sort-folders" preset={{id: 0, label: "Ascending"}} options={[{id: 0, label: "Ascending"}, {id: 1, label: "Descending"}]} onCallback={handleSortFolders} />
+                                {renderSortOptionsDropdown()}
                             </div>
                             <PrimaryButton disabled={false} text="Create workspace" onClick={() => setCreateFolder(true)} />
                         </div>

@@ -39,6 +39,8 @@ const AdvancedSearchBar = (props: iAdvancedSearchBar): JSX.Element => {
     const folderCollection = useSelector((state: any) => state.FolderCollectionReducer);
     const currentSessionSettings = useSelector((state: any) => state.CurrentSessionSettingsReducer);
     const historySettings = useSelector((state: any) => state.HistorySettingsReducer);
+
+    const { popup_container_transparent_bg } = styles;
     
     useEffect(() => {
         // Listen for clicks in the viewport. Used primarily to hide the search results
@@ -93,8 +95,10 @@ const AdvancedSearchBar = (props: iAdvancedSearchBar): JSX.Element => {
         });
    
         chrome.storage.sync.get("performance_notification_value", (data) => {
-            setTotalTabsCount(data.performance_notification_value);
-            if(data.performance_notification_value !== -1 && data.performance_notification_value <= tabsCount) {
+            const { performance_notification_value } = data;
+
+            setTotalTabsCount(performance_notification_value);
+            if(performance_notification_value !== -1 && performance_notification_value <= tabsCount) {
                 setShowPerformanceWarning(true);
             } else {
                 handleLaunchFolder(windowsPayload);
@@ -124,12 +128,14 @@ const AdvancedSearchBar = (props: iAdvancedSearchBar): JSX.Element => {
     const handleWindowClick = (e: any): void => {
         e.stopPropagation();
 
-        if(showResultsContainer === false || !e.target.parentElement || !e.target.parentElement.parentElement) return;
+        const { target } = e;
+
+        if(showResultsContainer === false || !target.parentElement || !target.parentElement.parentElement) return;
         
         const searchFieldId = "search-field";
         const searchResultsContainerId = "search-results-area";
 
-        if(e.target.id.includes(searchFieldId) === false && e.target.id.includes(searchResultsContainerId) === true){
+        if(target.id.includes(searchFieldId) === false && target.id.includes(searchResultsContainerId) === true){
             handleShowResultsContainer();
         }
     }
@@ -194,25 +200,76 @@ const AdvancedSearchBar = (props: iAdvancedSearchBar): JSX.Element => {
         setShowPerformanceWarning(false);
     }
 
+    const noResultsMessage = (): JSX.Element => {
+        return (<p className="text-center p-2">There are no results in this section</p>);
+    }
+
     // Render all filtered folders
-    const renderFolders = (): Array<JSX.Element> => {
+    const renderFolders = (): Array<JSX.Element> | JSX.Element => {
         const folders = filterFoldersByString(folderCollection, keyword);
 
-        return folders.map((folder: iFolderItem) => <FolderItem marked={false} id={folder.id!} name={folder.name} viewMode={"list"} type={"collapsed"} desc={folder.desc} windows={folder.windows} onOpen={handlePrepareLaunchFolder} />);
+        if(folders.length > 0){
+            return folders.map((folder: iFolderItem) => (
+                <FolderItem 
+                    key={`folder-sr-key-${folder.id}`} 
+                    marked={false} 
+                    id={folder.id!} 
+                    name={folder.name} 
+                    viewMode={"list"} 
+                    type={"collapsed"} 
+                    desc={folder.desc} 
+                    windows={folder.windows} 
+                    onOpen={handlePrepareLaunchFolder} 
+                />
+            ));
+        } else {
+            return noResultsMessage();
+        }  
     }
 
     // Render all filtered session tabs
-    const renderSessionTabs = (): Array<JSX.Element> => {
+    const renderSessionTabs = (): Array<JSX.Element> | JSX.Element => {
         const tabs = filterSessionTabsByString(currentSessionSettings, keyword);
-
-        return tabs.map((tab) => <TabItem key={tab.id} marked={false} id={tab.id!} label={tab.title!} url={tab.url!} disableEdit={true} disableMark={true} disableCloseButton={false} onClose={() => handleCloseTab(tab.id!)} />)
+        
+        if(tabs.length > 0){
+            return tabs.map((tab) => (
+                <TabItem 
+                    key={`tab-session-sr-key-${tab.id}`} 
+                    marked={false} 
+                    id={tab.id!} 
+                    label={tab.title!} 
+                    url={tab.url!} 
+                    disableEdit={true} 
+                    disableMark={true} 
+                    disableCloseButton={false} 
+                    onClose={() => handleCloseTab(tab.id!)} 
+                />
+            ));
+        } else {
+            return noResultsMessage();
+        } 
     }
 
     // Render all filtered history tabs
-    const renderHistoryTabs = (): Array<JSX.Element> => {
+    const renderHistoryTabs = (): Array<JSX.Element> | JSX.Element => {
         const tabs = filterHistoryTabsByString(historySettings, keyword);
 
-        return tabs.map((tab) => <TabItem key={tab.id} marked={false} id={parseInt(tab.id)} label={tab.title!} url={tab.url!} disableEdit={true} disableMark={true} disableCloseButton={true} onClose={() => {}} />);
+        if(tabs.length > 0){
+            return tabs.map((tab) => (
+                <TabItem 
+                    key={`tab-history-sr-key-${tab.id}`} 
+                    marked={false} 
+                    id={parseInt(tab.id)} 
+                    label={tab.title!} 
+                    url={tab.url!} 
+                    disableEdit={true} 
+                    disableMark={true} 
+                    disableCloseButton={true} 
+                />
+            ));
+        } else {
+            return noResultsMessage();
+        } 
     }
 
     const renderSearchResults = (): JSX.Element => {
@@ -222,20 +279,25 @@ const AdvancedSearchBar = (props: iAdvancedSearchBar): JSX.Element => {
             results = (
                 <div className="grid grid-cols-2 gap-x-[1.75rem]">   
                     <div className="">
-                        <h3 className="uppercase font-bold text-md mb-4 text-tbfColor-darkergrey">Folders</h3>
-                        {renderFolders()}
+                        <div className="mb-6">
+                            <h3 className="uppercase font-bold text-md mb-4 text-tbfColor-darkergrey">
+                                Folders
+                            </h3>
+                            {renderFolders()}
+                        </div>
+
+                        <div>
+                            <h3 className="uppercase font-bold text-md mb-4 text-tbfColor-darkergrey">
+                                History
+                            </h3>
+                            {renderHistoryTabs()}
+                        </div>
                     </div>
                     <div className="">
                         <h3 className="uppercase font-bold text-md mb-4 text-tbfColor-darkergrey">
                             Currently opened
                         </h3>
                         {renderSessionTabs()}
-                    </div>
-                    <div className="mt-4">
-                        <h3 className="uppercase font-bold text-md mb-4 text-tbfColor-darkergrey">
-                            History
-                        </h3>
-                        {renderHistoryTabs()}
                     </div>
                 </div>
             );
@@ -275,12 +337,20 @@ const AdvancedSearchBar = (props: iAdvancedSearchBar): JSX.Element => {
                     <div data-testid="te" className="ml-4 mr-2 z-[502]">
                         <SearchIcon fill={"#5c5c5c"} size={24} />
                     </div>
-                    <input ref={searchFieldRef} data-testid="search-field" id="search-field" defaultValue="Search tabs..." onChange={handleFieldChange} onClick={handleActivateSearch} className={`py-5 h-10 ${slideDown === false ? "bg-gray-300" : "bg-white"} w-full focus:outline-0`} type="text" />
+                    <input ref={searchFieldRef} 
+                        data-testid="search-field" 
+                        id="search-field" 
+                        defaultValue="Search tabs..." 
+                        onChange={handleFieldChange} 
+                        onClick={handleActivateSearch} 
+                        className={`py-5 h-10 ${slideDown === false ? "bg-gray-300" : "bg-white"} w-full focus:outline-0`} 
+                        type="text" 
+                    />
                 </div>
                 {
                     slideDown === true && 
                     (
-                        <div data-testid="search-results-area" id="search-results-area" className={`${styles.popup_container_transparent_bg} w-screen h-full top-0 bg-[rgba-] absolute z-500 left-0 flex justify-center`}>
+                        <div data-testid="search-results-area" id="search-results-area" className={`${popup_container_transparent_bg} w-screen h-full top-0 bg-[rgba-] absolute z-500 left-0 flex justify-center`}>
                             <div ref={searchResultsContainerRef} className={`bg-white absolute p-6 ml-16 mt-10 transition-all ease-in duration-75 overflow-hidden w-7/12 z-10 rounded-lg drop-shadow-[0_3px_2px_rgba(0,0,0,0.15)]`}>
                                 {renderSearchResults()}
                             </div>

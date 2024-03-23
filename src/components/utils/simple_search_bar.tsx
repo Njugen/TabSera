@@ -9,7 +9,14 @@ const SimpleSearchBar = (props: iSimpleSearchBar): JSX.Element => {
             <div data-testid="te" className="ml-4 mr-2 z-[502]">
                 <SearchIcon fill={"#5c5c5c"} size={24} />
             </div>
-            <input data-testid="search-field" id="search-field" defaultValue="Search..." onChange={onChange} className={`bg-gray-200 w-full focus:outline-0`} type="text" />
+            <input 
+                data-testid="search-field" 
+                id="search-field" 
+                defaultValue="Search..." 
+                onChange={onChange} 
+                className={`bg-gray-200 w-full focus:outline-0`} 
+                type="text" 
+            />
         </div>
     )
 }
