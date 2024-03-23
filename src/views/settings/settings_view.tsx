@@ -2,7 +2,7 @@ import "./../../styles/global_utils.module.scss";
 import FormField from '../../components/utils/form_field';
 import Dropdown from '../../components/utils/dropdown';
 import Switcher from '../../components/utils/switcher';
-import { iFieldOption } from "../../interfaces/dropdown";
+import { iFieldOption, iSettingFieldOption } from "../../interfaces/dropdown";
 import { useEffect, useState } from 'react';
 import { saveToStorage } from "../../services/webex_api/storage";
 import SectionContainer from "../../components/utils/section_container";
@@ -22,46 +22,50 @@ const SettingsView = (props: iView): JSX.Element => {
     const [settings, setSettings] = useState<any>({});
     
     // Options for performance warnings
-    const performanceNotificationOptions: Array<iFieldOption> = [
-        { id: 5, label: "5" }, 
-        { id: 10, label: "10" }, 
-        { id: 15, label: "15" }, 
-        { id: 20, label: "20" }, 
-        { id: 30, label: "30" },
-        { id: 40, label: "40" }, 
-        { id: -1, label: "Don't warn me" } 
+    const performanceNotificationOptions: Array<iSettingFieldOption> = [
+        { id: 0, value: 5, label: "5" }, 
+        { id: 1, value: 10, label: "10" }, 
+        { id: 2, value: 15, label: "15" }, 
+        { id: 3, value: 20, label: "20" }, 
+        { id: 4, value: 30, label: "30" },
+        { id: 5, value: 40, label: "40" }, 
+        { id: 6, value: -1, label: "Don't warn me" } 
     ];
 
     // Options for duplication warnings
-    const duplicationWarningOptions: Array<iFieldOption> = [
-        { id: 2, label: "2 folders" }, 
-        { id: 3, label: "3 folders" }, 
-        { id: 4, label: "4 folders" }, 
-        { id: 5, label: "5 folders" }, 
-        { id: -1, label: "Never" }
+    const duplicationWarningOptions: Array<iSettingFieldOption> = [
+        { id: 0, value: 2, label: "2 folders" }, 
+        { id: 1, value: 3, label: "3 folders" }, 
+        { id: 2, value: 4, label: "4 folders" }, 
+        { id: 3, value: 5, label: "5 folders" }, 
+        { id: 4, value: -1, label: "Never" }
     ];
 
     const getPresetPerformanceNotification = (): any => {
-        const result = performanceNotificationOptions.filter((target) => target.id === settings.performance_notification_value);
+        const result = performanceNotificationOptions.filter((target) => target.value === settings.performance_notification_value);
         return result[0] || performanceNotificationOptions[0];
     }
 
     const getPresetDuplicationWarning = (): any => {
-        const result = duplicationWarningOptions.filter((target) => target.id === settings.duplication_warning_value);
+        const result = duplicationWarningOptions.filter((target) => target.value === settings.duplication_warning_value);
         return result[0] || duplicationWarningOptions[0];
     }
 
     // Save data selected in dropdown menu
-    const saveSelectedOption = (key: string, value: number): void => {
-        saveToStorage("sync", key, value);
-        setSettings({
-            ...settings,
-            [key]: value
-        });
+    const saveSelectedOption = (key: string, value: number | null): void => {
+        if(value){
+            saveToStorage("sync", key, value);
+            setSettings({
+                ...settings,
+                [key]: value
+            });
+        }
     }
 
     // Save switcher data
-    const saveSwitchSetting = (key: string, value: boolean): void => {
+    const saveSwitchSetting = (key: string, value: boolean | null): void => {
+        if(value === null) return;
+
         saveToStorage("sync", key, value);
         setSettings({
             ...settings,
@@ -88,22 +92,48 @@ const SettingsView = (props: iView): JSX.Element => {
             <div className="flex 2xl:flex-row justify-center 2xl:justify-normal">
                 <div className="w-10/12 2xl:w-7/12">
                     <FormField label="Performance notification" description="Warn me if the total amount of tabs exceeds a certain threshold when launching multiple tabs">
-                        <Dropdown onCallback={(e) => typeof e.selected === "number" && saveSelectedOption("performance_notification_value", e.selected)} tag="performance-dropdown" preset={getPresetPerformanceNotification()} options={performanceNotificationOptions} />
+                        <Dropdown 
+                            onCallback={(e) => saveSelectedOption("performance_notification_value", e.selected)} 
+                            tag="performance-dropdown" 
+                            preset={getPresetPerformanceNotification()} 
+                            options={performanceNotificationOptions} 
+                        />
                     </FormField>                      
                     <FormField label="Duplication warnings" description="Show a warning message before duplicating at least a certain amount of selected folders">
-                        <Dropdown onCallback={(e) => typeof e.selected === "number" && saveSelectedOption("duplication_warning_value", e.selected)} tag="duplication-warning-dropdown" preset={getPresetDuplicationWarning()} options={duplicationWarningOptions} />
+                        <Dropdown 
+                            onCallback={(e) => saveSelectedOption("duplication_warning_value", e.selected)} 
+                            tag="duplication-warning-dropdown" 
+                            preset={getPresetDuplicationWarning()} 
+                            options={duplicationWarningOptions} 
+                        />
                     </FormField>
                     <FormField label="Close at folder launch" description="Close current browser session when launching a folder">
-                        <Switcher id="close_current_setting" value={settings.close_current_setting} onCallback={(e) => e !== null && saveSwitchSetting("close_current_setting", e)} />
+                        <Switcher 
+                            id="close_current_setting" 
+                            value={settings.close_current_setting} 
+                            onCallback={(e) => saveSwitchSetting("close_current_setting", e)} 
+                        />
                     </FormField>
                     <FormField label="Cancellation warnings" description="Show a warning message before discarding changes made to folders">
-                        <Switcher id="cancellation_warning_setting" value={settings.cancellation_warning_setting} onCallback={(e) => e !== null && saveSwitchSetting("cancellation_warning_setting", e)} />
+                        <Switcher 
+                            id="cancellation_warning_setting" 
+                            value={settings.cancellation_warning_setting} 
+                            onCallback={(e) => saveSwitchSetting("cancellation_warning_setting", e)} 
+                        />
                     </FormField>
                     <FormField label="Removal warnings" description="Show a warning message before deleting folders">
-                        <Switcher id="removal_warning_setting" value={settings.removal_warning_setting} onCallback={(e) => {e !== null && saveSwitchSetting("removal_warning_setting", e)}} />
+                        <Switcher 
+                            id="removal_warning_setting" 
+                            value={settings.removal_warning_setting} 
+                            onCallback={(e) => saveSwitchSetting("removal_warning_setting", e)} 
+                        />
                     </FormField>
                     <FormField label="Log errors" description="Automatically send error reports to the developer">
-                        <Switcher id="error_log_setting" value={settings.error_log_setting} onCallback={(e) => e !== null && saveSwitchSetting("error_log_setting", e)} />
+                        <Switcher 
+                            id="error_log_setting" 
+                            value={settings.error_log_setting} 
+                            onCallback={(e) => saveSwitchSetting("error_log_setting", e)} 
+                        />
                     </FormField>
                 </div>
             </div>

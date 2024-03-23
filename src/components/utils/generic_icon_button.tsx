@@ -18,9 +18,10 @@ import styles from "./../../styles/global_utils.module.scss";
 
 function GenericIconButton(props: iGenericIconButton): JSX.Element {
     const { icon, children, onClick } = props;
+    const { opacity_hover_effect } = styles;
 
     return (
-        <button data-testid={`generic-icon-button-${icon}`} className={`${styles.opacity_hover_effect}`} onClick={onClick}>
+        <button data-testid={`generic-icon-button-${icon}`} className={`${opacity_hover_effect}`} onClick={onClick}>
             {children}
         </button>
     ); 

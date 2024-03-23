@@ -111,7 +111,14 @@ const FolderItem = (props: iFolderItem): JSX.Element => {
 
     const renderWindows = (): Array<JSX.Element> => {
         const result: Array<JSX.Element> = windows.map((window, index) => 
-            <WindowItem tabsCol={workspaceSettings.viewMode === "list" ? 4 : 2} disableTabMark={true} disableTabEdit={true} key={"window-" + index} id={window.id} tabs={window.tabs} />
+            <WindowItem 
+                tabsCol={workspaceSettings.viewMode === "list" ? 4 : 2} 
+                disableTabMark={true} 
+                disableTabEdit={true} 
+                key={"window-" + index} 
+                id={window.id} 
+                tabs={window.tabs} 
+            />
         );
 
         return result;
@@ -184,7 +191,12 @@ const FolderItem = (props: iFolderItem): JSX.Element => {
                 { 
                     showLaunchOptions === true && 
                     <div className={"w-[200px] absolute mt-12 right-10"}>
-                        <DropdownMenu selected={null} tag={"folder-control-dropdown"} onSelect={handleLaunch} options={launchOptions} />
+                        <DropdownMenu 
+                            selected={null} 
+                            tag={"folder-control-dropdown"} 
+                            onSelect={handleLaunch} 
+                            options={launchOptions} 
+                        />
                     </div>
                 }
                 {onOpen && <FolderControlButton icon="open_browser" active={expanded} onClick={handleOpen} />}

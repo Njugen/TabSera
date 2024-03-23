@@ -57,7 +57,17 @@ const WindowManager = (props: iWindowManager): JSX.Element => {
       
         // If no windows with such id exists, then create a new one with that id
         if(window && window.length === 0){
-            return <WindowItem key={"new-window"} tabsCol={2} disableMark={true} disableEdit={false} id={inCreationId} tabs={[]} initExpand={true} />;
+            return (
+                <WindowItem 
+                    key={"new-window"} 
+                    tabsCol={2} 
+                    disableMark={true} 
+                    disableEdit={false} 
+                    id={inCreationId} 
+                    tabs={[]} 
+                    initExpand={true} 
+                />
+            );
         } else {
             return <></>;
         }
@@ -65,7 +75,19 @@ const WindowManager = (props: iWindowManager): JSX.Element => {
 
     const renderWindows = (): Array<JSX.Element> => {
         const existingWindows = folderData?.windows;
-        const existingWindowsElements: Array<JSX.Element> = existingWindows?.map((item: iWindowItem) => <WindowItem tabsCol={2} disableMark={false} disableEdit={false} key={item.id} id={item.id} tabs={item.tabs} initExpand={item.initExpand} />);
+        const existingWindowsElements: Array<JSX.Element> = existingWindows?.map((item: iWindowItem) => {
+            return (
+                <WindowItem 
+                    tabsCol={2} 
+                    disableMark={false} 
+                    disableEdit={false} 
+                    key={item.id} 
+                    id={item.id} 
+                    tabs={item.tabs} 
+                    initExpand={item.initExpand} 
+                />
+            )
+        });
         
         if(createWindow === true && inCreationId > 0){
             return [...existingWindowsElements, renderNewWindow()];

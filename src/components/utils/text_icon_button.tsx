@@ -42,6 +42,7 @@ import RightIcon from "../../images/icons/right_icon";
 
 const TextIconButton = (props: iTextIconButton): JSX.Element => {
     const { icon, text, fill, size, disabled, onClick } = props;
+    const { opacity_hover_effect } = styles;
     
     const renderIcon = (): JSX.Element => {
         if(icon === "trash"){
@@ -96,7 +97,12 @@ const TextIconButton = (props: iTextIconButton): JSX.Element => {
     } 
 
     return (
-        <button data-testid={`text-icon-button-${icon}`} disabled={disabled} className={`flex mr-6 items-center disabled:opacity-50 ${disabled === false && styles.opacity_hover_effect}`} onClick={onClick}>
+        <button 
+            data-testid={`text-icon-button-${icon}`} 
+            disabled={disabled} 
+            className={`flex mr-6 items-center disabled:opacity-50 ${disabled === false && opacity_hover_effect}`} 
+            onClick={onClick}
+        >
             {renderIcon()} 
             <span className={`${size.text} ml-2`}>
                 {text}

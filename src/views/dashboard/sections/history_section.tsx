@@ -155,12 +155,33 @@ const HistorySection = (props: any): JSX.Element => {
             <>
                 <div className="mr-4 inline-flex items-center justify-end w-full">
                     <div className="flex">
-                        <TextIconButton disabled={false} icon={specs.icon} size={{ icon: 20, text: "text-sm" }} fill="#6D00C2" text={specs.label} onClick={specs.handle} />
-                        <TextIconButton disabled={markedTabs.length > 0 ? false : true} icon={"trash"} size={{ icon: 20, text: "text-sm" }}  fill={markedTabs.length > 0 ? "#6D00C2" : "#9f9f9f"} text="Delete from history" onClick={handleDeleteFromHistory} />
+                        <TextIconButton 
+                            disabled={false} 
+                            icon={specs.icon} 
+                            size={{ icon: 20, text: "text-sm" }} 
+                            fill="#6D00C2" 
+                            text={specs.label} 
+                            onClick={specs.handle} 
+                        />
+                        <TextIconButton 
+                            disabled={markedTabs.length > 0 ? false : true} 
+                            icon={"trash"} 
+                            size={{ icon: 20, text: "text-sm" }} 
+                            fill={markedTabs.length > 0 ? "#6D00C2" : "#9f9f9f"} 
+                            text="Delete from history" 
+                            onClick={handleDeleteFromHistory} 
+                        />
                     </div>
                     <div className="flex items-center justify-end">
                         
-                        <TextIconButton disabled={false} icon={tabsData.viewMode === "list" ? "grid" : "list"} size={{ icon: 20, text: "text-sm" }} fill="#6D00C2" text={tabsData.viewMode === "list" ? "Grid" : "List"} onClick={handleChangeViewMode} />
+                        <TextIconButton 
+                            disabled={false} 
+                            icon={tabsData.viewMode === "list" ? "grid" : "list"} 
+                            size={{ icon: 20, text: "text-sm" }} 
+                            fill="#6D00C2" 
+                            text={tabsData.viewMode === "list" ? "Grid" : "List"} 
+                            onClick={handleChangeViewMode} 
+                        />
                         <div className="relative w-[175px] mr-4 flex items-center">
                             {renderSortOptionsDropdown()}
                         </div>
@@ -197,24 +218,23 @@ const HistorySection = (props: any): JSX.Element => {
         const result = sortedTabs.map((item: chrome.history.HistoryItem) => {
             const collection = tabsData.markedTabs;
             const isMarked = collection.find((target: chrome.history.HistoryItem) => parseInt(target.id) === parseInt(item.id));
+            const { id, title, url } = item;
     
-            return <TabItem onMark={handleMarkTab} key={`sorted-tab-${item.id}`} id={parseInt(item.id)} label={item.title || ""} url={item.url || "https://"} disableEdit={true} disableMark={false} marked={isMarked ? true : false} />
+            return (
+                <TabItem 
+                    onMark={handleMarkTab} 
+                    key={`sorted-tab-${id}`} 
+                    id={parseInt(id)} 
+                    label={title || ""} 
+                    url={url || "https://"} 
+                    disableEdit={true} 
+                    disableMark={false} 
+                    marked={isMarked ? true : false} 
+                />
+            )
         });
 
         return result; 
-    };
-
-    // Decide number of columns in the tab grid
-    const decideGridCols = (): number => {
-        const { innerWidth } = window;
-        
-        if(innerWidth > 1920){
-            return 4;
-        } else if(innerWidth > 1280){
-            return 4;
-        } else {
-            return 3;
-        }
     };
 
     const renderAddTabsMessage = (): JSX.Element => {
@@ -329,12 +349,20 @@ const HistorySection = (props: any): JSX.Element => {
         return render;
     }
 
+    const tabViewModeCSS = (): string => {
+        if(tabsData.viewMode === "list"){
+            return "mx-auto mt-10";
+        } else {
+            return "grid xl:grid-cols-3 2xl:grid-cols-4 grid-flow-dense gap-x-3 gap-y-0 mt-6 pr-2";
+        }
+    }
+
     const renderContentSection = (): JSX.Element => {
         return (
             <div className="flex justify-center min-h-[350px]">
                 <div className="w-full">
                     <div className="pb-6">
-                        <div ref={historyListRef} className={`${styles.scroll_style} overflow-y-auto ${tabsData.viewMode === "list" ? "mx-auto mt-10" : `grid xl:grid-cols-3 2xl:grid-cols-4 grid-flow-dense gap-x-3 gap-y-0 mt-6 pr-2`} max-h-[350px]`}>
+                        <div ref={historyListRef} className={`${styles.scroll_style} overflow-y-auto ${tabViewModeCSS()} max-h-[350px]`}>
                             {renderTabs()}
                         </div>
                     </div> 

@@ -9,9 +9,10 @@ import { iTextButton } from "../../interfaces/text_button";
 */
 const PurpleBorderButton = (props: iTextButton): JSX.Element => {
     const { text, onClick } = props;
+    const { opacity_hover_effect } = styles;
     
     return (
-        <button className={`text-tbfColor-lightpurple font-medium py-2 px-6 mx-2 bg-transparent border-2 border-tbfColor-lightpurple rounded-3xl ${styles.opacity_hover_effect}`} onClick={onClick}>
+        <button className={`text-tbfColor-lightpurple font-medium py-2 px-6 mx-2 bg-transparent border-2 border-tbfColor-lightpurple rounded-3xl ${opacity_hover_effect}`} onClick={onClick}>
             {text}
         </button>
     ); 

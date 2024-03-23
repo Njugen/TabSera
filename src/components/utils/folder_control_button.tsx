@@ -23,6 +23,7 @@ import RotationEffect from "../effects/rotation_effect";
 
 const FolderControlButton = (props: iFolderIconButton): JSX.Element => {
     const { icon, active, onClick } = props;
+    const { opacity_hover_effect } = styles;
     
     const renderIcon = (): JSX.Element => {
         if(icon === "trash"){
@@ -32,19 +33,31 @@ const FolderControlButton = (props: iFolderIconButton): JSX.Element => {
         } else if(icon === "open_browser"){
             return <OpenBrowserIcon size={17} fill={active === false ? "#000" : "#000"} />;
         } else if(icon === "collapse_expand"){
-            return (<RotationEffect rotated={active}>
-                <CollapseIcon size={28} fill={"#000"} />
-            </RotationEffect>)
+            return (
+                <RotationEffect rotated={active}>
+                    <CollapseIcon size={28} fill={"#000"} />
+                </RotationEffect>
+            )
         } 
         return <></>;
     }
 
-    const colExpDataId = (): String => {
-        return `folder-control-button-${active === true ? "collapse" : "expand"}`;
+    const buttonTestId = (): String => {
+        if(icon === "collapse_expand"){
+            // If this button's icon is a collapse or expand, use this id
+            return `folder-control-button-${active === true ? "collapse" : "expand"}`;
+        } else {
+            return `folder-control-button-${icon ? icon : "none"}`;
+        }
+        
     } 
     
     return (
-        <button data-testid={icon === "collapse_expand" ? colExpDataId() :`folder-control-button-${icon ? icon : "none"}`} className={`${icon !== "collapse_expand" && "mx-2"} ${styles.opacity_hover_effect}`} onClick={onClick}>
+        <button 
+            data-testid={buttonTestId()} 
+            className={`${icon !== "collapse_expand" && "mx-2"} ${opacity_hover_effect}`} 
+            onClick={onClick}
+        >
             {renderIcon()}
         </button>
     ); 

@@ -37,6 +37,8 @@ const FolderManager = (props: iPopup): JSX.Element => {
         windows: false
     });
 
+    const { popup_container_transparent_bg, popup_container_default } = styles;
+
     const popupRef = useRef<HTMLDivElement>(null);
     const dispatch = useDispatch();
 
@@ -49,16 +51,16 @@ const FolderManager = (props: iPopup): JSX.Element => {
         document.body.style.overflowY = "hidden";
 
         // Information about the folder. If undefined, there are no preset information
-        let payload: iFolderItem | undefined = folder;
+        let folderSpecs: iFolderItem | undefined = folder;
         
         // Apply slide down effect once this popup is launched
         setShow(true);
      
-        // Payload is undefined, this means this popup is used for creating a new folder.
+        // folderSpecs is undefined, this means this popup is used for creating a new folder.
         // Otherwise, a folder is being edited.
-        if(!payload){
+        if(!folderSpecs){
             const randId = randomNumber();
-            payload = {
+            folderSpecs = {
                 id: randId,
                 name: "",
                 desc: "",
@@ -71,10 +73,10 @@ const FolderManager = (props: iPopup): JSX.Element => {
         }
 
         // Track the preset windows of this payload. Used to track new/removed windows
-        setOriginWindows(JSON.stringify(payload.windows));
+        setOriginWindows(JSON.stringify(folderSpecs.windows));
 
         // Tell redux this popup is active and a create/edit process is ongoing.
-        dispatch(initInEditFolder(payload));
+        dispatch(initInEditFolder(folderSpecs));
     }, []);
 
     useEffect(() => {
@@ -196,9 +198,9 @@ const FolderManager = (props: iPopup): JSX.Element => {
         let cssClasses = "";
 
         if(type === "slide-in"){
-            cssClasses = `${styles.popup_container_transparent_bg} scroll-smooth overflow-y-scroll flex fixed top-0 left-0 justify-center items-center w-screen z-[600] ${show === false ? "h-0" : "h-screen"}`;
+            cssClasses = `${popup_container_transparent_bg} scroll-smooth overflow-y-scroll flex fixed top-0 left-0 justify-center items-center w-screen z-[600] ${show === false ? "h-0" : "h-screen"}`;
         } else if(type === "popup") {
-            cssClasses = `${styles.popup_container_default} overflow-y-auto flex fixed top-0 left-0 justify-center items-center w-screen z-[600] ${show === false ? "h-0" : "h-screen"}`;
+            cssClasses = `${popup_container_default} overflow-y-auto flex fixed top-0 left-0 justify-center items-center w-screen z-[600] ${show === false ? "h-0" : "h-screen"}`;
         }
 
         return cssClasses;
