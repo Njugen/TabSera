@@ -1,7 +1,7 @@
 import PrimaryButton from './primary_button';
 import styles from "../../styles/global_utils.module.scss";
 import Dropdown from "./dropdown";
-import iAddToWorkspacePopup from './../../interfaces/add_to_workspace_popup';
+import iAddToWorkspacePopup from '../../interfaces/add_to_workspace_popup';
 import GenericIconButton from "./generic_icon_button";
 import CloseIcon from '../../images/icons/close_icon';
 
@@ -80,7 +80,8 @@ const AddToWorkspacePopup = (props: iAddToWorkspacePopup): JSX.Element => {
                     }
                     <div className="mt-5 text-center flex flex-col">
                         {
-                            dropdownOptions.length > 1 && <p className="text-lg text-black block font-semibold">
+                            dropdownOptions.length > 1 && 
+                            <p className="text-lg text-black block font-semibold">
                                 Or
                             </p>
                         }

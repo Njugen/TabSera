@@ -110,7 +110,7 @@ const FolderItem = (props: iFolderItem): JSX.Element => {
     }
 
     const renderWindows = (): Array<JSX.Element> => {
-        const result: Array<JSX.Element> = windows.map((window, index) => 
+        const result: Array<JSX.Element> = windows.map((window, index): JSX.Element => (
             <WindowItem 
                 tabsCol={workspaceSettings.viewMode === "list" ? 4 : 2} 
                 disableTabMark={true} 
@@ -119,7 +119,7 @@ const FolderItem = (props: iFolderItem): JSX.Element => {
                 id={window.id} 
                 tabs={window.tabs} 
             />
-        );
+        ));
 
         return result;
     }

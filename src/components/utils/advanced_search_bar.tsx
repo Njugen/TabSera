@@ -42,6 +42,7 @@ const AdvancedSearchBar = (props: iAdvancedSearchBar): JSX.Element => {
 
     const { popup_container_transparent_bg } = styles;
     
+
     useEffect(() => {
         // Listen for clicks in the viewport. Used primarily to hide the search results
         // once the user clicks outside the searchfield AND the results area
@@ -206,7 +207,7 @@ const AdvancedSearchBar = (props: iAdvancedSearchBar): JSX.Element => {
 
     // Render all filtered folders
     const renderFolders = (): Array<JSX.Element> | JSX.Element => {
-        const folders = filterFoldersByString(folderCollection, keyword);
+        const folders: Array<iFolderItem> = filterFoldersByString(folderCollection, keyword);
 
         if(folders.length > 0){
             return folders.map((folder: iFolderItem) => (
