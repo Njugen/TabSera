@@ -1,23 +1,24 @@
 import { useState, useEffect, useRef } from "react";
-import GenericIconButton from './generic_icon_button';
-import PrimaryButton from './primary_button';
-import PurpleBorderButton from "./purple_border_button";
-import FormField from "./form_field";
-import * as predef from "../../styles/predef";
-import { iPopup } from "../../interfaces/popup";
-import styles from "../../styles/global_utils.module.scss";
-import WindowManager from './window_manager';
-import randomNumber from "../../tools/random_number";
-import { initInEditFolder, updateInEditFolder} from "../../redux/actions/inEditFolderActions";
-import { iFolderItem } from "../../interfaces/folder_item";
-import MessageBox from './message_box';
-import { useDispatch, useSelector } from "../../redux/mocked_hooks";
-import { setShowFolderChangeWarning } from "../../redux/actions/warningActions";
-import { createFolderAction, updateFolderAction } from "../../redux/actions/folderCollectionActions";
-import { setCurrentlyEditingTab } from "../../redux/actions/miscActions";
-import CloseIcon from "../../images/icons/close_icon";
-import { saveToStorage } from "../../services/webex_api/storage";
+import GenericIconButton from '../generic_icon_button';
+import PrimaryButton from '../primary_button/primary_button';
+import PurpleBorderButton from "../purple_border_button";
+import FormField from "../form_field";
+import * as predef from "../../../styles/predef";
+import { iPopup } from "../../../interfaces/popup";
 
+import randomNumber from "../../../tools/random_number";
+import { initInEditFolder, updateInEditFolder} from "../../../redux/actions/inEditFolderActions";
+import { iFolderItem } from "../../../interfaces/folder_item";
+import MessageBox from '../message_box';
+import { useDispatch, useSelector } from "../../../redux/mocked_hooks";
+import { setShowFolderChangeWarning } from "../../../redux/actions/warningActions";
+import { createFolderAction, updateFolderAction } from "../../../redux/actions/folderCollectionActions";
+import { setCurrentlyEditingTab } from "../../../redux/actions/miscActions";
+import CloseIcon from "../../../images/icons/close_icon";
+import { saveToStorage } from "../../../services/webex_api/storage";
+import { innerStyleDirection, outerStyleDirection } from "./style_directions";
+import windowListChanged from "./window_list_changed";
+import WindowManager from "../window_manager/window_manager";
 
 /*
     A popup providing oversight of a folder's settings and available windows/tabs.
@@ -28,7 +29,7 @@ import { saveToStorage } from "../../services/webex_api/storage";
 */
 
 const FolderManager = (props: iPopup): JSX.Element => {
-    const { onClose, folder, title } = props;
+    const { onClose, type, folder, title } = props;
     const [show, setShow] = useState<boolean>(false);
     const [isCreate, setIsCreate] = useState<boolean>(false);
     const [modified, setModified] = useState<boolean>(false);
@@ -37,8 +38,6 @@ const FolderManager = (props: iPopup): JSX.Element => {
         name: false,
         windows: false
     });
-
-    const { popup_container_transparent_bg, popup_container_default } = styles;
 
     const popupRef = useRef<HTMLDivElement>(null);
     const dispatch = useDispatch();
@@ -81,24 +80,14 @@ const FolderManager = (props: iPopup): JSX.Element => {
     }, []);
 
     useEffect(() => {
-        if(windowListChanged() === true){
+        const inEditWindows: string = state.InEditFolderReducer?.windows;
+        const listChanged: boolean = windowListChanged(originWindows, inEditWindows);
+
+        if(listChanged === true){
             setModified(true);
         }
     }, [state.InEditFolderReducer]);
-
-    // Check whether or not the set of windows has been modified
-    const windowListChanged = (): boolean => {
-        const presetWindows: string = originWindows;
-        const modifiedWindows: string = JSON.stringify(state.InEditFolderReducer?.windows);
-
-        if(!modifiedWindows || !presetWindows) return false;
-        if(originWindows !== JSON.stringify(state.InEditFolderReducer?.windows)){
-            return true;
-        }
-
-        return false;
-    }
-
+    
     // Handle changes to a field
     // - key: a string to identify the changed field
     // - value: the new value of this field
@@ -194,34 +183,6 @@ const FolderManager = (props: iPopup): JSX.Element => {
         dispatch(setShowFolderChangeWarning(false))
     }
 
-    // Style the outer layer of this component
-    const outerStyleDirection = (): string => {
-        const { type } = props;
-        let cssClasses = "";
-
-        if(type === "slide-in"){
-            cssClasses = `${popup_container_transparent_bg} scroll-smooth overflow-y-scroll flex fixed top-0 left-0 justify-center items-center w-screen z-[600] ${show === false ? "h-0" : "h-screen"}`;
-        } else if(type === "popup") {
-            cssClasses = `${popup_container_default} overflow-y-auto flex fixed top-0 left-0 justify-center items-center w-screen z-[600] ${show === false ? "h-0" : "h-screen"}`;
-        }
-
-        return cssClasses;
-    }
-
-    // Style the inner layer of this component (the popup itself)
-    const innerStyleDirection = (): string => {
-        const { type } = props;
-        let cssClasses = "";
-
-        if(type === "slide-in"){
-            cssClasses = `w-full bg-white min-h-[200px] md:rounded-lg absolute left-0 ${show === false ? "top-[-200%] ease-out duration-300" : "top-0 md:top-[6rem] sm:top-0 ease-in duration-300"}`;
-        } else if(type === "popup"){
-            cssClasses = `w-full bg-white min-h-[200px] md:rounded-lg absolute left-0 ${show === false ? "hidden" : "top-0"}`;
-        }
-
-        return cssClasses;
-    }
-
     return (<>
         {state.WarningActionsReducer?.showFolderChangeWarning === true && 
             <MessageBox 
@@ -238,9 +199,9 @@ const FolderManager = (props: iPopup): JSX.Element => {
             />
         }
        
-        <div ref={popupRef} className={outerStyleDirection()}>   
+        <div ref={popupRef} className={outerStyleDirection(type, show)}>   
             <div data-testid="manage-folder-popup" className="relative top-0 md:bottom-12 h-screen w-[992px]">
-                <div className={innerStyleDirection()}>  
+                <div className={innerStyleDirection(type, show)}>  
                     <div id="popup-header" className="pl-8 pr-5 pb-5 pt-6 border-b border-tbfColor-lgrey w-full flex justify-between">
                         <h1 data-testid="manage-folder-title" className="text-3xl text-tbfColor-darkpurple font-light inline-block">
                             {title}

@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import '@testing-library/jest-dom'
 import { store } from "../../../redux/reducer";
-import AdvancedSearchBar from "../../../components/utils/advanced_search_bar";
+import AdvancedSearchBar from "../../../components/utils/advanced_search_bar/advanced_search_bar";
 import { Provider } from "react-redux";
 import iCurrentSessionState from "../../../interfaces/states/currentSessionState";
 import { setUpWindowsAction } from "../../../redux/actions/currentSessionActions";

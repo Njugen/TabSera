@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import '@testing-library/jest-dom'
-import Switcher from "../../../components/utils/switcher";
+import Switcher from "../../../components/utils/switcher/switcher";
 
 const mockFunction = jest.fn((data: boolean | null) => data);
 const mockText = "hello mah boy";

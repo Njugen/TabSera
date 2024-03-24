@@ -9,7 +9,7 @@ import {
     filterSessionTabsByString, 
     filterHistoryTabsByString, 
     filterFoldersByString 
-} from "../../common/search_filters";
+} from "../../components/utils/advanced_search_bar/filters";
 import CloseIcon from "../../images/icons/close_icon";
 
 function SearchResultsContainer(props:any): JSX.Element {

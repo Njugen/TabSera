@@ -1,6 +1,6 @@
 import { render, screen, within, fireEvent } from "@testing-library/react";
 import '@testing-library/jest-dom'
-import PrimaryButton from "../../../components/utils/primary_button";
+import PrimaryButton from "../../../components/utils/primary_button/primary_button";
 
 const mockFunction = jest.fn();
 const mockText = "hello mah boy";

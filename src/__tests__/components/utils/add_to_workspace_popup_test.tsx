@@ -1,7 +1,7 @@
 import { render, screen, within, fireEvent } from "@testing-library/react";
 import '@testing-library/jest-dom'
 
-import AddToWorkspacePopup from "../../../components/utils/add_to_workspace_popup";
+import AddToWorkspacePopup from "../../../components/utils/add_to_workspace_popup/add_to_workspace_popup";
 import { iFieldOption } from "../../../interfaces/dropdown";
 import randomNumber from "../../../tools/random_number";
 

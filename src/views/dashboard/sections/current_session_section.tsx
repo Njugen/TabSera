@@ -1,6 +1,6 @@
 import "../../../styles/global_utils.module.scss";
-import PrimaryButton from '../../../components/utils/primary_button';
-import FolderManager from '../../../components/utils/folder_manager';
+import PrimaryButton from '../../../components/utils/primary_button/primary_button';
+import FolderManager from '../../../components/utils/folder_manager/folder_manager';
 import { useEffect, useState } from "react";
 import { iFolderItem } from '../../../interfaces/folder_item';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,7 +13,7 @@ import { iTabItem } from '../../../interfaces/tab_item';
 import { iFieldOption } from '../../../interfaces/dropdown';
 import { setUpWindowsAction } from '../../../redux/actions/currentSessionActions';
 import CurrentSessionWindowItem from '../../../components/current_session_window_item';
-import AddToWorkspacePopup from '../../../components/utils/add_to_workspace_popup';
+import AddToWorkspacePopup from '../../../components/utils/add_to_workspace_popup/add_to_workspace_popup';
 import SectionContainer from "../../../components/utils/section_container";
 
 const CurrentSessionSection = (props: any): JSX.Element => {

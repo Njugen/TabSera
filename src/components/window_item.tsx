@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import GenericIconButton from "./utils/generic_icon_button";
-import PrimaryButton from "./utils/primary_button";
+import PrimaryButton from "./utils/primary_button/primary_button";
 import PurpleBorderButton from "./utils/purple_border_button";
 import TabItem from "./tab_item";
 import { iWindowItem} from "../interfaces/window_item";

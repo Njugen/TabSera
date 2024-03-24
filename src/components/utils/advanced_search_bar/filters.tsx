@@ -1,6 +1,6 @@
-import iCurrentSessionState from "../interfaces/states/currentSessionState";
-import iHistoryState from "../interfaces/states/historyState";
-import { iFolderItem } from "../interfaces/folder_item";
+import iCurrentSessionState from "../../../interfaces/states/currentSessionState";
+import iHistoryState from "../../../interfaces/states/historyState";
+import { iFolderItem } from "../../../interfaces/folder_item";
 
 const filterSessionTabsByString = (arr: iCurrentSessionState, keyword: string): Array<chrome.tabs.Tab> => {
     let collection: Array<chrome.tabs.Tab> = [];
