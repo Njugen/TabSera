@@ -12,17 +12,20 @@ const GenericPopup = (props: iGenericPopup): JSX.Element => {
 
     useEffect(() => {
         document.body.style.overflowY = "hidden";
+        document.body.style.overflowX = "hidden";
     }, []);
 
 
     const handleClose = (): void => {
-        document.body.style.overflowY = "scroll";
+        document.body.style.overflowY = "auto";
+        document.body.style.overflowX = "auto";
         cancel.handler();
     }
 
     const handleSave = (): void => {
         if(!save) return;
-        document.body.style.overflowY = "scroll";
+        document.body.style.overflowY = "auto";
+        document.body.style.overflowX = "auto";
         save?.handler();
     }
 
@@ -43,7 +46,7 @@ const GenericPopup = (props: iGenericPopup): JSX.Element => {
                     </div>
                     {
                         save && (
-                            <div id="popup-footer" className="px-8 py-8 mt-4 flex justify-end border-t border-tbfColor-lgrey">
+                            <div id="popup-footer" className="max-sm:justify-center px-8 py-8 mt-4 flex justify-end border-t border-tbfColor-lgrey s">
                                 <PurpleBorderButton disabled={false} text="Cancel" onClick={handleClose} />
                                 <PrimaryButton disabled={false} text={save.label} onClick={handleSave} />
                             </div>
