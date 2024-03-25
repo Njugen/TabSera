@@ -198,7 +198,7 @@ const FolderManager = (props: iPopup): JSX.Element => {
             <div className="relative top-0 md:bottom-12 h-screen w-[992px]">
                 <div className={innerStyleDirection(type, show)}>  
                     <div id="popup-header" className="pl-8 pr-5 pb-5 pt-6 border-b border-tbfColor-lgrey w-full flex justify-between">
-                        <h1 data-testid="manage-folder-title" className="text-3xl text-tbfColor-darkpurple font-light inline-block">
+                        <h1 data-testid="popup-title" className="text-3xl text-tbfColor-darkpurple font-light inline-block">
                             {title}
                         </h1>
                         <GenericIconButton icon="close" onClick={handleClose}>
@@ -235,7 +235,7 @@ const FolderManager = (props: iPopup): JSX.Element => {
                             </div>
                         </div>
                     </div>
-                    <div id="popup-footer" className="px-8 py-8 flex justify-center">
+                    <div id="popup-footer" className="px-8 py-8 mt-4 flex justify-end border-t border-tbfColor-lgrey">
                         <PurpleBorderButton disabled={false} text="Cancel" onClick={handleClose} />
                         <PrimaryButton disabled={false} text={isCreate === true ? "Create" : "Save"} onClick={handleSave} />
                     </div>
