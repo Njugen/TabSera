@@ -186,8 +186,6 @@ const CurrentSessionSection = (props: any): JSX.Element => {
 
         return (
             <AddToWorkspacePopup 
-                title="Save session"
-                type="slide-in"
                 dropdownOptions={dropdownOptions}
                 onNewWorkspace={handleAddToNewWorkspace}
                 onExistingWorkspace={handleAddToExistingWorkspace}

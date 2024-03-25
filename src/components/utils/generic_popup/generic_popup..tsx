@@ -4,14 +4,8 @@ import { innerStyleDirection, outerStyleDirection } from "../../features/folder_
 import GenericIconButton from "../generic_icon_button"
 import PrimaryButton from "../primary_button/primary_button"
 import PurpleBorderButton from "../purple_border_button"
+import iGenericPopup from './../../../interfaces/generic_popup';
 
-interface iGenericPopup {
-    title: string,
-    type: "slide-in" | "popup",
-    children: Array<JSX.Element> | JSX.Element,
-    onClose: (e?: any) => void
-    onSave?: (e?: any) => void
-}
 
 const GenericPopup = (props: iGenericPopup): JSX.Element => {
     const [show, setShow] = useState<boolean>(false);
@@ -20,6 +14,7 @@ const GenericPopup = (props: iGenericPopup): JSX.Element => {
     useEffect(() => {
         setShow(true);
     }, []);
+
 
     return (
         <div data-testid="generic-popup" className={outerStyleDirection(type, show)}>
@@ -39,8 +34,8 @@ const GenericPopup = (props: iGenericPopup): JSX.Element => {
                     {
                         onSave && (
                             <div id="popup-footer" className="px-8 py-8 mt-4 flex justify-end border-t border-tbfColor-lgrey">
-                                <PurpleBorderButton disabled={false} text="Cancel" onClick={() => onClose} />
-                                <PrimaryButton disabled={false} text={"blabla"} onClick={() => onSave} />
+                                <PurpleBorderButton disabled={false} text="Cancel" onClick={onClose} />
+                                <PrimaryButton disabled={false} text={"blabla"} onClick={onSave} />
                             </div>
                         )
                     }

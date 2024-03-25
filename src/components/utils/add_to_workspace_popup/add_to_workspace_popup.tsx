@@ -1,13 +1,6 @@
 import PrimaryButton from '../primary_button/primary_button';
 import Dropdown from "../dropdown/dropdown";
 import iAddToWorkspacePopup from '../../../interfaces/add_to_workspace_popup';
-import GenericIconButton from "../generic_icon_button";
-import CloseIcon from '../../../images/icons/close_icon';
-import popupStyleDirection from './popup_style_direction';
-import handleClose from './handle_close';
-import { innerStyleDirection, outerStyleDirection } from '../../features/folder_manager/style_directions';
-import { useEffect, useState } from 'react';
-import PurpleBorderButton from './../purple_border_button';
 import GenericPopup from '../generic_popup/generic_popup.';
 
 /*
@@ -16,27 +9,48 @@ import GenericPopup from '../generic_popup/generic_popup.';
 */
 
 const AddToWorkspacePopup = (props: iAddToWorkspacePopup): JSX.Element => {
-    const [show, setShow] = useState<boolean>(false);
     const { 
-        title, 
         dropdownOptions, 
-        type, 
         onNewWorkspace, 
         onExistingWorkspace, 
-        onCancel 
+        onCancel,
     } = props;
-
-    useEffect(() => {
-        setShow(true);
-    }, []);
-
 
     // Hide scrollbar when invoking component
     document.body.style.overflowY = "hidden";
 
     return (
-
-
+        <GenericPopup title={"Add to workspace"} type="slide-in" onClose={onCancel}>
+            <div className="flex flex-col items-center pb-6">
+                {
+                    dropdownOptions.length > 1 && (
+                        <div className="mt-10 text-center w-[350px] px-8">
+                            <p className="text-lg text-black inline-block mb-4 font-semibold">
+                                To an existing workspace
+                            </p>
+                            <Dropdown 
+                                tag="select-workspace-dropdown" 
+                                preset={dropdownOptions[0]} 
+                                options={dropdownOptions} 
+                                onCallback={onExistingWorkspace} 
+                            />
+                        </div>
+                    )
+                }
+                <div className="mt-5 text-center flex flex-col">
+                    {
+                        dropdownOptions.length > 1 && 
+                        <p className="text-lg text-black block font-semibold">
+                            Or
+                        </p>
+                    }
+                    <div className="mb-6 mt-6">
+                        <PrimaryButton disabled={false} text="To a new workspace" onClick={onNewWorkspace} />
+                    </div>
+                </div>
+            </div>
+        </GenericPopup>
+/*
         <div data-testid="add-to-workspace-popup" className={outerStyleDirection(type, show)}>
             <div className="relative top-0 md:bottom-12 h-screen w-[992px]">
                 <div className={innerStyleDirection(type, show)}>
@@ -84,7 +98,7 @@ const AddToWorkspacePopup = (props: iAddToWorkspacePopup): JSX.Element => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div>*/
     );
 }
 

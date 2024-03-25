@@ -253,8 +253,6 @@ const HistoryView = (props:any): JSX.Element => {
 
         return (
             <AddToWorkspacePopup 
-                title="Save history"
-                type="popup" 
                 dropdownOptions={dropdownOptions}
                 onNewWorkspace={handleAddToNewWorkspace}
                 onExistingWorkspace={handleAddToExistingWorkspace}

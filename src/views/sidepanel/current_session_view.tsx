@@ -158,8 +158,6 @@ const CurrentSessionView = (props:any): JSX.Element => {
 
         return (
             <AddToWorkspacePopup 
-                title="Save session"
-                type="popup"
                 dropdownOptions={dropdownOptions}
                 onNewWorkspace={handleAddToNewWorkspace}
                 onExistingWorkspace={handleAddToExistingWorkspace}

@@ -307,8 +307,6 @@ const HistorySection = (props: any): JSX.Element => {
 
         return (
             <AddToWorkspacePopup 
-                title="Save history"
-                type="slide-in" 
                 dropdownOptions={dropdownOptions}
                 onNewWorkspace={handleAddToNewWorkspace}
                 onExistingWorkspace={handleAddToExistingWorkspace}
