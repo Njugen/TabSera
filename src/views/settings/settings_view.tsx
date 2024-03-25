@@ -1,7 +1,7 @@
 import "./../../styles/global_utils.module.scss";
 import FormField from '../../components/utils/form_field';
-import Dropdown from '../../components/utils/dropdown';
-import Switcher from '../../components/utils/switcher';
+import Dropdown from '../../components/utils/dropdown/dropdown';
+import Switcher from '../../components/utils/switcher/switcher';
 import { iFieldOption, iSettingFieldOption } from "../../interfaces/dropdown";
 import { useEffect, useState } from 'react';
 import { saveToStorage } from "../../services/webex_api/storage";
@@ -18,42 +18,42 @@ import iView from "../../interfaces/view";
     features if needed while keeping the intended UI intact. 
 */
 
+// Options for performance warnings
+const performanceNotificationOptions: Array<iSettingFieldOption> = [
+    { id: 0, value: 5, label: "5" }, 
+    { id: 1, value: 10, label: "10" }, 
+    { id: 2, value: 15, label: "15" }, 
+    { id: 3, value: 20, label: "20" }, 
+    { id: 4, value: 30, label: "30" },
+    { id: 5, value: 40, label: "40" }, 
+    { id: 6, value: -1, label: "Don't warn me" } 
+];
+
+// Options for duplication warnings
+const duplicationWarningOptions: Array<iSettingFieldOption> = [
+    { id: 0, value: 2, label: "2 folders" }, 
+    { id: 1, value: 3, label: "3 folders" }, 
+    { id: 2, value: 4, label: "4 folders" }, 
+    { id: 3, value: 5, label: "5 folders" }, 
+    { id: 4, value: -1, label: "Never" }
+];
+
 const SettingsView = (props: iView): JSX.Element => {
     const [settings, setSettings] = useState<any>({});
-    
-    // Options for performance warnings
-    const performanceNotificationOptions: Array<iSettingFieldOption> = [
-        { id: 0, value: 5, label: "5" }, 
-        { id: 1, value: 10, label: "10" }, 
-        { id: 2, value: 15, label: "15" }, 
-        { id: 3, value: 20, label: "20" }, 
-        { id: 4, value: 30, label: "30" },
-        { id: 5, value: 40, label: "40" }, 
-        { id: 6, value: -1, label: "Don't warn me" } 
-    ];
-
-    // Options for duplication warnings
-    const duplicationWarningOptions: Array<iSettingFieldOption> = [
-        { id: 0, value: 2, label: "2 folders" }, 
-        { id: 1, value: 3, label: "3 folders" }, 
-        { id: 2, value: 4, label: "4 folders" }, 
-        { id: 3, value: 5, label: "5 folders" }, 
-        { id: 4, value: -1, label: "Never" }
-    ];
 
     const getPresetPerformanceNotification = (): any => {
-        const result = performanceNotificationOptions.filter((target) => target.value === settings.performance_notification_value);
+        const result = performanceNotificationOptions.filter((target) => target.id === settings.performance_notification_value);
         return result[0] || performanceNotificationOptions[0];
     }
 
     const getPresetDuplicationWarning = (): any => {
-        const result = duplicationWarningOptions.filter((target) => target.value === settings.duplication_warning_value);
+        const result = duplicationWarningOptions.filter((target) => target.id === settings.duplication_warning_value);
         return result[0] || duplicationWarningOptions[0];
     }
 
     // Save data selected in dropdown menu
     const saveSelectedOption = (key: string, value: number | null): void => {
-        if(value){
+        if(value !== null){
             saveToStorage("sync", key, value);
             setSettings({
                 ...settings,

@@ -2,19 +2,19 @@ import { useState, useEffect, useRef } from "react";
 import { iWindowItem } from '../../interfaces/window_item';
 import { useSelector, useDispatch } from "react-redux";
 import { iFolderItem } from '../../interfaces/folder_item';
-import FolderManager from "../../components/utils/folder_manager";
+import FolderManager from "../../components/features/folder_manager/folder_manager";
 import { clearInEditFolder } from "../../redux/actions/inEditFolderActions";
 import { clearMarkedTabsAction, setMarkMultipleTabsAction, setMarkedTabsAction, setTabsSortOrder, setUpTabsAction } from '../../redux/actions/historySettingsActions';
-import PrimaryButton from "../../components/utils/primary_button";
+import PrimaryButton from "../../components/utils/primary_button/primary_button";
 import { clearMarkedFoldersAction } from '../../redux/actions/workspaceSettingsActions';
 import randomNumber from '../../tools/random_number';
-import AddToWorkspacePopup from "../../components/utils/add_to_workspace_popup";
+import AddToWorkspacePopup from "../../components/features/add_to_workspace_popup";
 import { iTabItem } from '../../interfaces/tab_item';
 import { iFieldOption } from '../../interfaces/dropdown';
 import TextIconButton from '../../components/utils/text_icon_button';
 import SortIcon from "../../images/icons/sort_icon";
-import Dropdown from "../../components/utils/dropdown";
-import TabItem from "../../components/tab_item";
+import Dropdown from "../../components/utils/dropdown/dropdown";
+import TabItem from "../../components/features/tab_item";
 import CircleButton from './../../components/utils/circle_button';
 import SaveIcon from './../../images/icons/save_icon';
 import TrashIcon from './../../images/icons/trash_icon';
@@ -253,8 +253,6 @@ const HistoryView = (props:any): JSX.Element => {
 
         return (
             <AddToWorkspacePopup 
-                title="Save history"
-                type="popup" 
                 dropdownOptions={dropdownOptions}
                 onNewWorkspace={handleAddToNewWorkspace}
                 onExistingWorkspace={handleAddToExistingWorkspace}

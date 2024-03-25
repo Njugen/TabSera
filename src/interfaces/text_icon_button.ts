@@ -1,12 +1,9 @@
 interface iTextIconButton {
-    icon: string,
+    id: string,
     text: string,
-    fill: string,
     disabled: boolean,
-    size: {
-        icon: number,
-        text: string
-    },
+    textSize: string,
+    children: Array<JSX.Element> | JSX.Element,
     onClick: (e: any) => void
 }
 

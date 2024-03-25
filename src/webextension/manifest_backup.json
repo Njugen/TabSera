@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "name": "TabSera",
+    "name": "Tab Management Browser Plugin",
     "version": "0.0.1",
     "description": "Providing great overview and simple tools for efficient tab management.",
     "permissions": [
@@ -10,8 +10,7 @@
         "sidePanel"
     ],
     "action": {
-        "default_title": "TabSera",
-        "default_popup": "popup.html"
+        "default_title": "Tab Management Browser Plugin"
     },
     "icons": {
         "128": "brand/icon-128.png",
@@ -25,7 +24,23 @@
         "open_in_tab": true
     },
     "background": {
-        "service_worker": "background.js"
+        "service_worker": "background.js",
+        "scripts": ["background.js"]
     },
+    "sidebar_action": {
+        "default_icon": {
+            "16": "brand/icon-128.png",
+            "32": "brand/icon-48.png"
+        },
+        "default_title": "Tab Management Browser Plugin",
+        "default_panel": "sidepanel.html",
+        "open_at_install":false
+    },
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "addon@example.com",
+            "strict_min_version": "42.0"
+        }
+    },      
     "author": "Thai Nguyen"
 }

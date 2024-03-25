@@ -1,6 +1,6 @@
 import "../../../styles/global_utils.module.scss";
-import PrimaryButton from '../../../components/utils/primary_button';
-import FolderManager from '../../../components/utils/folder_manager';
+import PrimaryButton from '../../../components/utils/primary_button/primary_button';
+import FolderManager from '../../../components/features/folder_manager/folder_manager';
 import { useEffect, useState } from "react";
 import { iFolderItem } from '../../../interfaces/folder_item';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,9 +12,9 @@ import { clearMarkedTabsAction} from '../../../redux/actions/historySettingsActi
 import { iTabItem } from '../../../interfaces/tab_item';
 import { iFieldOption } from '../../../interfaces/dropdown';
 import { setUpWindowsAction } from '../../../redux/actions/currentSessionActions';
-import CurrentSessionWindowItem from '../../../components/current_session_window_item';
-import AddToWorkspacePopup from '../../../components/utils/add_to_workspace_popup';
+import AddToWorkspacePopup from '../../../components/features/add_to_workspace_popup';
 import SectionContainer from "../../../components/utils/section_container";
+import WindowItem from "../../../components/features/window_item";
 
 const CurrentSessionSection = (props: any): JSX.Element => {
     const [addToWorkSpaceMessage, setAddToWorkspaceMessage] = useState<boolean>(false);
@@ -104,12 +104,13 @@ const CurrentSessionSection = (props: any): JSX.Element => {
         const existingWindows = currentSessionData?.windows;
         const existingWindowsElements: Array<JSX.Element> = existingWindows?.map((item: iWindowItem, i: number) => {
             return (
-                <CurrentSessionWindowItem 
+                <WindowItem 
                     key={`window-item-${i}`} 
                     tabsCol={4} 
-                    disableEdit={currentSessionData.windows.length < 2 ? true : false} 
-                    disableTabMark={false} 
-                    disableTabEdit={true} id={item.id} 
+                    disableEdit={true} 
+                    disableTabMark={true} 
+                    disableTabEdit={true} 
+                    id={item.id} 
                     tabs={item.tabs} 
                     initExpand={true} 
                 />
@@ -185,8 +186,6 @@ const CurrentSessionSection = (props: any): JSX.Element => {
 
         return (
             <AddToWorkspacePopup 
-                title="Save session"
-                type="slide-in"
                 dropdownOptions={dropdownOptions}
                 onNewWorkspace={handleAddToNewWorkspace}
                 onExistingWorkspace={handleAddToExistingWorkspace}

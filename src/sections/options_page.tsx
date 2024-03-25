@@ -7,12 +7,14 @@ import DashboardView from './../views/dashboard/dashboard_view';
 import SettingsView from '../views/settings/settings_view';
 import LeftIcon from './../images/icons/left_icon';
 import RightIcon from './../images/icons/right_icon';
-import AdvancedSearchBar from '../components/utils/advanced_search_bar';
+import AdvancedSearchBar from '../components/features/advanced_search_bar/advanced_search_bar';
 import iOptionsPage from '../interfaces/options_page';
 import { useDispatch, useSelector } from 'react-redux';
 import { getFromStorage } from '../services/webex_api/storage';
 import { readAllFoldersFromBrowserAction, setUpFoldersAction } from '../redux/actions/folderCollectionActions';
 import { setUpTabsAction } from '../redux/actions/historySettingsActions';
+import MultipleFoldersIcon from '../images/icons/multiple_folders_icon';
+import ConfigIcon from '../images/icons/config_icon';
 
 const RenderOptionsPage = (props: iOptionsPage): JSX.Element => {
   
@@ -51,7 +53,6 @@ const RenderOptionsPage = (props: iOptionsPage): JSX.Element => {
 
 
   const storageListener = (changes: any, areaName: string): void => {
-    console.log(changes);
     if(areaName === "sync"){
         if(changes.folders){
           dispatch(readAllFoldersFromBrowserAction(changes.folders.newValue));
@@ -89,8 +90,12 @@ const RenderOptionsPage = (props: iOptionsPage): JSX.Element => {
   const renderExpandedSidebarNav = (): JSX.Element => {
     return (
       <div id="main-menu" className="px-2 py-4">
-          <Navlink key="folders-nav-link" iconSize={20} label="Dashboard" url="?view=main" isActive={activeNavLink === "main" ? true : false} onClick={() => setActiveNavLink("main")} />
-          <Navlink key="settings-nav-link" iconSize={20} label="Settings" url="?view=settings" isActive={activeNavLink === "settings" ? true : false} onClick={() => setActiveNavLink("settings")} />
+          <Navlink key="folders-nav-link" label="Dashboard" url="?view=main" isActive={activeNavLink === "main" ? true : false} onClick={() => setActiveNavLink("main")}>
+            <MultipleFoldersIcon size={20} fill={activeNavLink === "main" ? "rgb(109 0 194)" : "#525252"} />
+          </Navlink>
+          <Navlink key="settings-nav-link" label="Settings" url="?view=settings" isActive={activeNavLink === "settings" ? true : false} onClick={() => setActiveNavLink("settings")}>
+            <ConfigIcon size={20} fill={activeNavLink === "main" ? "rgb(109 0 194)" : "#525252"} />
+          </Navlink>
       </div>
     );
   }
@@ -100,10 +105,14 @@ const RenderOptionsPage = (props: iOptionsPage): JSX.Element => {
       <div id="main-menu" className="flex flex-col items-center justify-center">
         <div className="">
           <div className={`my-2 border rounded-lg ${activeNavLink === "main" ? "border-tbfColor-lightpurple" : "border-tbfColor-middlegrey2"}`}>
-            <Navlink key="folders-nav-link" iconSize={32} url="?view=main" isActive={activeNavLink === "main" ? true : false} onClick={() => setActiveNavLink("main")} />
+            <Navlink key="folders-nav-link" url="?view=main" isActive={activeNavLink === "main" ? true : false} onClick={() => setActiveNavLink("main")}>
+              <MultipleFoldersIcon size={32} fill={activeNavLink === "main" ? "rgb(109 0 194)" : "#525252"} />
+            </Navlink>
           </div>
           <div className={`my-2 border rounded-lg ${activeNavLink === "settings" ? "border-tbfColor-lightpurple" : "border-tbfColor-middlegrey2"}`}>
-            <Navlink key="settings-nav-link" iconSize={32} url="?view=settings" isActive={activeNavLink === "settings" ? true : false} onClick={() => setActiveNavLink("settings")} />
+            <Navlink key="settings-nav-link" url="?view=settings" isActive={activeNavLink === "settings" ? true : false} onClick={() => setActiveNavLink("settings")}>
+              <ConfigIcon size={32} fill={activeNavLink === "settings" ? "rgb(109 0 194)" : "#525252"} />
+            </Navlink>
           </div>
         </div>
       </div>

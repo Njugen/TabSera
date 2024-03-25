@@ -1,7 +1,7 @@
-import FolderItem from '../../../components/folder_item'
+import FolderItem from '../../../components/features/folder_item/sections/folder_item'
 import "./../../../styles/global_utils.module.scss";
-import PrimaryButton from '../../../components/utils/primary_button';
-import FolderManager from '../../../components/utils/folder_manager';
+import PrimaryButton from '../../../components/utils/primary_button/primary_button';
+import FolderManager from '../../../components/features/folder_manager/folder_manager';
 import { useEffect, useState } from "react";
 import { iFolderItem } from '../../../interfaces/folder_item';
 import { iFieldOption } from '../../../interfaces/dropdown';
@@ -11,13 +11,20 @@ import {  createFolderAction, readAllFoldersFromBrowserAction } from '../../../r
 import Paragraph from '../../../components/utils/paragraph';
 import { deleteFolderAction } from "../../../redux/actions/folderCollectionActions";
 import { saveToStorage, getFromStorage } from '../../../services/webex_api/storage';
-import MessageBox from '../../../components/utils/message_box';
+import PopupMessage from '../../../components/utils/popup_message';
 import TextIconButton from '../../../components/utils/text_icon_button';
 import randomNumber from '../../../tools/random_number';
 import { iWindowItem } from '../../../interfaces/window_item';
 import * as workspaceSettingsActions from '../../../redux/actions/workspaceSettingsActions';
-import Dropdown from '../../../components/utils/dropdown';
+import Dropdown from '../../../components/utils/dropdown/dropdown';
 import SectionContainer from '../../../components/utils/section_container';
+import DeselectedCheckboxIcon from '../../../images/icons/deselected_checkbox_icon';
+import SelectedCheckboxIcon from '../../../images/icons/selected_checkbox_icon';
+import FolderDuplicateIcon from '../../../images/icons/folder_duplicate_icon';
+import MergeIcon from '../../../images/icons/merge_icon';
+import TrashIcon from '../../../images/icons/trash_icon';
+import GridIcon from '../../../images/icons/grid_icon';
+import ListIcon from '../../../images/icons/list_icon';
 
 const { 
     changeWorkspacesViewMode, 
@@ -347,42 +354,61 @@ const WorkspacesSection = (props: any): JSX.Element => {
                         <div className="flex">
                             <TextIconButton 
                                 disabled={false} 
-                                icon={markSpecs.icon} 
-                                size={{ icon: 20, text: "text-sm" }} 
-                                fill="#6D00C2" text={markSpecs.label} 
+                                id={markSpecs.id} 
+                                textSize="text-sm"
+                                text={markSpecs.label} 
                                 onClick={markSpecs.handle} 
-                            />
+                            >
+                                {
+                                    markedFoldersId.length > 0 ? 
+                                    <SelectedCheckboxIcon size={20} fill={"#6D00C2"} /> : 
+                                    <DeselectedCheckboxIcon size={20} fill={"#6D00C2"} />
+                                }
+                            </TextIconButton>
+
                             <TextIconButton 
                                 disabled={markedFoldersId.length > 0 ? false : true} 
-                                icon={"folder_duplicate"} size={{ icon: 20, text: "text-sm" }} 
-                                fill={markedFoldersId.length > 0 ? "#6D00C2" : "#9f9f9f"} 
+                                id={"folder_duplicate"} 
+                                textSize="text-sm"
                                 text="Duplicate" 
                                 onClick={handlePrepareDuplication} 
-                            />
+                            >
+                                <FolderDuplicateIcon size={20} fill={markedFoldersId.length > 0 ? "#6D00C2" : "#9f9f9f"}  />
+                            </TextIconButton>
+                            
                             <TextIconButton 
                                 disabled={markedFoldersId.length >= 2 ? false : true} 
-                                icon={"merge"} 
-                                size={{ icon: 20, text: "text-sm" }}
-                                fill={markedFoldersId.length >= 2 ? "#6D00C2" : "#9f9f9f"} 
+                                id={"merge"} 
+                                textSize="text-sm"
                                 text="Merge" onClick={handleMergeFolders} 
-                            />
+                            >
+                                <MergeIcon size={20} fill={markedFoldersId.length >= 2 ? "#6D00C2" : "#9f9f9f"}  />
+                            </TextIconButton>
+
                             <TextIconButton 
                                 disabled={markedFoldersId.length > 0 ? false : true} 
-                                icon={"trash"} 
-                                size={{ icon: 20, text: "text-sm" }} 
-                                fill={markedFoldersId.length > 0 ? "#6D00C2" : "#9f9f9f"} 
+                                id={"trash"} 
+                                textSize="text-sm"
                                 text="Delete" 
                                 onClick={handlePrepareMultipleRemovals} 
-                            />
+                            >
+                                <TrashIcon size={20} fill={markedFoldersId.length > 0 ? "#6D00C2" : "#9f9f9f"}  />
+                            </TextIconButton>
                         </div>
                         <div className="flex items-center justify-end">     
                             <TextIconButton 
                                 disabled={false} 
-                                icon={workspaceSettings.viewMode === "list" ? "grid" : "list"} 
-                                size={{ icon: 20, text: "text-sm" }} 
-                                fill="#6D00C2" text={workspaceSettings.viewMode === "list" ? "Grid" : "List"} 
+                                id={workspaceSettings.viewMode === "list" ? "grid" : "list"} 
+                                textSize="text-sm"
+                                text={workspaceSettings.viewMode === "list" ? "Grid" : "List"} 
                                 onClick={handleChangeViewMode} 
-                            />
+                            >
+                                { 
+                                    workspaceSettings.viewMode === "list" ? 
+                                    <GridIcon size={20} fill={"#6D00C2"} /> : 
+                                    <ListIcon size={20} fill={"#6D00C2"} />
+                                }
+                            </TextIconButton>
                             <div className="relative w-[175px] mr-4 flex items-center">
                                 {renderSortOptionsDropdown()}
                             </div>
@@ -501,7 +527,7 @@ const WorkspacesSection = (props: any): JSX.Element => {
     return (
         <>
             {showPerformanceWarning &&
-                <MessageBox 
+                <PopupMessage
                     title="Warning" 
                     text={`You are about to open ${totalTabsCount} or more tabs at once. Opening this many may slow down your browser. Do you want to proceed?`}
                     primaryButton={{ text: "Yes, open selected folders", callback: () => { windowsPayload && handleLaunchFolder(windowsPayload); setShowPerformanceWarning(false)}}}
@@ -511,7 +537,7 @@ const WorkspacesSection = (props: any): JSX.Element => {
             }
 
             {showDuplicationWarning &&
-                <MessageBox 
+                <PopupMessage
                     title="Warning" 
                     text={`You are about to duplicate ${workspaceSettings.markedFoldersId.length} or more folders at once. Unnecessary duplications may clutter your dashboard, do you want to proceed?`}
                     primaryButton={{ text: "Yes, proceed", callback: () => { handleDuplicateFolders(); setShowDuplicationWarning(false)}}}
@@ -519,7 +545,7 @@ const WorkspacesSection = (props: any): JSX.Element => {
                 />
             }
             {removalTarget &&
-                <MessageBox 
+                <PopupMessage
                     title="Warning" 
                     text={`You are about to remove the "${removalTarget.name}" workspace and all its contents. This is irreversible, do you want to proceed?`}
                     primaryButton={{ text: "Yes, remove this folder", callback: () => { dispatch(deleteFolderAction(removalTarget.id)); setRemovalTarget(null)}}}
@@ -527,7 +553,7 @@ const WorkspacesSection = (props: any): JSX.Element => {
                 />
             }
             {showDeleteWarning === true && 
-                <MessageBox 
+                <PopupMessage
                     title="Warning" 
                     text={`You are about to remove one or more workspaces and all their contents. This is irreversible, do you want to proceed?`}
                     primaryButton={{ text: "Yes, remove these folders", callback: () => handleDeleteFolders()}}

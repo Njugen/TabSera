@@ -1,9 +1,9 @@
 import { render, screen, within, fireEvent } from "@testing-library/react";
 
 import '@testing-library/jest-dom';
-import WindowItem from "../../components/window_item";
+import WindowItem from "../../components/features/window_item";
 import { iTabItem } from "../../interfaces/tab_item";
-import TabItem from "../../components/tab_item";
+import TabItem from "../../components/features/tab_item";
 import { Provider } from "react-redux";
 import { store } from "../../redux/reducer";
 

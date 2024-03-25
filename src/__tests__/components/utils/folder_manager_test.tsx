@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import '@testing-library/jest-dom';
-import FolderManager from "../../../components/utils/folder_manager";
+import FolderManager from "../../../components/features/folder_manager/folder_manager";
 import { Provider } from "react-redux";
 import { store } from "../../../redux/reducer";
 import { chrome } from 'jest-chrome'

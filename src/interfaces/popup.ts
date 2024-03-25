@@ -1,7 +1,7 @@
 import { iFolderItem } from "./folder_item"
 
 interface iPopup {
-    title: String,
+    title: string,
     type: "slide-in" | "popup"
     folder?: iFolderItem,
     onClose: () => void

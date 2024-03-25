@@ -2,16 +2,15 @@ import { useState, useEffect, useRef } from "react";
 import { iWindowItem } from '../../interfaces/window_item';
 import { useSelector, useDispatch } from "react-redux";
 import { iFolderItem } from '../../interfaces/folder_item';
-import FolderItem from "../../components/folder_item";
+import FolderItem from "../../components/features/folder_item/sections/folder_item";
 import { getFromStorage, saveToStorage } from '../../services/webex_api/storage';
 import { deleteFolderAction, readAllFoldersFromBrowserAction } from '../../redux/actions/folderCollectionActions';
-import FolderManager from "../../components/utils/folder_manager";
+import FolderManager from "../../components/features/folder_manager/folder_manager";
 import { clearInEditFolder } from "../../redux/actions/inEditFolderActions";
 import { clearMarkedFoldersAction } from "../../redux/actions/workspaceSettingsActions";
-import MessageBox from "../../components/utils/message_box";
-import PrimaryButton from "../../components/utils/primary_button";
+import PopupMessage from "../../components/utils/popup_message";
+import PrimaryButton from "../../components/utils/primary_button/primary_button";
 import iFoldersView from "../../interfaces/folders_view";
-import styles from "./../../styles/global_utils.module.scss";
 import NewFolderIcon from "../../images/icons/new_folder_icon";
 import CircleButton from "../../components/utils/circle_button";
 
@@ -182,7 +181,7 @@ const FoldersView = (props: iFoldersView): JSX.Element => {
     return (
         <>
             {showPerformanceWarning &&
-                <MessageBox 
+                <PopupMessage
                     title="Warning" 
                     text={`You are about to open ${totalTabsCount} or more tabs at once. Opening this many may slow down your browser. Do you want to proceed?`}
                     primaryButton={{ text: "Yes, open selected folders", callback: () => { windowsPayload && handleLaunchFolder(windowsPayload); setShowPerformanceWarning(false)}}}
@@ -191,7 +190,7 @@ const FoldersView = (props: iFoldersView): JSX.Element => {
                 />
             }
             {removalTarget &&
-                <MessageBox 
+                <PopupMessage
                     title="Warning" 
                     text={`You are about to remove the "${removalTarget.name}" workspace and all its contents. This is irreversible, do you want to proceed?`}
                     primaryButton={{ text: "Yes, remove this folder", callback: () => { dispatch(deleteFolderAction(removalTarget.id)); setRemovalTarget(null)}}}

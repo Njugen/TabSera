@@ -1,6 +1,6 @@
 import styles from "../../../styles/global_utils.module.scss";
-import PrimaryButton from '../../../components/utils/primary_button';
-import FolderManager from '../../../components/utils/folder_manager';
+import PrimaryButton from '../../../components/utils/primary_button/primary_button';
+import FolderManager from '../../../components/features/folder_manager/folder_manager';
 import { useEffect, useState, useRef } from "react";
 import { iFolderItem } from '../../../interfaces/folder_item';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,15 +9,20 @@ import TextIconButton from '../../../components/utils/text_icon_button';
 import randomNumber from '../../../tools/random_number';
 import { iWindowItem } from '../../../interfaces/window_item';
 import { clearMarkedFoldersAction } from '../../../redux/actions/workspaceSettingsActions';
-import Dropdown from '../../../components/utils/dropdown';
-import TabItem from '../../../components/tab_item';
+import Dropdown from '../../../components/utils/dropdown/dropdown';
+import TabItem from '../../../components/features/tab_item';
 import { changeTabsViewMode, clearMarkedTabsAction, setMarkMultipleTabsAction, setMarkedTabsAction, setTabsSortOrder, setUpTabsAction } from '../../../redux/actions/historySettingsActions';
 import { iTabItem } from '../../../interfaces/tab_item';
 import { iDropdownSelected, iFieldOption } from '../../../interfaces/dropdown';
-import AddToWorkspacePopup from '../../../components/utils/add_to_workspace_popup';
+import AddToWorkspacePopup from '../../../components/features/add_to_workspace_popup';
 import SectionContainer from "../../../components/utils/section_container";
 import iHistoryState from "../../../interfaces/states/historyState";
 import { getFromStorage, saveToStorage } from "../../../services/webex_api/storage";
+import SelectedCheckboxIcon from "../../../images/icons/selected_checkbox_icon";
+import TrashIcon from "../../../images/icons/trash_icon";
+import GridIcon from "../../../images/icons/grid_icon";
+import ListIcon from "../../../images/icons/list_icon";
+import DeselectedCheckboxIcon from "../../../images/icons/deselected_checkbox_icon";
 
 const HistorySection = (props: any): JSX.Element => {
     const [addToWorkSpaceMessage, setAddToWorkspaceMessage] = useState<boolean>(false);
@@ -140,13 +145,13 @@ const HistorySection = (props: any): JSX.Element => {
         if(markedTabs.length > 0){
             specs = {
                 label: "Mark all",
-                icon: "selected_checkbox",
+                id: "selected_checkbox",
                 handle: handleUnMarkAll
             }
         } else {
             specs = {
                 label: "Mark all",
-                icon: "deselected_checkbox",
+                id: "deselected_checkbox",
                 handle: handleMarkAllTabs
             }
         }
@@ -157,31 +162,42 @@ const HistorySection = (props: any): JSX.Element => {
                     <div className="flex">
                         <TextIconButton 
                             disabled={false} 
-                            icon={specs.icon} 
-                            size={{ icon: 20, text: "text-sm" }} 
-                            fill="#6D00C2" 
+                            id={specs.id} 
+                            textSize="text-sm"
                             text={specs.label} 
                             onClick={specs.handle} 
-                        />
+                        >
+                            {
+                                markedTabs.length > 0 ? 
+                                <SelectedCheckboxIcon size={20} fill={"#6D00C2"} /> : 
+                                <DeselectedCheckboxIcon size={20} fill={"#6D00C2"} />
+                            }
+                        </TextIconButton>
                         <TextIconButton 
                             disabled={markedTabs.length > 0 ? false : true} 
-                            icon={"trash"} 
-                            size={{ icon: 20, text: "text-sm" }} 
-                            fill={markedTabs.length > 0 ? "#6D00C2" : "#9f9f9f"} 
+                            id={"trash"} 
+                            textSize="text-sm"
                             text="Delete from history" 
                             onClick={handleDeleteFromHistory} 
-                        />
+                        >
+                            <TrashIcon size={20} fill={markedTabs.length > 0 ? "#6D00C2" : "#9f9f9f"} />
+                        </TextIconButton>
                     </div>
+                    
                     <div className="flex items-center justify-end">
-                        
                         <TextIconButton 
                             disabled={false} 
-                            icon={tabsData.viewMode === "list" ? "grid" : "list"} 
-                            size={{ icon: 20, text: "text-sm" }} 
-                            fill="#6D00C2" 
+                            id={tabsData.viewMode === "list" ? "grid" : "list"} 
+                            textSize="text-sm"
                             text={tabsData.viewMode === "list" ? "Grid" : "List"} 
                             onClick={handleChangeViewMode} 
-                        />
+                        >
+                            { 
+                                tabsData.viewMode === "list" ? 
+                                <GridIcon size={20} fill={"#6D00C2"} /> : 
+                                <ListIcon size={20} fill={"#6D00C2"} />
+                            }
+                        </TextIconButton>
                         <div className="relative w-[175px] mr-4 flex items-center">
                             {renderSortOptionsDropdown()}
                         </div>
@@ -291,8 +307,6 @@ const HistorySection = (props: any): JSX.Element => {
 
         return (
             <AddToWorkspacePopup 
-                title="Save history"
-                type="slide-in" 
                 dropdownOptions={dropdownOptions}
                 onNewWorkspace={handleAddToNewWorkspace}
                 onExistingWorkspace={handleAddToExistingWorkspace}

@@ -9,6 +9,8 @@ import CurrentSessionView from '../views/sidepanel/current_session_view';
 import HistoryView from '../views/sidepanel/history_view';
 import SearchResultsContainer from '../views/sidepanel/search_results_view';
 import iRenderSidePanel from '../interfaces/render_sidepanel';
+import MultipleFoldersIcon from '../images/icons/multiple_folders_icon';
+import ConfigIcon from '../images/icons/config_icon';
 
 function RenderSidePanel(props: iRenderSidePanel): JSX.Element {
     const [view, setView] = useState<string>("folders-view");
@@ -52,8 +54,12 @@ function RenderSidePanel(props: iRenderSidePanel): JSX.Element {
             </div>
             {!keyword && renderView()}
             <div className="shadow font-bold bg-white sticky bottom-0 px-4 py-4 border-t-2 border-t-tbfColor-lightpurple flex justify-around z-50">
-                <Navlink key="folders-nav-link" iconSize={20} label="Advanced" url="?view=main" isActive={false} onClick={() => window.open("./options.html?view=main", "_blank")} />
-                <Navlink key="settings-nav-link" iconSize={20} label="Settings" url="?view=settings" isActive={false} onClick={() => window.open("./options.html?view=settings", "_blank")} />
+                <Navlink key="folders-nav-link" label="Advanced" url="?view=main" isActive={false} onClick={() => window.open("./options.html?view=main", "_blank")}>
+                    <MultipleFoldersIcon size={20} fill={"#525252"} />
+                </Navlink>
+                <Navlink key="settings-nav-link" label="Settings" url="?view=settings" isActive={false} onClick={() => window.open("./options.html?view=settings", "_blank")}>
+                    <ConfigIcon size={20} fill={"#525252"} />
+                </Navlink>
             </div>
         </>
     )

@@ -3,19 +3,19 @@ import { iWindowItem } from '../../interfaces/window_item';
 import { useSelector, useDispatch } from "react-redux";
 import { iFolderItem } from '../../interfaces/folder_item';
 import { saveToStorage } from '../../services/webex_api/storage';
-import FolderManager from "../../components/utils/folder_manager";
+import FolderManager from "../../components/features/folder_manager/folder_manager";
 import { clearInEditFolder } from "../../redux/actions/inEditFolderActions";
 import { clearMarkedTabsAction } from '../../redux/actions/historySettingsActions';
 import { setUpWindowsAction } from '../../redux/actions/currentSessionActions';
-import PrimaryButton from "../../components/utils/primary_button";
+import PrimaryButton from "../../components/utils/primary_button/primary_button";
 import { clearMarkedFoldersAction } from '../../redux/actions/workspaceSettingsActions';
 import randomNumber from '../../tools/random_number';
-import AddToWorkspacePopup from "../../components/utils/add_to_workspace_popup";
+import AddToWorkspacePopup from "../../components/features/add_to_workspace_popup";
 import { iTabItem } from '../../interfaces/tab_item';
 import { iFieldOption } from '../../interfaces/dropdown';
-import CurrentSessionWindowItem from '../../components/current_session_window_item';
 import SaveIcon from './../../images/icons/save_icon';
 import CircleButton from './../../components/utils/circle_button';
+import WindowItem from "../../components/features/window_item";
 
 const CurrentSessionView = (props:any): JSX.Element => {
     const [addToWorkSpaceMessage, setAddToWorkspaceMessage] = useState<boolean>(false);
@@ -158,8 +158,6 @@ const CurrentSessionView = (props:any): JSX.Element => {
 
         return (
             <AddToWorkspacePopup 
-                title="Save session"
-                type="popup"
                 dropdownOptions={dropdownOptions}
                 onNewWorkspace={handleAddToNewWorkspace}
                 onExistingWorkspace={handleAddToExistingWorkspace}
@@ -213,7 +211,32 @@ const CurrentSessionView = (props:any): JSX.Element => {
 
     const renderWindows = (): Array<JSX.Element> => {
         const existingWindows = currentSessionData?.windows;
-        const existingWindowsElements: Array<JSX.Element> = existingWindows?.map((item: iWindowItem, i: number) => <CurrentSessionWindowItem key={`window-item-${i}`} tabsCol={1} disableEdit={currentSessionData.windows.length < 2 ? true : false} disableTabMark={false} disableTabEdit={true} id={item.id} tabs={item.tabs} initExpand={true} />);
+        const existingWindowsElements: Array<JSX.Element> = existingWindows?.map((item: iWindowItem, i: number) => {
+            return (
+               /* <CurrentSessionWindowItem 
+                    key={`window-item-${i}`} 
+                    tabsCol={1}
+                    disableEdit={currentSessionData.windows.length < 2 ? true : false} 
+                    disableTabMark={false} 
+                    disableTabEdit={true} 
+                    id={item.id} 
+                    tabs={item.tabs} 
+                    initExpand={true} 
+                />*/
+               
+
+                <WindowItem
+                    key={`window-item-${i}`} 
+                    tabsCol={1}
+                    disableEdit={currentSessionData.windows.length < 2 ? true : false} 
+                    disableTabMark={true} 
+                    disableTabEdit={true} 
+                    id={item.id} 
+                    tabs={item.tabs} 
+                    initExpand={true} 
+                />
+            );
+        })
         
         if (existingWindowsElements?.length > 0){
             return [...existingWindowsElements];
