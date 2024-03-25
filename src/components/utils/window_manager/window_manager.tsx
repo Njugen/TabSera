@@ -1,12 +1,10 @@
 import PrimaryButton from './../primary_button/primary_button';
 import { useEffect, useState } from "react";
-import WindowItem from "../../window_item";
-import { iWindowItem } from "../../../interfaces/window_item";
 
 import { useSelector } from "react-redux";
 import randomNumber from "../../../tools/random_number";
 import iWindowManager from "../../../interfaces/window_manager";
-import renderWindows from './render_windows';
+import WindowList from './sections/window_list';
 
 /*
     Section for managing windows and tabs, primarily used
@@ -35,7 +33,7 @@ const WindowManager = (props: iWindowManager): JSX.Element => {
 
     return (
         <div data-testid="window-manager" className="my-6 py-6 min-h-[200px] flex flex-col items-center justify-center">
-            { renderWindows(folderData, createWindow, inCreationId)}
+            {<WindowList folder={folderData} createWindow={createWindow} inCreationId={inCreationId} />}
             { 
                 <div className="flex flex-row mt-10">
                     <PrimaryButton disabled={false} text="New window" onClick={handleCreateWindow} />            

@@ -1,7 +1,14 @@
 import WindowItem from "../window_item";
 import { iWindowItem } from "../../interfaces/window_item";
 
-const renderWindows = (windows: Array<iWindowItem>, viewMode: "list" | "grid"): Array<JSX.Element> => {
+interface IFolderWindowListProps {
+    windows: Array<iWindowItem>,
+    viewMode: "list" | "grid"
+}
+
+const FolderWindowList = (props: IFolderWindowListProps): JSX.Element => {
+    const { windows, viewMode } = props;
+
     const result: Array<JSX.Element> = windows.map((window, index): JSX.Element => (
         <WindowItem 
             tabsCol={viewMode === "list" ? 4 : 2} 
@@ -13,7 +20,7 @@ const renderWindows = (windows: Array<iWindowItem>, viewMode: "list" | "grid"): 
         />
     ));
 
-    return result;
+    return <>{result}</>;
 }
 
-export default renderWindows;
+export default FolderWindowList;

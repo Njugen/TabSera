@@ -1,6 +1,5 @@
 import PrimaryButton from '../primary_button/primary_button';
-import styles from "../../styles/global_utils.module.scss";
-import Dropdown from "../dropdown/render_dropdown_menu";
+import Dropdown from "../dropdown/dropdown";
 import iAddToWorkspacePopup from '../../../interfaces/add_to_workspace_popup';
 import GenericIconButton from "../generic_icon_button";
 import CloseIcon from '../../../images/icons/close_icon';

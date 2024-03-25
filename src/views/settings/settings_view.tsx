@@ -1,6 +1,6 @@
 import "./../../styles/global_utils.module.scss";
 import FormField from '../../components/utils/form_field';
-import Dropdown from '../../components/utils/dropdown/render_dropdown_menu';
+import Dropdown from '../../components/utils/dropdown/dropdown';
 import Switcher from '../../components/utils/switcher/switcher';
 import { iFieldOption, iSettingFieldOption } from "../../interfaces/dropdown";
 import { useEffect, useState } from 'react';

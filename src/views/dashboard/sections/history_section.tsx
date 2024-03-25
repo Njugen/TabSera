@@ -9,7 +9,7 @@ import TextIconButton from '../../../components/utils/text_icon_button';
 import randomNumber from '../../../tools/random_number';
 import { iWindowItem } from '../../../interfaces/window_item';
 import { clearMarkedFoldersAction } from '../../../redux/actions/workspaceSettingsActions';
-import Dropdown from '../../../components/utils/dropdown/render_dropdown_menu';
+import Dropdown from '../../../components/utils/dropdown/dropdown';
 import TabItem from '../../../components/tab_item';
 import { changeTabsViewMode, clearMarkedTabsAction, setMarkMultipleTabsAction, setMarkedTabsAction, setTabsSortOrder, setUpTabsAction } from '../../../redux/actions/historySettingsActions';
 import { iTabItem } from '../../../interfaces/tab_item';

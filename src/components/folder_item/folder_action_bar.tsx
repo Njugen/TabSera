@@ -11,7 +11,7 @@ import Checkbox from "../utils/checkbox"
 import DropdownMenu from "../utils/dropdown_menu/dropdown_menu"
 import { iFieldOption } from "../../interfaces/dropdown"
 
-interface IActionBarHandlers {
+interface IFolderActionBarHandlers {
     handleExpandClick: (e: any) => void,
     handleOpen: (e: any) => void,
     handleEdit: (e: any) => void,
@@ -23,11 +23,16 @@ interface IActionBarHandlers {
     onDelete?: (e: iFolderItem) => void,
 }
 
-interface IActionBarStates {
+interface IFolderActionBarStates {
     expanded: boolean,
     showLaunchOptions: boolean,
     marked: boolean,
     id: number
+}
+
+interface IRenderActionBarProps {
+    states: IFolderActionBarStates,
+    handlers: IFolderActionBarHandlers
 }
 
 // List of all options on how to launch this folder. The id identifies the option, and
@@ -47,7 +52,9 @@ const launchOptions: Array<iFieldOption> = [
     }
 ] 
 
-const renderActionBar = (states: IActionBarStates, handlers: IActionBarHandlers): JSX.Element => {
+
+const FolderActionBar = (props: IRenderActionBarProps): JSX.Element => {
+    const { states, handlers } = props;
     const { expanded, showLaunchOptions, marked, id } = states;
     const {
         handleExpandClick,
@@ -123,7 +130,7 @@ const renderActionBar = (states: IActionBarStates, handlers: IActionBarHandlers)
 }
 
 export { 
-    renderActionBar,
-    IActionBarHandlers,
-    IActionBarStates
+    FolderActionBar,
+    IFolderActionBarHandlers,
+    IFolderActionBarStates
 };

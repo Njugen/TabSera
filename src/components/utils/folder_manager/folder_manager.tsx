@@ -15,7 +15,6 @@ import { setShowFolderChangeWarning } from "../../../redux/actions/warningAction
 import { createFolderAction, updateFolderAction } from "../../../redux/actions/folderCollectionActions";
 import { setCurrentlyEditingTab } from "../../../redux/actions/miscActions";
 import CloseIcon from "../../../images/icons/close_icon";
-import { saveToStorage } from "../../../services/webex_api/storage";
 import { innerStyleDirection, outerStyleDirection } from "./style_directions";
 import windowListChanged from "./window_list_changed";
 import WindowManager from "../window_manager/window_manager";

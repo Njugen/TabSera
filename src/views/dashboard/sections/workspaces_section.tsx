@@ -16,7 +16,7 @@ import TextIconButton from '../../../components/utils/text_icon_button';
 import randomNumber from '../../../tools/random_number';
 import { iWindowItem } from '../../../interfaces/window_item';
 import * as workspaceSettingsActions from '../../../redux/actions/workspaceSettingsActions';
-import Dropdown from '../../../components/utils/dropdown/render_dropdown_menu';
+import Dropdown from '../../../components/utils/dropdown/dropdown';
 import SectionContainer from '../../../components/utils/section_container';
 import DeselectedCheckboxIcon from '../../../images/icons/deselected_checkbox_icon';
 import SelectedCheckboxIcon from '../../../images/icons/selected_checkbox_icon';

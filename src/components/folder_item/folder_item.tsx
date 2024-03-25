@@ -1,24 +1,14 @@
-import { useRef, useState, useEffect, useLayoutEffect, useCallback } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import ClosedFolderIcon from "../../images/icons/closed_folder_icon";
 import Paragraph from "../utils/paragraph";
-import FolderControlButton from "../utils/folder_control_button/folder_control_button";
 import OpenedFolderIcon from "../../images/icons/opened_folder_icon";
 import "../../styles/global_utils.module.scss";
-import WindowItem from "../window_item";
 import { iFolderItem } from "../../interfaces/folder_item";
-import Checkbox from '../utils/checkbox';
-import DropdownMenu from "../utils/dropdown_menu/dropdown_menu";
-import { iFieldOption } from "../../interfaces/dropdown";
 import { useSelector } from "react-redux";
 import iWorkspaceState from "../../interfaces/states/workspaceState";
-import { getFromStorage, saveToStorage } from "../../services/webex_api/storage";
-import TrashIcon from "../../images/icons/trash_icon";
-import OpenBrowserIcon from "../../images/icons/open_browser_icon";
-import SettingsIcon from "../../images/icons/settings_icon";
-import RotationEffect from "../effects/rotation_effect";
-import CollapseIcon from "../../images/icons/collapse_icon";
-import renderWindows from "./render_windows";
-import { IActionBarHandlers, IActionBarStates, renderActionBar } from "./render_action_bar";
+import { FolderActionBar, IFolderActionBarHandlers, IFolderActionBarStates } from "./folder_action_bar";
+import FolderWindowList from "./folder_window_list";
+
 /*
     Folder containing description, windows and tabs, as well as various folder options
 */
@@ -160,9 +150,9 @@ const FolderItem = (props: iFolderItem): JSX.Element => {
     } 
 
 
-    const actionBarHandlers: IActionBarHandlers = { handleExpandClick, handleOpen, handleEdit, handleDelete, handleLaunch, onOpen, onEdit, onDelete, onMark };
-    const actionBarStates: IActionBarStates = { expanded, showLaunchOptions, marked, id };
-
+    const actionBarHandlers: IFolderActionBarHandlers = { handleExpandClick, handleOpen, handleEdit, handleDelete, handleLaunch, onOpen, onEdit, onDelete, onMark };
+    const actionBarStates: IFolderActionBarStates = { expanded, showLaunchOptions, marked, id };
+    
     return (
         <>
             <div 
@@ -179,7 +169,7 @@ const FolderItem = (props: iFolderItem): JSX.Element => {
                             {name}
                         </h2>
                     </div>
-                    {renderActionBar(actionBarStates, actionBarHandlers)}
+                    {<FolderActionBar handlers={actionBarHandlers} states={actionBarStates} />}
                 </div>
                 <div ref={contentsRef} className="max-h-2000 overflow-y-hidden bg-tbfColor-lighterpurple3">
                 {expanded === true && (
@@ -190,7 +180,7 @@ const FolderItem = (props: iFolderItem): JSX.Element => {
                     </div>}
                     
                     <div className="px-5 mb-8 mt-8">
-                        {renderWindows(windows, workspaceSettings.viewMode)}
+                        <FolderWindowList windows={windows} viewMode={workspaceSettings.viewMode} />
                     </div></>
                     )}
                 </div>

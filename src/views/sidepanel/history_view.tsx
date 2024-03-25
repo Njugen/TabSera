@@ -13,7 +13,7 @@ import { iTabItem } from '../../interfaces/tab_item';
 import { iFieldOption } from '../../interfaces/dropdown';
 import TextIconButton from '../../components/utils/text_icon_button';
 import SortIcon from "../../images/icons/sort_icon";
-import Dropdown from "../../components/utils/dropdown/render_dropdown_menu";
+import Dropdown from "../../components/utils/dropdown/dropdown";
 import TabItem from "../../components/tab_item";
 import CircleButton from './../../components/utils/circle_button';
 import SaveIcon from './../../images/icons/save_icon';

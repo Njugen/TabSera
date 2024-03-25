@@ -1,13 +1,19 @@
-import TabItem from '../../tab_item';
-import { filterSessionTabsByString } from './filters';
-import iCurrentSessionState from "../../../interfaces/states/currentSessionState";
+import TabItem from '../../../tab_item';
+import { filterSessionTabsByString } from '../filters';
+import iCurrentSessionState from "../../../../interfaces/states/currentSessionState";
+
+interface ISearchBarSessionTabsProps {
+    items: iCurrentSessionState,
+    keyword: string
+}
 
 // Render all filtered session tabs
-const renderSessionTabs = (collection: iCurrentSessionState, keyword: string): Array<JSX.Element> | JSX.Element => {
-    const tabs: Array<chrome.tabs.Tab> = filterSessionTabsByString(collection, keyword);
+const SearchBarSessionTabs = (props: ISearchBarSessionTabsProps): JSX.Element => {
+    const { items, keyword } = props;
+    const tabs: Array<chrome.tabs.Tab> = filterSessionTabsByString(items, keyword);
     
     if(tabs.length > 0){
-        return tabs.map((tab) => {
+        const list: Array<JSX.Element> = tabs.map((tab) => {
             const { id, title,url } = tab;
             
             return (
@@ -24,6 +30,8 @@ const renderSessionTabs = (collection: iCurrentSessionState, keyword: string): A
                 />
             )
         });
+
+        return <>{list}</>
     } 
     
     return (
@@ -31,4 +39,4 @@ const renderSessionTabs = (collection: iCurrentSessionState, keyword: string): A
     );
 }
 
-export default renderSessionTabs;
+export default SearchBarSessionTabs;

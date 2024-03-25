@@ -1,10 +1,9 @@
 import { useRef, useState, useEffect } from "react";
 import CollapseIcon from "../../../images/icons/collapse_icon";
-import { iDropdown, iFieldOption } from "../../../interfaces/dropdown";
-import DropdownMenu from "../dropdown_menu/dropdown_menu";
+import { iDropdown } from "../../../interfaces/dropdown";
 import RotationEffect from "../../effects/rotation_effect";
-import renderDropdownMenu from "./handle_select";
 import { IGetSelectedOptionProps, getSelectedOption } from "./get_selected_option";
+import DropdownMenu from "../dropdown_menu/dropdown_menu";
 
 /*
     A dropdown selector, containing a menu with a set of options
@@ -93,7 +92,8 @@ const Dropdown = (props: iDropdown): JSX.Element => {
                 </RotationEffect>
             </div>
             <div className={`transition duration-75 ${showSubMenuContainer === true ? "ease-in opacity-100" : "ease-out opacity-0"}`}>
-                { showSubMenuContainer === true && renderDropdownMenu(tag, options, selected, handleSelect)}
+                { showSubMenuContainer === true && <DropdownMenu tag={tag} options={options} selected={selected} onSelect={handleSelect} />}
+                []
             </div>
         </div>
     ); 
