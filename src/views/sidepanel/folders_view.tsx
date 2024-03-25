@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { iWindowItem } from '../../interfaces/window_item';
 import { useSelector, useDispatch } from "react-redux";
 import { iFolderItem } from '../../interfaces/folder_item';
-import FolderItem from "../../components/features/folder_item/sections/folder_item";
+import FolderItem from "../../components/features/folder_item/folder_item";
 import { getFromStorage, saveToStorage } from '../../services/webex_api/storage';
 import { deleteFolderAction, readAllFoldersFromBrowserAction } from '../../redux/actions/folderCollectionActions';
 import FolderManager from "../../components/features/folder_manager/folder_manager";
