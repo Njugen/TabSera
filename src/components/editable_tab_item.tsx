@@ -7,6 +7,7 @@ import randomNumber from "../tools/random_number";
 import { iTabItem } from "../interfaces/tab_item";
 import { useDispatch } from "react-redux";
 import { updateWindowManager } from "../redux/actions/inEditFolderActions";
+import verifyValue from "../common/verify_value";
 
 
 /*
@@ -19,7 +20,6 @@ const EditableTabItem = (props: iEditableTabItem): JSX.Element => {
     const fieldRef = useRef<HTMLInputElement>(null);
 
     const dispatch = useDispatch();
-
     
     // Automatically focus on the textfield once this component has been invoked.
     useEffect(() => {
@@ -59,13 +59,6 @@ const EditableTabItem = (props: iEditableTabItem): JSX.Element => {
         if (e.key === 'Enter' || e.keyCode === 13) {
             saveToStore(e);
         }
-    }
-
-    // Verify the textfield value
-    const verifyValue = (input: string): boolean => {
-        const regex = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
-
-        return regex.test(input);
     }
 
     return (

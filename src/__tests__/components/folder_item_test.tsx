@@ -3,7 +3,7 @@ import '@testing-library/jest-dom'
 import { store } from "../../redux/reducer";
 import { Provider } from "react-redux";
 import { iFolderItem } from "../../interfaces/folder_item";
-import FolderItem from "../../components/folder_item";
+import FolderItem from "../../components/folder_item/folder_item";
 
 jest.mock("../../redux/mocked_hooks");
 jest.useFakeTimers();

@@ -1,4 +1,4 @@
-import FolderItem from '../../../components/folder_item'
+import FolderItem from '../../../components/folder_item/folder_item'
 import "./../../../styles/global_utils.module.scss";
 import PrimaryButton from '../../../components/utils/primary_button/primary_button';
 import FolderManager from '../../../components/utils/folder_manager/folder_manager';

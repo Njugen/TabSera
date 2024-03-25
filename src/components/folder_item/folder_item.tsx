@@ -1,23 +1,24 @@
-import { useRef, useState, useEffect, useLayoutEffect } from "react";
-import ClosedFolderIcon from "../images/icons/closed_folder_icon";
-import Paragraph from "./utils/paragraph";
-import FolderControlButton from "./utils/folder_control_button/folder_control_button";
-import OpenedFolderIcon from "../images/icons/opened_folder_icon";
-import "../styles/global_utils.module.scss";
-import WindowItem from "./window_item";
-import { iFolderItem } from "../interfaces/folder_item";
-import Checkbox from './utils/checkbox';
-import DropdownMenu from "./utils/dropdown_menu/dropdown_menu";
-import { iFieldOption } from "../interfaces/dropdown";
+import { useRef, useState, useEffect, useLayoutEffect, useCallback } from "react";
+import ClosedFolderIcon from "../../images/icons/closed_folder_icon";
+import Paragraph from "../utils/paragraph";
+import FolderControlButton from "../utils/folder_control_button/folder_control_button";
+import OpenedFolderIcon from "../../images/icons/opened_folder_icon";
+import "../../styles/global_utils.module.scss";
+import WindowItem from "../window_item";
+import { iFolderItem } from "../../interfaces/folder_item";
+import Checkbox from '../utils/checkbox';
+import DropdownMenu from "../utils/dropdown_menu/dropdown_menu";
+import { iFieldOption } from "../../interfaces/dropdown";
 import { useSelector } from "react-redux";
-import iWorkspaceState from "../interfaces/states/workspaceState";
-import { getFromStorage, saveToStorage } from "../services/webex_api/storage";
-import TrashIcon from "../images/icons/trash_icon";
-import OpenBrowserIcon from "../images/icons/open_browser_icon";
-import SettingsIcon from "../images/icons/settings_icon";
-import RotationEffect from "./effects/rotation_effect";
-import CollapseIcon from "../images/icons/collapse_icon";
-
+import iWorkspaceState from "../../interfaces/states/workspaceState";
+import { getFromStorage, saveToStorage } from "../../services/webex_api/storage";
+import TrashIcon from "../../images/icons/trash_icon";
+import OpenBrowserIcon from "../../images/icons/open_browser_icon";
+import SettingsIcon from "../../images/icons/settings_icon";
+import RotationEffect from "../effects/rotation_effect";
+import CollapseIcon from "../../images/icons/collapse_icon";
+import renderWindows from "./render_windows";
+import { IActionBarHandlers, IActionBarStates, renderActionBar } from "./render_action_bar";
 /*
     Folder containing description, windows and tabs, as well as various folder options
 */
@@ -31,22 +32,7 @@ const FolderItem = (props: iFolderItem): JSX.Element => {
     const [slideDown, setSlideDown] = useState<boolean>(false);
 
     const workspaceSettings: iWorkspaceState = useSelector((state: any) => state.WorkspaceSettingsReducer);
-
-    // Show a list of options for how to launch this folder
-    const handleShowLaunchOptionsMenu = (): void => {
-        if(showLaunchOptions === false){
-            setShowLaunchOptions(true);
-            setTimeout(() => {
-                setSlideDown(slideDown === true ? false : true);
-            }, 200);
-        } else {
-            setSlideDown(false);
-            setTimeout(() => {
-                setShowLaunchOptions(false);
-            }, 200);
-        }
-    }
-
+    
     const { 
         id,
         name,
@@ -62,10 +48,8 @@ const FolderItem = (props: iFolderItem): JSX.Element => {
         onEdit 
     } = props;
 
-    useLayoutEffect(() => {
-        toggleExpand(type);
-    }, []);
-
+    useEffect(() => toggleExpand(type), []);
+    
     useEffect(() => {
         // Listen for clicks in the viewport. If the options list is visible, then hide it once
         // anything is clicked
@@ -81,6 +65,21 @@ const FolderItem = (props: iFolderItem): JSX.Element => {
     useEffect(() => {
         if(index && folderRef.current) folderRef.current.style.zIndex = index.toString();
     }, [folderRef])
+
+    // Show a list of options for how to launch this folder
+    const handleShowLaunchOptionsMenu = useCallback((): void => {
+        if(showLaunchOptions === false){
+            setShowLaunchOptions(true);
+            setTimeout(() => {
+                setSlideDown(slideDown === true ? false : true);
+            }, 200);
+        } else {
+            setSlideDown(false);
+            setTimeout(() => {
+                setShowLaunchOptions(false);
+            }, 200);
+        }
+    }, [showLaunchOptions])
     
     const exp = (): void => {
         if(contentsRef.current === null || headerRef.current === null) return;
@@ -116,21 +115,6 @@ const FolderItem = (props: iFolderItem): JSX.Element => {
         toggleExpand();
     }
 
-    const renderWindows = (): Array<JSX.Element> => {
-        const result: Array<JSX.Element> = windows.map((window, index): JSX.Element => (
-            <WindowItem 
-                tabsCol={workspaceSettings.viewMode === "list" ? 4 : 2} 
-                disableTabMark={true} 
-                disableTabEdit={true} 
-                key={"window-" + index} 
-                id={window.id} 
-                tabs={window.tabs} 
-            />
-        ));
-
-        return result;
-    }
-
     // Prepare to open a folder: show launch options -> open folder accordingly
     const handleOpen = (): void => {
         setShowLaunchOptions(true);
@@ -158,7 +142,6 @@ const FolderItem = (props: iFolderItem): JSX.Element => {
     }
 
    const handleWindowClick = (e: any): void => {
-    console.log("heELLO");
         e.stopPropagation();
 
         if(showLaunchOptions === true){
@@ -176,84 +159,9 @@ const FolderItem = (props: iFolderItem): JSX.Element => {
         if(onEdit) onEdit(e);
     } 
 
-    // List of all options on how to launch this folder. The id identifies the option, and
-    // actions are performed accordingly.
-    const launchOptions: Array<iFieldOption> = [
-        {
-            id: 0,
-            label: "Open"
-        },
-        {
-            id: 1,
-            label: "Open as group"
-        },
-        {
-            id: 2,
-            label: "Open in incognito"
-        }
-    ] 
 
-    const renderActionBar = (): JSX.Element => {
-        let openButton: JSX.Element | null = null
-        let editButton: JSX.Element | null = null
-        let deleteButton: JSX.Element | null = null
-        let checkbox: JSX.Element | null = null
-        let expand_collapse_button: JSX.Element | null = (
-            <FolderControlButton id="collapse_expand" active={expanded} onClick={handleExpandClick}>
-                <RotationEffect rotated={expanded}>
-                    <CollapseIcon size={28} fill={"#000"} />
-                </RotationEffect>
-            </FolderControlButton>
-        );
-
-        if(onOpen){
-            openButton = (
-                <FolderControlButton id="open_browser" active={expanded} onClick={handleOpen}>
-                    <OpenBrowserIcon size={17} fill={"#000"} />
-                </FolderControlButton>
-            );
-        }
-        if(onEdit){
-            editButton = (
-                <FolderControlButton id="settings" active={expanded} onClick={handleEdit}>
-                    <SettingsIcon size={17} fill={"#000"} />
-                </FolderControlButton>
-            );
-        }
-        if(onDelete){
-            deleteButton = (
-                <FolderControlButton id="trash" active={expanded} onClick={handleDelete}>
-                    <TrashIcon size={17} fill={"#000"} />
-                </FolderControlButton>
-            );
-        }
-        if(onMark){
-            checkbox = <Checkbox checked={marked} onCallback={(e) => onMark!(id)} />;
-        }
-
-        let result = (
-            <div className="absolute flex items-center right-4">
-                { 
-                    showLaunchOptions === true && 
-                    <div className={"w-[200px] absolute mt-12 right-10"}>
-                        <DropdownMenu 
-                            selected={null} 
-                            tag={"folder-control-dropdown"} 
-                            onSelect={handleLaunch} 
-                            options={launchOptions} 
-                        />
-                    </div>
-                }
-                {openButton}
-                {editButton}
-                {deleteButton}
-                {expand_collapse_button}
-                {checkbox}
-            </div>
-        );
-
-        return result;
-    }
+    const actionBarHandlers: IActionBarHandlers = { handleExpandClick, handleOpen, handleEdit, handleDelete, handleLaunch, onOpen, onEdit, onDelete, onMark };
+    const actionBarStates: IActionBarStates = { expanded, showLaunchOptions, marked, id };
 
     return (
         <>
@@ -271,7 +179,7 @@ const FolderItem = (props: iFolderItem): JSX.Element => {
                             {name}
                         </h2>
                     </div>
-                    {renderActionBar()}
+                    {renderActionBar(actionBarStates, actionBarHandlers)}
                 </div>
                 <div ref={contentsRef} className="max-h-2000 overflow-y-hidden bg-tbfColor-lighterpurple3">
                 {expanded === true && (
@@ -282,7 +190,7 @@ const FolderItem = (props: iFolderItem): JSX.Element => {
                     </div>}
                     
                     <div className="px-5 mb-8 mt-8">
-                        {[...renderWindows()]}
+                        {renderWindows(windows, workspaceSettings.viewMode)}
                     </div></>
                     )}
                 </div>

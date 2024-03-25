@@ -12,9 +12,9 @@ import { clearMarkedTabsAction} from '../../../redux/actions/historySettingsActi
 import { iTabItem } from '../../../interfaces/tab_item';
 import { iFieldOption } from '../../../interfaces/dropdown';
 import { setUpWindowsAction } from '../../../redux/actions/currentSessionActions';
-import CurrentSessionWindowItem from '../../../components/current_session_window_item';
 import AddToWorkspacePopup from '../../../components/utils/add_to_workspace_popup/add_to_workspace_popup';
 import SectionContainer from "../../../components/utils/section_container";
+import WindowItem from "../../../components/window_item";
 
 const CurrentSessionSection = (props: any): JSX.Element => {
     const [addToWorkSpaceMessage, setAddToWorkspaceMessage] = useState<boolean>(false);
@@ -104,12 +104,13 @@ const CurrentSessionSection = (props: any): JSX.Element => {
         const existingWindows = currentSessionData?.windows;
         const existingWindowsElements: Array<JSX.Element> = existingWindows?.map((item: iWindowItem, i: number) => {
             return (
-                <CurrentSessionWindowItem 
+                <WindowItem 
                     key={`window-item-${i}`} 
                     tabsCol={4} 
-                    disableEdit={currentSessionData.windows.length < 2 ? true : false} 
-                    disableTabMark={false} 
-                    disableTabEdit={true} id={item.id} 
+                    disableEdit={true} 
+                    disableTabMark={true} 
+                    disableTabEdit={true} 
+                    id={item.id} 
                     tabs={item.tabs} 
                     initExpand={true} 
                 />

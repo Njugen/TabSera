@@ -3,7 +3,7 @@ import SearchIcon from "../../../images/icons/search_icon";
 import { useSelector } from 'react-redux';
 import TabItem from "../../tab_item";
 import styles from "../../../styles/global_utils.module.scss";
-import FolderItem from "../../folder_item";
+import FolderItem from "../../folder_item/folder_item";
 import { iFolderItem } from '../../../interfaces/folder_item';
 import { iWindowItem } from '../../../interfaces/window_item';
 import iCurrentSessionState from "../../../interfaces/states/currentSessionState";

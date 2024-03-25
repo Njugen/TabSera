@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { iWindowItem } from '../../interfaces/window_item';
 import { useSelector } from "react-redux";
 import { iFolderItem } from '../../interfaces/folder_item';
-import FolderItem from "../../components/folder_item";
+import FolderItem from "../../components/folder_item/folder_item";
 import TabItem from "../../components/tab_item";
 import GenericIconButton from "../../components/utils/generic_icon_button";
 import { 

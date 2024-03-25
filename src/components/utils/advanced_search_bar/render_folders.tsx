@@ -1,6 +1,6 @@
 import { iFolderItem } from '../../../interfaces/folder_item';
 import { iWindowItem } from '../../../interfaces/window_item';
-import FolderItem from '../../folder_item';
+import FolderItem from '../../folder_item/folder_item';
 import { filterFoldersByString } from './filters';
 
 const renderFolders = (collection: Array<iFolderItem>, keyword: string, callback: (windows: Array<iWindowItem>, type: string) => void): Array<JSX.Element> | JSX.Element => {
