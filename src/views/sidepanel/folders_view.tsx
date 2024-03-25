@@ -8,7 +8,7 @@ import { deleteFolderAction, readAllFoldersFromBrowserAction } from '../../redux
 import FolderManager from "../../components/features/folder_manager/folder_manager";
 import { clearInEditFolder } from "../../redux/actions/inEditFolderActions";
 import { clearMarkedFoldersAction } from "../../redux/actions/workspaceSettingsActions";
-import MessageBox from "../../components/utils/message_box";
+import PopupMessage from "../../components/utils/popup_message";
 import PrimaryButton from "../../components/utils/primary_button/primary_button";
 import iFoldersView from "../../interfaces/folders_view";
 import NewFolderIcon from "../../images/icons/new_folder_icon";
@@ -181,7 +181,7 @@ const FoldersView = (props: iFoldersView): JSX.Element => {
     return (
         <>
             {showPerformanceWarning &&
-                <MessageBox 
+                <PopupMessage
                     title="Warning" 
                     text={`You are about to open ${totalTabsCount} or more tabs at once. Opening this many may slow down your browser. Do you want to proceed?`}
                     primaryButton={{ text: "Yes, open selected folders", callback: () => { windowsPayload && handleLaunchFolder(windowsPayload); setShowPerformanceWarning(false)}}}
@@ -190,7 +190,7 @@ const FoldersView = (props: iFoldersView): JSX.Element => {
                 />
             }
             {removalTarget &&
-                <MessageBox 
+                <PopupMessage
                     title="Warning" 
                     text={`You are about to remove the "${removalTarget.name}" workspace and all its contents. This is irreversible, do you want to proceed?`}
                     primaryButton={{ text: "Yes, remove this folder", callback: () => { dispatch(deleteFolderAction(removalTarget.id)); setRemovalTarget(null)}}}

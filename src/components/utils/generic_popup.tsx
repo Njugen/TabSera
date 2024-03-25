@@ -1,20 +1,30 @@
 import { useEffect, useState } from "react"
-import CloseIcon from "../../../images/icons/close_icon"
-import { innerStyleDirection, outerStyleDirection } from "../../features/folder_manager/style_directions"
-import GenericIconButton from "../generic_icon_button"
-import PrimaryButton from "../primary_button/primary_button"
-import PurpleBorderButton from "../purple_border_button"
-import iGenericPopup from './../../../interfaces/generic_popup';
+import CloseIcon from "../../images/icons/close_icon"
+import { innerStyleDirection, outerStyleDirection } from "../features/folder_manager/style_directions"
+import GenericIconButton from "./generic_icon_button"
+import PrimaryButton from "./primary_button/primary_button"
+import PurpleBorderButton from "./purple_border_button"
+import iGenericPopup from '../../interfaces/generic_popup';
 
 
 const GenericPopup = (props: iGenericPopup): JSX.Element => {
-    const [show, setShow] = useState<boolean>(false);
-    const { title, type, children, onClose, onSave } = props;
+    const { title, type, children, show, save, cancel } = props;
 
     useEffect(() => {
-        setShow(true);
+        document.body.style.overflowY = "hidden";
     }, []);
 
+
+    const handleClose = (): void => {
+        document.body.style.overflowY = "scroll";
+        cancel.handler();
+    }
+
+    const handleSave = (): void => {
+        if(!save) return;
+        document.body.style.overflowY = "scroll";
+        save?.handler();
+    }
 
     return (
         <div data-testid="generic-popup" className={outerStyleDirection(type, show)}>
@@ -24,7 +34,7 @@ const GenericPopup = (props: iGenericPopup): JSX.Element => {
                         <h1 data-testid="popup-title" className="text-3xl text-tbfColor-darkpurple font-light inline-block">
                             {title}
                         </h1>
-                        <GenericIconButton icon="close" onClick={onClose}>
+                        <GenericIconButton icon="close" onClick={handleClose}>
                             <CloseIcon size={34} fill="rgba(0,0,0,0.2)" />
                         </GenericIconButton>
                     </div>
@@ -32,10 +42,10 @@ const GenericPopup = (props: iGenericPopup): JSX.Element => {
                         {children}
                     </div>
                     {
-                        onSave && (
+                        save && (
                             <div id="popup-footer" className="px-8 py-8 mt-4 flex justify-end border-t border-tbfColor-lgrey">
-                                <PurpleBorderButton disabled={false} text="Cancel" onClick={onClose} />
-                                <PrimaryButton disabled={false} text={"blabla"} onClick={onSave} />
+                                <PurpleBorderButton disabled={false} text="Cancel" onClick={handleClose} />
+                                <PrimaryButton disabled={false} text={save.label} onClick={handleSave} />
                             </div>
                         )
                     }

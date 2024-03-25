@@ -11,7 +11,7 @@ import {  createFolderAction, readAllFoldersFromBrowserAction } from '../../../r
 import Paragraph from '../../../components/utils/paragraph';
 import { deleteFolderAction } from "../../../redux/actions/folderCollectionActions";
 import { saveToStorage, getFromStorage } from '../../../services/webex_api/storage';
-import MessageBox from '../../../components/utils/message_box';
+import PopupMessage from '../../../components/utils/popup_message';
 import TextIconButton from '../../../components/utils/text_icon_button';
 import randomNumber from '../../../tools/random_number';
 import { iWindowItem } from '../../../interfaces/window_item';
@@ -527,7 +527,7 @@ const WorkspacesSection = (props: any): JSX.Element => {
     return (
         <>
             {showPerformanceWarning &&
-                <MessageBox 
+                <PopupMessage
                     title="Warning" 
                     text={`You are about to open ${totalTabsCount} or more tabs at once. Opening this many may slow down your browser. Do you want to proceed?`}
                     primaryButton={{ text: "Yes, open selected folders", callback: () => { windowsPayload && handleLaunchFolder(windowsPayload); setShowPerformanceWarning(false)}}}
@@ -537,7 +537,7 @@ const WorkspacesSection = (props: any): JSX.Element => {
             }
 
             {showDuplicationWarning &&
-                <MessageBox 
+                <PopupMessage
                     title="Warning" 
                     text={`You are about to duplicate ${workspaceSettings.markedFoldersId.length} or more folders at once. Unnecessary duplications may clutter your dashboard, do you want to proceed?`}
                     primaryButton={{ text: "Yes, proceed", callback: () => { handleDuplicateFolders(); setShowDuplicationWarning(false)}}}
@@ -545,7 +545,7 @@ const WorkspacesSection = (props: any): JSX.Element => {
                 />
             }
             {removalTarget &&
-                <MessageBox 
+                <PopupMessage
                     title="Warning" 
                     text={`You are about to remove the "${removalTarget.name}" workspace and all its contents. This is irreversible, do you want to proceed?`}
                     primaryButton={{ text: "Yes, remove this folder", callback: () => { dispatch(deleteFolderAction(removalTarget.id)); setRemovalTarget(null)}}}
@@ -553,7 +553,7 @@ const WorkspacesSection = (props: any): JSX.Element => {
                 />
             }
             {showDeleteWarning === true && 
-                <MessageBox 
+                <PopupMessage
                     title="Warning" 
                     text={`You are about to remove one or more workspaces and all their contents. This is irreversible, do you want to proceed?`}
                     primaryButton={{ text: "Yes, remove these folders", callback: () => handleDeleteFolders()}}

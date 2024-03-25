@@ -1,5 +1,5 @@
-import iMessageBox from './../../interfaces/message_box';
-import styles from "./../../styles/global_utils.module.scss";
+import iPopupMessage from '../../interfaces/popup_message';
+import styles from "../../styles/global_utils.module.scss";
 
 /*
     A customized and generic message box, used primarily to warn the user about
@@ -8,7 +8,7 @@ import styles from "./../../styles/global_utils.module.scss";
     UI might be modified later to suit other needs...
 */
 
-const MessageBox = (props: iMessageBox): JSX.Element => {
+const PopupMessage = (props: iPopupMessage): JSX.Element => {
     const { title, text, primaryButton, secondaryButton } = props;
     const { popup_container_transparent_bg } = styles;
   
@@ -56,4 +56,4 @@ const MessageBox = (props: iMessageBox): JSX.Element => {
     ); 
 }
 
-export default MessageBox;
+export default PopupMessage;

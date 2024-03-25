@@ -14,7 +14,7 @@ import TabItem from '../../../components/features/tab_item';
 import { changeTabsViewMode, clearMarkedTabsAction, setMarkMultipleTabsAction, setMarkedTabsAction, setTabsSortOrder, setUpTabsAction } from '../../../redux/actions/historySettingsActions';
 import { iTabItem } from '../../../interfaces/tab_item';
 import { iDropdownSelected, iFieldOption } from '../../../interfaces/dropdown';
-import AddToWorkspacePopup from '../../../components/utils/add_to_workspace_popup/add_to_workspace_popup';
+import AddToWorkspacePopup from '../../../components/features/add_to_workspace_popup';
 import SectionContainer from "../../../components/utils/section_container";
 import iHistoryState from "../../../interfaces/states/historyState";
 import { getFromStorage, saveToStorage } from "../../../services/webex_api/storage";

@@ -11,7 +11,7 @@ import { handleShowResultsContainer, IHandleShowResultsContainerProps } from "./
 import { handleWindowClick } from "./window_click_listener";
 import { ILaunchFolderProps, handleLaunchFolder } from "./handle_launch_folder";
 import { SearchResults } from "./sections/search_bar_results";
-import MessageBox from "../../utils/message_box";
+import PopupMessage from "../../utils/popup_message";
 
 /*
     Search bar placed at the top of the viewport
@@ -133,7 +133,7 @@ const AdvancedSearchBar = (props: iAdvancedSearchBar): JSX.Element => {
     return (
         <>
             {showPerformanceWarning &&
-                <MessageBox 
+                <PopupMessage
                     title="Warning" 
                     text={`You are about to open ${totalTabsCount} or more tabs at once. Opening this many may slow down your browser. Do you want to proceed?`}
                     primaryButton={{ text: "Yes, open selected folders", callback: proceedFolderLaunch}}

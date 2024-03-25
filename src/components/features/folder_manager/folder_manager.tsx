@@ -9,7 +9,7 @@ import { iPopup } from "../../../interfaces/popup";
 import randomNumber from "../../../tools/random_number";
 import { initInEditFolder, updateInEditFolder} from "../../../redux/actions/inEditFolderActions";
 import { iFolderItem } from "../../../interfaces/folder_item";
-import MessageBox from '../../utils/message_box';
+import PopupMessage from '../../utils/popup_message';
 import { useDispatch, useSelector } from "../../../redux/mocked_hooks";
 import { setShowFolderChangeWarning } from "../../../redux/actions/warningActions";
 import { createFolderAction, updateFolderAction } from "../../../redux/actions/folderCollectionActions";
@@ -18,12 +18,13 @@ import CloseIcon from "../../../images/icons/close_icon";
 import { innerStyleDirection, outerStyleDirection } from "./style_directions";
 import windowListChanged from "./window_list_changed";
 import WindowManager from "../window_manager/window_manager";
+import GenericPopup from "../../utils/generic_popup";
 
 /*
     A popup providing oversight of a folder's settings and available windows/tabs.
     The settings may be changed by the user, which then gets applied to redux storage
 
-    Warning messages may be added using the <Messagebox /> component. New fields can be added
+    Warning messages may be added using the <PopupMessage/> component. New fields can be added
     preferably by using the <FormField /> component. See examples in render() function.
 */
 
@@ -178,70 +179,64 @@ const FolderManager = (props: iPopup): JSX.Element => {
         dispatch(setShowFolderChangeWarning(false))
     }
 
-    return (<>
-        {state.WarningActionsReducer?.showFolderChangeWarning === true && 
-            <MessageBox 
-                title="Warning" 
-                text="You have made changes to this form. Closing it will result in all changes being lost. Do you want to proceed?"
-                primaryButton={{ 
-                    text: "Yes, close this form", 
-                    callback: () => handleClose(true) 
-                }}
-                secondaryButton={{ 
-                    text: "No, keep editing", 
-                    callback: () => handleKeepEditing()
-                }}    
-            />
-        }
-       
-        <div data-testid={"folder-manager-popup"} className={outerStyleDirection(type, show)}>   
-            <div className="relative top-0 md:bottom-12 h-screen w-[992px]">
-                <div className={innerStyleDirection(type, show)}>  
-                    <div id="popup-header" className="pl-8 pr-5 pb-5 pt-6 border-b border-tbfColor-lgrey w-full flex justify-between">
-                        <h1 data-testid="popup-title" className="text-3xl text-tbfColor-darkpurple font-light inline-block">
-                            {title}
-                        </h1>
-                        <GenericIconButton icon="close" onClick={handleClose}>
-                            <CloseIcon size={34} fill="rgba(0,0,0,0.2)" />
-                        </GenericIconButton>
-                    </div>
-                    <div id="popup-body" className="px-8 pt-6">
-                        <FormField label="Name *" error={inValidFields.name} description="Give a name to this workspace. A sensible name may help your workflow when relevant tabs are needed.">
-                            <input 
-                                data-testid="name-field" 
-                                id="name-field" 
-                                type="text" 
-                                defaultValue={state.InEditFolderReducer?.name} 
-                                className={predef.textfield_full} 
-                                onBlur={(e: any) => handleChangeField("name", e.target.value)} 
-                            />
-                        </FormField>
-                        <FormField label="Description" description="Describe the purpose of this workspace.">
-                            <textarea 
-                                data-testid="desc-field" 
-                                id="desc-field" 
-                                defaultValue={state.InEditFolderReducer?.desc} 
-                                className={predef.textarea_full} 
-                                onBlur={(e: any) => handleChangeField("desc", e.target.value)}
-                            ></textarea>
-                        </FormField>
-                        <div className={`py-6 flex flex-row items-center`}>
-                            <div className="w-full">
-                                <h4 className={`font-semibold text-lg mb-1 ${inValidFields.windows === true && "text-red-500"}`}>Windows and tabs *</h4>
-                                <p className={`text-sm leading-6 text-tbfColor-darkergrey text-start ${inValidFields.windows === true && "text-red-500"}`}>
-                                    You may add as windows and tabs to this workspace as you like to this workspace, although a maximum of 25-30 tabs is recommended. 
-                                </p>
-                                <WindowManager />
-                            </div>
+    const cancelButtonSpecs: any = {
+        label: "Cancel",
+        handler: handleClose
+    }
+
+    const saveButtonSpecs: any = {
+        label: isCreate === true ? "Create" : "Save",
+        handler: handleSave
+    }
+
+    return (
+        <>
+            {state.WarningActionsReducer?.showFolderChangeWarning === true && 
+                <PopupMessage
+                    title="Warning" 
+                    text="You have made changes to this form. Closing it will result in all changes being lost. Do you want to proceed?"
+                    primaryButton={{ 
+                        text: "Yes, close this form", 
+                        callback: () => handleClose(true) 
+                    }}
+                    secondaryButton={{ 
+                        text: "No, keep editing", 
+                        callback: () => handleKeepEditing()
+                    }}    
+                />
+            }
+        
+            <GenericPopup title={title} type="slide-in" show={show} cancel={cancelButtonSpecs} save={saveButtonSpecs}>
+                    <FormField label="Name *" error={inValidFields.name} description="Give a name to this workspace. A sensible name may help your workflow when relevant tabs are needed.">
+                        <input 
+                            data-testid="name-field" 
+                            id="name-field" 
+                            type="text" 
+                            defaultValue={state.InEditFolderReducer?.name} 
+                            className={predef.textfield_full} 
+                            onBlur={(e: any) => handleChangeField("name", e.target.value)} 
+                        />
+                    </FormField>
+                    <FormField label="Description" description="Describe the purpose of this workspace.">
+                        <textarea 
+                            data-testid="desc-field" 
+                            id="desc-field" 
+                            defaultValue={state.InEditFolderReducer?.desc} 
+                            className={predef.textarea_full} 
+                            onBlur={(e: any) => handleChangeField("desc", e.target.value)}
+                        ></textarea>
+                    </FormField>
+                    <div className={`py-6 flex flex-row items-center`}>
+                        <div className="w-full">
+                            <h4 className={`font-semibold text-lg mb-1 ${inValidFields.windows === true && "text-red-500"}`}>Windows and tabs *</h4>
+                            <p className={`text-sm leading-6 text-tbfColor-darkergrey text-start ${inValidFields.windows === true && "text-red-500"}`}>
+                                You may add as windows and tabs to this workspace as you like to this workspace, although a maximum of 25-30 tabs is recommended. 
+                            </p>
+                            <WindowManager />
                         </div>
                     </div>
-                    <div id="popup-footer" className="px-8 py-8 mt-4 flex justify-end border-t border-tbfColor-lgrey">
-                        <PurpleBorderButton disabled={false} text="Cancel" onClick={handleClose} />
-                        <PrimaryButton disabled={false} text={isCreate === true ? "Create" : "Save"} onClick={handleSave} />
-                    </div>
-                </div>
-            </div>
-        </div>
+            </GenericPopup>
+
         </>
     ); 
 }

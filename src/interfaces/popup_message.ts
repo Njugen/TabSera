@@ -1,4 +1,4 @@
-interface iMessageBox {
+interface iPopupMessage {
     title: string,
     text: string,
     primaryButton: {
@@ -11,4 +11,4 @@ interface iMessageBox {
     }
 }
 
-export default iMessageBox;
+export default iPopupMessage;

@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import '@testing-library/jest-dom'
-import MessageBox from "../../../components/utils/message_box";
+import PopupMessage from "../../../components/utils/popup_message";
 import randomNumber from "../../../tools/random_number";
 
 const mockTitle = randomNumber().toString();
@@ -16,9 +16,9 @@ const secondaryButton = {
     callback: jest.fn()
 }
 
-describe("test <MessageBox /> and its features", () => {
+describe("test <PopupMessage/> and its features", () => {
     test("title and text in place", () => {
-        render(<MessageBox title={mockTitle} text={mockMessage} primaryButton={primaryButton} secondaryButton={secondaryButton} />);
+        render(<PopupMessage title={mockTitle} text={mockMessage} primaryButton={primaryButton} secondaryButton={secondaryButton} />);
 
         const title = screen.getByRole("heading", { level: 4 } );
         const message = screen.getByText(mockMessage);
@@ -29,7 +29,7 @@ describe("test <MessageBox /> and its features", () => {
     });
 
     test("primary button works", () => {
-        render(<MessageBox title={mockTitle} text={mockMessage} primaryButton={primaryButton} secondaryButton={secondaryButton} />);
+        render(<PopupMessage title={mockTitle} text={mockMessage} primaryButton={primaryButton} secondaryButton={secondaryButton} />);
 
         const button = screen.getByText(primaryButton.text, { selector: "button" });
         expect(button).toBeInTheDocument();
@@ -40,7 +40,7 @@ describe("test <MessageBox /> and its features", () => {
     });
 
     test("secondary button works", () => {
-        render(<MessageBox title={mockTitle} text={mockMessage} primaryButton={primaryButton} secondaryButton={secondaryButton} />);
+        render(<PopupMessage title={mockTitle} text={mockMessage} primaryButton={primaryButton} secondaryButton={secondaryButton} />);
 
         const button = screen.getByText(secondaryButton.text, { selector: "button" });
         expect(button).toBeInTheDocument();

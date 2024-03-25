@@ -1,7 +1,9 @@
-import PrimaryButton from '../primary_button/primary_button';
-import Dropdown from "../dropdown/dropdown";
-import iAddToWorkspacePopup from '../../../interfaces/add_to_workspace_popup';
-import GenericPopup from '../generic_popup/generic_popup.';
+import PrimaryButton from '../utils/primary_button/primary_button';
+import Dropdown from "../utils/dropdown/dropdown";
+import iAddToWorkspacePopup from '../../interfaces/add_to_workspace_popup';
+import GenericPopup from '../utils/generic_popup';
+import { iDropdownSelected } from '../../interfaces/dropdown';
+import { useEffect, useState } from 'react';
 
 /*
     Popup where the user may choose where to add
@@ -9,6 +11,12 @@ import GenericPopup from '../generic_popup/generic_popup.';
 */
 
 const AddToWorkspacePopup = (props: iAddToWorkspacePopup): JSX.Element => {
+    const [show, setShow] = useState<boolean>(false);
+
+    useEffect(() => {
+        setShow(true)
+    }, [])
+
     const { 
         dropdownOptions, 
         onNewWorkspace, 
@@ -16,11 +24,25 @@ const AddToWorkspacePopup = (props: iAddToWorkspacePopup): JSX.Element => {
         onCancel,
     } = props;
 
-    // Hide scrollbar when invoking component
-    document.body.style.overflowY = "hidden";
+
+    const handleToNewWorkspace = (): void => {
+        onCancel();
+        onNewWorkspace();
+    }
+
+    const handleAddToExistingWorkspace = (folder: iDropdownSelected): void => {
+        onCancel();
+        setShow(false);
+        onExistingWorkspace(folder);
+    }
+
+    const closeButtonSpecs: any = {
+        label: "Close",
+        handler: onCancel
+    }
 
     return (
-        <GenericPopup title={"Add to workspace"} type="slide-in" onClose={onCancel}>
+        <GenericPopup title={"Add to workspace"} type="slide-in" show={show} cancel={closeButtonSpecs}>
             <div className="flex flex-col items-center pb-6">
                 {
                     dropdownOptions.length > 1 && (
@@ -32,7 +54,7 @@ const AddToWorkspacePopup = (props: iAddToWorkspacePopup): JSX.Element => {
                                 tag="select-workspace-dropdown" 
                                 preset={dropdownOptions[0]} 
                                 options={dropdownOptions} 
-                                onCallback={onExistingWorkspace} 
+                                onCallback={handleAddToExistingWorkspace} 
                             />
                         </div>
                     )
@@ -45,7 +67,7 @@ const AddToWorkspacePopup = (props: iAddToWorkspacePopup): JSX.Element => {
                         </p>
                     }
                     <div className="mb-6 mt-6">
-                        <PrimaryButton disabled={false} text="To a new workspace" onClick={onNewWorkspace} />
+                        <PrimaryButton disabled={false} text="To a new workspace" onClick={handleToNewWorkspace} />
                     </div>
                 </div>
             </div>

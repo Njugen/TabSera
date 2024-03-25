@@ -8,7 +8,7 @@ import { clearMarkedTabsAction, setMarkMultipleTabsAction, setMarkedTabsAction, 
 import PrimaryButton from "../../components/utils/primary_button/primary_button";
 import { clearMarkedFoldersAction } from '../../redux/actions/workspaceSettingsActions';
 import randomNumber from '../../tools/random_number';
-import AddToWorkspacePopup from "../../components/utils/add_to_workspace_popup/add_to_workspace_popup";
+import AddToWorkspacePopup from "../../components/features/add_to_workspace_popup";
 import { iTabItem } from '../../interfaces/tab_item';
 import { iFieldOption } from '../../interfaces/dropdown';
 import TextIconButton from '../../components/utils/text_icon_button';

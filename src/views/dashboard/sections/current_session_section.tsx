@@ -12,7 +12,7 @@ import { clearMarkedTabsAction} from '../../../redux/actions/historySettingsActi
 import { iTabItem } from '../../../interfaces/tab_item';
 import { iFieldOption } from '../../../interfaces/dropdown';
 import { setUpWindowsAction } from '../../../redux/actions/currentSessionActions';
-import AddToWorkspacePopup from '../../../components/utils/add_to_workspace_popup/add_to_workspace_popup';
+import AddToWorkspacePopup from '../../../components/features/add_to_workspace_popup';
 import SectionContainer from "../../../components/utils/section_container";
 import WindowItem from "../../../components/features/window_item";
 
