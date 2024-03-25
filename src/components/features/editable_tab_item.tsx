@@ -1,13 +1,13 @@
 
-import "./../styles/global_utils.module.scss";
-import { iEditableTabItem } from "../interfaces/editable_tab_item";
-import * as predef from "../styles/predef";
+import "./../../styles/global_utils.module.scss";
+import { iEditableTabItem } from "../../interfaces/editable_tab_item";
+import * as predef from "../../styles/predef";
 import { useEffect, useRef, useState } from "react";
-import randomNumber from "../tools/random_number";
-import { iTabItem } from "../interfaces/tab_item";
+import randomNumber from "../../tools/random_number";
+import { iTabItem } from "../../interfaces/tab_item";
 import { useDispatch } from "react-redux";
-import { updateWindowManager } from "../redux/actions/inEditFolderActions";
-import verifyValue from "../common/verify_value";
+import { updateWindowManager } from "../../redux/actions/inEditFolderActions";
+import verifyValue from "../../common/verify_value";
 
 
 /*

@@ -5,6 +5,7 @@ import GenericIconButton from "../generic_icon_button";
 import CloseIcon from '../../../images/icons/close_icon';
 import popupStyleDirection from './popup_style_direction';
 import handleClose from './handle_close';
+import { innerStyleDirection, outerStyleDirection } from '../../features/folder_manager/style_directions';
 
 /*
     Popup where the user may choose where to add

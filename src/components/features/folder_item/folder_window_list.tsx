@@ -1,5 +1,5 @@
 import WindowItem from "../window_item";
-import { iWindowItem } from "../../interfaces/window_item";
+import { iWindowItem } from "../../../interfaces/window_item";
 
 interface IFolderWindowListProps {
     windows: Array<iWindowItem>,

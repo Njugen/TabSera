@@ -1,7 +1,7 @@
-import FolderItem from '../../../components/folder_item/folder_item'
+import FolderItem from '../../../components/features/folder_item/sections/folder_item'
 import "./../../../styles/global_utils.module.scss";
 import PrimaryButton from '../../../components/utils/primary_button/primary_button';
-import FolderManager from '../../../components/utils/folder_manager/folder_manager';
+import FolderManager from '../../../components/features/folder_manager/folder_manager';
 import { useEffect, useState } from "react";
 import { iFolderItem } from '../../../interfaces/folder_item';
 import { iFieldOption } from '../../../interfaces/dropdown';

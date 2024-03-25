@@ -1,8 +1,7 @@
 
 import { iFolderItem } from "../../../../interfaces/folder_item";
 import { iWindowItem } from "../../../../interfaces/window_item";
-import WindowItem from "../../../window_item";
-import Paragraph from "../../paragraph";
+import WindowItem from "../../../features/window_item";
 import { INewWindow, NewWindow } from "./window_manager_new_window";
 
 interface IWindowList extends INewWindow {

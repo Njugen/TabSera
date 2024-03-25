@@ -7,7 +7,7 @@ import DashboardView from './../views/dashboard/dashboard_view';
 import SettingsView from '../views/settings/settings_view';
 import LeftIcon from './../images/icons/left_icon';
 import RightIcon from './../images/icons/right_icon';
-import AdvancedSearchBar from '../components/utils/advanced_search_bar/advanced_search_bar';
+import AdvancedSearchBar from '../components/features/advanced_search_bar/advanced_search_bar';
 import iOptionsPage from '../interfaces/options_page';
 import { useDispatch, useSelector } from 'react-redux';
 import { getFromStorage } from '../services/webex_api/storage';

@@ -1,13 +1,13 @@
 import { useRef, useState, useEffect, useCallback } from "react";
-import ClosedFolderIcon from "../../images/icons/closed_folder_icon";
-import Paragraph from "../utils/paragraph";
-import OpenedFolderIcon from "../../images/icons/opened_folder_icon";
-import "../../styles/global_utils.module.scss";
-import { iFolderItem } from "../../interfaces/folder_item";
+import ClosedFolderIcon from "../../../../images/icons/closed_folder_icon";
+import Paragraph from "../../../utils/paragraph";
+import OpenedFolderIcon from "../../../../images/icons/opened_folder_icon";
+import "../../../../styles/global_utils.module.scss";
+import { iFolderItem } from "../../../../interfaces/folder_item";
 import { useSelector } from "react-redux";
-import iWorkspaceState from "../../interfaces/states/workspaceState";
+import iWorkspaceState from "../../../../interfaces/states/workspaceState";
 import { FolderActionBar, IFolderActionBarHandlers, IFolderActionBarStates } from "./folder_action_bar";
-import FolderWindowList from "./folder_window_list";
+import FolderWindowList from "../folder_window_list";
 
 /*
     Folder containing description, windows and tabs, as well as various folder options

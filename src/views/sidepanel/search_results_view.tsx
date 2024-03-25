@@ -2,14 +2,14 @@ import { useState, useEffect, useRef } from "react";
 import { iWindowItem } from '../../interfaces/window_item';
 import { useSelector } from "react-redux";
 import { iFolderItem } from '../../interfaces/folder_item';
-import FolderItem from "../../components/folder_item/folder_item";
-import TabItem from "../../components/tab_item";
+import FolderItem from "../../components/features/folder_item/sections/folder_item";
+import TabItem from "../../components/features/tab_item";
 import GenericIconButton from "../../components/utils/generic_icon_button";
 import { 
     filterSessionTabsByString, 
     filterHistoryTabsByString, 
     filterFoldersByString 
-} from "../../components/utils/advanced_search_bar/filters";
+} from "../../components/features/advanced_search_bar/filters";
 import CloseIcon from "../../images/icons/close_icon";
 
 function SearchResultsContainer(props:any): JSX.Element {

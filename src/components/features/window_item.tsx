@@ -1,17 +1,17 @@
 import { useState, useEffect } from "react";
-import GenericIconButton from "./utils/generic_icon_button";
-import PrimaryButton from "./utils/primary_button/primary_button";
-import PurpleBorderButton from "./utils/purple_border_button";
+import GenericIconButton from "../utils/generic_icon_button";
+import PrimaryButton from "../utils/primary_button/primary_button";
+import PurpleBorderButton from "../utils/purple_border_button";
 import TabItem from "./tab_item";
-import { iWindowItem} from "../interfaces/window_item";
+import { iWindowItem} from "../../interfaces/window_item";
 import EditableTabItem from "./editable_tab_item";
-import { iTabItem } from "../interfaces/tab_item";
+import { iTabItem } from "../../interfaces/tab_item";
 import { useDispatch, useSelector } from "react-redux";
-import { updateInEditFolder } from "../redux/actions/inEditFolderActions";
-import { setCurrentlyEditingTab, setTabInEdits } from "../redux/actions/miscActions";
-import TrashIcon from "../images/icons/trash_icon";
-import CollapseIcon from "../images/icons/collapse_icon";
-import ExpandIcon from "../images/icons/expand_icon";
+import { updateInEditFolder } from "../../redux/actions/inEditFolderActions";
+import { setCurrentlyEditingTab, setTabInEdits } from "../../redux/actions/miscActions";
+import TrashIcon from "../../images/icons/trash_icon";
+import CollapseIcon from "../../images/icons/collapse_icon";
+import ExpandIcon from "../../images/icons/expand_icon";
 
 /*
     Window containing tabs and various window related options. Used primarily

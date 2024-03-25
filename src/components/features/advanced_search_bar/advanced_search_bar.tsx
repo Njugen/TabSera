@@ -6,12 +6,12 @@ import { iFolderItem } from '../../../interfaces/folder_item';
 import { iWindowItem } from '../../../interfaces/window_item';
 import iCurrentSessionState from "../../../interfaces/states/currentSessionState";
 import iHistoryState from "../../../interfaces/states/historyState";
-import MessageBox from "../message_box";
 import iAdvancedSearchBar from "../../../interfaces/advanced_search_bar";
 import { handleShowResultsContainer, IHandleShowResultsContainerProps } from "./handle_show_results_container";
 import { handleWindowClick } from "./window_click_listener";
 import { ILaunchFolderProps, handleLaunchFolder } from "./handle_launch_folder";
 import { SearchResults } from "./sections/search_bar_results";
+import MessageBox from "../../utils/message_box";
 
 /*
     Search bar placed at the top of the viewport

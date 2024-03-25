@@ -1,6 +1,6 @@
 import { iFolderItem } from "../../../../interfaces/folder_item";
 import { iWindowItem } from "../../../../interfaces/window_item";
-import WindowItem from "../../../window_item";
+import WindowItem from "../../../features/window_item";
 
 interface INewWindow {
     folder: iFolderItem,

@@ -1,4 +1,4 @@
-import PrimaryButton from './../primary_button/primary_button';
+import PrimaryButton from "../../utils/primary_button/primary_button";
 import { useEffect, useState } from "react";
 
 import { useSelector } from "react-redux";

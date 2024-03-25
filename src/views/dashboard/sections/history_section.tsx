@@ -1,6 +1,6 @@
 import styles from "../../../styles/global_utils.module.scss";
 import PrimaryButton from '../../../components/utils/primary_button/primary_button';
-import FolderManager from '../../../components/utils/folder_manager/folder_manager';
+import FolderManager from '../../../components/features/folder_manager/folder_manager';
 import { useEffect, useState, useRef } from "react";
 import { iFolderItem } from '../../../interfaces/folder_item';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,7 +10,7 @@ import randomNumber from '../../../tools/random_number';
 import { iWindowItem } from '../../../interfaces/window_item';
 import { clearMarkedFoldersAction } from '../../../redux/actions/workspaceSettingsActions';
 import Dropdown from '../../../components/utils/dropdown/dropdown';
-import TabItem from '../../../components/tab_item';
+import TabItem from '../../../components/features/tab_item';
 import { changeTabsViewMode, clearMarkedTabsAction, setMarkMultipleTabsAction, setMarkedTabsAction, setTabsSortOrder, setUpTabsAction } from '../../../redux/actions/historySettingsActions';
 import { iTabItem } from '../../../interfaces/tab_item';
 import { iDropdownSelected, iFieldOption } from '../../../interfaces/dropdown';

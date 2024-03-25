@@ -3,7 +3,7 @@ import { iWindowItem } from '../../interfaces/window_item';
 import { useSelector, useDispatch } from "react-redux";
 import { iFolderItem } from '../../interfaces/folder_item';
 import { saveToStorage } from '../../services/webex_api/storage';
-import FolderManager from "../../components/utils/folder_manager/folder_manager";
+import FolderManager from "../../components/features/folder_manager/folder_manager";
 import { clearInEditFolder } from "../../redux/actions/inEditFolderActions";
 import { clearMarkedTabsAction } from '../../redux/actions/historySettingsActions';
 import { setUpWindowsAction } from '../../redux/actions/currentSessionActions';
@@ -15,7 +15,7 @@ import { iTabItem } from '../../interfaces/tab_item';
 import { iFieldOption } from '../../interfaces/dropdown';
 import SaveIcon from './../../images/icons/save_icon';
 import CircleButton from './../../components/utils/circle_button';
-import WindowItem from "../../components/window_item";
+import WindowItem from "../../components/features/window_item";
 
 const CurrentSessionView = (props:any): JSX.Element => {
     const [addToWorkSpaceMessage, setAddToWorkspaceMessage] = useState<boolean>(false);

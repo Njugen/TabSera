@@ -1,15 +1,15 @@
 import { useState, useEffect, useRef } from "react";
-import GenericIconButton from '../generic_icon_button';
-import PrimaryButton from '../primary_button/primary_button';
-import PurpleBorderButton from "../purple_border_button";
-import FormField from "../form_field";
+import GenericIconButton from '../../utils/generic_icon_button';
+import PrimaryButton from '../../utils/primary_button/primary_button';
+import PurpleBorderButton from "../../utils/purple_border_button";
+import FormField from "../../utils/form_field";
 import * as predef from "../../../styles/predef";
 import { iPopup } from "../../../interfaces/popup";
 
 import randomNumber from "../../../tools/random_number";
 import { initInEditFolder, updateInEditFolder} from "../../../redux/actions/inEditFolderActions";
 import { iFolderItem } from "../../../interfaces/folder_item";
-import MessageBox from '../message_box';
+import MessageBox from '../../utils/message_box';
 import { useDispatch, useSelector } from "../../../redux/mocked_hooks";
 import { setShowFolderChangeWarning } from "../../../redux/actions/warningActions";
 import { createFolderAction, updateFolderAction } from "../../../redux/actions/folderCollectionActions";
@@ -38,7 +38,6 @@ const FolderManager = (props: iPopup): JSX.Element => {
         windows: false
     });
 
-    const popupRef = useRef<HTMLDivElement>(null);
     const dispatch = useDispatch();
 
     // Read necessary data from redux. These data are are used in this component
@@ -99,10 +98,7 @@ const FolderManager = (props: iPopup): JSX.Element => {
         dispatch(updateInEditFolder(key, value));
     }
 
-    const scrollTop = (): void => {
-        if (popupRef.current === null || popupRef.current?.scrollTop === undefined) return;
-        popupRef.current.scrollTop = 0;
-    }
+
 
     // Read the updated form changes from redux, and determine
     // whether or not they are valid. If not, mark the affected fields
@@ -127,7 +123,7 @@ const FolderManager = (props: iPopup): JSX.Element => {
             callback();
         } else {
             setInValidFields({...updatedFieldState});
-            scrollTop();
+          
         }
     }
 
@@ -198,8 +194,8 @@ const FolderManager = (props: iPopup): JSX.Element => {
             />
         }
        
-        <div ref={popupRef} className={outerStyleDirection(type, show)}>   
-            <div data-testid="manage-folder-popup" className="relative top-0 md:bottom-12 h-screen w-[992px]">
+        <div data-testid={"folder-manager-popup"} className={outerStyleDirection(type, show)}>   
+            <div className="relative top-0 md:bottom-12 h-screen w-[992px]">
                 <div className={innerStyleDirection(type, show)}>  
                     <div id="popup-header" className="pl-8 pr-5 pb-5 pt-6 border-b border-tbfColor-lgrey w-full flex justify-between">
                         <h1 data-testid="manage-folder-title" className="text-3xl text-tbfColor-darkpurple font-light inline-block">

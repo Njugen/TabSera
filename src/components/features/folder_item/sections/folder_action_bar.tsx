@@ -1,15 +1,15 @@
-import CollapseIcon from "../../images/icons/collapse_icon"
-import RotationEffect from "../effects/rotation_effect"
-import FolderControlButton from "../utils/folder_control_button/folder_control_button"
+import CollapseIcon from "../../../../images/icons/collapse_icon"
+import RotationEffect from "../../../effects/rotation_effect"
+import FolderControlButton from "../../../utils/folder_control_button/folder_control_button"
 
-import { iFolderItem } from "../../interfaces/folder_item"
-import { iWindowItem } from "../../interfaces/window_item"
-import OpenBrowserIcon from "../../images/icons/open_browser_icon"
-import TrashIcon from "../../images/icons/trash_icon"
-import SettingsIcon from "../../images/icons/settings_icon"
-import Checkbox from "../utils/checkbox"
-import DropdownMenu from "../utils/dropdown_menu/dropdown_menu"
-import { iFieldOption } from "../../interfaces/dropdown"
+import { iFolderItem } from "../../../../interfaces/folder_item"
+import { iWindowItem } from "../../../../interfaces/window_item"
+import OpenBrowserIcon from "../../../../images/icons/open_browser_icon"
+import TrashIcon from "../../../../images/icons/trash_icon"
+import SettingsIcon from "../../../../images/icons/settings_icon"
+import Checkbox from "../../../utils/checkbox"
+import DropdownMenu from "../../../utils/dropdown_menu/dropdown_menu"
+import { iFieldOption } from "../../../../interfaces/dropdown"
 
 interface IFolderActionBarHandlers {
     handleExpandClick: (e: any) => void,

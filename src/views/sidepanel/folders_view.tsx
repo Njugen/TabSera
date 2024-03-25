@@ -2,16 +2,15 @@ import { useState, useEffect, useRef } from "react";
 import { iWindowItem } from '../../interfaces/window_item';
 import { useSelector, useDispatch } from "react-redux";
 import { iFolderItem } from '../../interfaces/folder_item';
-import FolderItem from "../../components/folder_item/folder_item";
+import FolderItem from "../../components/features/folder_item/sections/folder_item";
 import { getFromStorage, saveToStorage } from '../../services/webex_api/storage';
 import { deleteFolderAction, readAllFoldersFromBrowserAction } from '../../redux/actions/folderCollectionActions';
-import FolderManager from "../../components/utils/folder_manager/folder_manager";
+import FolderManager from "../../components/features/folder_manager/folder_manager";
 import { clearInEditFolder } from "../../redux/actions/inEditFolderActions";
 import { clearMarkedFoldersAction } from "../../redux/actions/workspaceSettingsActions";
 import MessageBox from "../../components/utils/message_box";
 import PrimaryButton from "../../components/utils/primary_button/primary_button";
 import iFoldersView from "../../interfaces/folders_view";
-import styles from "./../../styles/global_utils.module.scss";
 import NewFolderIcon from "../../images/icons/new_folder_icon";
 import CircleButton from "../../components/utils/circle_button";
 

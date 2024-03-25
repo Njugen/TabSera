@@ -1,4 +1,4 @@
-import TabItem from '../../../tab_item';
+import TabItem from '../../../features/tab_item';
 import { filterSessionTabsByString } from '../filters';
 import iCurrentSessionState from "../../../../interfaces/states/currentSessionState";
 
