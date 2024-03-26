@@ -33,20 +33,20 @@ const GenericPopup = (props: iGenericPopup): JSX.Element => {
         <div data-testid="generic-popup" className={outerStyleDirection(type, show)}>
             <div className="relative top-0 md:bottom-12 h-screen w-[992px]">
                 <div className={innerStyleDirection(type, show)}>
-                    <div id="popup-header" className="pl-8 pr-5 pb-5 pt-6 border-b border-tbfColor-lgrey w-full flex justify-between">
-                        <h1 data-testid="popup-title" className="text-3xl text-tbfColor-darkpurple font-light inline-block">
+                    <div id="generic-popup-header" className="pl-8 pr-5 pb-5 pt-6 border-b border-tbfColor-lgrey w-full flex justify-between">
+                        <h1 data-testid="generic-popup-title" className="text-3xl text-tbfColor-darkpurple font-light inline-block">
                             {title}
                         </h1>
                         <GenericIconButton icon="close" onClick={handleClose}>
                             <CloseIcon size={34} fill="rgba(0,0,0,0.2)" />
                         </GenericIconButton>
                     </div>
-                    <div id="popup-body" className="px-8 pt-6">
+                    <div id="generic-popup-body" className="px-8 pt-6">
                         {children}
                     </div>
                     {
                         save && (
-                            <div id="popup-footer" className="max-sm:justify-center px-8 py-8 mt-4 flex justify-end border-t border-tbfColor-lgrey s">
+                            <div id="generic-popup-footer" className="max-sm:justify-center px-8 py-8 mt-4 flex justify-end border-t border-tbfColor-lgrey s">
                                 <PurpleBorderButton disabled={false} text="Cancel" onClick={handleClose} />
                                 <PrimaryButton disabled={false} text={save.label} onClick={handleSave} />
                             </div>

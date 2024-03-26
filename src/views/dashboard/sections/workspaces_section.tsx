@@ -250,18 +250,18 @@ const WorkspacesSection = (props: any): JSX.Element => {
         dispatch(setFoldersSortOrder(newStatus));
     }
 
+    const folderSortCondition = (a: iFolderItem, b: iFolderItem): boolean => {
+        const { folderSortOptionId } = workspaceSettings
+        
+        const aNameLowerCase = a.name.toLowerCase();
+        const bNameToLowerCase = b.name.toLowerCase();
+
+        return folderSortOptionId === 0 ? (aNameLowerCase > bNameToLowerCase) : (bNameToLowerCase > aNameLowerCase);
+    }
+
     // Render the folder list
-    const renderFolders = (): Array<JSX.Element> => {
-        const condition = (a: iFolderItem, b: iFolderItem): boolean => {
-            const { folderSortOptionId } = workspaceSettings
-            
-            const aNameLowerCase = a.name.toLowerCase();
-            const bNameToLowerCase = b.name.toLowerCase();
-
-            return folderSortOptionId === 0 ? (aNameLowerCase > bNameToLowerCase) : (bNameToLowerCase > aNameLowerCase);
-        }
-
-        const sortedFolders = [...folderCollection].sort((a: any, b: any) => condition(a, b) ? 1 : -1);
+    const renderFolders = (): Array<JSX.Element> => {        
+        const sortedFolders = [...folderCollection].sort((a: any, b: any) => folderSortCondition(a, b) ? 1 : -1);
 
         const handleFolderDelete = (target: iFolderItem): void => {
             chrome.storage.sync.get("removal_warning_setting", (data) => {
@@ -317,6 +317,17 @@ const WorkspacesSection = (props: any): JSX.Element => {
         return columnsRender;
     }
 
+    const renderSortOptionsDropdown = (): JSX.Element => {
+        const optionsList: Array<iFieldOption> = [
+            {id: 0, label: "Ascending"},
+            {id: 1, label: "Descending"},
+        ];
+
+        const presetOption = optionsList.filter((option: iFieldOption) => option.id === workspaceSettings.folderSortOptionId);
+
+        return <Dropdown tag="sort-folders" preset={presetOption[0] || optionsList[0]} options={optionsList} onCallback={handleSortFolders} />
+    }
+
     // Render the action buttons for workspace area
     const renderOptionsMenu = (): JSX.Element => {
         const { markedFoldersId } = workspaceSettings;
@@ -334,17 +345,6 @@ const WorkspacesSection = (props: any): JSX.Element => {
                 icon: "deselected_checkbox",
                 handle: handleMarkAllFolders
             }
-        }
-        
-        const renderSortOptionsDropdown = (): JSX.Element => {
-            const optionsList: Array<iFieldOption> = [
-                {id: 0, label: "Ascending"},
-                {id: 1, label: "Descending"},
-            ];
-
-            const presetOption = optionsList.filter((option: iFieldOption) => option.id === workspaceSettings.folderSortOptionId);
-    
-            return <Dropdown tag="sort-folders" preset={presetOption[0] || optionsList[0]} options={optionsList} onCallback={handleSortFolders} />
         }
 
         if(hasFolders()){

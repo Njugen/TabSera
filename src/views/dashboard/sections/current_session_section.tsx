@@ -28,6 +28,7 @@ const CurrentSessionSection = (props: any): JSX.Element => {
 
     useEffect(() => {
         getAllWindows();
+
         chrome.windows.onCreated.addListener(() => {
             getAllWindows();
         });
@@ -61,7 +62,7 @@ const CurrentSessionSection = (props: any): JSX.Element => {
         });
     }, []);
 
-    function getAllWindows(): void {
+    const getAllWindows = (): void => {
         const queryOptions: chrome.windows.QueryOptions = {
             populate: true,
             windowTypes: ["normal", "popup"]
@@ -71,7 +72,7 @@ const CurrentSessionSection = (props: any): JSX.Element => {
         });
     };
 
-    function handleCloseFolderManager(): void {
+    const handleCloseFolderManager = (): void => {
         // Reset and clear out any settings or processes 
         setCreateFolder(false);
         setMergeProcess(null);
@@ -81,7 +82,7 @@ const CurrentSessionSection = (props: any): JSX.Element => {
         dispatch(clearInEditFolder());
     }
 
-    function renderOptionsMenu(): JSX.Element {
+    const renderOptionsMenu = (): JSX.Element => {
         return (
             <>
                 <div className="inline-flex items-center justify-end">
@@ -100,7 +101,7 @@ const CurrentSessionSection = (props: any): JSX.Element => {
         )
     }
 
-    function renderContents(): Array<JSX.Element> | JSX.Element {
+    const renderContents = (): JSX.Element => {
         const existingWindows = currentSessionData?.windows;
         const existingWindowsElements: Array<JSX.Element> = existingWindows?.map((item: iWindowItem, i: number) => {
             return (
@@ -118,13 +119,58 @@ const CurrentSessionSection = (props: any): JSX.Element => {
         });
         
         if (existingWindowsElements?.length > 0){
-            return [...existingWindowsElements];
+            return <>{existingWindowsElements}</>;
         } else {
             return <></>;
         }
     }
 
-    function renderAddTabsMessage(): JSX.Element {
+    const handleAddToNewWorkspace = (): void => {
+        setAddToWorkspaceMessage(false);
+        setCreateFolder(true);
+    }
+
+    const handleAddToExistingWorkspace = (e: any): void => {
+        if(e.selected === -1) return;
+
+        const targetFolderId = e.selected;
+        const targetFolder: iFolderItem | undefined = folderCollection.find((folder: iFolderItem) => folder.id === targetFolderId);
+     
+        if(!targetFolder) return;
+        
+        if(currentSessionData.windows){
+            const newWindowItems: Array<iWindowItem> = currentSessionData.windows.map((window: chrome.windows.Window) => {
+                if(window.tabs){
+                    const tabs: Array<iTabItem> = window.tabs.map((tab: chrome.tabs.Tab) => {
+                        return {
+                            id: tab.id || randomNumber(),
+                            label: tab.title || "",
+                            url: tab.url || "",
+                            marked: false,
+                            disableEdit: false,
+                            disableMark: false,
+                        }
+                    })
+
+                    return {
+                        id: randomNumber(),
+                        tabs: tabs
+                    }
+                }
+            })
+
+            const updatedFolder: iFolderItem = {...targetFolder};
+            updatedFolder.windows = [...updatedFolder.windows,  ...newWindowItems];
+
+            if(targetFolder){
+                setAddToWorkspaceMessage(false);
+                setMergeProcess(updatedFolder);
+            }
+        }
+        
+    }
+
+    const renderAddTabsMessage = (): JSX.Element => {
         const currentFolders: Array<iFolderItem> = folderCollection;
 
         const options: Array<iFieldOption> = currentFolders.map((folder) => {
@@ -139,53 +185,10 @@ const CurrentSessionSection = (props: any): JSX.Element => {
             ...options
         ];
 
-        function handleAddToNewWorkspace(): void {
-            setAddToWorkspaceMessage(false);
-            setCreateFolder(true);
-        }
-
-        function handleAddToExistingWorkspace(e: any): void {
-            if(e.selected === -1) return;
-
-            const targetFolderId = e.selected;
-            const targetFolder: iFolderItem | undefined = folderCollection.find((folder: iFolderItem) => folder.id === targetFolderId);
-         
-            if(!targetFolder) return;
-            
-            if(currentSessionData.windows){
-                const newWindowItems: Array<iWindowItem> = currentSessionData.windows.map((window: chrome.windows.Window) => {
-                    if(window.tabs){
-                        const tabs: Array<iTabItem> = window.tabs.map((tab: chrome.tabs.Tab) => {
-                            return {
-                                id: tab.id || randomNumber(),
-                                label: tab.title || "",
-                                url: tab.url || "",
-                                marked: false,
-                                disableEdit: false,
-                                disableMark: false,
-                            }
-                        })
-
-                        return {
-                            id: randomNumber(),
-                            tabs: tabs
-                        }
-                    }
-                })
-
-                const updatedFolder: iFolderItem = {...targetFolder};
-                updatedFolder.windows = [...updatedFolder.windows,  ...newWindowItems];
-
-                if(targetFolder){
-                    setAddToWorkspaceMessage(false);
-                    setMergeProcess(updatedFolder);
-                }
-            }
-            
-        }
-
         return (
-            <AddToWorkspacePopup 
+            <AddToWorkspacePopup
+                title="Add to workspace"
+                type="slide-in"
                 dropdownOptions={dropdownOptions}
                 onNewWorkspace={handleAddToNewWorkspace}
                 onExistingWorkspace={handleAddToExistingWorkspace}
@@ -194,7 +197,7 @@ const CurrentSessionSection = (props: any): JSX.Element => {
         );
     }
     
-    function renderFolderManager(): JSX.Element {
+    const renderFolderManager = (): JSX.Element => {
         let render = <></>;
 
         if(createFolder === true){

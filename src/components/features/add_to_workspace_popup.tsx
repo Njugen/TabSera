@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react';
 
 const AddToWorkspacePopup = (props: iAddToWorkspacePopup): JSX.Element => {
     const [show, setShow] = useState<boolean>(false);
+    const { type, title } = props;
 
     useEffect(() => {
         setShow(true)
@@ -42,7 +43,7 @@ const AddToWorkspacePopup = (props: iAddToWorkspacePopup): JSX.Element => {
     }
 
     return (
-        <GenericPopup title={"Add to workspace"} type="slide-in" show={show} cancel={closeButtonSpecs}>
+        <GenericPopup title={title} type={type} show={show} cancel={closeButtonSpecs}>
             <div className="flex flex-col items-center pb-6 max-sm:h-screen">
                 {
                     dropdownOptions.length > 1 && (

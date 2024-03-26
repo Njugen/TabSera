@@ -158,6 +158,8 @@ const CurrentSessionView = (props:any): JSX.Element => {
 
         return (
             <AddToWorkspacePopup 
+                title="Add to workspace"
+                type="popup"
                 dropdownOptions={dropdownOptions}
                 onNewWorkspace={handleAddToNewWorkspace}
                 onExistingWorkspace={handleAddToExistingWorkspace}
@@ -213,18 +215,6 @@ const CurrentSessionView = (props:any): JSX.Element => {
         const existingWindows = currentSessionData?.windows;
         const existingWindowsElements: Array<JSX.Element> = existingWindows?.map((item: iWindowItem, i: number) => {
             return (
-               /* <CurrentSessionWindowItem 
-                    key={`window-item-${i}`} 
-                    tabsCol={1}
-                    disableEdit={currentSessionData.windows.length < 2 ? true : false} 
-                    disableTabMark={false} 
-                    disableTabEdit={true} 
-                    id={item.id} 
-                    tabs={item.tabs} 
-                    initExpand={true} 
-                />*/
-               
-
                 <WindowItem
                     key={`window-item-${i}`} 
                     tabsCol={1}

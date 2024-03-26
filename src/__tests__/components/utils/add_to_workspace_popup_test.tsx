@@ -25,7 +25,6 @@ const mockOptions: Array<iFieldOption> = [
 ];
 const mockNoOptions: Array<iFieldOption> = [];
 
-/*
 describe("extensive test of <AddToWorkspacePopup /> behaviour", () => {
     test("All props in place. Dropdown not visible if there are no options", () => {
         const mockTitle: string = randomNumber().toString();
@@ -58,7 +57,7 @@ describe("extensive test of <AddToWorkspacePopup /> behaviour", () => {
         expect(closeButton).toBeInTheDocument();
         
         fireEvent.click(closeButton);
-        expect(document.body.style.overflowY).toBe("scroll");
+        expect(document.body.style.overflowY).toBe("auto");
         expect(mockOnCancel).toHaveBeenCalled();
     });
     
@@ -141,7 +140,7 @@ describe("extensive test of <AddToWorkspacePopup /> behaviour", () => {
 
         // The dropdown now shows arg.label as its selected text
         dropdown = screen.getByTestId("select-workspace-dropdown-selector");
-        within(dropdown).getByText(arg.label);
+        expect(dropdown).toHaveTextContent(arg.label);
 
         // Click the dropdown again
         fireEvent.click(dropdown);
@@ -173,7 +172,7 @@ describe("extensive test of <AddToWorkspacePopup /> behaviour", () => {
         expect(closeButton).toBeInTheDocument();
         
         fireEvent.click(closeButton);
-        expect(document.body.style.overflowY).toBe("scroll");
+        expect(document.body.style.overflowY).toBe("auto");
         expect(mockOnCancel).toHaveBeenCalled();
     });
-});*/
+});

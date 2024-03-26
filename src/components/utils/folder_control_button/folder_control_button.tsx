@@ -8,7 +8,8 @@ const FolderControlButton = (props: iFolderIconButton): JSX.Element => {
 
     return (
         <button 
-            data-testid={buttonId(id, active)} 
+            data-testid={buttonId(id, active)}
+            disabled={active ? false : true}
             className={`${id !== "collapse_expand" && "mx-2"} ${opacity_hover_effect}`} 
             onClick={onClick}
         >

@@ -253,6 +253,43 @@ const HistorySection = (props: any): JSX.Element => {
         return result; 
     };
 
+    const handleAddToNewWorkspace = (): void => {
+        setAddToWorkspaceMessage(false);
+        setCreateFolder(true);
+    }
+
+    const handleAddToExistingWorkspace = (e: any): void => {
+        if(e.selected === -1) return;
+
+        const targetFolderId = e.selected;
+        const targetFolder: iFolderItem | undefined = folderCollection.find((folder: iFolderItem) => folder.id === targetFolderId);
+     
+        if(!targetFolder) return;
+        
+        const markedTabs: Array<iTabItem> = tabsData.markedTabs.map((tab: chrome.history.HistoryItem) => {
+            return {
+                id: tab.id,
+                label: tab.title,
+                url: tab.url,
+                disableEdit: false,
+                disableMark: false,
+            }
+        });
+
+        const presetWindow: iWindowItem = {
+            id: randomNumber(),
+            tabs: markedTabs
+        };
+
+        const updatedFolder: iFolderItem = {...targetFolder};
+        updatedFolder.windows = [...updatedFolder.windows, presetWindow];
+
+        if(targetFolder){
+            setAddToWorkspaceMessage(false);
+            setMergeProcessFolder(updatedFolder);
+        }
+    }
+
     const renderAddTabsMessage = (): JSX.Element => {
         const currentFolders: Array<iFolderItem> = folderCollection;
 
@@ -268,45 +305,10 @@ const HistorySection = (props: any): JSX.Element => {
             ...options
         ];
 
-        const handleAddToNewWorkspace = (): void => {
-            setAddToWorkspaceMessage(false);
-            setCreateFolder(true);
-        }
-
-        const handleAddToExistingWorkspace = (e: any): void => {
-            if(e.selected === -1) return;
-
-            const targetFolderId = e.selected;
-            const targetFolder: iFolderItem | undefined = folderCollection.find((folder: iFolderItem) => folder.id === targetFolderId);
-         
-            if(!targetFolder) return;
-            
-            const markedTabs: Array<iTabItem> = tabsData.markedTabs.map((tab: chrome.history.HistoryItem) => {
-                return {
-                    id: tab.id,
-                    label: tab.title,
-                    url: tab.url,
-                    disableEdit: false,
-                    disableMark: false,
-                }
-            });
-
-            const presetWindow: iWindowItem = {
-                id: randomNumber(),
-                tabs: markedTabs
-            };
-
-            const updatedFolder: iFolderItem = {...targetFolder};
-            updatedFolder.windows = [...updatedFolder.windows, presetWindow];
-
-            if(targetFolder){
-                setAddToWorkspaceMessage(false);
-                setMergeProcessFolder(updatedFolder);
-            }
-        }
-
         return (
             <AddToWorkspacePopup 
+                title="Add to workspace"
+                type="slide-in"
                 dropdownOptions={dropdownOptions}
                 onNewWorkspace={handleAddToNewWorkspace}
                 onExistingWorkspace={handleAddToExistingWorkspace}
