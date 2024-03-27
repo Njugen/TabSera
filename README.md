@@ -1,4 +1,4 @@
-# Tab Management Browser Plugin (Release Candidate 1)
+# Tab Management Browser Plugin (Release Candidate 2)
 
 <p align="center" style="padding-top: 10px; padding-bottom: 10px">
     <img src="./img/brand/brand.png" width="15%" />
