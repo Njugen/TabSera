@@ -177,7 +177,7 @@ const WindowItem = (props: iWindowItem): JSX.Element => {
                 <div className={`tab-settings`}>
                     {disableEdit === false && (
                         <GenericIconButton icon="trash" onClick={handleDeleteWindow}>
-                                <TrashIcon fill="#000" size={20} />
+                            <TrashIcon fill="#000" size={20} />
                         </GenericIconButton>
                     )}
                     {expandCollapseButton()}

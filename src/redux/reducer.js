@@ -30,4 +30,4 @@ const mockStore = () => {
     return temp;
 }
 
-export { store, mockStore }
+export { store, mockStore, combinedReducers }

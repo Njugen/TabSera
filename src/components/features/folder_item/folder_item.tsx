@@ -4,10 +4,13 @@ import Paragraph from "../../utils/paragraph";
 import OpenedFolderIcon from "../../../images/icons/opened_folder_icon";
 import "../../../styles/global_utils.module.scss";
 import { iFolderItem } from "../../../interfaces/folder_item";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import iWorkspaceState from "../../../interfaces/states/workspaceState";
 import { FolderActionBar, IFolderActionBarHandlers, IFolderActionBarStates } from "./sections/folder_action_bar";
 import FolderWindowList from "./folder_window_list";
+import { getFromStorage, saveToStorage } from "../../../services/webex_api/storage";
+import { InEditFolderReducer } from "../../../redux/reducers/inEditFolderReducer";
+import { updateFolderAction } from "../../../redux/actions/folderCollectionActions";
 
 /*
     Folder containing description, windows and tabs, as well as various folder options
@@ -17,12 +20,15 @@ const FolderItem = (props: iFolderItem): JSX.Element => {
     const contentsRef = useRef<HTMLDivElement>(null);
     const headerRef = useRef<HTMLDivElement>(null);
     const folderRef = useRef<HTMLDivElement>(null);
-    const [expanded, setExpanded] = useState<boolean>(false);
+    const [expanded, setExpanded] = useState<boolean>(props.type === "expanded" ? true : false);
     const [showLaunchOptions, setShowLaunchOptions] = useState<boolean>(false);
     const [slideDown, setSlideDown] = useState<boolean>(false);
 
+    const folderCollection = useSelector((state: any) => state.FolderCollectionReducer);
     const workspaceSettings: iWorkspaceState = useSelector((state: any) => state.WorkspaceSettingsReducer);
     
+    const dispatch = useDispatch();
+
     const { 
         id,
         name,
@@ -38,7 +44,7 @@ const FolderItem = (props: iFolderItem): JSX.Element => {
         onEdit 
     } = props;
 
-    useEffect(() => toggleExpand(type), []);
+    //useEffect(() => toggleExpand(type), []);
     
     useEffect(() => {
         // Listen for clicks in the viewport. If the options list is visible, then hide it once
@@ -71,32 +77,36 @@ const FolderItem = (props: iFolderItem): JSX.Element => {
         }
     }, [showLaunchOptions])
     
-    const exp = (): void => {
-        if(contentsRef.current === null || headerRef.current === null) return;
+    const expHeaderCSS: string = `relative border-b tbf-${type} bg-white px-4 h-10 py-6 flex items-center rounded-t-md`;
+    const colHeaderCSS: string = `relative tbf-${type} bg-white px-4 h-10 py-6 flex items-center rounded-md`;
 
-        headerRef.current.className = `relative border-b tbf-${type} bg-white px-4 h-10 py-6 flex items-center rounded-t-md`;
-        contentsRef.current.className = "overflow-hidden bg-white rounded-b-md border-t-0";
+    const expContentsCSS: string = `overflow-hidden bg-white rounded-b-md border-t-0`;
+    const colContentsCSS: string = `overflow-hidden rounded-b-md`;
 
-        setExpanded(true);
-    }
-
-    const col = (): void => {
-        if(contentsRef.current === null || headerRef.current === null) return;
-
-        headerRef.current.className = `relative tbf-${type} bg-white px-4 h-10 py-6 flex items-center rounded-md`;
-        contentsRef.current.className = "overflow-hidden rounded-b-md";
-        setExpanded(false);
+    const updateFolder = (newType: "expanded" | "collapsed") => {
+        getFromStorage("sync", "folders", (data: any) => {
+            const tempCollection: Array<iFolderItem> = data.folders.map((folder: iFolderItem) => {
+                if(folder.id === id) folder.type = newType;
+                return folder;
+            })
+            saveToStorage("sync", "folders", tempCollection);
+        })
     }
 
     const toggleExpand = (init?: string): void => {
         if(expanded === false){
             if(init === "expanded" || !init){
-                exp();
+                updateFolder("expanded");
+                setExpanded(true);
             } else {
-                col();
+                //col();
+                updateFolder("collapsed");
+                setExpanded(false);
             }
         } else {
-            col()
+            //col()
+            updateFolder("collapsed");
+            setExpanded(false);
         }   
     }
 
@@ -160,7 +170,7 @@ const FolderItem = (props: iFolderItem): JSX.Element => {
                 data-testid={"folder-item"} 
                 className={`shadow-[0_0px_3px_1px_rgba(0,0,0,0.125)] ${viewMode === "list" ? "my-4 duration-75" : "my-4 duration-75"} sticky transition-all ease-in w-full rounded-md`}
             >
-                <div ref={headerRef}>
+                <div ref={headerRef} className={expanded === true ? expHeaderCSS : colHeaderCSS}>
                     <div className="inline-block">
                         {expanded === false ? <ClosedFolderIcon size={23} fill={"#000"} /> : <OpenedFolderIcon size={26} fill={"#000"} />}
                     </div>
@@ -171,7 +181,7 @@ const FolderItem = (props: iFolderItem): JSX.Element => {
                     </div>
                     {<FolderActionBar handlers={actionBarHandlers} states={actionBarStates} />}
                 </div>
-                <div ref={contentsRef} className="max-h-2000 overflow-y-hidden bg-tbfColor-lighterpurple3">
+                <div ref={contentsRef} className={expanded === true ? expContentsCSS : colContentsCSS}>
                 {expanded === true && (
                     <>{desc.length > 0 && <div className="px-5 mt-8 flex justify-between items-start">
                     <div data-testid={"description-section"} className="inline-block w-fit">

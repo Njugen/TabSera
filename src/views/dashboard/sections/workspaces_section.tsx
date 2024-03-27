@@ -49,6 +49,7 @@ const WorkspacesSection = (props: any): JSX.Element => {
     const [totalTabsCount, setTotalTabsCount] = useState<number>(0);
     const [windowsPayload, setWindowsPayload] = useState<Array<iWindowItem> | null>(null);
     const [folderLaunchType, setFolderLaunchType] = useState<string | null>(null); 
+    const [loaded, setLoaded] = useState<boolean>(false);
 
     const dispatch = useDispatch();
 
@@ -61,6 +62,7 @@ const WorkspacesSection = (props: any): JSX.Element => {
     useEffect(() => {
         getFromStorage("sync", "folders", (data) => {  
             dispatch(readAllFoldersFromBrowserAction(data.folders));
+            setLoaded(true);
         })
 
         getFromStorage("sync", "workspace_sort", (data) => {  
@@ -75,7 +77,8 @@ const WorkspacesSection = (props: any): JSX.Element => {
     // Save/update the folder collection to browser memory once the redux collection has changes
     useEffect(() => {        
         if(folderCollection.length > 0){
-            saveToStorage("sync", "folders", folderCollection);
+            console.log("AAAA");
+           // saveToStorage("sync", "folders", folderCollection);
         } 
     }, [folderCollection]);
 
@@ -259,20 +262,22 @@ const WorkspacesSection = (props: any): JSX.Element => {
         return folderSortOptionId === 0 ? (aNameLowerCase > bNameToLowerCase) : (bNameToLowerCase > aNameLowerCase);
     }
 
+    const handleFolderDelete = (target: iFolderItem): void => {
+        chrome.storage.sync.get("removal_warning_setting", (data) => {
+            if(data.removal_warning_setting === true) {
+                setRemovalTarget(target);
+            } else {
+                dispatch(deleteFolderAction(target.id)); 
+                setRemovalTarget(null);
+            }
+        });
+    }
+    
     // Render the folder list
     const renderFolders = (): Array<JSX.Element> => {        
         const sortedFolders = [...folderCollection].sort((a: any, b: any) => folderSortCondition(a, b) ? 1 : -1);
 
-        const handleFolderDelete = (target: iFolderItem): void => {
-            chrome.storage.sync.get("removal_warning_setting", (data) => {
-                if(data.removal_warning_setting === true) {
-                    setRemovalTarget(target);
-                } else {
-                    dispatch(deleteFolderAction(target.id)); 
-                    setRemovalTarget(null);
-                }
-            });
-        }
+       
 
         // Determine the number of columns to be rendered, based on colsCount
         let colsList: Array<Array<JSX.Element>> = [];
@@ -288,19 +293,20 @@ const WorkspacesSection = (props: any): JSX.Element => {
             const collection: Array<number> = workspaceSettings.markedFoldersId;
             result = (
                 <FolderItem 
-                onDelete={(e) => handleFolderDelete(folder)} 
-                index={sortedFolders.length-i} 
-                marked={collection.find((id) => folder.id === id) ? true : false} 
-                onMark={handleMarkFolder} 
-                onEdit={() => setEditFolderId(folder.id)} 
-                key={folder.id} 
-                type={folder.type} 
-                id={folder.id} 
-                viewMode={workspaceSettings.viewMode} 
-                name={folder.name} 
-                desc={folder.desc} 
-                windows={folder.windows} 
-                onOpen={handlePrepareLaunchFolder}/>
+                    onDelete={(e) => handleFolderDelete(folder)} 
+                    index={sortedFolders.length-i} 
+                    marked={collection.find((id) => folder.id === id) ? true : false} 
+                    onMark={handleMarkFolder} 
+                    onEdit={() => setEditFolderId(folder.id)} 
+                    key={folder.id} 
+                    type={folder.type} 
+                    id={folder.id} 
+                    viewMode={workspaceSettings.viewMode} 
+                    name={folder.name} 
+                    desc={folder.desc} 
+                    windows={folder.windows} 
+                    onOpen={handlePrepareLaunchFolder}
+                />
             )
             
             if(i % colsCount === 0){   
@@ -435,11 +441,12 @@ const WorkspacesSection = (props: any): JSX.Element => {
     }
 
     // Check whether or not there are folders stored in redux
-    const hasFolders = (): boolean => {
-        if(folderCollection && folderCollection.length > 0){
+    const hasFolders = (): boolean | null => {
+        if(folderCollection.length > 0){
             return true;
+        } else {
+            return false;
         }
-        return false;
     }
     
     // Prepare to remove multiple folders. Warn the user if set in Settings page
@@ -525,7 +532,8 @@ const WorkspacesSection = (props: any): JSX.Element => {
     
 
     return (
-        <>
+        <>{folderCollection && workspaceSettings && (
+            <>
             {showPerformanceWarning &&
                 <PopupMessage
                     title="Warning" 
@@ -564,12 +572,13 @@ const WorkspacesSection = (props: any): JSX.Element => {
         
             <SectionContainer id="workspace-section" title="Workspaces" options={renderOptionsMenu}>
                 <>
-                    {!hasFolders() && renderMessageBox()}
+                    {loaded === true && !hasFolders() && renderMessageBox()}
                     {<div className={`${workspaceSettings.viewMode === "list" ? "mx-auto mt-12" : `grid xl:grid-cols-2 2xl:grid-cols-2 3xl:grid-cols-3 grid-flow-dense gap-x-4 gap-y-0 mt-8`}`}>
                         {renderFolders()}
                     </div>}
                 </>
             </SectionContainer>
+        </>)}
         </>  
     );
 
