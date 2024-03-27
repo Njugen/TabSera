@@ -90,7 +90,7 @@ const SettingsView = (props: iView): JSX.Element => {
     return (
         <SectionContainer id="settings-view" title="Settings">
             <div className="flex 2xl:flex-row justify-center 2xl:justify-normal">
-                <div className="w-10/12 2xl:w-7/12">
+                {Object.entries(settings).length > 0 && <div className="w-10/12 2xl:w-7/12">
                     <FormField label="Performance notification" description="Warn me if the total amount of tabs exceeds a certain threshold when launching multiple tabs">
                         <Dropdown 
                             onCallback={(e) => saveSelectedOption("performance_notification_value", e.selected)} 
@@ -135,7 +135,7 @@ const SettingsView = (props: iView): JSX.Element => {
                             onCallback={(e) => saveSwitchSetting("error_log_setting", e)} 
                         />
                     </FormField>
-                </div>
+                </div>}
             </div>
         </SectionContainer>
     );

@@ -17,7 +17,7 @@ const FolderItem = (props: iFolderItem): JSX.Element => {
     const contentsRef = useRef<HTMLDivElement>(null);
     const headerRef = useRef<HTMLDivElement>(null);
     const folderRef = useRef<HTMLDivElement>(null);
-    const [expanded, setExpanded] = useState<boolean>(false);
+    const [expanded, setExpanded] = useState<boolean>(props.type === "expanded" ? true : false);
     const [showLaunchOptions, setShowLaunchOptions] = useState<boolean>(false);
     const [slideDown, setSlideDown] = useState<boolean>(false);
 
@@ -38,7 +38,7 @@ const FolderItem = (props: iFolderItem): JSX.Element => {
         onEdit 
     } = props;
 
-    useEffect(() => toggleExpand(type), []);
+    //useEffect(() => toggleExpand(type), []);
     
     useEffect(() => {
         // Listen for clicks in the viewport. If the options list is visible, then hide it once
@@ -71,32 +71,39 @@ const FolderItem = (props: iFolderItem): JSX.Element => {
         }
     }, [showLaunchOptions])
     
-    const exp = (): void => {
+   /* const expHeaderCSS = (): void => {
         if(contentsRef.current === null || headerRef.current === null) return;
 
         headerRef.current.className = `relative border-b tbf-${type} bg-white px-4 h-10 py-6 flex items-center rounded-t-md`;
         contentsRef.current.className = "overflow-hidden bg-white rounded-b-md border-t-0";
+    }*/
 
-        setExpanded(true);
-    }
-
-    const col = (): void => {
+   /* const colHeaderCSS = (): void => {
         if(contentsRef.current === null || headerRef.current === null) return;
 
         headerRef.current.className = `relative tbf-${type} bg-white px-4 h-10 py-6 flex items-center rounded-md`;
         contentsRef.current.className = "overflow-hidden rounded-b-md";
-        setExpanded(false);
-    }
+    }*/
+
+    const expHeaderCSS: string = `relative border-b tbf-${type} bg-white px-4 h-10 py-6 flex items-center rounded-t-md`;
+    const colHeaderCSS: string = `relative tbf-${type} bg-white px-4 h-10 py-6 flex items-center rounded-md`;
+
+    const expContentsCSS: string = `overflow-hidden bg-white rounded-b-md border-t-0`;
+    const colContentsCSS: string = `overflow-hidden rounded-b-md`;
+
 
     const toggleExpand = (init?: string): void => {
         if(expanded === false){
             if(init === "expanded" || !init){
-                exp();
+              //
+                setExpanded(true);
             } else {
-                col();
+                //col();
+                setExpanded(false);
             }
         } else {
-            col()
+            //col()
+            setExpanded(false);
         }   
     }
 
@@ -160,7 +167,7 @@ const FolderItem = (props: iFolderItem): JSX.Element => {
                 data-testid={"folder-item"} 
                 className={`shadow-[0_0px_3px_1px_rgba(0,0,0,0.125)] ${viewMode === "list" ? "my-4 duration-75" : "my-4 duration-75"} sticky transition-all ease-in w-full rounded-md`}
             >
-                <div ref={headerRef}>
+                <div ref={headerRef} className={expanded === true ? expHeaderCSS : colHeaderCSS}>
                     <div className="inline-block">
                         {expanded === false ? <ClosedFolderIcon size={23} fill={"#000"} /> : <OpenedFolderIcon size={26} fill={"#000"} />}
                     </div>
@@ -171,7 +178,7 @@ const FolderItem = (props: iFolderItem): JSX.Element => {
                     </div>
                     {<FolderActionBar handlers={actionBarHandlers} states={actionBarStates} />}
                 </div>
-                <div ref={contentsRef} className="max-h-2000 overflow-y-hidden bg-tbfColor-lighterpurple3">
+                <div ref={contentsRef} className={expanded === true ? expContentsCSS : colContentsCSS}>
                 {expanded === true && (
                     <>{desc.length > 0 && <div className="px-5 mt-8 flex justify-between items-start">
                     <div data-testid={"description-section"} className="inline-block w-fit">
