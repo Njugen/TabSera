@@ -77,7 +77,8 @@ const WorkspacesSection = (props: any): JSX.Element => {
     // Save/update the folder collection to browser memory once the redux collection has changes
     useEffect(() => {        
         if(folderCollection.length > 0){
-            saveToStorage("sync", "folders", folderCollection);
+            console.log("AAAA");
+           // saveToStorage("sync", "folders", folderCollection);
         } 
     }, [folderCollection]);
 

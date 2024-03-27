@@ -12,10 +12,11 @@ function FolderCollectionReducer(state = folderCollectionState, action: any) {
         return [data]
     } else if(type === CREATE_FOLDER){
         const updatedFolders = [ ...state, data ];
-   
-        return updatedFolders
+        console.log("create Folder", updatedFolders);
+       saveToStorage("sync", "folders", updatedFolders);
+        return updatedFolders;
     } else if(type === READ_ALL_FOLDERS){
-       
+        
         return [
             ...data
         ]
@@ -29,12 +30,15 @@ function FolderCollectionReducer(state = folderCollectionState, action: any) {
     } else if(type === UPDATE_FOLDER){
         const updatedFolders = state.map((item) => {
             if(item.id === data.id){
+                console.log("update Folder", item);
+           //     saveTo
                 return data;
             } else {
                 return item;
             }
         });
-        
+        saveToStorage("sync", "folders", updatedFolders);
+
         return [
             ...updatedFolders
         ]

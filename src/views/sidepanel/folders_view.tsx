@@ -48,7 +48,7 @@ const FoldersView = (props: iFoldersView): JSX.Element => {
 
     useEffect(() => {        
         if(folderCollection.length > 0){
-            saveToStorage("sync", "folders", folderCollection);
+            //saveToStorage("sync", "folders", folderCollection);
         } 
     }, [folderCollection]);
 

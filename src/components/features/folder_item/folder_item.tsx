@@ -4,10 +4,13 @@ import Paragraph from "../../utils/paragraph";
 import OpenedFolderIcon from "../../../images/icons/opened_folder_icon";
 import "../../../styles/global_utils.module.scss";
 import { iFolderItem } from "../../../interfaces/folder_item";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import iWorkspaceState from "../../../interfaces/states/workspaceState";
 import { FolderActionBar, IFolderActionBarHandlers, IFolderActionBarStates } from "./sections/folder_action_bar";
 import FolderWindowList from "./folder_window_list";
+import { getFromStorage, saveToStorage } from "../../../services/webex_api/storage";
+import { InEditFolderReducer } from "../../../redux/reducers/inEditFolderReducer";
+import { updateFolderAction } from "../../../redux/actions/folderCollectionActions";
 
 /*
     Folder containing description, windows and tabs, as well as various folder options
@@ -21,8 +24,11 @@ const FolderItem = (props: iFolderItem): JSX.Element => {
     const [showLaunchOptions, setShowLaunchOptions] = useState<boolean>(false);
     const [slideDown, setSlideDown] = useState<boolean>(false);
 
+    const folderCollection = useSelector((state: any) => state.FolderCollectionReducer);
     const workspaceSettings: iWorkspaceState = useSelector((state: any) => state.WorkspaceSettingsReducer);
     
+    const dispatch = useDispatch();
+
     const { 
         id,
         name,
@@ -71,38 +77,35 @@ const FolderItem = (props: iFolderItem): JSX.Element => {
         }
     }, [showLaunchOptions])
     
-   /* const expHeaderCSS = (): void => {
-        if(contentsRef.current === null || headerRef.current === null) return;
-
-        headerRef.current.className = `relative border-b tbf-${type} bg-white px-4 h-10 py-6 flex items-center rounded-t-md`;
-        contentsRef.current.className = "overflow-hidden bg-white rounded-b-md border-t-0";
-    }*/
-
-   /* const colHeaderCSS = (): void => {
-        if(contentsRef.current === null || headerRef.current === null) return;
-
-        headerRef.current.className = `relative tbf-${type} bg-white px-4 h-10 py-6 flex items-center rounded-md`;
-        contentsRef.current.className = "overflow-hidden rounded-b-md";
-    }*/
-
     const expHeaderCSS: string = `relative border-b tbf-${type} bg-white px-4 h-10 py-6 flex items-center rounded-t-md`;
     const colHeaderCSS: string = `relative tbf-${type} bg-white px-4 h-10 py-6 flex items-center rounded-md`;
 
     const expContentsCSS: string = `overflow-hidden bg-white rounded-b-md border-t-0`;
     const colContentsCSS: string = `overflow-hidden rounded-b-md`;
 
+    const updateFolder = (newType: "expanded" | "collapsed") => {
+        getFromStorage("sync", "folders", (data: any) => {
+            const tempCollection: Array<iFolderItem> = data.folders.map((folder: iFolderItem) => {
+                if(folder.id === id) folder.type = newType;
+                return folder;
+            })
+            saveToStorage("sync", "folders", tempCollection);
+        })
+    }
 
     const toggleExpand = (init?: string): void => {
         if(expanded === false){
             if(init === "expanded" || !init){
-              //
+                updateFolder("expanded");
                 setExpanded(true);
             } else {
                 //col();
+                updateFolder("collapsed");
                 setExpanded(false);
             }
         } else {
             //col()
+            updateFolder("collapsed");
             setExpanded(false);
         }   
     }
