@@ -13,7 +13,7 @@ function FolderCollectionReducer(state = folderCollectionState, action: any) {
     } else if(type === CREATE_FOLDER){
         const updatedFolders = [ ...state, data ];
         console.log("create Folder", updatedFolders);
-       saveToStorage("sync", "folders", updatedFolders);
+        saveToStorage("sync", "folders", updatedFolders);
         return updatedFolders;
     } else if(type === READ_ALL_FOLDERS){
         

@@ -93,7 +93,6 @@ const Dropdown = (props: iDropdown): JSX.Element => {
             </div>
             <div className={`transition duration-75 ${showSubMenuContainer === true ? "ease-in opacity-100" : "ease-out opacity-0"}`}>
                 { showSubMenuContainer === true && <DropdownMenu tag={tag} options={options} selected={selected} onSelect={handleSelect} />}
-                []
             </div>
         </div>
     ); 

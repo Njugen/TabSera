@@ -46,8 +46,8 @@ const GenericPopup = (props: iGenericPopup): JSX.Element => {
                     </div>
                     {
                         save && (
-                            <div id="generic-popup-footer" className="max-sm:justify-center px-8 py-8 mt-4 flex justify-end border-t border-tbfColor-lgrey s">
-                                <PurpleBorderButton disabled={false} text="Cancel" onClick={handleClose} />
+                            <div data-testid="generic-popup-footer" className="max-sm:justify-center px-8 py-8 mt-4 flex justify-end border-t border-tbfColor-lgrey s">
+                                <PurpleBorderButton disabled={false} text={cancel.label} onClick={handleClose} />
                                 <PrimaryButton disabled={false} text={save.label} onClick={handleSave} />
                             </div>
                         )
