@@ -29,7 +29,7 @@ const WindowList = (props: IWindowList): JSX.Element => {
     if(createWindow === true && inCreationId > 0){
         return (
         <>
-            {...existingWindowsElements} 
+            {existingWindowsElements} 
             <NewWindow folder={folder} inCreationId={inCreationId} />
         </>
         );

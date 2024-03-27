@@ -85,7 +85,7 @@ const Dropdown = (props: iDropdown): JSX.Element => {
         <div ref={dropdownRef} className={`hover:cursor-pointer bg-white relative text-sm w-full text-tbfColor-darkergrey rounded-lg h-[2.75rem] border transition-all duration-75 ${dropdownBorderCSS}`}>
             <div id={`${tag}-selector`} data-testid={`${tag}-selector`} className="flex items-center justify-between mx-3 h-full" onClick={handleShowSubMenu}>          
                 <span className="hover:cursor-pointer">
-                    { getSelectedOption(optionsProps) ? preset.label : getSelectedOption(optionsProps).label }
+                    { getSelectedOption(optionsProps) ? getSelectedOption(optionsProps).label : preset.label }
                 </span>
                 <RotationEffect rotated={showSubMenuContainer}>
                     <CollapseIcon size={28} fill={"#000"} />

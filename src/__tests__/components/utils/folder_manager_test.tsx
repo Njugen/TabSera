@@ -103,7 +103,7 @@ describe("Create new workspace", () => {
             </Provider>
         );
 
-        const titleTag = screen.getByTestId("manage-folder-title");
+        const titleTag = screen.getByTestId("generic-popup-title");
         expect(titleTag).toHaveTextContent(mockNewFolderTitle);
     });
 
@@ -194,7 +194,7 @@ describe("Edit workspace", () => {
             </Provider>
         );
 
-        const titleTag = screen.getByTestId("manage-folder-title");
+        const titleTag = screen.getByTestId("generic-popup-title");
         expect(titleTag).toHaveTextContent(mockEditFolderTitle);
     });
 

@@ -1,76 +1,39 @@
 import { render, screen, within, fireEvent } from "@testing-library/react";
-import FolderControlButton from "../../../components/utils/folder_control_button/folder_control_button";
 import '@testing-library/jest-dom'
+import randomNumber from "../../../tools/random_number";
+import FolderControlButton from "../../../components/utils/folder_control_button/folder_control_button";
 
 const mockFunction = jest.fn();
-const mockIcons: Array<string> = ["trash", "settings", "open_browser"];
-/*
 describe("test <FolderControlButton />", () => {
-    describe("when active", () => {
-        test.each(mockIcons)(
-            "click %p icon button works", (iconCase) => {
-                render(<FolderControlButton icon={iconCase} active={true} onClick={mockFunction} />);
-                const button = screen.getByTestId(`folder-control-button-${iconCase}`);
-                const icon = within(button).getByRole("img");
-                fireEvent.click(button);
-                
-                expect(mockFunction).toHaveBeenCalled();
-                expect(icon).toBeInTheDocument();
-            }
+
+    test("Button renders ok and trigger a function when clicked", () => {
+        const num: number = randomNumber();
+
+        render(
+            <FolderControlButton id="my-button" active={true} onClick={mockFunction}>
+                <p>{num.toString()}</p>
+            </FolderControlButton>
         );
-
-        test("clicking collapse button works", () => {
-            render(<FolderControlButton icon={"collapse_expand"} active={true} onClick={mockFunction} />);
-                const button = screen.getByTestId(`folder-control-button-collapse`);
-                const icon = within(button).getByRole("img");
-                fireEvent.click(button);
-                
-                expect(mockFunction).toHaveBeenCalled();
-                expect(icon).toBeInTheDocument();
-        })
-
-        test("clicking expand button works", () => {
-            render(<FolderControlButton icon={"collapse_expand"} active={false} onClick={mockFunction} />);
-                const button = screen.getByTestId(`folder-control-button-expand`);
-                const icon = within(button).getByRole("img");
-                fireEvent.click(button);
-                
-                expect(mockFunction).toHaveBeenCalled();
-                expect(icon).toBeInTheDocument();
-        })
-
-        test("click button with no icon works", () => {
-            render(<FolderControlButton icon="" active={true} onClick={mockFunction} />);
-            const button = screen.getByTestId(`folder-control-button-none`);
-            const icon = within(button).queryByRole("img");
-            fireEvent.click(button);
-            
-            expect(mockFunction).toHaveBeenCalled();
-            expect(icon).not.toBeInTheDocument();
-        })
-    });
-       
-    describe("when not active", () => {
-        test.each(mockIcons)(
-            "click %p button works", (iconCase) => {
-                render(<FolderControlButton icon={iconCase} active={false} onClick={mockFunction} />);
-                const button = screen.getByTestId(`folder-control-button-${iconCase}`);
-                const icon = within(button).getByRole("img");
-                fireEvent.click(button);
-                
-                expect(mockFunction).toHaveBeenCalled();
-                expect(icon).toBeInTheDocument();
-            }
-        );
+        const button = screen.getByRole("button");
+        expect(button).toHaveTextContent(num.toString());
         
-        test("click button with no icon works", () => {
-            render(<FolderControlButton icon="" active={false} onClick={mockFunction} />);
-            const button = screen.getByTestId(`folder-control-button-none`);
-            const icon = within(button).queryByRole("img");
-            fireEvent.click(button);
-            
-            expect(mockFunction).toHaveBeenCalled();
-            expect(icon).not.toBeInTheDocument();
-        })
+        fireEvent.click(button);
+        expect(mockFunction).toHaveBeenCalled();
     });
-}); */
+
+    test("Disabled button renders ok and does not trigger anything at click", () => {
+        const num: number = randomNumber();
+
+        render(
+            <FolderControlButton id="my-button" active={false} onClick={mockFunction}>
+                <p>{num.toString()}</p>
+            </FolderControlButton>
+        );
+        const button = screen.getByRole("button");
+        expect(button).toHaveTextContent(num.toString());
+        
+        fireEvent.click(button);
+        expect(mockFunction).not.toHaveBeenCalled();
+    });
+
+}); 

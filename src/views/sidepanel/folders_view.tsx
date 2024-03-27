@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { iWindowItem } from '../../interfaces/window_item';
 import { useSelector, useDispatch } from "react-redux";
 import { iFolderItem } from '../../interfaces/folder_item';
-import FolderItem from "../../components/features/folder_item/sections/folder_item";
+import FolderItem from "../../components/features/folder_item/folder_item";
 import { getFromStorage, saveToStorage } from '../../services/webex_api/storage';
 import { deleteFolderAction, readAllFoldersFromBrowserAction } from '../../redux/actions/folderCollectionActions';
 import FolderManager from "../../components/features/folder_manager/folder_manager";
@@ -121,13 +121,13 @@ const FoldersView = (props: iFoldersView): JSX.Element => {
         let render;
 
         if(createFolder === true){
-            render = <FolderManager type="slide-in" title="Create workspace" onClose={handleCloseFolderManager} />;
+            render = <FolderManager type="popup" title="Create workspace" onClose={handleCloseFolderManager} />;
         } else {
             const targetFolder: Array<iFolderItem> = folderCollection.filter((item: iFolderItem) => editFolderId === item.id);
             const input: iFolderItem = {...targetFolder[0]};
 
             if(targetFolder.length > 0){
-                render = <FolderManager type="slide-in" title={`Edit folder ${targetFolder[0].id}`} folder={input} onClose={handleCloseFolderManager} />;
+                render = <FolderManager type="popup" title={`Edit folder ${targetFolder[0].id}`} folder={input} onClose={handleCloseFolderManager} />;
             } else {
                 render = <></>;
             } 

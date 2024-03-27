@@ -1,6 +1,6 @@
 import { iFolderItem } from '../../../../interfaces/folder_item';
 import { iWindowItem } from '../../../../interfaces/window_item';
-import FolderItem from '../../folder_item/sections/folder_item';
+import FolderItem from '../../folder_item/folder_item';
 import { filterFoldersByString } from '../filters';
 
 interface ISearchBarFolderListProps {

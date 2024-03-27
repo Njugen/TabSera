@@ -4,132 +4,54 @@ import Navlink from "../../../components/utils/navlink";
 import randomNumber from "../../../tools/random_number";
 import { MemoryRouter } from "react-router-dom";
 
-const mockPaths: Array<string> = [
-    "?view=main",
-    "?view=settings"
-];
-
 const mockFunction = jest.fn();
-/*
+const mockUrl = "/" + randomNumber();
+const mockLabel = randomNumber().toString();
+const mockText = randomNumber().toString();
+
 describe("test <NavLink />", () => {
-    test.each(mockPaths)("works with label (not active)", (path) => {
-        const mockLabel = randomNumber().toString();
-        const mockIconSize = Math.floor(Math.random() * 31);
+    test("link renders and works (not active)", () => {
+
 
         render(
             <MemoryRouter>
-                <Navlink label={mockLabel} isActive={false} url={path} iconSize={mockIconSize} onClick={mockFunction} />
+                <Navlink label={mockLabel} isActive={false} url={mockUrl} onClick={mockFunction}>
+                    <p>{mockText}</p>
+                </Navlink>
             </MemoryRouter>
         );
     
         const link = screen.getByRole("link");
-        const label = within(link).getByText(mockLabel);
-        const icon = within(link).getByRole("img");
-
-        expect(link).toBeInTheDocument();
-        expect(label).toBeInTheDocument();
-        expect(icon).toBeInTheDocument();
+        
+        expect(link).toHaveTextContent(mockText);
+        expect(link).toHaveTextContent(mockLabel);
+        expect(link).toHaveAttribute("href", mockUrl);
 
         fireEvent.click(link);
         expect(mockFunction).toHaveBeenCalled();
     });
 
-    test.each(mockPaths)("works with label (active)", (path) => {
+    test("link renders and works (active)", () => {
         const mockLabel = randomNumber().toString();
-        const mockIconSize = Math.floor(Math.random() * 31);
+        const mockText = randomNumber().toString();
 
         render(
             <MemoryRouter>
-                <Navlink label={mockLabel} isActive={true} url={path} iconSize={mockIconSize} onClick={mockFunction} />
-            </MemoryRouter>
-        );
-
-        const link = screen.getByRole("link");
-        const label = within(link).getByText(mockLabel);
-        const icon = within(link).getByRole("img");
-
-        expect(link).toBeInTheDocument();
-        expect(label).toBeInTheDocument();
-        expect(icon).toBeInTheDocument();
-
-        fireEvent.click(link);
-        expect(mockFunction).toHaveBeenCalled();
-    });
-
-    test.each(mockPaths)("works with no label (active)", (path) => {
-        const mockLabel = randomNumber().toString();
-        const mockIconSize = Math.floor(Math.random() * 31);
-
-        render(
-            <MemoryRouter>
-                <Navlink isActive={true} url={path} iconSize={mockIconSize} onClick={mockFunction} />
+                <Navlink label={mockLabel} isActive={true} url={mockUrl} onClick={mockFunction}>
+                    <p>{mockText}</p>
+                </Navlink>
             </MemoryRouter>
         );
     
         const link = screen.getByRole("link");
-        const label = within(link).queryByText(mockLabel);
-        const icon = within(link).queryByRole("img");
-
-        expect(link).toBeInTheDocument();
-        expect(label).not.toBeInTheDocument();
-        expect(icon).toBeInTheDocument();
+        
+        expect(link).toHaveTextContent(mockText);
+        expect(link).toHaveTextContent(mockLabel);
+        expect(link).toHaveAttribute("href", mockUrl);
 
         fireEvent.click(link);
         expect(mockFunction).toHaveBeenCalled();
     });
 
-    test.each(mockPaths)("works with no label (not active)", (path) => {
-        const mockLabel = randomNumber().toString();
-        const mockIconSize = Math.floor(Math.random() * 31);
-
-        render(
-            <MemoryRouter>
-                <Navlink isActive={false} url={path} iconSize={mockIconSize} onClick={mockFunction} />
-            </MemoryRouter>
-        );
-    
-        const link = screen.getByRole("link");
-        const label = within(link).queryByText(mockLabel);
-        const icon = within(link).queryByRole("img");
-
-        expect(link).toBeInTheDocument();
-        expect(label).not.toBeInTheDocument();
-        expect(icon).toBeInTheDocument();
-
-        fireEvent.click(link);
-        expect(mockFunction).toHaveBeenCalled();
-    });
-
-    test("has no icon (with label)", () => {
-        const mockPath = randomNumber().toString();
-        const mockLabel = randomNumber().toString();
-        const mockIconSize = Math.floor(Math.random() * 31);
-
-        render(
-            <MemoryRouter>
-                <Navlink isActive={false} label={mockLabel} url={mockPath} iconSize={mockIconSize} onClick={mockFunction} />
-            </MemoryRouter>
-        );
-
-        const link = screen.getByRole("link");
-        const icon = within(link).queryByRole("img");
-
-        expect(icon).not.toBeInTheDocument();
-    });
-
-    test("has no icon (without label)", () => {
-        const mockPath = randomNumber().toString();
-        const mockIconSize = Math.floor(Math.random() * 31);
-
-        render(
-            <MemoryRouter>
-                <Navlink isActive={false} url={mockPath} iconSize={mockIconSize} onClick={mockFunction} />
-            </MemoryRouter>
-        );
-
-        const link = screen.getByRole("link");
-        const icon = within(link).queryByRole("img");
-
-        expect(icon).not.toBeInTheDocument();
-    })
-})*/
+  
+})

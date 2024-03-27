@@ -1,7 +1,4 @@
 import { useState, useEffect, useRef } from "react";
-import GenericIconButton from '../../utils/generic_icon_button';
-import PrimaryButton from '../../utils/primary_button/primary_button';
-import PurpleBorderButton from "../../utils/purple_border_button";
 import FormField from "../../utils/form_field";
 import * as predef from "../../../styles/predef";
 import { iPopup } from "../../../interfaces/popup";
@@ -14,8 +11,6 @@ import { useDispatch, useSelector } from "../../../redux/mocked_hooks";
 import { setShowFolderChangeWarning } from "../../../redux/actions/warningActions";
 import { createFolderAction, updateFolderAction } from "../../../redux/actions/folderCollectionActions";
 import { setCurrentlyEditingTab } from "../../../redux/actions/miscActions";
-import CloseIcon from "../../../images/icons/close_icon";
-import { innerStyleDirection, outerStyleDirection } from "./style_directions";
 import windowListChanged from "./window_list_changed";
 import WindowManager from "../window_manager/window_manager";
 import GenericPopup from "../../utils/generic_popup";
@@ -206,35 +201,35 @@ const FolderManager = (props: iPopup): JSX.Element => {
                 />
             }
         
-            <GenericPopup title={title} type="slide-in" show={show} cancel={cancelButtonSpecs} save={saveButtonSpecs}>
-                    <FormField label="Name *" error={inValidFields.name} description="Give a name to this workspace. A sensible name may help your workflow when relevant tabs are needed.">
-                        <input 
-                            data-testid="name-field" 
-                            id="name-field" 
-                            type="text" 
-                            defaultValue={state.InEditFolderReducer?.name} 
-                            className={predef.textfield_full} 
-                            onBlur={(e: any) => handleChangeField("name", e.target.value)} 
-                        />
-                    </FormField>
-                    <FormField label="Description" description="Describe the purpose of this workspace.">
-                        <textarea 
-                            data-testid="desc-field" 
-                            id="desc-field" 
-                            defaultValue={state.InEditFolderReducer?.desc} 
-                            className={predef.textarea_full} 
-                            onBlur={(e: any) => handleChangeField("desc", e.target.value)}
-                        ></textarea>
-                    </FormField>
-                    <div className={`py-6 flex flex-row items-center`}>
-                        <div className="w-full">
-                            <h4 className={`font-semibold text-lg mb-1 ${inValidFields.windows === true && "text-red-500"}`}>Windows and tabs *</h4>
-                            <p className={`text-sm leading-6 text-tbfColor-darkergrey text-start ${inValidFields.windows === true && "text-red-500"}`}>
-                                You may add as windows and tabs to this workspace as you like to this workspace, although a maximum of 25-30 tabs is recommended. 
-                            </p>
-                            <WindowManager />
-                        </div>
+            <GenericPopup title={title} type={type} show={show} cancel={cancelButtonSpecs} save={saveButtonSpecs}>
+                <FormField label="Name *" error={inValidFields.name} description="Give a name to this workspace. A sensible name may help your workflow when relevant tabs are needed.">
+                    <input 
+                        data-testid="name-field" 
+                        id="name-field" 
+                        type="text" 
+                        defaultValue={state.InEditFolderReducer?.name} 
+                        className={predef.textfield_full} 
+                        onBlur={(e: any) => handleChangeField("name", e.target.value)} 
+                    />
+                </FormField>
+                <FormField label="Description" description="Describe the purpose of this workspace.">
+                    <textarea 
+                        data-testid="desc-field" 
+                        id="desc-field" 
+                        defaultValue={state.InEditFolderReducer?.desc} 
+                        className={predef.textarea_full} 
+                        onBlur={(e: any) => handleChangeField("desc", e.target.value)}
+                    ></textarea>
+                </FormField>
+                <div className={`py-6 flex flex-row items-center`}>
+                    <div className="w-full">
+                        <h4 className={`font-semibold text-lg mb-1 ${inValidFields.windows === true && "text-red-500"}`}>Windows and tabs *</h4>
+                        <p className={`text-sm leading-6 text-tbfColor-darkergrey text-start ${inValidFields.windows === true && "text-red-500"}`}>
+                            You may add as windows and tabs to this workspace as you like to this workspace, although a maximum of 25-30 tabs is recommended. 
+                        </p>
+                        <WindowManager />
                     </div>
+                </div>
             </GenericPopup>
 
         </>
