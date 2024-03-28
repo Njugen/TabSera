@@ -36,6 +36,10 @@ module.exports = {
                 { 
                     from: path.resolve("src/webextension/manifest.json"), 
                     to: path.resolve("dist")
+                },
+                { 
+                    from: path.resolve("brand"), 
+                    to: path.resolve("dist")
                 }
             ]
         }),
