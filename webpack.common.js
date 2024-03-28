@@ -39,7 +39,7 @@ module.exports = {
                 },
                 { 
                     from: path.resolve("brand"), 
-                    to: path.resolve("dist")
+                    to: path.resolve("dist/brand")
                 }
             ]
         }),
@@ -61,10 +61,5 @@ module.exports = {
     },
     output: {
         filename: "[name].js"  // in /dist
-    },
-    optimization: {
-        splitChunks: {
-            chunks: "all"
-        }
     }
 }; 
