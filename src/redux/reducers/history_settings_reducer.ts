@@ -9,14 +9,14 @@ import {
     CHANGE_TABS_VIEWMODE
 } from "../types/history_settings_types";
 
-const historySettingsState: iHistoryState = {
+const history_section_state: iHistoryState = {
     tabs: [],
     markedTabs: [],
     tabSortOptionId: 0,
     viewMode: "grid"
 }
 
-function HistorySettingsReducer(state = historySettingsState, action: any) {
+function HistorySettingsReducer(state = history_section_state, action: any) {
     const { type, data } = action;
 
     if(type === SET_UP_TABS){

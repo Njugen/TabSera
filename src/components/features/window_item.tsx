@@ -28,13 +28,13 @@ const WindowItem = (props: iWindowItem): JSX.Element => {
     const dispatch = useDispatch();
 
     // Get information about the folder 
-    const folderData = useSelector((state: any) => state.InEditFolderReducer);
-    const miscData = useSelector((state: any) => state.MiscReducer);
+    const folder_state = useSelector((state: any) => state.InEditFolderReducer);
+    const misc_state = useSelector((state: any) => state.MiscReducer);
 
     // Disable add new tab by setting state
     useEffect(() => {
         if(newTab === true) setNewTab(false);
-    }, [folderData]);
+    }, [folder_state]);
 
     // Expand or collapse a window (show/hide tabs within)
     const handleExpand = (): void => {
@@ -43,7 +43,7 @@ const WindowItem = (props: iWindowItem): JSX.Element => {
 
     // Delete this window from redux
     const handleDeleteWindow = (): void => {
-        const windows = folderData.windows.filter((target: iWindowItem) => target.id !== id);
+        const windows = folder_state.windows.filter((target: iWindowItem) => target.id !== id);
 
         dispatch(setCurrentlyEditingTab(false));
         dispatch(updateInEditFolder("windows", windows));
@@ -52,7 +52,7 @@ const WindowItem = (props: iWindowItem): JSX.Element => {
 
     // Activate add new tab feature by setting state
     const handleAddNewTab = (): void => {
-        if(editTab === null && miscData.currentlyEditingTab === false) {
+        if(editTab === null && misc_state.currentlyEditingTab === false) {
             dispatch(setCurrentlyEditingTab(true));
             setNewTab(true);
         }
@@ -73,8 +73,8 @@ const WindowItem = (props: iWindowItem): JSX.Element => {
 
     // Delete marked tabs
     const handleDeleteTabs = (): void => {
-        const windows = folderData.windows.filter((target: iWindowItem) => target.id === id);
-        const targetWindowIndex = folderData.windows.findIndex((target: iWindowItem) => target.id === id);
+        const windows = folder_state.windows.filter((target: iWindowItem) => target.id === id);
+        const targetWindowIndex = folder_state.windows.findIndex((target: iWindowItem) => target.id === id);
         const tabs = windows[0]?.tabs;
      
         const newTabCollection: Array<iTabItem> = [];
@@ -88,16 +88,16 @@ const WindowItem = (props: iWindowItem): JSX.Element => {
                 }
             });
            
-            folderData.windows[targetWindowIndex].tabs = [...newTabCollection];
+            folder_state.windows[targetWindowIndex].tabs = [...newTabCollection];
             
             setMarkedTabs([]);
-            dispatch(updateInEditFolder("windows", folderData.windows));
+            dispatch(updateInEditFolder("windows", folder_state.windows));
             dispatch(setCurrentlyEditingTab(false));
         }
     }
 
     const handleTabEdit = (id: number): void => {
-        const { isEditingTabs, currentlyEditingTab } = miscData;
+        const { isEditingTabs, currentlyEditingTab } = misc_state;
 
         if(currentlyEditingTab === true) return;
         
@@ -107,7 +107,7 @@ const WindowItem = (props: iWindowItem): JSX.Element => {
     }
 
     const handleEditTabStop = (): void => {
-        const { isEditingTabs } = miscData;
+        const { isEditingTabs } = misc_state;
         dispatch(setTabInEdits(isEditingTabs > 0 ? isEditingTabs - 1 : 0)); 
         dispatch(setCurrentlyEditingTab(false));
         setEditTab(null);

@@ -21,8 +21,8 @@ const CurrentSessionSection = (props: any): JSX.Element => {
     const [mergeProcess, setMergeProcess] = useState<iFolderItem | null>(null);
     const [createFolder, setCreateFolder] = useState<boolean>(false);
 
-    const folderCollection: Array<iFolderItem> = useSelector((state: any) => state.FolderCollectionReducer);
-    const currentSessionData = useSelector((state: any) => state.CurrentSessionSettingsReducer);
+    const folder_collection_state: Array<iFolderItem> = useSelector((state: any) => state.FolderCollectionReducer);
+    const session_section_state = useSelector((state: any) => state.CurrentSessionSettingsReducer);
 
     const dispatch = useDispatch();
 
@@ -102,7 +102,7 @@ const CurrentSessionSection = (props: any): JSX.Element => {
     }
 
     const renderContents = (): JSX.Element => {
-        const existingWindows = currentSessionData?.windows;
+        const existingWindows = session_section_state?.windows;
         const existingWindowsElements: Array<JSX.Element> = existingWindows?.map((item: iWindowItem, i: number) => {
             return (
                 <WindowItem 
@@ -134,12 +134,12 @@ const CurrentSessionSection = (props: any): JSX.Element => {
         if(e.selected === -1) return;
 
         const targetFolderId = e.selected;
-        const targetFolder: iFolderItem | undefined = folderCollection.find((folder: iFolderItem) => folder.id === targetFolderId);
+        const targetFolder: iFolderItem | undefined = folder_collection_state.find((folder: iFolderItem) => folder.id === targetFolderId);
      
         if(!targetFolder) return;
         
-        if(currentSessionData.windows){
-            const newWindowItems: Array<iWindowItem> = currentSessionData.windows.map((window: chrome.windows.Window) => {
+        if(session_section_state.windows){
+            const newWindowItems: Array<iWindowItem> = session_section_state.windows.map((window: chrome.windows.Window) => {
                 if(window.tabs){
                     const tabs: Array<iTabItem> = window.tabs.map((tab: chrome.tabs.Tab) => {
                         return {
@@ -171,7 +171,7 @@ const CurrentSessionSection = (props: any): JSX.Element => {
     }
 
     const renderAddTabsMessage = (): JSX.Element => {
-        const currentFolders: Array<iFolderItem> = folderCollection;
+        const currentFolders: Array<iFolderItem> = folder_collection_state;
 
         const options: Array<iFieldOption> = currentFolders.map((folder) => {
             return { id: folder.id, label: folder.name }
@@ -201,7 +201,7 @@ const CurrentSessionSection = (props: any): JSX.Element => {
         let render = <></>;
 
         if(createFolder === true){
-            const presetWindows: Array<iWindowItem> = currentSessionData.windows.map((window: chrome.windows.Window) => {
+            const presetWindows: Array<iWindowItem> = session_section_state.windows.map((window: chrome.windows.Window) => {
                 if(window.tabs){
                     const tabs: Array<iTabItem> = window.tabs.map((tab: chrome.tabs.Tab) => {
                         return {

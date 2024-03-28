@@ -8,13 +8,13 @@ import {
     CHANGE_WORKSPACES_VIEWMODE
 } from "../types/work_space_settings_types";
 
-const workspaceSettingsState: iWorkspaceState = {
+const workspace_settings_state: iWorkspaceState = {
     markedFoldersId: [],
     folderSortOptionId: 0,
     viewMode: "grid"
 }
 
-function WorkspaceSettingsReducer(state = workspaceSettingsState, action: any) {
+function WorkspaceSettingsReducer(state = workspace_settings_state, action: any) {
     const { type, data } = action;
 
     if(type === SET_MARKED_WORKSPACES_ID){

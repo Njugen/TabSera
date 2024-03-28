@@ -5,7 +5,6 @@ import {
     SET_MARKED_CURRENT_TABS_ID,
     CLEAR_ALL_MARKED,
     SET_CURRENT_TABS_SORT_ORDER,
-    
     CHANGE_WORKSPACES_VIEWMODE
 } from "../types/current_session_settings_types";
 

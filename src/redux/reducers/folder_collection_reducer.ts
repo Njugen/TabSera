@@ -3,9 +3,9 @@ import { CREATE_FOLDER, READ_FOLDER, READ_ALL_FOLDERS, UPDATE_FOLDER, DELETE_FOL
 
 import { saveToStorage } from "../../services/webex_api/storage";
 
-const folderCollectionState: Array<iFolderItem> = [];
+const folder_collection_state: Array<iFolderItem> = [];
 
-function FolderCollectionReducer(state = folderCollectionState, action: any) {
+function FolderCollectionReducer(state = folder_collection_state, action: any) {
     const { type, data } = action;
 
     if(type === SET_UP_FOLDERS){

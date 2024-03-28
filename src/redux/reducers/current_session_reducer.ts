@@ -6,7 +6,7 @@ import {
 } from "../types/current_session_settings_types";
 
 
-const currentSessionSettingsState: iCurrentSessionState = {
+const session_section_state: iCurrentSessionState = {
     windows: [],
     markedWindows: [],
     markedTabs: [],
@@ -14,7 +14,7 @@ const currentSessionSettingsState: iCurrentSessionState = {
     viewMode: "grid"
 }
 
-function CurrentSessionSettingsReducer(state = currentSessionSettingsState, action: any) {
+function CurrentSessionSettingsReducer(state = session_section_state, action: any) {
     const { type, data } = action;
 
     if(type === SET_UP_WINDOWS){

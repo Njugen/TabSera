@@ -31,9 +31,9 @@ const AdvancedSearchBar = (props: iAdvancedSearchBar): JSX.Element => {
     const searchResultsContainerRef = useRef<HTMLDivElement>(null);
     const searchFieldRef = useRef<HTMLInputElement>(null);
 
-    const folderCollection: Array<iFolderItem> = useSelector((state: any) => state.FolderCollectionReducer);
-    const currentSessionSettings: iCurrentSessionState = useSelector((state: any) => state.CurrentSessionSettingsReducer);
-    const historySettings: iHistoryState = useSelector((state: any) => state.HistorySettingsReducer);
+    const folder_collection_state: Array<iFolderItem> = useSelector((state: any) => state.FolderCollectionReducer);
+    const session_section_state: iCurrentSessionState = useSelector((state: any) => state.CurrentSessionSettingsReducer);
+    const history_section_state: iHistoryState = useSelector((state: any) => state.HistorySettingsReducer);
 
     const { popup_container_transparent_bg } = styles;
     const handleShowResultsProps: IHandleShowResultsContainerProps = { searchResultsContainerRef , showResultsContainer, slideDown, setSlideDown, setShowResultsContainer }
@@ -156,7 +156,7 @@ const AdvancedSearchBar = (props: iAdvancedSearchBar): JSX.Element => {
                     (
                         <div data-testid="search-results-area" id="search-results-area" className={`${popup_container_transparent_bg} w-screen h-full top-0 bg-[rgba-] absolute z-500 left-0 flex justify-center`}>
                             <div ref={searchResultsContainerRef} className={`bg-white absolute p-6 ml-16 mt-10 transition-all ease-in duration-75 overflow-hidden w-7/12 z-10 rounded-lg drop-shadow-[0_3px_2px_rgba(0,0,0,0.15)]`}>
-                                <SearchResults keyword={keyword} folders={folderCollection} session={currentSessionSettings} history={historySettings} launchFolder={handlePrepareLaunchFolder} />   
+                                <SearchResults keyword={keyword} folders={folder_collection_state} session={session_section_state} history={history_section_state} launchFolder={handlePrepareLaunchFolder} />   
                             </div>
                         </div>
                     ) 
