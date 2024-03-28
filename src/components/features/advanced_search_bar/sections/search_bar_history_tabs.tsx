@@ -1,6 +1,6 @@
-import TabItem from '../../../features/tab_item';
+import TabItem from '../../tab_item';
 import { filterHistoryTabsByString } from '../filters';
-import iHistoryState from "../../../../interfaces/states/historyState";
+import iHistoryState from "../../../../interfaces/states/history_state";
 
 interface ISearchBarHistoryTabsProps {
     items: iHistoryState,

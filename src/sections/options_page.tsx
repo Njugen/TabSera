@@ -11,8 +11,8 @@ import AdvancedSearchBar from '../components/features/advanced_search_bar/advanc
 import iOptionsPage from '../interfaces/options_page';
 import { useDispatch, useSelector } from 'react-redux';
 import { getFromStorage } from '../services/webex_api/storage';
-import { readAllFoldersFromBrowserAction, setUpFoldersAction } from '../redux/actions/folderCollectionActions';
-import { setUpTabsAction } from '../redux/actions/historySettingsActions';
+import { readAllFoldersFromBrowserAction, setUpFoldersAction } from '../redux/actions/folder_collection_actions';
+import { setUpTabsAction } from '../redux/actions/history_settings_actions';
 import MultipleFoldersIcon from '../images/icons/multiple_folders_icon';
 import ConfigIcon from '../images/icons/config_icon';
 

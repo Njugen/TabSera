@@ -8,7 +8,7 @@ import {
     SET_UP_TABS,
 
     CHANGE_TABS_VIEWMODE
-} from "../types/historySettingsTypes";
+} from "../types/history_settings_types";
 
 function setUpTabsAction(input: Array<chrome.history.HistoryItem>){
     return {

@@ -4,14 +4,14 @@ import FolderManager from '../../../components/features/folder_manager/folder_ma
 import { useEffect, useState } from "react";
 import { iFolderItem } from '../../../interfaces/folder_item';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearInEditFolder  } from '../../../redux/actions/inEditFolderActions';
+import { clearInEditFolder  } from '../../../redux/actions/in_edit_folder_actions';
 import randomNumber from '../../../tools/random_number';
 import { iWindowItem } from '../../../interfaces/window_item';
-import { clearMarkedFoldersAction } from '../../../redux/actions/workspaceSettingsActions';
-import { clearMarkedTabsAction} from '../../../redux/actions/historySettingsActions';
+import { clearMarkedFoldersAction } from '../../../redux/actions/workspace_settings_actions';
+import { clearMarkedTabsAction} from '../../../redux/actions/history_settings_actions';
 import { iTabItem } from '../../../interfaces/tab_item';
 import { iFieldOption } from '../../../interfaces/dropdown';
-import { setUpWindowsAction } from '../../../redux/actions/currentSessionActions';
+import { setUpWindowsAction } from '../../../redux/actions/current_session_actions';
 import AddToWorkspacePopup from '../../../components/features/add_to_workspace_popup';
 import SectionContainer from "../../../components/utils/section_container";
 import WindowItem from "../../../components/features/window_item";

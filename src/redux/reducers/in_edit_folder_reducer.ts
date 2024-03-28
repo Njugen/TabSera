@@ -1,6 +1,6 @@
 import { iFolderItem } from "../../interfaces/folder_item";
 import { iTabItem } from "../../interfaces/tab_item";
-import { EDIT_FOLDER, UPDATE_IN_EDIT_FOLDER, CLEAR_IN_EDIT_FOLDER, UPDATE_WINDOW_MANAGER } from "../types/inEditFoldersTypes";
+import { EDIT_FOLDER, UPDATE_IN_EDIT_FOLDER, CLEAR_IN_EDIT_FOLDER, UPDATE_WINDOW_MANAGER } from "../types/in_edit_folders_types";
 
 const inEditFolderState: iFolderItem | null = null;
 

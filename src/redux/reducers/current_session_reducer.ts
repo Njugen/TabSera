@@ -1,9 +1,9 @@
-import iCurrentSessionState from "../../interfaces/states/currentSessionState";
+import iCurrentSessionState from "../../interfaces/states/current_session_state";
 import { 
     SET_UP_WINDOWS,
     SET_CURRENT_TABS_SORT_ORDER,
     DELETE_MARKED_CURRENT_TABS_ID,
-} from "../types/currentSessionSettingsTypes";
+} from "../types/current_session_settings_types";
 
 
 const currentSessionSettingsState: iCurrentSessionState = {

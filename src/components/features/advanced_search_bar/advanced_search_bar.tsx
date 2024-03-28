@@ -4,13 +4,13 @@ import { useSelector } from 'react-redux';
 import styles from "../../../styles/global_utils.module.scss";
 import { iFolderItem } from '../../../interfaces/folder_item';
 import { iWindowItem } from '../../../interfaces/window_item';
-import iCurrentSessionState from "../../../interfaces/states/currentSessionState";
-import iHistoryState from "../../../interfaces/states/historyState";
+import iCurrentSessionState from "../../../interfaces/states/current_session_state";
+import iHistoryState from "../../../interfaces/states/history_state";
 import iAdvancedSearchBar from "../../../interfaces/advanced_search_bar";
 import { handleShowResultsContainer, IHandleShowResultsContainerProps } from "./handle_show_results_container";
 import { handleWindowClick } from "./window_click_listener";
 import { ILaunchFolderProps, handleLaunchFolder } from "./handle_launch_folder";
-import { SearchResults } from "./sections/search_bar_results";
+import { SearchResults } from "./sub_components/search_bar_results";
 import PopupMessage from "../../utils/popup_message";
 
 /*

@@ -5,12 +5,12 @@ import OpenedFolderIcon from "../../../images/icons/opened_folder_icon";
 import "../../../styles/global_utils.module.scss";
 import { iFolderItem } from "../../../interfaces/folder_item";
 import { useDispatch, useSelector } from "react-redux";
-import iWorkspaceState from "../../../interfaces/states/workspaceState";
+import iWorkspaceState from "../../../interfaces/states/workspace_state";
 import { FolderActionBar, IFolderActionBarHandlers, IFolderActionBarStates } from "./sections/folder_action_bar";
 import FolderWindowList from "./folder_window_list";
 import { getFromStorage, saveToStorage } from "../../../services/webex_api/storage";
-import { InEditFolderReducer } from "../../../redux/reducers/inEditFolderReducer";
-import { updateFolderAction } from "../../../redux/actions/folderCollectionActions";
+import { InEditFolderReducer } from "../../../redux/reducers/in_edit_folder_reducer";
+import { updateFolderAction } from "../../../redux/actions/folder_collection_actions";
 
 /*
     Folder containing description, windows and tabs, as well as various folder options

@@ -2,13 +2,13 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import '@testing-library/jest-dom';
 import FolderManager from "../../../components/features/folder_manager/folder_manager";
 import { Provider } from "react-redux";
-import { store } from "../../../redux/reducer";
+import { store } from "../../../redux/reducers";
 import { chrome } from 'jest-chrome'
 import { useDispatch, useSelector } from "../../../redux/mocked_hooks"; 
 
 import { iFolderItem } from "../../../interfaces/folder_item";
-import { initInEditFolder } from "../../../redux/actions/inEditFolderActions";
-import { setCurrentlyEditingTab, setTabInEdits } from "../../../redux/actions/miscActions";
+import { initInEditFolder } from "../../../redux/actions/in_edit_folder_actions";
+import { setCurrentlyEditingTab, setTabInEdits } from "../../../redux/actions/misc_actions";
 import { act } from "react-dom/test-utils";
 
 jest.mock("../../../redux/mocked_hooks");

@@ -7,7 +7,7 @@ import {
     SET_CURRENT_TABS_SORT_ORDER,
     
     CHANGE_WORKSPACES_VIEWMODE
-} from "../types/currentSessionSettingsTypes";
+} from "../types/current_session_settings_types";
 
 function setUpWindowsAction(input: Array<chrome.windows.Window>){
     return {

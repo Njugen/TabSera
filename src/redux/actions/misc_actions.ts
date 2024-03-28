@@ -1,7 +1,7 @@
 import { 
     IS_EDITING_TAB,
     CURRENTLY_EDITING_TAB
-} from "../types/miscTypes";
+} from "../types/misc_types";
 
 function setTabInEdits(value: number){
     return {

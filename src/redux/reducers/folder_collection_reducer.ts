@@ -1,5 +1,5 @@
 import { iFolderItem } from "../../interfaces/folder_item";
-import { CREATE_FOLDER, READ_FOLDER, READ_ALL_FOLDERS, UPDATE_FOLDER, DELETE_FOLDER, SET_UP_FOLDERS, READ_ALL_FOLDERS_FROM_BROWSER } from "../types/folderCollectionTypes";
+import { CREATE_FOLDER, READ_FOLDER, READ_ALL_FOLDERS, UPDATE_FOLDER, DELETE_FOLDER, SET_UP_FOLDERS, READ_ALL_FOLDERS_FROM_BROWSER } from "../types/folder_collection_types";
 
 import { saveToStorage } from "../../services/webex_api/storage";
 

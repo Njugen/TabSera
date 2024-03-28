@@ -5,7 +5,7 @@ import { SET_MARKED_WORKSPACES_ID,
     SET_WORKSPACES_SORT_ORDER,
 
     CHANGE_WORKSPACES_VIEWMODE
-} from "../types/workspaceSettingsTypes";
+} from "../types/work_space_settings_types";
 
 
 function setMarkedFoldersAction(input: number){

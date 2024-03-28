@@ -4,13 +4,13 @@ import * as predef from "../../../styles/predef";
 import { iPopup } from "../../../interfaces/popup";
 
 import randomNumber from "../../../tools/random_number";
-import { initInEditFolder, updateInEditFolder} from "../../../redux/actions/inEditFolderActions";
+import { initInEditFolder, updateInEditFolder} from "../../../redux/actions/in_edit_folder_actions";
 import { iFolderItem } from "../../../interfaces/folder_item";
 import PopupMessage from '../../utils/popup_message';
 import { useDispatch, useSelector } from "../../../redux/mocked_hooks";
-import { setShowFolderChangeWarning } from "../../../redux/actions/warningActions";
-import { createFolderAction, updateFolderAction } from "../../../redux/actions/folderCollectionActions";
-import { setCurrentlyEditingTab } from "../../../redux/actions/miscActions";
+import { setShowFolderChangeWarning } from "../../../redux/actions/warning_actions";
+import { createFolderAction, updateFolderAction } from "../../../redux/actions/folder_collection_actions";
+import { setCurrentlyEditingTab } from "../../../redux/actions/misc_actions";
 import windowListChanged from "./window_list_changed";
 import WindowManager from "../window_manager/window_manager";
 import GenericPopup from "../../utils/generic_popup";

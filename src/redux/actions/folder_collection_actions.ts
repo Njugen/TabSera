@@ -6,7 +6,7 @@ import {
     UPDATE_FOLDER, 
     DELETE_FOLDER, 
     SET_UP_FOLDERS, 
-    READ_ALL_FOLDERS_FROM_BROWSER} from "../types/folderCollectionTypes";
+    READ_ALL_FOLDERS_FROM_BROWSER} from "../types/folder_collection_types";
 
 
 

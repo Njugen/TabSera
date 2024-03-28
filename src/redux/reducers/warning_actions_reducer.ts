@@ -1,5 +1,5 @@
-import iWarningState from "../../interfaces/states/warningState";
-import { SHOW_FOLDER_CHANGE_WARNING, SHOW_SINGLE_FOLDER_REMOVAL_WARNING, SHOW_MULTIFOLDER_REMOVAL_WARNING } from "../types/warningActionsTypes";
+import iWarningState from "../../interfaces/states/warning_state";
+import { SHOW_FOLDER_CHANGE_WARNING, SHOW_SINGLE_FOLDER_REMOVAL_WARNING, SHOW_MULTIFOLDER_REMOVAL_WARNING } from "../types/warning_actions_types";
 
 const warningActionsState: iWarningState = {
     showFolderChangeWarning: false,

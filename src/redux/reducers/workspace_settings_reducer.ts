@@ -1,4 +1,4 @@
-import iWorkspaceState from "../../interfaces/states/workspaceState";
+import iWorkspaceState from "../../interfaces/states/workspace_state";
 import { 
     SET_MARKED_WORKSPACES_ID, 
     SET_MULTIPLE_MARKED_WORKSPACES_ID, 
@@ -6,7 +6,7 @@ import {
     SET_WORKSPACES_SORT_ORDER,
     
     CHANGE_WORKSPACES_VIEWMODE
-} from "../types/workspaceSettingsTypes";
+} from "../types/work_space_settings_types";
 
 const workspaceSettingsState: iWorkspaceState = {
     markedFoldersId: [],

@@ -1,7 +1,7 @@
 import { iFolderItem } from '../../../../interfaces/folder_item';
 import { iWindowItem } from '../../../../interfaces/window_item';
-import iHistoryState from "../../../../interfaces/states/historyState";
-import iCurrentSessionState from "../../../../interfaces/states/currentSessionState";
+import iHistoryState from "../../../../interfaces/states/history_state";
+import iCurrentSessionState from "../../../../interfaces/states/current_session_state";
 import SearchBarFolderList from './search_bar_folder_list';
 import renderSessionTabs from './search_bar_session_tabs';
 import SearchBarHistoryTabs from './search_bar_history_tabs';

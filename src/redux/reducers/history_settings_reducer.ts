@@ -1,4 +1,4 @@
-import iHistoryState from "../../interfaces/states/historyState";
+import iHistoryState from "../../interfaces/states/history_state";
 import { 
     SET_MARKED_TABS, 
     SET_MULTIPLE_MARKED_TABS, 
@@ -7,7 +7,7 @@ import {
     SET_UP_TABS,
 
     CHANGE_TABS_VIEWMODE
-} from "../types/historySettingsTypes";
+} from "../types/history_settings_types";
 
 const historySettingsState: iHistoryState = {
     tabs: [],

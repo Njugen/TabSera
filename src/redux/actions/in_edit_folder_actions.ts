@@ -6,7 +6,7 @@ import {
     UPDATE_IN_EDIT_FOLDER, 
     CLEAR_IN_EDIT_FOLDER, 
     UPDATE_WINDOW_MANAGER 
-} from "../types/inEditFoldersTypes";
+} from "../types/in_edit_folders_types";
 
     
 function initInEditFolder(folder: iFolderItem) {
