@@ -8,8 +8,8 @@ import SettingsView from './views/settings/settings_view';
 import LeftIcon from './components/icons/left_icon';
 import RightIcon from './components/icons/right_icon';
 import AdvancedSearchBar from './components/features/advanced_search_bar/advanced_search_bar';
-import RenderOptionsPage from './sections/options_page';
-import RenderSidePanel from './sections/sidepanel';
+import RenderOptionsPage from './baseUI/options_page';
+import RenderSidePanel from './baseUI/sidepanel';
 import DashboardView from './views/dashboard/dashboard_view';
 
 /*

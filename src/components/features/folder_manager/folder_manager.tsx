@@ -74,21 +74,21 @@ const FolderManager = (props: iPopup): JSX.Element => {
     }, []);
 
     useEffect(() => {
-        const inEditWindows: string = state.InEditFolderReducer?.windows;
+        const inEditWindows: string = state.folderManagerReducer?.windows;
         const listChanged: boolean = windowListChanged(originWindows, inEditWindows);
 
         if(listChanged === true){
             setModified(true);
         }
-    }, [state.InEditFolderReducer]);
+    }, [state.folderManagerReducer]);
     
     // Handle changes to a field
     // - key: a string to identify the changed field
     // - value: the new value of this field
     const handleChangeField = (key: string, value: string): void => {
-        if(!state.InEditFolderReducer) return;
+        if(!state.folderManagerReducer) return;
         
-        if(modified === false && JSON.stringify(state.InEditFolderReducer[key]) !== JSON.stringify(value)) setModified(true);
+        if(modified === false && JSON.stringify(state.folderManagerReducer[key]) !== JSON.stringify(value)) setModified(true);
 
         // Inform redux about the field change
         dispatch(updateInEditFolder(key, value));
@@ -100,7 +100,7 @@ const FolderManager = (props: iPopup): JSX.Element => {
     // whether or not they are valid. If not, mark the affected fields
     // as invalid. Otherwise, send a callback to proceed.
     const validateForm = (callback: () => void): void => {
-        const data = state.InEditFolderReducer;
+        const data = state.folderManagerReducer;
 
         const updatedFieldState = {
             name: false,
@@ -111,7 +111,7 @@ const FolderManager = (props: iPopup): JSX.Element => {
             updatedFieldState.name = true;
         } 
 
-        if((data.windows && data.windows.length === 0) || state.MiscReducer.isEditingTabs > 0) {
+        if((data.windows && data.windows.length === 0) || state.miscReducer.isEditingTabs > 0) {
             updatedFieldState.windows = true;
         } 
         
@@ -151,16 +151,16 @@ const FolderManager = (props: iPopup): JSX.Element => {
         validateForm(() => {
             if(props.folder){
                 // Find out if process is merge or edit
-                const targetIndex = state.FolderCollectionReducer.findIndex((target: any) => target.id === props.folder?.id);
+                const targetIndex = state.folderCollectionReducer.findIndex((target: any) => target.id === props.folder?.id);
 
                 if(targetIndex === -1){
-                    dispatch(createFolderAction(state.InEditFolderReducer));
+                    dispatch(createFolderAction(state.folderManagerReducer));
                 } else {
-                    dispatch(updateFolderAction(state.InEditFolderReducer));
+                    dispatch(updateFolderAction(state.folderManagerReducer));
                 }
                 
             } else {
-                dispatch(createFolderAction(state.InEditFolderReducer));
+                dispatch(createFolderAction(state.folderManagerReducer));
             }   
       
             handleClose(true);
@@ -207,7 +207,7 @@ const FolderManager = (props: iPopup): JSX.Element => {
                         data-testid="name-field" 
                         id="name-field" 
                         type="text" 
-                        defaultValue={state.InEditFolderReducer?.name} 
+                        defaultValue={state.folderManagerReducer?.name} 
                         className={predef.textfield_full} 
                         onBlur={(e: any) => handleChangeField("name", e.target.value)} 
                     />
@@ -216,7 +216,7 @@ const FolderManager = (props: iPopup): JSX.Element => {
                     <textarea 
                         data-testid="desc-field" 
                         id="desc-field" 
-                        defaultValue={state.InEditFolderReducer?.desc} 
+                        defaultValue={state.folderManagerReducer?.desc} 
                         className={predef.textarea_full} 
                         onBlur={(e: any) => handleChangeField("desc", e.target.value)}
                     ></textarea>

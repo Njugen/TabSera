@@ -31,14 +31,14 @@ const HistoryView = (props:any): JSX.Element => {
     const historyListRef = useRef<HTMLDivElement>(null);
 
     const dispatch = useDispatch();
-    const tabsData = useSelector((state: any) => state.HistorySettingsReducer);
-    const folderCollection: Array<iFolderItem> = useSelector((state: any) => state.FolderCollectionReducer);
+    const historySectionState = useSelector((state: any) => state.historySectionReducer);
+    const folderCollectionState: Array<iFolderItem> = useSelector((state: any) => state.folderCollectionReducer);
 
     useEffect(() => {        
-        if(folderCollection.length > 0){
-     //       saveToStorage("local", "folders", folderCollection);
+        if(folderCollectionState.length > 0){
+     //       saveToStorage("local", "folders", folderCollectionState);
         } 
-    }, [folderCollection]);
+    }, [folderCollectionState]);
 
     const handleChangeViewMode = (): void => {
         setViewMode(viewMode === "list" ? "grid" : "list");
@@ -73,8 +73,8 @@ const HistoryView = (props:any): JSX.Element => {
     }
 
     const handleMark = (input: number): void => {
-        const tabCollection: Array<chrome.history.HistoryItem> = tabsData.tabs;
-        const markedTabs: Array<chrome.history.HistoryItem> = tabsData.markedTabs;
+        const tabCollection: Array<chrome.history.HistoryItem> = historySectionState.tabs;
+        const markedTabs: Array<chrome.history.HistoryItem> = historySectionState.markedTabs;
         const index = tabCollection.findIndex((tab: chrome.history.HistoryItem) => input === parseInt(tab.id));
 
         if(index > -1){
@@ -92,7 +92,7 @@ const HistoryView = (props:any): JSX.Element => {
 
 
     const handleMarkAll = (): void => {
-        const tabs: Array<chrome.history.HistoryItem> = tabsData.tabs as Array<chrome.history.HistoryItem>;
+        const tabs: Array<chrome.history.HistoryItem> = historySectionState.tabs as Array<chrome.history.HistoryItem>;
         dispatch(setMarkMultipleTabsAction(tabs));
     }
 
@@ -102,9 +102,9 @@ const HistoryView = (props:any): JSX.Element => {
     }
 
     const handleDeleteFromHistory = (): void => {
-        let updatedMarks = tabsData.tabs;
+        let updatedMarks = historySectionState.tabs;
 
-        tabsData.markedTabs.forEach((tab: chrome.history.HistoryItem) => {
+        historySectionState.markedTabs.forEach((tab: chrome.history.HistoryItem) => {
             chrome.history.deleteUrl({ url: tab.url! });
             updatedMarks = updatedMarks.filter((target: chrome.history.HistoryItem) => target.url !== tab.url);
         });
@@ -114,7 +114,7 @@ const HistoryView = (props:any): JSX.Element => {
     }
 
     const handleOpenSelected = (): void => {
-        const markedTabs: Array<chrome.history.HistoryItem> = tabsData.markedTabs as Array<chrome.history.HistoryItem>;
+        const markedTabs: Array<chrome.history.HistoryItem> = historySectionState.markedTabs as Array<chrome.history.HistoryItem>;
         
         markedTabs.forEach((tab: chrome.history.HistoryItem) => {
             const properties: object = {
@@ -156,7 +156,7 @@ const HistoryView = (props:any): JSX.Element => {
     }, []);
 
     const renderTabs = (): Array<JSX.Element> => {
-        const { tabsSort, tabs } = tabsData;
+        const { tabsSort, tabs } = historySectionState;
         let sortedTabs: Array<chrome.history.HistoryItem> = tabs;
         
         function titleCondition(a: chrome.history.HistoryItem, b: chrome.history.HistoryItem) {
@@ -178,7 +178,7 @@ const HistoryView = (props:any): JSX.Element => {
         }
 
         const result = sortedTabs.map((item: chrome.history.HistoryItem) => {
-            const collection = tabsData.markedTabs; 
+            const collection = historySectionState.markedTabs; 
             const isMarked = collection.find((target: chrome.history.HistoryItem) => parseInt(target.id) === parseInt(item.id));
 
             return <TabItem onMark={handleMark} key={`sorted-tab-${item.id}`} id={parseInt(item.id)} label={item.title || ""} url={item.url || "https://"} disableEdit={true} disableMark={false} marked={isMarked ? true : false} />
@@ -208,11 +208,11 @@ const HistoryView = (props:any): JSX.Element => {
         if(e.selected === -1) return;
 
         const targetFolderId = e.selected;
-        const targetFolder: iFolderItem | undefined = folderCollection.find((folder: iFolderItem) => folder.id === targetFolderId);
+        const targetFolder: iFolderItem | undefined = folderCollectionState.find((folder: iFolderItem) => folder.id === targetFolderId);
      
         if(!targetFolder) return;
         
-        const markedTabs: Array<iTabItem> = tabsData.markedTabs.map((tab: chrome.history.HistoryItem) => {
+        const markedTabs: Array<iTabItem> = historySectionState.markedTabs.map((tab: chrome.history.HistoryItem) => {
             return {
                 id: tab.id,
                 label: tab.title,
@@ -237,7 +237,7 @@ const HistoryView = (props:any): JSX.Element => {
     }
     
     const renderAddTabsMessage = (): JSX.Element => {
-        const currentFolders: Array<iFolderItem> = folderCollection;
+        const currentFolders: Array<iFolderItem> = folderCollectionState;
 
         const options: Array<iFieldOption> = currentFolders.map((folder) => {
             return { id: folder.id, label: folder.name }
@@ -279,7 +279,7 @@ const HistoryView = (props:any): JSX.Element => {
     const renderFolderManager = (): JSX.Element => {
         let render;
         if(createFolder === true){
-            const markedTabs: Array<iTabItem> = tabsData.markedTabs.map((tab: chrome.history.HistoryItem) => {
+            const markedTabs: Array<iTabItem> = historySectionState.markedTabs.map((tab: chrome.history.HistoryItem) => {
                 return {
                     id: tab.id,
                     label: tab.title,
@@ -343,7 +343,7 @@ const HistoryView = (props:any): JSX.Element => {
             {renderFolderManager()}
             <div className="flex justify-end mx-2 mt-4 mb-4">
                 <CircleButton 
-                    disabled={tabsData.markedTabs.length > 0 ? false : true} 
+                    disabled={historySectionState.markedTabs.length > 0 ? false : true} 
                     bgCSSClass="bg-tbfColor-lightpurple" 
                     onClick={() => handleOpenSelected()}
                 >
@@ -351,7 +351,7 @@ const HistoryView = (props:any): JSX.Element => {
                 </CircleButton>
 
                 <CircleButton 
-                    disabled={tabsData.markedTabs.length > 0 ? false : true} 
+                    disabled={historySectionState.markedTabs.length > 0 ? false : true} 
                     bgCSSClass="bg-tbfColor-lightpurple" 
                     onClick={() => setAddToWorkspaceMessage(true)}
                 >
@@ -359,7 +359,7 @@ const HistoryView = (props:any): JSX.Element => {
                 </CircleButton>
 
                 <CircleButton 
-                    disabled={tabsData.markedTabs.length > 0 ? false : true} 
+                    disabled={historySectionState.markedTabs.length > 0 ? false : true} 
                     bgCSSClass="bg-tbfColor-lightpurple" 
                     onClick={() => handleDeleteFromHistory()}
                 >
@@ -367,7 +367,7 @@ const HistoryView = (props:any): JSX.Element => {
                 </CircleButton>
             </div>
             <div id="history-view">
-                {tabsData.tabs.length > 0 ? renderHistoryManagement() : renderEmptyMessage()}
+                {historySectionState.tabs.length > 0 ? renderHistoryManagement() : renderEmptyMessage()}
             </div>
         </>
     )

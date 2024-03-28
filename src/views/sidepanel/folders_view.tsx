@@ -24,7 +24,7 @@ const FoldersView = (props: iFoldersView): JSX.Element => {
     const [createFolder, setCreateFolder] = useState<boolean>(false);
 
     const dispatch = useDispatch();
-    const folderCollection = useSelector((state: any) => state.FolderCollectionReducer);
+    const folderCollectionState = useSelector((state: any) => state.folderCollectionReducer);
 
     const storageListener = (changes: any, areaName: string): void => {
         if(areaName === "local"){
@@ -47,10 +47,10 @@ const FoldersView = (props: iFoldersView): JSX.Element => {
     }, []);
 
     useEffect(() => {        
-        if(folderCollection.length > 0){
-            //saveToStorage("local", "folders", folderCollection);
+        if(folderCollectionState.length > 0){
+            //saveToStorage("local", "folders", folderCollectionState);
         } 
-    }, [folderCollection]);
+    }, [folderCollectionState]);
 
     useEffect(() => {
         
@@ -123,7 +123,7 @@ const FoldersView = (props: iFoldersView): JSX.Element => {
         if(createFolder === true){
             render = <FolderManager type="popup" title="Create workspace" onClose={handleCloseFolderManager} />;
         } else {
-            const targetFolder: Array<iFolderItem> = folderCollection.filter((item: iFolderItem) => editFolderId === item.id);
+            const targetFolder: Array<iFolderItem> = folderCollectionState.filter((item: iFolderItem) => editFolderId === item.id);
             const input: iFolderItem = {...targetFolder[0]};
 
             if(targetFolder.length > 0){
@@ -148,14 +148,14 @@ const FoldersView = (props: iFoldersView): JSX.Element => {
             });
         }
 
-        const result = folderCollection.map((folder: iFolderItem, i: number) => {
+        const result = folderCollectionState.map((folder: iFolderItem, i: number) => {
             return (
                 <FolderItem 
                     onDelete={(e) => handleFolderDelete(folder)} 
                     marked={false} 
                     //onMark={handleMarkFolder} 
                     onEdit={() => setEditFolderId(folder.id)} 
-                    index={folderCollection.length-i}
+                    index={folderCollectionState.length-i}
                     key={folder.id} 
                     type={folder.type} 
                     id={folder.id} 

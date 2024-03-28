@@ -1,9 +1,9 @@
-import './../App.css';
-import "./../styles/global_utils.module.scss";
-import styles from "./../styles/global_utils.module.scss";
-import Navlink from './../components/utils/navlink';
+import '../App.css';
+import "../styles/global_utils.module.scss";
+import styles from "../styles/global_utils.module.scss";
+import Navlink from '../components/utils/navlink';
 import { useEffect, useRef, useState } from 'react';
-import DashboardView from './../views/dashboard/dashboard_view';
+import DashboardView from '../views/dashboard/dashboard_view';
 import SettingsView from '../views/settings/settings_view';
 import LeftIcon from '../components/icons/left_icon';
 import RightIcon from '../components/icons/right_icon';

@@ -20,15 +20,13 @@ Simple overview and basic features can be opened with one click. More advanced f
 
 ## Features
 
-- Create and edit workspaces
-- Duplicate and merge workspaces
-- Launch workspace in either incognito or as groups
+- Create and edit folders
+- Duplicate and merge folders
+- Launch folders in either incognito or as groups
 - Tab search and filtering (filtering not implemented yet)
 - Tab suspension (upcoming)
-- Tab tagging/filtering (upcoming)
-- Nesting windows/tabs/workspaces (for now, only windows and tabs are nested within workspaces)
 - Simplistic sidepanel, for quick overview
-- Options page for extended overview
+- Options page for expanded overview
 
 ## Programming and tools
 
@@ -42,6 +40,26 @@ HTML5, CSS3/SASS, Javascript/Typescript, React, Redux, JEST, Tailwind, Webextens
 
 ## Development
 
+### File structure
+
+The plugin code itself is placed in the ./src folder, which has the following tree:
+```
+    ./src
+        - __tests__
+        - baseUI (the app's user interface for options page and sidepanel)
+        - components
+            - effects (contains components that brings simpler effects to other components (e.g. rotation))
+            - icons (contains various reusable svg icons used in any other components for styling)
+            - utils (contains various reusable components, such as buttons, switcher, fields, links etc)
+        - interfaces
+        - redux
+        - views
+        ...
+        App.tsx
+        index.tsx
+```
+
+###
 Before you begin, make sure Node Package Manager (npm) is installed on your computer. The build and testing
 commands depend on this.
 

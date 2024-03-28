@@ -22,7 +22,7 @@ const FolderItem = (props: iFolderItem): JSX.Element => {
     const [showLaunchOptions, setShowLaunchOptions] = useState<boolean>(false);
     const [slideDown, setSlideDown] = useState<boolean>(false);
 
-    const workspaceSettings: iWorkspaceState = useSelector((state: any) => state.WorkspaceSettingsReducer);
+    const workspaceSettingsState: iWorkspaceState = useSelector((state: any) => state.workspaceSettingsReducer);
 
     const { 
         id,
@@ -186,7 +186,7 @@ const FolderItem = (props: iFolderItem): JSX.Element => {
                     </div>}
                     
                     <div className="px-5 mb-8 mt-8">
-                        <FolderWindowList windows={windows} viewMode={workspaceSettings.viewMode} />
+                        <FolderWindowList windows={windows} viewMode={workspaceSettingsState.viewMode} />
                     </div></>
                     )}
                 </div>

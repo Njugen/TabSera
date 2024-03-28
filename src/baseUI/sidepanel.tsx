@@ -1,6 +1,6 @@
 import SimpleSearchBar from '../components/utils/simple_search_bar';
 import '../App.css';
-import styles from "./../styles/global_utils.module.scss";
+import styles from "../styles/global_utils.module.scss";
 import "./../styles/sidepanel_specific.css";
 import { useState } from 'react';
 import Navlink from '../components/utils/navlink';

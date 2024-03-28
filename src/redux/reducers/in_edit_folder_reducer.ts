@@ -2,9 +2,9 @@ import { iFolderItem } from "../../interfaces/folder_item";
 import { iTabItem } from "../../interfaces/tab_item";
 import { EDIT_FOLDER, UPDATE_IN_EDIT_FOLDER, CLEAR_IN_EDIT_FOLDER, UPDATE_WINDOW_MANAGER } from "../types/in_edit_folders_types";
 
-const folder_manager_state: iFolderItem | null = null;
+const folderManagerState: iFolderItem | null = null;
 
-function InEditFolderReducer(state = folder_manager_state, action: any) {
+function folderManagerReducer(state = folderManagerState, action: any) {
     const { type, data } = action;
 
     if(type === EDIT_FOLDER){
@@ -105,5 +105,5 @@ function InEditFolderReducer(state = folder_manager_state, action: any) {
 }
 
 export {
-    InEditFolderReducer
+    folderManagerReducer
 }

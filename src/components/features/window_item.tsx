@@ -28,8 +28,8 @@ const WindowItem = (props: iWindowItem): JSX.Element => {
     const dispatch = useDispatch();
 
     // Get information about the folder 
-    const folder_state = useSelector((state: any) => state.InEditFolderReducer);
-    const misc_state = useSelector((state: any) => state.MiscReducer);
+    const folder_state = useSelector((state: any) => state.folderManagerReducer);
+    const misc_state = useSelector((state: any) => state.miscReducer);
 
     // Disable add new tab by setting state
     useEffect(() => {

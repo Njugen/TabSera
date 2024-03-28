@@ -83,27 +83,27 @@ function SearchResultsContainer(props:any): JSX.Element {
         });
     }, [folderLaunchType]);
 
-    const folderCollection = useSelector((state: any) => state.FolderCollectionReducer);
-    const currentSessionSettings = useSelector((state: any) => state.CurrentSessionSettingsReducer);
-    const historySettings = useSelector((state: any) => state.HistorySettingsReducer);
+    const folderCollectionState = useSelector((state: any) => state.folderCollectionReducer);
+    const sessionSectionState = useSelector((state: any) => state.sessionSectionReducer);
+    const historySectionState = useSelector((state: any) => state.historySectionReducer);
 
     // Render all filtered folders
     const renderFolders = (): Array<JSX.Element> => {
-        const folders = filterFoldersByString(folderCollection, keyword);
+        const folders = filterFoldersByString(folderCollectionState, keyword);
 
         return folders.map((folder: iFolderItem) => <FolderItem marked={false} id={folder.id!} name={folder.name} viewMode={"list"} type={"collapsed"} desc={folder.desc} windows={folder.windows} onOpen={handlePrepareLaunchFolder} />);
     }
 
     // Render all filtered session tabs
     const renderSessionTabs = (): Array<JSX.Element> => {
-        const tabs = filterSessionTabsByString(currentSessionSettings, keyword);
+        const tabs = filterSessionTabsByString(sessionSectionState, keyword);
 
         return tabs.map((tab) => <TabItem key={tab.id} marked={false} id={tab.id!} label={tab.title!} url={tab.url!} disableEdit={true} disableMark={true} disableCloseButton={false} onClose={() => handleCloseTab(tab.id!)} />)
     }
 
     // Render all filtered history tabs
     const renderHistoryTabs = (): Array<JSX.Element> => {
-        const tabs = filterHistoryTabsByString(historySettings, keyword);
+        const tabs = filterHistoryTabsByString(historySectionState, keyword);
 
         return tabs.map((tab) => <TabItem key={tab.id} marked={false} id={parseInt(tab.id)} label={tab.title!} url={tab.url!} disableEdit={true} disableMark={true} disableCloseButton={true} onClose={() => {}} />);
     }
