@@ -12,13 +12,13 @@ import AddToWorkspacePopup from "../../components/features/add_to_workspace_popu
 import { iTabItem } from '../../interfaces/tab_item';
 import { iFieldOption } from '../../interfaces/dropdown';
 import TextIconButton from '../../components/utils/text_icon_button';
-import SortIcon from "../../images/icons/sort_icon";
+import SortIcon from "../../components/icons/sort_icon";
 import Dropdown from "../../components/utils/dropdown/dropdown";
 import TabItem from "../../components/features/tab_item";
 import CircleButton from './../../components/utils/circle_button';
-import SaveIcon from './../../images/icons/save_icon';
-import TrashIcon from './../../images/icons/trash_icon';
-import OpenBrowserIcon from "../../images/icons/open_browser_icon";
+import SaveIcon from '../../components/icons/save_icon';
+import TrashIcon from '../../components/icons/trash_icon';
+import OpenBrowserIcon from "../../components/icons/open_browser_icon";
 import { saveToStorage } from "../../services/webex_api/storage";
 
 const HistoryView = (props:any): JSX.Element => {

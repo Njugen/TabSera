@@ -18,13 +18,13 @@ import { iWindowItem } from '../../../interfaces/window_item';
 import * as workspaceSettingsActions from '../../../redux/actions/workspace_settings_actions';
 import Dropdown from '../../../components/utils/dropdown/dropdown';
 import SectionContainer from '../../../components/utils/section_container';
-import DeselectedCheckboxIcon from '../../../images/icons/deselected_checkbox_icon';
-import SelectedCheckboxIcon from '../../../images/icons/selected_checkbox_icon';
-import FolderDuplicateIcon from '../../../images/icons/folder_duplicate_icon';
-import MergeIcon from '../../../images/icons/merge_icon';
-import TrashIcon from '../../../images/icons/trash_icon';
-import GridIcon from '../../../images/icons/grid_icon';
-import ListIcon from '../../../images/icons/list_icon';
+import DeselectedCheckboxIcon from '../../../components/icons/deselected_checkbox_icon';
+import SelectedCheckboxIcon from '../../../components/icons/selected_checkbox_icon';
+import FolderDuplicateIcon from '../../../components/icons/folder_duplicate_icon';
+import MergeIcon from '../../../components/icons/merge_icon';
+import TrashIcon from '../../../components/icons/trash_icon';
+import GridIcon from '../../../components/icons/grid_icon';
+import ListIcon from '../../../components/icons/list_icon';
 
 const { 
     changeWorkspacesViewMode, 

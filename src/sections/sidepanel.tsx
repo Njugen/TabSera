@@ -9,8 +9,8 @@ import CurrentSessionView from '../views/sidepanel/current_session_view';
 import HistoryView from '../views/sidepanel/history_view';
 import SearchResultsContainer from '../views/sidepanel/search_results_view';
 import iRenderSidePanel from '../interfaces/render_sidepanel';
-import MultipleFoldersIcon from '../images/icons/multiple_folders_icon';
-import ConfigIcon from '../images/icons/config_icon';
+import MultipleFoldersIcon from '../components/icons/multiple_folders_icon';
+import ConfigIcon from '../components/icons/config_icon';
 
 function RenderSidePanel(props: iRenderSidePanel): JSX.Element {
     const [view, setView] = useState<string>("folders-view");

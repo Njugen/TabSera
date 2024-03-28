@@ -1,7 +1,9 @@
 import { iFolderItem } from '../../../../interfaces/folder_item';
 import { iWindowItem } from '../../../../interfaces/window_item';
 import FolderItem from '../../folder_item/folder_item';
-import { filterFoldersByString } from '../filters';
+import { filterFoldersByString } from '../../../../tools/tab_filters';
+
+
 
 interface ISearchBarFolderListProps {
     items: Array<iFolderItem>,
@@ -9,6 +11,7 @@ interface ISearchBarFolderListProps {
     handleOpen: (windows: Array<iWindowItem>, type: string) => void
 }
 
+// Render all filtered folders
 const SearchBarFolderList = (props: ISearchBarFolderListProps): JSX.Element => {
     const { items, keyword, handleOpen } = props;
 

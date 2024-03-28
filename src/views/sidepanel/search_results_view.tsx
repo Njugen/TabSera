@@ -9,8 +9,8 @@ import {
     filterSessionTabsByString, 
     filterHistoryTabsByString, 
     filterFoldersByString 
-} from "../../components/features/advanced_search_bar/filters";
-import CloseIcon from "../../images/icons/close_icon";
+} from "../../tools/tab_filters";
+import CloseIcon from "../../components/icons/close_icon";
 
 function SearchResultsContainer(props:any): JSX.Element {
     const { keyword, onClose } = props;

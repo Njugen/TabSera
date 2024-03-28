@@ -1,13 +1,12 @@
-
-import { iFolderItem } from "../../../../interfaces/folder_item";
 import { iWindowItem } from "../../../../interfaces/window_item";
-import WindowItem from "../../../features/window_item";
+import WindowItem from "../../window_item";
 import { INewWindow, NewWindow } from "./window_manager_new_window";
 
 interface IWindowList extends INewWindow {
     createWindow: boolean
 }
 
+// List all windows. the windows are adjusted to folder manager itself
 const WindowList = (props: IWindowList): JSX.Element => {
     const { folder, inCreationId, createWindow } = props;
 

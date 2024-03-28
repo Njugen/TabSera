@@ -9,6 +9,7 @@ interface ILaunchFolderProps {
     setShowPerformanceWarning: React.Dispatch<React.SetStateAction<boolean>>
 }
 
+// Event handler showing all the launching options of a folder
 const handleLaunchFolder = (props: ILaunchFolderProps): void => {
     const { 
         folderLaunchType, 

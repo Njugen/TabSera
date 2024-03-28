@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import SearchIcon from "../../../images/icons/search_icon";
+import SearchIcon from "../../icons/search_icon";
 import { useSelector } from 'react-redux';
 import styles from "../../../styles/global_utils.module.scss";
 import { iFolderItem } from '../../../interfaces/folder_item';
@@ -10,17 +10,13 @@ import iAdvancedSearchBar from "../../../interfaces/advanced_search_bar";
 import { handleShowResultsContainer, IHandleShowResultsContainerProps } from "./handle_show_results_container";
 import { handleWindowClick } from "./window_click_listener";
 import { ILaunchFolderProps, handleLaunchFolder } from "./handle_launch_folder";
-import { SearchResults } from "./sub_components/search_bar_results";
+import { SearchResults } from "./child_components/search_bar_results";
 import PopupMessage from "../../utils/popup_message";
 
 /*
     Search bar placed at the top of the viewport
 
     Filters current and history tabs by input string
-    
-    Upcoming features:
-    - Filter by tags
-    - Sort search results (e.g. asc, desc, etc)
 */
 
 const AdvancedSearchBar = (props: iAdvancedSearchBar): JSX.Element => {

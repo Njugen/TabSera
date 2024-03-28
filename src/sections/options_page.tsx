@@ -5,16 +5,16 @@ import Navlink from './../components/utils/navlink';
 import { useEffect, useRef, useState } from 'react';
 import DashboardView from './../views/dashboard/dashboard_view';
 import SettingsView from '../views/settings/settings_view';
-import LeftIcon from './../images/icons/left_icon';
-import RightIcon from './../images/icons/right_icon';
+import LeftIcon from '../components/icons/left_icon';
+import RightIcon from '../components/icons/right_icon';
 import AdvancedSearchBar from '../components/features/advanced_search_bar/advanced_search_bar';
 import iOptionsPage from '../interfaces/options_page';
 import { useDispatch, useSelector } from 'react-redux';
 import { getFromStorage } from '../services/webex_api/storage';
 import { readAllFoldersFromBrowserAction, setUpFoldersAction } from '../redux/actions/folder_collection_actions';
 import { setUpTabsAction } from '../redux/actions/history_settings_actions';
-import MultipleFoldersIcon from '../images/icons/multiple_folders_icon';
-import ConfigIcon from '../images/icons/config_icon';
+import MultipleFoldersIcon from '../components/icons/multiple_folders_icon';
+import ConfigIcon from '../components/icons/config_icon';
 
 const RenderOptionsPage = (props: iOptionsPage): JSX.Element => {
   

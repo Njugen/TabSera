@@ -13,7 +13,7 @@ import randomNumber from '../../tools/random_number';
 import AddToWorkspacePopup from "../../components/features/add_to_workspace_popup";
 import { iTabItem } from '../../interfaces/tab_item';
 import { iFieldOption } from '../../interfaces/dropdown';
-import SaveIcon from './../../images/icons/save_icon';
+import SaveIcon from '../../components/icons/save_icon';
 import CircleButton from './../../components/utils/circle_button';
 import WindowItem from "../../components/features/window_item";
 

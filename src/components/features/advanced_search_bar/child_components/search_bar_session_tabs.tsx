@@ -1,5 +1,5 @@
 import TabItem from '../../tab_item';
-import { filterSessionTabsByString } from '../filters';
+import { filterSessionTabsByString } from '../../../../tools/tab_filters';
 import iCurrentSessionState from "../../../../interfaces/states/current_session_state";
 
 interface ISearchBarSessionTabsProps {

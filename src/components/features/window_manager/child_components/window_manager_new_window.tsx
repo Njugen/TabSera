@@ -1,13 +1,15 @@
 import { iFolderItem } from "../../../../interfaces/folder_item";
 import { iWindowItem } from "../../../../interfaces/window_item";
-import WindowItem from "../../../features/window_item";
+import WindowItem from "../../window_item";
 
 interface INewWindow {
     folder: iFolderItem,
     inCreationId: number
 }
 
-// Add a new window
+// Renders a section for creating windows, if
+// the inCreationId has been passed in and does not exist in the current window list.
+// inCreationId is meant to be a random number.
 const NewWindow = (props: INewWindow): JSX.Element => {
     const { folder, inCreationId} = props;
 

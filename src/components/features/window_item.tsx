@@ -9,9 +9,9 @@ import { iTabItem } from "../../interfaces/tab_item";
 import { useDispatch, useSelector } from "react-redux";
 import { updateInEditFolder } from "../../redux/actions/in_edit_folder_actions";
 import { setCurrentlyEditingTab, setTabInEdits } from "../../redux/actions/misc_actions";
-import TrashIcon from "../../images/icons/trash_icon";
-import CollapseIcon from "../../images/icons/collapse_icon";
-import ExpandIcon from "../../images/icons/expand_icon";
+import TrashIcon from "../icons/trash_icon";
+import CollapseIcon from "../icons/collapse_icon";
+import ExpandIcon from "../icons/expand_icon";
 
 /*
     Window containing tabs and various window related options. Used primarily

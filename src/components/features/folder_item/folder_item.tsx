@@ -1,19 +1,17 @@
 import { useRef, useState, useEffect, useCallback } from "react";
-import ClosedFolderIcon from "../../../images/icons/closed_folder_icon";
+import ClosedFolderIcon from "../../icons/closed_folder_icon";
 import Paragraph from "../../utils/paragraph";
-import OpenedFolderIcon from "../../../images/icons/opened_folder_icon";
+import OpenedFolderIcon from "../../icons/opened_folder_icon";
 import "../../../styles/global_utils.module.scss";
 import { iFolderItem } from "../../../interfaces/folder_item";
-import { useDispatch, useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
 import iWorkspaceState from "../../../interfaces/states/workspace_state";
-import { FolderActionBar, IFolderActionBarHandlers, IFolderActionBarStates } from "./sections/folder_action_bar";
-import FolderWindowList from "./folder_window_list";
+import { FolderActionBar, IFolderActionBarHandlers, IFolderActionBarStates } from "./child_components/folder_action_bar";
+import FolderWindowList from "./child_components/folder_window_list";
 import { getFromStorage, saveToStorage } from "../../../services/webex_api/storage";
-import { InEditFolderReducer } from "../../../redux/reducers/in_edit_folder_reducer";
-import { updateFolderAction } from "../../../redux/actions/folder_collection_actions";
 
 /*
-    Folder containing description, windows and tabs, as well as various folder options
+    Folder section containing description, windows and tabs, as well as various folder options
 */
 
 const FolderItem = (props: iFolderItem): JSX.Element => {
@@ -24,10 +22,7 @@ const FolderItem = (props: iFolderItem): JSX.Element => {
     const [showLaunchOptions, setShowLaunchOptions] = useState<boolean>(false);
     const [slideDown, setSlideDown] = useState<boolean>(false);
 
-    const folderCollection = useSelector((state: any) => state.FolderCollectionReducer);
     const workspaceSettings: iWorkspaceState = useSelector((state: any) => state.WorkspaceSettingsReducer);
-    
-    const dispatch = useDispatch();
 
     const { 
         id,

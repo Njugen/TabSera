@@ -11,7 +11,7 @@ import { clearMarkedFoldersAction } from "../../redux/actions/workspace_settings
 import PopupMessage from "../../components/utils/popup_message";
 import PrimaryButton from "../../components/utils/primary_button/primary_button";
 import iFoldersView from "../../interfaces/folders_view";
-import NewFolderIcon from "../../images/icons/new_folder_icon";
+import NewFolderIcon from "../../components/icons/new_folder_icon";
 import CircleButton from "../../components/utils/circle_button";
 
 const FoldersView = (props: iFoldersView): JSX.Element => {

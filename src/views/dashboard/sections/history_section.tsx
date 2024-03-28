@@ -18,11 +18,11 @@ import AddToWorkspacePopup from '../../../components/features/add_to_workspace_p
 import SectionContainer from "../../../components/utils/section_container";
 import iHistoryState from "../../../interfaces/states/history_state";
 import { getFromStorage, saveToStorage } from "../../../services/webex_api/storage";
-import SelectedCheckboxIcon from "../../../images/icons/selected_checkbox_icon";
-import TrashIcon from "../../../images/icons/trash_icon";
-import GridIcon from "../../../images/icons/grid_icon";
-import ListIcon from "../../../images/icons/list_icon";
-import DeselectedCheckboxIcon from "../../../images/icons/deselected_checkbox_icon";
+import SelectedCheckboxIcon from "../../../components/icons/selected_checkbox_icon";
+import TrashIcon from "../../../components/icons/trash_icon";
+import GridIcon from "../../../components/icons/grid_icon";
+import ListIcon from "../../../components/icons/list_icon";
+import DeselectedCheckboxIcon from "../../../components/icons/deselected_checkbox_icon";
 
 const HistorySection = (props: any): JSX.Element => {
     const [addToWorkSpaceMessage, setAddToWorkspaceMessage] = useState<boolean>(false);

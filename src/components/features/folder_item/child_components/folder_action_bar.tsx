@@ -1,12 +1,12 @@
-import CollapseIcon from "../../../../images/icons/collapse_icon"
+import CollapseIcon from "../../../icons/collapse_icon"
 import RotationEffect from "../../../effects/rotation_effect"
 import FolderControlButton from "../../../utils/folder_control_button/folder_control_button"
 
 import { iFolderItem } from "../../../../interfaces/folder_item"
 import { iWindowItem } from "../../../../interfaces/window_item"
-import OpenBrowserIcon from "../../../../images/icons/open_browser_icon"
-import TrashIcon from "../../../../images/icons/trash_icon"
-import SettingsIcon from "../../../../images/icons/settings_icon"
+import OpenBrowserIcon from "../../../icons/open_browser_icon"
+import TrashIcon from "../../../icons/trash_icon"
+import SettingsIcon from "../../../icons/settings_icon"
 import Checkbox from "../../../utils/checkbox"
 import DropdownMenu from "../../../utils/dropdown_menu/dropdown_menu"
 import { iFieldOption } from "../../../../interfaces/dropdown"
@@ -52,7 +52,7 @@ const launchOptions: Array<iFieldOption> = [
     }
 ] 
 
-
+// Renders an action bar containing various UI buttons for handling the behaviour of the folder.
 const FolderActionBar = (props: IRenderActionBarProps): JSX.Element => {
     const { states, handlers } = props;
     const { expanded, showLaunchOptions, marked, id } = states;

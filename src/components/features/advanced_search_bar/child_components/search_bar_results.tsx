@@ -15,6 +15,7 @@ interface ISearchResultsProps {
     history: iHistoryState
 }
 
+// Show search results wrapper and list all results by keyword
 const SearchResults = (props: ISearchResultsProps): JSX.Element => {
     const { keyword, folders, session, history, launchFolder } = props;
     let results: JSX.Element;
@@ -22,7 +23,7 @@ const SearchResults = (props: ISearchResultsProps): JSX.Element => {
     if(keyword.length > 0 ){
         results = (
             <div className="grid grid-cols-2 gap-x-[1.75rem]">   
-                <div className="">
+                <div>
                     <div className="mb-6">
                         <h3 className="uppercase font-bold text-md mb-4 text-tbfColor-darkergrey">
                             Folders
@@ -37,7 +38,7 @@ const SearchResults = (props: ISearchResultsProps): JSX.Element => {
                         <SearchBarHistoryTabs items={history} keyword={keyword} />
                     </div>
                 </div>
-                <div className="">
+                <div>
                     <h3 className="uppercase font-bold text-md mb-4 text-tbfColor-darkergrey">
                         Currently opened
                     </h3>

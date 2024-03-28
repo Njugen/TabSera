@@ -1,11 +1,12 @@
-import WindowItem from "../window_item";
-import { iWindowItem } from "../../../interfaces/window_item";
+import WindowItem from "../../window_item";
+import { iWindowItem } from "../../../../interfaces/window_item";
 
 interface IFolderWindowListProps {
     windows: Array<iWindowItem>,
     viewMode: "list" | "grid"
 }
 
+// Render a list of all windows in the folder. The window components are adjusted to suit folder behaviour
 const FolderWindowList = (props: IFolderWindowListProps): JSX.Element => {
     const { windows, viewMode } = props;
 

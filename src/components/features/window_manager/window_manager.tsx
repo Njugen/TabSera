@@ -4,15 +4,12 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import randomNumber from "../../../tools/random_number";
 import iWindowManager from "../../../interfaces/window_manager";
-import WindowList from './sections/window_list';
+import WindowList from './child_components/window_list';
 
 /*
     Section for managing windows and tabs, primarily used
     within folder configuration popups
-
-    
 */
-
 const WindowManager = (props: iWindowManager): JSX.Element => {
     const [createWindow, setCreateWindow] = useState<boolean>(false);
     const [inCreationId, setIncreationId] = useState<number>(-1);
