@@ -1,6 +1,6 @@
 import CollapseIcon from "../../../icons/collapse_icon"
 import RotationEffect from "../../../effects/rotation_effect"
-import FolderControlButton from "../../../utils/folder_control_button/folder_control_button"
+import FolderControlButton from "../../../utils/icon_button/icon_button"
 
 import { iFolderItem } from "../../../../interfaces/folder_item"
 import { iWindowItem } from "../../../../interfaces/window_item"

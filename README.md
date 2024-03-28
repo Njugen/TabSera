@@ -49,21 +49,47 @@ The plugin code itself is placed in the ./src folder, which has the following tr
         - baseUI (the app's user interface for options page and sidepanel)
         - components
             - effects (contains components that brings simpler effects to other components (e.g. rotation))
-            - icons (contains various reusable svg icons used in any other components for styling)
-            - utils (contains various reusable components, such as buttons, switcher, fields, links etc)
-        - interfaces
-        - redux
-        - views
+            - icons (various reusable svg icons used in any other components for styling)
+            - utils (various components used all over the plugin. Each component file contains info on whether or not they are reusable)
+        - interfaces (typescript datatypes, applied to most features all over the plugin) 
+        - redux (global states for certain features, to avoid prop drilling at certain scenarios)
+        - views (plugin's pages, used by the baseUI to render page contents wrapped in the base UI)
         ...
         App.tsx
         index.tsx
 ```
 
-###
+#### File and folder name formats
+
+All folders and files follows the following format: __[my-file-name.tsx]__
+
+#### Component guidelines
+
+- In this project, all functions returning the type __JSX.Element__ is considered a component. These should always be placed in their own files.
+- A component should NOT declare other component functions. Preferably, no functions should be declared inside a component unless it is motivated to do so (e.g. when setting states).
+- Each variable and function should be declared with an appropriate data type. Create a new interface or extend a current one, when creating a new feature
+- Refactored components should be placed in their own folder. Follow the following example:
+
+```
+    ./src
+        ...
+        - components
+            - utils
+                - [my_component]
+                    - [my_component].tsx
+                    - non-function-component.tsx
+                    - child_components
+                        - child_component_a.tsx
+                        - child_component_b.tsx
+```
+
+Consider refactoring a component if it becomes too big or clumsy to work with.
+
+### Commands
+
 Before you begin, make sure Node Package Manager (npm) is installed on your computer. The build and testing
 commands depend on this.
 
-### Commands
 
 __Build__
 
@@ -80,12 +106,13 @@ NOTE: There is no bundling as of now. That will be added later.
 __Test__
 
 ```
-npm run test-coverage
+npm run test
 ```
 
 Run unit and integration tests (JEST). The tests are available in /src/__tests__. The coverage is presented in ./coverage/Icov-report/index.html
 
-Run this command after changing existing components, to check if anything related to user interaction gets broken. Add new tests when adding new components or features. The tests are written to test user's interaction with the components.
+Run this command after changing existing components, to check if anything related to user interaction gets broken. Add new tests when adding new components or features. 
+The tests are written to test user interaction with the components.
 
 ### Install unpacked dev version in Chrome or Edge
 

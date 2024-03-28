@@ -1,4 +1,4 @@
-import styles from "./../../../styles/global_utils.module.scss";
+import styles from "../../../styles/global_utils.module.scss";
 import { iFolderIconButton } from "../../../interfaces/folder_icon_button";
 import buttonId from "./button_id";
 
