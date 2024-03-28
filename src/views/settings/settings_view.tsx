@@ -54,7 +54,7 @@ const SettingsView = (props: iView): JSX.Element => {
     // Save data selected in dropdown menu
     const saveSelectedOption = (key: string, value: number | null): void => {
         if(value !== null){
-            saveToStorage("sync", key, value);
+            saveToStorage("local", key, value);
             setSettings({
                 ...settings,
                 [key]: value
@@ -66,7 +66,7 @@ const SettingsView = (props: iView): JSX.Element => {
     const saveSwitchSetting = (key: string, value: boolean | null): void => {
         if(value === null) return;
 
-        saveToStorage("sync", key, value);
+        saveToStorage("local", key, value);
         setSettings({
             ...settings,
             [key]: value
@@ -75,7 +75,7 @@ const SettingsView = (props: iView): JSX.Element => {
 
     // Set default values of all fields
     useEffect(() => {
-        chrome.storage.sync.get((items: object) => {
+        chrome.storage.local.get((items: object) => {
             let initialSettings = {settings};
             for(const [key, value] of Object.entries(items)){
                 initialSettings = {

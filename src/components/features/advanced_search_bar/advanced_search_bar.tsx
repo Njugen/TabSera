@@ -91,7 +91,7 @@ const AdvancedSearchBar = (props: iAdvancedSearchBar): JSX.Element => {
             tabsCount += window.tabs.length;
         });
    
-        chrome.storage.sync.get("performance_notification_value", (data) => {
+        chrome.storage.local.get("performance_notification_value", (data) => {
             const { performance_notification_value } = data;
 
             setTotalTabsCount(performance_notification_value);

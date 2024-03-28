@@ -53,7 +53,7 @@ const RenderOptionsPage = (props: iOptionsPage): JSX.Element => {
 
 
   const storageListener = (changes: any, areaName: string): void => {
-    if(areaName === "sync"){
+    if(areaName === "local"){
         if(changes.folders){
           dispatch(readAllFoldersFromBrowserAction(changes.folders.newValue));
         }
@@ -152,7 +152,7 @@ const RenderOptionsPage = (props: iOptionsPage): JSX.Element => {
     let result: JSX.Element = <></>;
 
     if(urlSplit.length === 1){
-      result = renderUI(<DashboardView />);
+      result = renderUI(<DashboardView data-testid="ffff" />);
     } else if(urlSplit.length === 2){
       const paramSplit: Array<string> =  urlSplit[1].split("=");
       const key: string = paramSplit[0];

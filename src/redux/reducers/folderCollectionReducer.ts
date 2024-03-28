@@ -13,7 +13,7 @@ function FolderCollectionReducer(state = folderCollectionState, action: any) {
     } else if(type === CREATE_FOLDER){
         const updatedFolders = [ ...state, data ];
         console.log("create Folder", updatedFolders);
-        saveToStorage("sync", "folders", updatedFolders);
+        saveToStorage("local", "folders", updatedFolders);
         return updatedFolders;
     } else if(type === READ_ALL_FOLDERS){
         
@@ -37,7 +37,7 @@ function FolderCollectionReducer(state = folderCollectionState, action: any) {
                 return item;
             }
         });
-        saveToStorage("sync", "folders", updatedFolders);
+        saveToStorage("local", "folders", updatedFolders);
 
         return [
             ...updatedFolders
@@ -45,7 +45,7 @@ function FolderCollectionReducer(state = folderCollectionState, action: any) {
     } else if(type === DELETE_FOLDER){
         const updatedFolders = state.filter((target) => target.id !== data)
 
-        if(updatedFolders.length === 0) saveToStorage("sync", "folders", []);
+        if(updatedFolders.length === 0) saveToStorage("local", "folders", []);
 
         return [
             ...updatedFolders

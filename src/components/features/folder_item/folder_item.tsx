@@ -84,12 +84,13 @@ const FolderItem = (props: iFolderItem): JSX.Element => {
     const colContentsCSS: string = `overflow-hidden rounded-b-md`;
 
     const updateFolder = (newType: "expanded" | "collapsed") => {
-        getFromStorage("sync", "folders", (data: any) => {
+        getFromStorage("local", "folders", (data: any) => {
             const tempCollection: Array<iFolderItem> = data.folders.map((folder: iFolderItem) => {
                 if(folder.id === id) folder.type = newType;
                 return folder;
             })
-            saveToStorage("sync", "folders", tempCollection);
+            console.log("EEEEEEEEEEEEE");
+            saveToStorage("local", "folders", tempCollection);
         })
     }
 

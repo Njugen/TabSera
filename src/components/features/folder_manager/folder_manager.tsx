@@ -125,7 +125,7 @@ const FolderManager = (props: iPopup): JSX.Element => {
 
     // Perform tasks and close this form popup
     const handleClose = (skipWarning?: boolean): void => {
-        chrome.storage.sync.get("cancellation_warning_setting", (data) => {
+        chrome.storage.local.get("cancellation_warning_setting", (data) => {
             if((modified === true && skipWarning !== true) && data.cancellation_warning_setting === true){
                 // Show a warning when a form has been modified AND when settings explicitly permits it.
                 dispatch(setShowFolderChangeWarning(true));

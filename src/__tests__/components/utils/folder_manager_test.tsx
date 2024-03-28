@@ -285,7 +285,7 @@ describe("Edit workspace", () => {
 
 describe("Test of close and cancelling of folder management popup", () => {
     test("X button triggers onClose when clicked (no field changes)", (done) => {
-        chrome.storage.sync.get.mockImplementation((string, callback) => {
+        chrome.storage.local.get.mockImplementation((string, callback) => {
             callback({});
         })
 
@@ -308,7 +308,7 @@ describe("Test of close and cancelling of folder management popup", () => {
     });
 
     test("cancel button triggers onClose when clicked (no field changes)", (done) => {
-        chrome.storage.sync.get.mockImplementation((string, callback) => {
+        chrome.storage.local.get.mockImplementation((string, callback) => {
             callback({});
         })
 
@@ -334,7 +334,7 @@ describe("Test of close and cancelling of folder management popup", () => {
         test("cancel button does not trigger onClose when clicked (name field change)", (done) => {
             const randomName = Math.floor(Math.random() * 100).toString();
 
-            chrome.storage.sync.get.mockImplementation((string, callback) => {
+            chrome.storage.local.get.mockImplementation((string, callback) => {
                 callback({});
             })
 
@@ -370,7 +370,7 @@ describe("Test of close and cancelling of folder management popup", () => {
         test("X button does not trigger onClose when clicked (name field change)", (done) => {
             const randomName = Math.floor(Math.random() * 100).toString();
 
-            chrome.storage.sync.get.mockImplementation((string, callback) => {
+            chrome.storage.local.get.mockImplementation((string, callback) => {
                 callback({});
             })
 
@@ -406,7 +406,7 @@ describe("Test of close and cancelling of folder management popup", () => {
         test("X button triggers cancellation warning when clicked (name field change + warning turned on)", async () => {
             const randomName = Math.floor(Math.random() * 100).toString();
             
-            chrome.storage.sync.get.mockImplementation((string, callback) => {
+            chrome.storage.local.get.mockImplementation((string, callback) => {
                 callback({
                     cancellation_warning_setting: true
                 });
@@ -449,7 +449,7 @@ describe("Test of close and cancelling of folder management popup", () => {
         test("cancel button triggers cancellation warning when clicked (name field change + warning turned on)", async () => {
             const randomName = Math.floor(Math.random() * 100).toString();
             
-            chrome.storage.sync.get.mockImplementation((string, callback) => {
+            chrome.storage.local.get.mockImplementation((string, callback) => {
                 callback({
                     cancellation_warning_setting: true
                 });
@@ -495,7 +495,7 @@ describe("Test of close and cancelling of folder management popup", () => {
         test("cancel button does not trigger onClose when clicked (description field change)", (done) => {
             const randomDesc = Math.floor(Math.random() * 100).toString();
 
-            chrome.storage.sync.get.mockImplementation((string, callback) => {
+            chrome.storage.local.get.mockImplementation((string, callback) => {
                 callback({});
             })
 
@@ -531,7 +531,7 @@ describe("Test of close and cancelling of folder management popup", () => {
         test("X button does not trigger onClose when clicked (description field change)", (done) => {
             const randomName = Math.floor(Math.random() * 100).toString();
 
-            chrome.storage.sync.get.mockImplementation((string, callback) => {
+            chrome.storage.local.get.mockImplementation((string, callback) => {
                 callback({});
             })
 
@@ -567,7 +567,7 @@ describe("Test of close and cancelling of folder management popup", () => {
         test("X button triggers cancellation warning when clicked (description field change + warning turned on)", async () => {
             const randomDesc = Math.floor(Math.random() * 100).toString();
             
-            chrome.storage.sync.get.mockImplementation((string, callback) => {
+            chrome.storage.local.get.mockImplementation((string, callback) => {
                 callback({
                     cancellation_warning_setting: true
                 });
@@ -610,7 +610,7 @@ describe("Test of close and cancelling of folder management popup", () => {
         test("cancel button triggers cancellation warning when clicked (description field change + warning turned on)", async () => {
             const randomDesc = Math.floor(Math.random() * 100).toString();
             
-            chrome.storage.sync.get.mockImplementation((string, callback) => {
+            chrome.storage.local.get.mockImplementation((string, callback) => {
                 callback({
                     cancellation_warning_setting: true
                 });
@@ -671,7 +671,7 @@ describe("Test of close and cancelling of folder management popup", () => {
         });
 
         test("X button triggers onClose when clicked (when a window has been removed)", (done) => {
-            chrome.storage.sync.get.mockImplementation((string, callback) => {
+            chrome.storage.local.get.mockImplementation((string, callback) => {
                 callback({});
             })
     
@@ -701,7 +701,7 @@ describe("Test of close and cancelling of folder management popup", () => {
         });
 
         test("X button triggers warning when clicked (when a window has been removed + warning settings turned on)", async () => {
-            chrome.storage.sync.get.mockImplementation((string, callback) => {
+            chrome.storage.local.get.mockImplementation((string, callback) => {
                 callback({
                     cancellation_warning_setting: true
                 });
@@ -739,7 +739,7 @@ describe("Test of close and cancelling of folder management popup", () => {
         });
 
         test("Cancel button triggers onClose when clicked (when a window has been removed)", (done) => {
-            chrome.storage.sync.get.mockImplementation((string, callback) => {
+            chrome.storage.local.get.mockImplementation((string, callback) => {
                 callback({});
             })
     
@@ -769,7 +769,7 @@ describe("Test of close and cancelling of folder management popup", () => {
         });
 
         test("Cancel button triggers warning when clicked (when a window has been removed + warning settings turned on)", async () => {
-            chrome.storage.sync.get.mockImplementation((string, callback) => {
+            chrome.storage.local.get.mockImplementation((string, callback) => {
                 callback({
                     cancellation_warning_setting: true
                 });
@@ -809,7 +809,7 @@ describe("Test of close and cancelling of folder management popup", () => {
         });
 
         test("Clicking \"New window\" adds a new window. Setting mandatory tab and cancellation (no warning) works", () => {
-            chrome.storage.sync.get.mockImplementation((string, callback) => {
+            chrome.storage.local.get.mockImplementation((string, callback) => {
                 callback({});
             })
             
@@ -857,7 +857,7 @@ describe("Test of close and cancelling of folder management popup", () => {
         });
 
         test("Clicking \"New window\" adds a new window. Setting mandatory tab and cancellation warning works", async () => {
-            chrome.storage.sync.get.mockImplementation((string, callback) => {
+            chrome.storage.local.get.mockImplementation((string, callback) => {
                 callback({
                     cancellation_warning_setting: true
                 });
@@ -916,7 +916,7 @@ describe("Test of close and cancelling of folder management popup", () => {
         });
 
         test("Clicking \"New window\" adds a new window. Cancellation (no warning) works when editable field is ongoing", () => {
-            chrome.storage.sync.get.mockImplementation((string, callback) => {
+            chrome.storage.local.get.mockImplementation((string, callback) => {
                 callback({});
             })
             
@@ -959,7 +959,7 @@ describe("Test of close and cancelling of folder management popup", () => {
         });
 
         test("Clicking \"New window\" adds a new window. Cancellation (with warning) works when editable field is ongoing", async () => {
-            chrome.storage.sync.get.mockImplementation((string, callback) => {
+            chrome.storage.local.get.mockImplementation((string, callback) => {
                 callback({
                     cancellation_warning_setting: true
                 });
@@ -1015,7 +1015,7 @@ describe("Test of close and cancelling of folder management popup", () => {
         });
 
         test("Clicking \"New tab\" in a window will add a working editable field. Cancellation works while editing", async () => {
-            chrome.storage.sync.get.mockImplementation((string, callback) => {
+            chrome.storage.local.get.mockImplementation((string, callback) => {
                 callback({});
             })
             
@@ -1055,7 +1055,7 @@ describe("Test of close and cancelling of folder management popup", () => {
         });
 
         test("Clicking \"New tab\" in a window will add a working editable field. Cancellation (X button) works while editing", async () => {
-            chrome.storage.sync.get.mockImplementation((string, callback) => {
+            chrome.storage.local.get.mockImplementation((string, callback) => {
                 callback({});
             })
             
@@ -1326,7 +1326,7 @@ describe("Window and tabs setting behaviour", () => {
 test("Proceeding and declining warning message works", async () => {
     const randomName = Math.floor(Math.random() * 100).toString();
     
-    chrome.storage.sync.get.mockImplementation((string, callback) => {
+    chrome.storage.local.get.mockImplementation((string, callback) => {
         callback({
             cancellation_warning_setting: true
         });

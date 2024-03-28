@@ -55,7 +55,7 @@ function SearchResultsContainer(props:any): JSX.Element {
 
         // Close current session after launching the folder. Only applies when
         // set in the Pettings page
-        chrome.storage.sync.get("close_current_setting", (data) => {
+        chrome.storage.local.get("close_current_setting", (data) => {
             if(data.close_current_setting === true){
                 snapshot.forEach((window) => {
                     if(window.id) chrome.windows.remove(window.id);
@@ -72,7 +72,7 @@ function SearchResultsContainer(props:any): JSX.Element {
             tabsCount += window.tabs.length;
         });
    
-        chrome.storage.sync.get("performance_notification_value", (data) => {
+        chrome.storage.local.get("performance_notification_value", (data) => {
             setTotalTabsCount(data.performance_notification_value);
             if(data.performance_notification_value !== -1 && data.performance_notification_value <= tabsCount) {
                 setShowPerformanceWarning(true);

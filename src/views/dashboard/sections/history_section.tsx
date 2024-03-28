@@ -46,11 +46,11 @@ const HistorySection = (props: any): JSX.Element => {
             dispatch(setUpTabsAction(items));
         });
 
-        getFromStorage("sync", "history_sort", (data) => {  
+        getFromStorage("local", "history_sort", (data) => {  
             dispatch(setTabsSortOrder(data.history_sort));
         })
 
-        getFromStorage("sync", "history_viewmode", (data) => {  
+        getFromStorage("local", "history_viewmode", (data) => {  
             dispatch(changeTabsViewMode(data.history_viewmode));
         })
     }, []);
@@ -60,14 +60,14 @@ const HistorySection = (props: any): JSX.Element => {
         const { viewMode } = tabsData;
         
         const newStatus = viewMode === "list" ? "grid" : "list"
-        saveToStorage("sync", "history_viewmode", newStatus)
+        saveToStorage("local", "history_viewmode", newStatus)
         dispatch(changeTabsViewMode(newStatus));
     }
 
     const handleCloseFolderManager = (e: any): void => {
         const newStatus = e.selected;
 
-        saveToStorage("sync", "history_sort", newStatus);
+        saveToStorage("local", "history_sort", newStatus);
         dispatch(setTabsSortOrder(newStatus));
     }
 

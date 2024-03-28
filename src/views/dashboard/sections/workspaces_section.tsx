@@ -60,16 +60,16 @@ const WorkspacesSection = (props: any): JSX.Element => {
 
     // Get folders from browser storage and store it into redux 
     useEffect(() => {
-        getFromStorage("sync", "folders", (data) => {  
+        getFromStorage("local", "folders", (data) => {  
             dispatch(readAllFoldersFromBrowserAction(data.folders));
             setLoaded(true);
         })
 
-        getFromStorage("sync", "workspace_sort", (data) => {  
+        getFromStorage("local", "workspace_sort", (data) => {  
             dispatch(setFoldersSortOrder(data.workspace_sort));
         })
 
-        getFromStorage("sync", "workspace_viewmode", (data) => {  
+        getFromStorage("local", "workspace_viewmode", (data) => {  
             dispatch(changeWorkspacesViewMode(data.workspace_viewmode));
         })
     }, []);
@@ -78,7 +78,8 @@ const WorkspacesSection = (props: any): JSX.Element => {
     useEffect(() => {        
         if(folderCollection.length > 0){
             console.log("AAAA");
-           // saveToStorage("sync", "folders", folderCollection);
+             //saveToStorage("local", "folders", folderCollection);
+           // saveToStorage("local", "folders", folderCollection);
         } 
     }, [folderCollection]);
 
@@ -92,7 +93,7 @@ const WorkspacesSection = (props: any): JSX.Element => {
             tabsCount += window.tabs.length;
         });
    
-        chrome.storage.sync.get("performance_notification_value", (data) => {
+        chrome.storage.local.get("performance_notification_value", (data) => {
             setTotalTabsCount(data.performance_notification_value);
             if(data.performance_notification_value !== -1 && data.performance_notification_value <= tabsCount) {
                 setShowPerformanceWarning(true);
@@ -241,7 +242,7 @@ const WorkspacesSection = (props: any): JSX.Element => {
         const { viewMode } = workspaceSettings;
         
         const newStatus = viewMode === "list" ? "grid" : "list"
-        saveToStorage("sync", "workspace_viewmode", newStatus)
+        saveToStorage("local", "workspace_viewmode", newStatus)
         dispatch(changeWorkspacesViewMode(newStatus));
     }
 
@@ -249,7 +250,7 @@ const WorkspacesSection = (props: any): JSX.Element => {
     const handleSortFolders = (e: any): void => {
         const newStatus = e.selected;
 
-        saveToStorage("sync", "workspace_sort", newStatus);
+        saveToStorage("local", "workspace_sort", newStatus);
         dispatch(setFoldersSortOrder(newStatus));
     }
 
@@ -263,7 +264,7 @@ const WorkspacesSection = (props: any): JSX.Element => {
     }
 
     const handleFolderDelete = (target: iFolderItem): void => {
-        chrome.storage.sync.get("removal_warning_setting", (data) => {
+        chrome.storage.local.get("removal_warning_setting", (data) => {
             if(data.removal_warning_setting === true) {
                 setRemovalTarget(target);
             } else {
@@ -454,7 +455,7 @@ const WorkspacesSection = (props: any): JSX.Element => {
         const { markedFoldersId } = workspaceSettings;
         
         if(markedFoldersId.length > 0) {
-            chrome.storage.sync.get("removal_warning_setting", (data) => {
+            chrome.storage.local.get("removal_warning_setting", (data) => {
                 if(data.removal_warning_setting === true) {
                     setShowDeleteWarning(true);
                 } else {
@@ -470,7 +471,7 @@ const WorkspacesSection = (props: any): JSX.Element => {
         
         // Run if there are more than 0 marked folders
         if(markedFoldersId.length > 0) {
-            chrome.storage.sync.get("duplication_warning_value", (data) => {
+            chrome.storage.local.get("duplication_warning_value", (data) => {
 
                 // If the duplication warning is set in settings, and the number of marked tabs exceeds the threshold, then warn the user
                 if(data.duplication_warning_value !== -1 && data.duplication_warning_value <= workspaceSettings.markedFoldersId.length) {
@@ -516,7 +517,7 @@ const WorkspacesSection = (props: any): JSX.Element => {
 
         // Close current session after launching the folder. Only applies when
         // set in the Pettings page
-        chrome.storage.sync.get("close_current_setting", (data) => {
+        chrome.storage.local.get("close_current_setting", (data) => {
             if(data.close_current_setting === true){
                 snapshot.forEach((window) => {
                     if(window.id) chrome.windows.remove(window.id);
