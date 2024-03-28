@@ -94,7 +94,7 @@ const RenderOptionsPage = (props: iOptionsPage): JSX.Element => {
             <MultipleFoldersIcon size={20} fill={activeNavLink === "main" ? "rgb(109 0 194)" : "#525252"} />
           </Navlink>
           <Navlink key="settings-nav-link" label="Settings" url="?view=settings" isActive={activeNavLink === "settings" ? true : false} onClick={() => setActiveNavLink("settings")}>
-            <ConfigIcon size={20} fill={activeNavLink === "main" ? "rgb(109 0 194)" : "#525252"} />
+            <ConfigIcon size={20} fill={activeNavLink === "settings" ? "rgb(109 0 194)" : "#525252"} />
           </Navlink>
       </div>
     );

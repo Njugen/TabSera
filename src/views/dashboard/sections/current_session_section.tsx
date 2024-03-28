@@ -92,7 +92,7 @@ const CurrentSessionSection = (props: any): JSX.Element => {
                     <div className="flex items-center justify-end">
                         <PrimaryButton 
                             disabled={false} 
-                            text="Save this session to workspace" 
+                            text="Add to workspace" 
                             onClick={() => setAddToWorkspaceMessage(true)} 
                         />
                     </div>

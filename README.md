@@ -1,4 +1,4 @@
-# Tab Management Browser Plugin (Release Candidate 2)
+# Tab Management Browser Plugin (Release Candidate 3)
 
 <p align="center" style="padding-top: 10px; padding-bottom: 10px">
     <img src="./img/brand/brand.png" width="15%" />
@@ -23,7 +23,6 @@ Simple overview and basic features can be opened with one click. More advanced f
 - Create and edit folders
 - Duplicate and merge folders
 - Launch folders in either incognito or as groups
-- Tab search and filtering (filtering not implemented yet)
 - Tab suspension (upcoming)
 - Simplistic sidepanel, for quick overview
 - Options page for expanded overview
@@ -66,9 +65,9 @@ All folders and files follows the following format: __[my-file-name.tsx]__
 #### Component guidelines
 
 - In this project, all functions returning the type __JSX.Element__ is considered a component. These should always be placed in their own files.
-- A component should NOT declare other component functions. Preferably, no functions should be declared inside a component unless it is motivated to do so (e.g. when setting states).
-- Each variable and function should be declared with an appropriate data type. Create a new interface or extend a current one, when creating a new feature
-- Refactored components should be placed in their own folder. Follow the following example:
+- A component should NOT declare other components. Preferably, no functions should be declared inside a component unless it is motivated to do so (e.g. when the function sets states at some point).
+- Each variable and function should be declared with appropriate datatype. Create a new interface or extend a current one, when creating a new feature
+- Refactored components should be placed in their own folder and follow a specific naming convention:
 
 ```
     ./src
@@ -77,7 +76,8 @@ All folders and files follows the following format: __[my-file-name.tsx]__
             - utils
                 - [my_component]
                     - [my_component].tsx
-                    - non-function-component.tsx
+                    - a_component_specific_function.tsx
+                    - a_event_handler.ts
                     - child_components
                         - child_component_a.tsx
                         - child_component_b.tsx
